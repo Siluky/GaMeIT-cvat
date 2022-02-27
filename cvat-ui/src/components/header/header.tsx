@@ -32,7 +32,7 @@ import Select from 'antd/lib/select';
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
 
-import { CVATLogo } from 'icons';
+import { CVATLogo, EnergizerIcon } from 'icons';
 import ChangePasswordDialog from 'components/change-password-modal/change-password-modal';
 import CVATTooltip from 'components/common/cvat-tooltip';
 import { switchSettingsDialog as switchSettingsDialogAction } from 'actions/settings-actions';
@@ -256,7 +256,7 @@ function HeaderContainer(props: Props): JSX.Element {
                         window.open(`${tool.server.host}/admin`, '_blank');
                     }}
                 >
-                    Admin page
+                    Admin pageeee
                 </Menu.Item>
             )}
             <Menu.SubMenu
@@ -451,6 +451,16 @@ function HeaderContainer(props: Props): JSX.Element {
                         Analytics
                     </Button>
                 )}
+                <CVATTooltip overlay='Click to start an Energizer!'>
+                    <Button
+                        icon={<EnergizerIcon />}
+                        // TODO: How to conditionally set the attribute? (Only when energy is full)
+                        onClick={(event: React.MouseEvent): void => {
+                            event.preventDefault();
+                            // TODO: open EnergizerWindow!
+                        }}
+                    />
+                </CVATTooltip>
             </div>
             <div className='cvat-right-header'>
                 <CVATTooltip overlay='Click to open repository'>

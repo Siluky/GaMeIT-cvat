@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Intel Corporation
+// Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
 
@@ -19,6 +19,8 @@ import { adjustContextImagePosition } from 'components/annotation-page/standard-
 import { collapseSidebar as collapseSidebarAction } from 'actions/annotation-actions';
 import AppearanceBlock from 'components/annotation-page/appearance-block';
 import IssuesListComponent from 'components/annotation-page/standard-workspace/objects-side-bar/issues-list';
+import ChallengeListComponent from 'components/gamification/ChallengeListComponent';
+import StatisticsListComponent from 'components/gamification/StatisticsListComponent';
 
 interface OwnProps {
     objectsList: JSX.Element;
@@ -86,7 +88,7 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
         <Layout.Sider
             className='cvat-objects-sidebar'
             theme='light'
-            width={300}
+            width={400}
             collapsedWidth={0}
             reverseArrow
             collapsible
@@ -116,6 +118,12 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                         <IssuesListComponent />
                     </Tabs.TabPane>
                 ) : null}
+                <Tabs.TabPane tab={<Text strong>Challenges</Text>} key='challenges'>
+                    <ChallengeListComponent />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
+                    <StatisticsListComponent />
+                </Tabs.TabPane>
             </Tabs>
 
             {!sidebarCollapsed && <AppearanceBlock />}
