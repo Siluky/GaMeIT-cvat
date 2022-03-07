@@ -2,12 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { Slider } from 'antd';
 import React from 'react';
 
-export default function ChallengeComponent(): JSX.Element {
+export default function ProgressBar(): JSX.Element {
     return (
-        <div>
-            Cool Challenge
-        </div>
+        <Slider />
     );
 }

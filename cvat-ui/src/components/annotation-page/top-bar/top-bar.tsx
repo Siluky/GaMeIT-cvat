@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Intel Corporation
+// Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
 
@@ -13,6 +13,7 @@ import LeftGroup from './left-group';
 import PlayerButtons from './player-buttons';
 import PlayerNavigation from './player-navigation';
 import RightGroup from './right-group';
+import QuickStatisticsPanel from './quick-statistics';
 
 interface Props {
     playing: boolean;
@@ -175,6 +176,7 @@ export default function AnnotationTopBarComponent(props: Props): JSX.Element {
                     />
                 </Row>
             </Col>
+            <QuickStatisticsPanel />
             <RightGroup
                 predictor={predictor}
                 workspace={workspace}

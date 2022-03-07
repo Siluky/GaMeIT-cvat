@@ -509,3 +509,14 @@ button.cvat-predictor-button {
         }
     }
 }
+
+.cvat-annotation-header-quick-statistics {
+    display: flex;
+
+    > div {
+        display: flex;
+        // height: 48px;
+        align-items: center;
+    }
+}
+

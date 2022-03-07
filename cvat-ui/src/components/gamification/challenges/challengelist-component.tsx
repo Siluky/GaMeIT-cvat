@@ -4,19 +4,19 @@
 
 import React from 'react';
 import { Row } from 'antd';
-import ChallengeComponent from 'components/gamification/ChallengeComponent';
+import Challenge from './challenge-component';
 
-export default function ChallengeListComponent(): JSX.Element {
+export default function ChallengeList(): JSX.Element {
     return (
         <>
             <Row>
-                <ChallengeComponent />
+                <Challenge id={1} />
             </Row>
             <Row>
-                <ChallengeComponent />
+                <Challenge id={2} />
             </Row>
             <Row>
-                <ChallengeComponent />
+                <Challenge id={3} />
             </Row>
         </>
     );

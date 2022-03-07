@@ -4,32 +4,34 @@
 
 import React from 'react';
 import { Row, Col } from 'antd';
+import Statistic from './statistics-component';
 
-export default function StatisticsListComponent(): JSX.Element {
+export default function StatisticsList(): JSX.Element {
+    // TODO: Probably do a for-loop for all avaialble statistics -- not sure where to get size yet
     return (
         <>
             <Row>
                 <Col>
-                    Statistic 1
+                    <Statistic id={1} />
                 </Col>
                 <Col>
-                    Statistic 2
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    Statistic 3
-                </Col>
-                <Col>
-                    Statistic 4
+                    <Statistic id={2} />
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    Statistic 5
+                    <Statistic id={3} />
                 </Col>
                 <Col>
-                    Statistic 6
+                    <Statistic id={4} />
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Statistic id={5} />
+                </Col>
+                <Col>
+                    <Statistic id={6} />
                 </Col>
             </Row>
         </>

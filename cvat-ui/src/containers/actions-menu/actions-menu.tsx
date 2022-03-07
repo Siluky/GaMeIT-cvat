@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Intel Corporation
+// Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
 
@@ -130,7 +130,9 @@ function ActionsMenuContainer(props: OwnProps & StateToProps & DispatchToProps):
             dumpers={dumpers}
             loadActivity={loadActivity}
             inferenceIsActive={inferenceIsActive}
+            // eslint-disable-next-line react/jsx-no-bind
             onClickMenu={onClickMenu}
+            // eslint-disable-next-line react/jsx-no-bind
             onUploadAnnotations={onUploadAnnotations}
             taskDimension={taskInstance.dimension}
             exportIsActive={exportIsActive}

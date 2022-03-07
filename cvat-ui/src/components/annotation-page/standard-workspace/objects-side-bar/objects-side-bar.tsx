@@ -19,8 +19,8 @@ import { adjustContextImagePosition } from 'components/annotation-page/standard-
 import { collapseSidebar as collapseSidebarAction } from 'actions/annotation-actions';
 import AppearanceBlock from 'components/annotation-page/appearance-block';
 import IssuesListComponent from 'components/annotation-page/standard-workspace/objects-side-bar/issues-list';
-import ChallengeListComponent from 'components/gamification/ChallengeListComponent';
-import StatisticsListComponent from 'components/gamification/StatisticsListComponent';
+import ChallengeList from 'components/gamification/challenges/challengelist-component';
+import StatisticsList from 'components/gamification/statistics/statisticslist-component';
 
 interface OwnProps {
     objectsList: JSX.Element;
@@ -88,7 +88,7 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
         <Layout.Sider
             className='cvat-objects-sidebar'
             theme='light'
-            width={400}
+            width={300}
             collapsedWidth={0}
             reverseArrow
             collapsible
@@ -119,10 +119,10 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                     </Tabs.TabPane>
                 ) : null}
                 <Tabs.TabPane tab={<Text strong>Challenges</Text>} key='challenges'>
-                    <ChallengeListComponent />
+                    <ChallengeList />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
-                    <StatisticsListComponent />
+                    <StatisticsList />
                 </Tabs.TabPane>
             </Tabs>
 
