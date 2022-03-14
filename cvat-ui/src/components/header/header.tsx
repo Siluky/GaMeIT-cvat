@@ -31,7 +31,7 @@ import Modal from 'antd/lib/modal';
 import Text from 'antd/lib/typography/Text';
 import Select from 'antd/lib/select';
 
-import BadgeProfile from 'components/gamification/badges/badgeprofile';
+import BadgeOverview from 'components/gamification/badges/badge-overview';
 
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
@@ -261,7 +261,9 @@ function HeaderContainer(props: Props): JSX.Element {
                 {/* TODO: Make popover extend to the whole menu item */}
                 <Popover
                     placement='leftTop'
-                    content={<BadgeProfile />}
+                    trigger='click'
+                    content={<BadgeOverview allBadges={[]} />}
+                    mouseLeaveDelay={10}
                 >
                     Badges
                 </Popover>
