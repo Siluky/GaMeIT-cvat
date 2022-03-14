@@ -1,7 +1,7 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-
+import '../gamif-styles.scss';
 import React from 'react';
 
 interface Props {
@@ -9,11 +9,11 @@ interface Props {
 }
 
 export default function QuickStatistic(props: Props): JSX.Element {
-    const x = props;
+    const { id } = props;
 
     return (
         <div>
-            {`Statistic ${x.id}`}
+            {`Statistic ${id}`}
         </div>
     );
 }

@@ -1,7 +1,7 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-
+import '../gamif-styles.scss';
 import React from 'react';
 
 interface Props {
@@ -9,10 +9,11 @@ interface Props {
 }
 
 export default function Challenge(props: Props): JSX.Element {
-    const x = props;
+    // TODO: Use antd.Progress! Probably make a challenge component
+    const { id } = props;
     return (
         <div>
-            {`Cool Challenge ${x.id}`}
+            {`Cool Challenge ${id}`}
         </div>
     );
 }

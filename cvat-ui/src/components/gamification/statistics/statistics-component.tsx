@@ -1,6 +1,7 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
+import '../gamif-styles.scss';
 import React from 'react';
 
 interface Props {
@@ -8,8 +9,8 @@ interface Props {
 }
 
 export default function Statistic(props: Props): JSX.Element {
-    const x = props;
+    const { id } = props;
     return (
-        <>{`Statistic ${x.id}`}</>
+        <>{`Statistic ${id}`}</>
     );
 }

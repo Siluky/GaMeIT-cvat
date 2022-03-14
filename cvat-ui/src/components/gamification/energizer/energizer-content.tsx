@@ -1,7 +1,7 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-
+import '../gamif-styles.scss';
 import React from 'react';
 
 interface Props {
@@ -16,9 +16,8 @@ function showMinigame(minigame: string): JSX.Element {
 }
 
 export default function EnergizerContent(props: Props): JSX.Element {
-    // TODO: Figure out how to fix this weird style
-    const x = props;
+    const { minigame } = props;
     return (
-        <>{showMinigame(x.minigame)}</>
+        <>{showMinigame(minigame)}</>
     );
 }

@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: MIT
 import React from 'react';
 import { Row, Col } from 'antd/lib/grid';
+import { Progress } from 'antd';
 import QuickStatistic from 'components/gamification/statistics/quick-statistics-component';
-import ProgressBar from 'components/gamification/progressbar-component';
 
 function QuickStatisticsPanel(): JSX.Element {
     return (
@@ -22,7 +22,7 @@ function QuickStatisticsPanel(): JSX.Element {
             </Row>
             <Row>
                 <Col span={24}>
-                    <ProgressBar />
+                    <Progress percent={30} />
                 </Col>
             </Row>
         </div>

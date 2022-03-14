@@ -1,7 +1,7 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-
+import '../gamif-styles.scss';
 import React from 'react';
 
 interface Props {
@@ -10,8 +10,8 @@ interface Props {
 
 export default function ShopItem(props: Props): JSX.Element {
     // TODO: Individual shop items
-    const x = props;
+    const { id } = props;
     return (
-        <>{`Cool Shop item ${x.id}`}</>
+        <>{`Cool Shop item ${id}`}</>
     );
 }
