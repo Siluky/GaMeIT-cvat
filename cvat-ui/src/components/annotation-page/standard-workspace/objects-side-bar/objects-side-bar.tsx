@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Intel Corporation
+// Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
 
@@ -19,6 +19,8 @@ import { adjustContextImagePosition } from 'components/annotation-page/standard-
 import { collapseSidebar as collapseSidebarAction } from 'actions/annotation-actions';
 import AppearanceBlock from 'components/annotation-page/appearance-block';
 import IssuesListComponent from 'components/annotation-page/standard-workspace/objects-side-bar/issues-list';
+import ChallengeList from 'components/gamification/challenges/challengelist-component';
+import StatisticsList from 'components/gamification/statistics/statisticslist-component';
 
 interface OwnProps {
     objectsList: JSX.Element;
@@ -116,6 +118,12 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                         <IssuesListComponent />
                     </Tabs.TabPane>
                 ) : null}
+                <Tabs.TabPane tab={<Text strong>Challenges</Text>} key='challenges'>
+                    <ChallengeList />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
+                    <StatisticsList />
+                </Tabs.TabPane>
             </Tabs>
 
             {!sidebarCollapsed && <AppearanceBlock />}

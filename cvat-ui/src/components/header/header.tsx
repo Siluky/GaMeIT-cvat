@@ -20,19 +20,23 @@ import Icon, {
     UserOutlined,
     TeamOutlined,
     PlusOutlined,
+    RadarChartOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
+import Popover from 'antd/lib/Popover';
 import Dropdown from 'antd/lib/dropdown';
 import Modal from 'antd/lib/modal';
 import Text from 'antd/lib/typography/Text';
 import Select from 'antd/lib/select';
 
+import BadgeOverview from 'components/gamification/badges/badge-overview';
+
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
 
-import { CVATLogo } from 'icons';
+import { CVATLogo, EnergizerIcon } from 'icons';
 import ChangePasswordDialog from 'components/change-password-modal/change-password-modal';
 import CVATTooltip from 'components/common/cvat-tooltip';
 import { switchSettingsDialog as switchSettingsDialogAction } from 'actions/settings-actions';
@@ -246,6 +250,24 @@ function HeaderContainer(props: Props): JSX.Element {
 
     const userMenu = (
         <Menu className='cvat-header-menu'>
+            {/* gamificationEnabled && [...]
+            --> Possibility to implement the gamification on-off switch! TODO:
+            */}
+            <Menu.Item
+                // TODO: Insert custom badge icon
+                icon={<RadarChartOutlined />}
+                key='badge_profile'
+            >
+                {/* TODO: Make popover extend to the whole menu item */}
+                <Popover
+                    placement='leftTop'
+                    trigger='click'
+                    content={<BadgeOverview allBadges={[]} />}
+                    mouseLeaveDelay={10}
+                >
+                    Badges
+                </Popover>
+            </Menu.Item>
             {user.isStaff && (
                 <Menu.Item
                     icon={<ControlOutlined />}
@@ -451,6 +473,15 @@ function HeaderContainer(props: Props): JSX.Element {
                         Analytics
                     </Button>
                 )}
+                {/* TODO: Create an EnergizerButton component in gamification/energizer-button.tsx */}
+                <CVATTooltip overlay='Click to start an Energizer!'>
+                    <Button
+                        icon={<EnergizerIcon />}
+                        onClick={(): void => {
+                            // TODO: switch energizerStarted to false
+                        }}
+                    />
+                </CVATTooltip>
             </div>
             <div className='cvat-right-header'>
                 <CVATTooltip overlay='Click to open repository'>
@@ -506,6 +537,11 @@ function HeaderContainer(props: Props): JSX.Element {
             </div>
             <SettingsModal visible={settingsDialogShown} onClose={() => switchSettingsDialog(false)} />
             {renderChangePasswordItem && <ChangePasswordDialog onClose={() => switchChangePasswordDialog(false)} />}
+            {/*
+            TODO: Same idea as with the Settings modal above --> create EnergizerModal component!
+            <EnergizerModal visible={energizerStarted} onClose={() => switchEnergizerReady(false)}
+            TODO: Implement the switch action in a separate "energizer-actions.tsx file"
+            */}
         </Layout.Header>
     );
 }
