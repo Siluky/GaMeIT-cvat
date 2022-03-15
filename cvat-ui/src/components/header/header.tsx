@@ -31,7 +31,7 @@ import Modal from 'antd/lib/modal';
 import Text from 'antd/lib/typography/Text';
 import Select from 'antd/lib/select';
 
-import BadgeOverview from 'components/gamification/badges/badge-overview';
+import BadgeOverview from 'gamification/components/badges/badge-overview';
 
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
@@ -262,7 +262,7 @@ function HeaderContainer(props: Props): JSX.Element {
                 <Popover
                     placement='leftTop'
                     trigger='click'
-                    content={<BadgeOverview allBadges={[]} />}
+                    content={<BadgeOverview />}
                     mouseLeaveDelay={10}
                 >
                     Badges

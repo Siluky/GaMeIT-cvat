@@ -19,8 +19,8 @@ import { adjustContextImagePosition } from 'components/annotation-page/standard-
 import { collapseSidebar as collapseSidebarAction } from 'actions/annotation-actions';
 import AppearanceBlock from 'components/annotation-page/appearance-block';
 import IssuesListComponent from 'components/annotation-page/standard-workspace/objects-side-bar/issues-list';
-import ChallengeList from 'components/gamification/challenges/challengelist-component';
-import StatisticsList from 'components/gamification/statistics/statisticslist-component';
+import ChallengeList from 'gamification/components/challenges/challengelist-component';
+import StatisticsList from 'gamification/components/statistics/statisticslist-component';
 
 interface OwnProps {
     objectsList: JSX.Element;

@@ -4,6 +4,7 @@
 
 import React from 'react';
 import Modal from 'antd/lib/modal/Modal';
+import 'gamification/gamif-styles.scss';
 
 export default function EnergizerModal(): JSX.Element {
     return (

@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import React from 'react';
+import 'gamification/gamif-styles.scss';
 // import EnergizerIcon from 'components/icons'; TODO: Fix import path
 
 export default function EnergizerButton(): JSX.Element {

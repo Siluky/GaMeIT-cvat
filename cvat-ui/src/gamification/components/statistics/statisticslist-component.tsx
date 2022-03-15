@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import React from 'react';
+import 'gamification/gamif-styles.scss';
 import { Row, Col } from 'antd';
 import Statistic from './statistics-component';
 

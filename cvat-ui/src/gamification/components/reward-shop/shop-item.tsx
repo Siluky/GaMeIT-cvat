@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import React from 'react';
+import 'gamification/gamif-styles.scss';
 
 interface Props {
     id: number;

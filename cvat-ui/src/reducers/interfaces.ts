@@ -7,6 +7,14 @@ import { Canvas, RectDrawingMethod, CuboidDrawingMethod } from 'cvat-canvas-wrap
 import { IntelligentScissors } from 'utils/opencv-wrapper/intelligent-scissors';
 import { KeyMap } from 'utils/mousetrap-react';
 import { OpenCVTracker } from 'utils/opencv-wrapper/opencv-interfaces';
+import {
+    BadgeState,
+    ChallengeState,
+    EnergizerState,
+    ShopState,
+    SocialState,
+    StatisticsState,
+} from 'gamification/gamif-interfaces';
 
 export type StringObject = {
     [index: string]: string;
@@ -782,6 +790,14 @@ export interface CombinedState {
     import: ImportState;
     cloudStorages: CloudStoragesState;
     organizations: OrganizationState;
+    // Gamification slices
+    badges: BadgeState;
+    challenges: ChallengeState;
+    energizer: EnergizerState;
+    shop: ShopState;
+    social: SocialState;
+    stats: StatisticsState;
+
 }
 
 export enum DimensionType {

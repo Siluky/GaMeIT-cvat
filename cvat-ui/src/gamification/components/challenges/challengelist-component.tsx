@@ -5,6 +5,7 @@
 import React from 'react';
 import { Row } from 'antd';
 import Challenge from './challenge-component';
+import 'gamification/gamif-styles.scss';
 
 export default function ChallengeList(): JSX.Element {
     return (

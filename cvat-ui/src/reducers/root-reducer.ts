@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 import { combineReducers, Reducer } from 'redux';
+import badgeReducer from 'gamification/reducers/badge-reducer';
+// TODO: Add other gamification reducers
 import authReducer from './auth-reducer';
 import projectsReducer from './projects-reducer';
 import tasksReducer from './tasks-reducer';
@@ -44,5 +46,8 @@ export default function createRootReducer(): Reducer {
         import: importReducer,
         cloudStorages: cloudStoragesReducer,
         organizations: organizationsReducer,
+        // gamification reducers
+        badges: badgeReducer,
+        // TODO: Add other gamification reducers when applicable
     });
 }

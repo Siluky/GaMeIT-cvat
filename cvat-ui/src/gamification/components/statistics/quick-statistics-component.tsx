@@ -3,16 +3,18 @@
 // SPDX-License-Identifier: MIT
 
 import React from 'react';
+import 'gamification/gamif-styles.scss';
 
 interface Props {
     id: number;
 }
 
-export default function Challenge(props: Props): JSX.Element {
+export default function QuickStatistic(props: Props): JSX.Element {
     const x = props;
+
     return (
         <div>
-            {`Cool Challenge ${x.id}`}
+            {`Statistic ${x.id}`}
         </div>
     );
 }

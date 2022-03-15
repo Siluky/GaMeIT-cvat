@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import React from 'react';
+import 'gamification/gamif-styles.scss';
 
 export default function ShopButton(): JSX.Element {
     // TODO: onClick: open shop

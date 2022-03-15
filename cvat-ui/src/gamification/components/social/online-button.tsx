@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 import React from 'react';
+import 'gamification/gamif-styles.scss';
 
 export default function OnlineButton(): JSX.Element {
     // TODO: 2 onClick handlers for swinging out friends list / setting own status
