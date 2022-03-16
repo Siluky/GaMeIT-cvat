@@ -476,6 +476,7 @@ function HeaderContainer(props: Props): JSX.Element {
                 {/* TODO: Create an EnergizerButton component in gamification/energizer-button.tsx */}
                 <CVATTooltip overlay='Click to start an Energizer!'>
                     <Button
+                        type='text'
                         icon={<EnergizerIcon />}
                         onClick={(): void => {
                             // TODO: switch energizerStarted to false

@@ -47,14 +47,15 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
 }
 
 const showSelectedBadge = (badge: Badge): JSX.Element => (
+    // TODO: Show a tooltip when no badge is selected
     <>
         <div className='gamif-badge-icon'>
             {badge.got ? <BadgeIcon /> : <BadgeGreyIcon />}
         </div>
         <div className='gamif-badge-details'>
-            <strong>{badge.title}</strong>
-            {badge.instruction}
-            <Progress percent={badge.progress / badge.goal} />
+            <p><strong>{badge.title}</strong></p>
+            <p>{badge.instruction}</p>
+            <Progress percent={(badge.progress / badge.goal) * 100} />
             {`Current Progress: ${badge.progress} / ${badge.goal} ${badge.goalunit}`}
         </div>
     </>
@@ -92,6 +93,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                             {Object.values(badges.availableBadges).map((badge: Badge) => (
                                 <Col span={4}>
                                     <Button
+                                        type='text'
                                         icon={badge.got ? <BadgeIcon /> : <BadgeGreyIcon />}
                                         onClick={(): void => { dispatch(setCurrentBadge(badge)); }}
                                     />

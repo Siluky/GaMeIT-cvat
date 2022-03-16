@@ -4,32 +4,35 @@
 
 import { AnyAction } from 'redux';
 import { BadgeActionTypes } from '../actions/badge-actions';
-import { BadgeState } from '../gamif-interfaces';
+import { Badge, BadgeState } from '../gamif-interfaces';
 
-const defaultState: BadgeState = {
-    availableBadges: [{
-        title: 'Badge 1',
+const dummyBadge = {
+    title: '',
+    instruction: 'Default selected badge',
+    progress: 0,
+    goal: 10,
+    goalunit: '',
+    got: true,
+};
+
+const testBadges: Badge[] = [];
+
+for (let i = 0; i < 10; i++) {
+    let ttl = 'Badge ';
+
+    testBadges.push({
+        title: ttl += i,
         instruction: 'Annotate 5 livers',
-        progress: 5,
-        goal: 5,
+        progress: i,
+        goal: i + 1,
         goalunit: 'Livers',
         got: true,
-    }, {
-        title: 'Badge 2',
-        instruction: 'Annotate ten images',
-        progress: 1,
-        goal: 10,
-        goalunit: 'Images',
-        got: false,
-    }],
-    selectedBadge: {
-        title: '',
-        instruction: 'Default selected badge',
-        progress: 0,
-        goal: 10,
-        goalunit: '',
-        got: true,
-    }, // no selected badge at the start
+    });
+}
+
+const defaultState: BadgeState = {
+    availableBadges: testBadges,
+    selectedBadge: dummyBadge, // no selected badge at the start
 };
 
 export default (state = defaultState, action: AnyAction): BadgeState => {

@@ -15,17 +15,14 @@ export enum BadgeActionTypes {
 export function setBadges(badges: Badge[]): AnyAction {
     return {
         type: BadgeActionTypes.SET_BADGES,
-        payload: {
-            badges,
-        },
+        payload: badges,
     };
 }
 
 export function setCurrentBadge(badge: Badge): AnyAction {
     return {
         type: BadgeActionTypes.SET_CURRENT_BADGE,
-        payload: {
-            badge,
-        },
+        payload: badge,
+
     };
 }

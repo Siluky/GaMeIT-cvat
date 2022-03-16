@@ -6,15 +6,22 @@
 
 
 
-.badge-overview-tabs.ant-tabs.ant-tabs-card {
-    background: #B5BECA;
-    // box-sizing: border-box;
-    border: none;
+.badge-overview-tabs {
+    padding: 5px;
+    background: #CCCCCC;
+
+    .ant-tabs {
+        background: #97A4B4;
+    }
+
+    .ant-tabs.ant-tabs-card {
+        background: #B5BECA;
+        border: none;
+    }
 
     .ant-tabs-nav {
         border: none;
         margin-bottom: 0;
-        padding-top: 5px;
         background: #CCCCCC;
         color: white;
 
@@ -30,7 +37,7 @@
 }
 
 .gamif-badge-overview-header {
-    height: 20px;
+    height: 0px;
 }
 
 .gamif-badge-overview-container {
@@ -42,11 +49,30 @@
     height: 150px;
     padding: 10px;
     overflow-y: scroll;
+    background: #B5BECA;
+
+    ::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #131313;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: darkblue;
+      }
+
+    ::-webkit-scrollbar-track {
+        background: #CCCCCC;
+    }
 }
 
 .gamif-badge-detail-view {
     padding-left: 5%;
     padding-right: 5%;
+    background: #B5BECA;
     display: flex;
     height: 150px;
 }

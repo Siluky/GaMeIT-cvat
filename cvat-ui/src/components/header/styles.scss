@@ -34,6 +34,12 @@
     }
 }
 
+.ant-popover-inner-content {
+    padding: 2px 2px;
+    background-clip: content-box;
+    box-shadow: inset 0 0 0 2px darkblue;
+}
+
 .anticon.cvat-logo-icon {
     > svg {
         transform: scale(0.7);
