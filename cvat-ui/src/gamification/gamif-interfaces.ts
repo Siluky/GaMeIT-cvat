@@ -16,8 +16,22 @@ export interface BadgeState {
     selectedBadge: Badge;
 }
 
+export enum ChallengeType {
+    DAILY = 'DAILY',
+    WEEKLY = 'WEEKLY',
+    SPECIAL = 'SPECIAL',
+}
+
+export interface Challenge {
+    instruction: string;
+    progress: number;
+    goal: number;
+    reward: number; // TODO: establiosh rewards
+    challengeType: ChallengeType;
+}
+
 export interface ChallengeState {
-    id: number;
+    availableChallenges: number;
 }
 
 export interface EnergizerState {

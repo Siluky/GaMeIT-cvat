@@ -4,8 +4,7 @@
 
 // File for all gamification elements scss stuff
 
-
-
+// Badges
 .badge-overview-tabs {
     padding: 5px;
     background: #CCCCCC;
@@ -88,4 +87,33 @@
 
 .gamif-badge-load-fail {
     color: red;
+}
+
+// Challenges
+
+.gamif-challenge-list {
+    background: #1D3C62;
+}
+
+.gamif-challenge-pane-wrapper {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    background: #E6E6E6;
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+
+}
+
+.gamif-challenge-pane-left {
+    width: 70%;
+    justify-content: center;
+    margin: auto;
+}
+.gamif-challenge-pane-right {
+    width: 30%;
+    justify-content: center;
+    margin: auto;
 }

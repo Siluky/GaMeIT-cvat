@@ -10,18 +10,18 @@ function QuickStatisticsPanel(): JSX.Element {
     return (
         <div className='cvat-annotation-header-quick-statistics'>
             <Row>
-                <Col span={8}>
+                <Col>
                     <QuickStatistic id={1} />
                 </Col>
-                <Col span={8}>
+                <Col>
                     <QuickStatistic id={2} />
                 </Col>
-                <Col span={8}>
+                <Col>
                     <QuickStatistic id={3} />
                 </Col>
             </Row>
             <Row>
-                <Col span={24}>
+                <Col>
                     <ProgressBar />
                 </Col>
             </Row>
