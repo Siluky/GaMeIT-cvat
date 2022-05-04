@@ -74,7 +74,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
             // TODO: Load in badges from database //  update badge data
             // for-loop
 
-            // dispatch(setBadges(loadedBadges));
+            // dispatch(loadBadges(loadedBadges));
         } catch {
             notification.error({
                 message: 'Failed to load badges.',
@@ -82,7 +82,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
             });
         }
     }, []);
-
+    // TODO: Add that only visible badges get shown
     return (
         <Tabs type='card' defaultActiveKey='1' className='badge-overview-tabs'>
             <Tabs.TabPane tab='Permanent Badges' key='1'>

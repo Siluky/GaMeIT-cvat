@@ -13,6 +13,8 @@ const dummyBadge = {
     goal: 10,
     goalunit: '',
     got: true,
+    receivedOn: null,
+    visible: true,
 };
 
 const testBadges: Badge[] = [];
@@ -27,6 +29,8 @@ for (let i = 0; i < 10; i++) {
         goal: i + 1,
         goalunit: 'Livers',
         got: true,
+        receivedOn: null,
+        visible: true,
     });
 }
 
@@ -44,11 +48,10 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             };
         }
 
-        case BadgeActionTypes.SET_BADGES: {
+        case BadgeActionTypes.LOAD_BADGES: {
             return {
                 ...state,
                 availableBadges: action.payload,
-                // TODO:
             };
         }
         default: {

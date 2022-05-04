@@ -9,6 +9,8 @@ export interface Badge {
     goal: number;
     goalunit: string;
     got: boolean;
+    receivedOn: Date | null;
+    visible: boolean;
 }
 
 export interface BadgeState {

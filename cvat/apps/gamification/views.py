@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: MIT
 
 from rest_framework import viewsets
-from .models import Challenge
-from .serializers import ChallengeSerializer
+from .models import Badge
+from .serializers import BadgeSerializer
 
-class ChallengeViewSet(viewsets.ModelViewSet):
-    queryset = Challenge.objects.order_by('instruction')
-    serializer_class = ChallengeSerializer
+class BadgeViewSet(viewsets.ModelViewSet):
+    queryset = Badge.objects.all()
+    serializer_class = BadgeSerializer

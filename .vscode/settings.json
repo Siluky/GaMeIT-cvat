@@ -35,12 +35,25 @@
     ],
     "favorites.resources": [
         {
-            "filePath": "cvat/settings/base.py",
+            "filePath": "cvat-core/src/api.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-core/src/server-proxy.js",
             "group": "Default"
         },
         {
             "filePath": "cvat-ui/src/components/header/header.tsx",
             "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/cvat-core-wrapper.ts",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat/settings/base.py",
+            "group": "Default"
         }
-    ]
+    ],
+    "favorites.sortOrder": "MANUAL"
 }
