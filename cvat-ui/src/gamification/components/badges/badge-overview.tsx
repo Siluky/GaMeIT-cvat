@@ -9,27 +9,35 @@ import {
     Progress,
     Button,
     Tabs,
-    notification,
 } from 'antd';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 
 import { BadgeIcon, BadgeGreyIcon } from '../../../icons';
 import { Badge } from '../../gamif-interfaces';
-import { setCurrentBadge } from '../../actions/badge-actions';
+import {
+    setCurrentBadge,
+    loadBadgesAsync,
+    incrementBadge,
+    saveBadges,
+} from '../../actions/badge-actions';
 
 // TODO: add if necessary
 interface BadgeOverviewProps {
     currentBadge: Badge;
+    availableBadges: Badge[];
     setCurrentBadge: (badge: Badge) => void;
+    loadBadges: () => void;
 }
 
 interface StateToProps {
     currentBadge: Badge;
+    availableBadges: Badge[];
 }
 
 interface DispatchToProps {
     setCurrentBadge: (badge: Badge) => void;
+    loadBadges: () => void;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
@@ -37,11 +45,13 @@ function mapStateToProps(state: CombinedState): StateToProps {
 
     return {
         currentBadge: badges.selectedBadge,
+        availableBadges: badges.availableBadges,
     };
 }
 
 function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
+        loadBadges: (): void => dispatch(loadBadgesAsync()),
         setCurrentBadge: (badge: Badge): void => dispatch(setCurrentBadge(badge)),
     };
 }
@@ -62,26 +72,18 @@ const showSelectedBadge = (badge: Badge): JSX.Element => (
 );
 
 export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
-    const badges = useSelector((state: CombinedState) => state.badges); // TODO:
+    const badges = useSelector((state: CombinedState) => state.badges);
     const dispatch = useDispatch();
 
-    const { currentBadge } = props;
+    const { currentBadge, loadBadges } = props;
 
     // Load in badges from database on open of profile.
+    // TODO: Remove the "currentBadge" in dependency array once done
     useEffect(() => {
-        try {
-            // const loadedBadges: any = {}; // TODO: Check if this typing is okay
-            // TODO: Load in badges from database //  update badge data
-            // for-loop
+        console.log('Badge-Overview: useEffect Hook triggered');
+        loadBadges();
+    }, [currentBadge]);
 
-            // dispatch(loadBadges(loadedBadges));
-        } catch {
-            notification.error({
-                message: 'Failed to load badges.',
-                className: 'gamif-badge-load-fail',
-            });
-        }
-    }, []);
     // TODO: Add that only visible badges get shown
     return (
         <Tabs type='card' defaultActiveKey='1' className='badge-overview-tabs'>
@@ -99,6 +101,12 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                     />
                                 </Col>
                             ))}
+                            <Button type='text' onClick={(): void => { dispatch(incrementBadge(currentBadge)); }}>
+                                +
+                            </Button>
+                            <Button type='text' onClick={(): void => { dispatch(saveBadges()); }}>
+                                Save
+                            </Button>
                         </Row>
                     </div>
                     <div className='gamif-badge-detail-view'>

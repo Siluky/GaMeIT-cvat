@@ -53,6 +53,10 @@
         {
             "filePath": "cvat/settings/base.py",
             "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/components/badges/badge-overview.tsx",
+            "group": "Default"
         }
     ],
     "favorites.sortOrder": "MANUAL"

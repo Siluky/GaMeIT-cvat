@@ -4,11 +4,11 @@
 
 import { AnyAction } from 'redux';
 import { BadgeActionTypes } from '../actions/badge-actions';
-import { Badge, BadgeState } from '../gamif-interfaces';
+import { BadgeState } from '../gamif-interfaces';
 
 const dummyBadge = {
     title: '',
-    instruction: 'Default selected badge',
+    instruction: 'Select a Badge to see details about it!',
     progress: 0,
     goal: 10,
     goalunit: '',
@@ -17,26 +17,19 @@ const dummyBadge = {
     visible: true,
 };
 
-const testBadges: Badge[] = [];
-
-for (let i = 0; i < 10; i++) {
-    let ttl = 'Badge ';
-
-    testBadges.push({
-        title: ttl += i,
-        instruction: 'Annotate 5 livers',
-        progress: i,
-        goal: i + 1,
-        goalunit: 'Livers',
+const defaultState: BadgeState = {
+    availableBadges: [{
+        title: '',
+        instruction: '',
+        progress: 0,
+        goal: 0,
+        goalunit: '',
         got: true,
         receivedOn: null,
         visible: true,
-    });
-}
-
-const defaultState: BadgeState = {
-    availableBadges: testBadges,
+    }],
     selectedBadge: dummyBadge, // no selected badge at the start
+    loading: false,
 };
 
 export default (state = defaultState, action: AnyAction): BadgeState => {
@@ -48,12 +41,32 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             };
         }
 
-        case BadgeActionTypes.LOAD_BADGES: {
+        case BadgeActionTypes.LOAD_BADGES_SUCCESS: {
             return {
                 ...state,
                 availableBadges: action.payload,
             };
         }
+
+        case BadgeActionTypes.LOAD_BADGES_FAILED: {
+            return state;
+        }
+
+        case BadgeActionTypes.INCREMENT_BADGE: {
+            const { badge } = action.payload;
+            // TODO: CHeck if goal reached!
+            return {
+                ...state,
+                availableBadges: {
+                    ...state.availableBadges,
+                    [badge]: {
+                        ...state.availableBadges[badge],
+                        progress: state.availableBadges[badge].progress + 1,
+                    },
+                },
+            };
+        }
+
         default: {
             return state;
         }

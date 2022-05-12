@@ -8,32 +8,22 @@ from cvat.apps.gamification import models
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Badge
-        fields = ('title','instruction','goal','visible')
+        fields = ('title','instruction','goal','goalunit','visible')
 
-#TODO: BadgeStatus next
 class BadgeStatusSerializer(serializers.ModelSerializer):
+    badge = BadgeSerializer()
+
     class Meta:
         model = models.BadgeStatus
-        fields = ('user','badge','progress','got','receivedOn')
+        fields = ('userProfile','badge','progress','got','receivedOn')
 
     def create(self, validated_data):
-        return super().create(validated_data) #TODO:
+        return super().create(validated_data)
 
-
-
-# TODO: Combine all Serializers into one
+# User profile Model
 class UserProfileSerializer(serializers.ModelSerializer):
+    badges = BadgeStatusSerializer()
+
     class Meta:
         model = models.UserProfile
         fields = ('user','badges','last_login')
-
-    # user = ??? #TODO:
-
-    try:
-        # Get all badges that belong to one user
-        # --> essentially turn the user:badge relationship from m:n to 1:n
-        badges = models.BadgeStatus.objects.get(user='user')
-    except models.Badge.DoesNotExist:
-        raise serializers.ValidationError('The specified badges do not exist')
-
-    badges = BadgeSerializer

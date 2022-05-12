@@ -16,6 +16,7 @@ export interface Badge {
 export interface BadgeState {
     availableBadges: Badge[];
     selectedBadge: Badge;
+    loading: boolean;
 }
 
 export enum ChallengeType {
