@@ -29,12 +29,18 @@ class Challenge(models.Model):
     def __str__(self):
         return self.instruction
 
+class EnergizerData(models.Model):
+    currentEnergy = models.IntegerField()
+    energizersDone = models.IntegerField()
+    #TODO: Data for individual energizers
+
 # Stores additional information about exactly one user
 # Gets automatically updated with user
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     badges = models.ManyToManyField(Badge, through='BadgeStatus')
     last_login = models.DateField(default=now)
+    energizer_data = models.OneToOneField(EnergizerData, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.user.get_username()

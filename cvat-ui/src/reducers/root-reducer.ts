@@ -5,6 +5,7 @@
 import { combineReducers, Reducer } from 'redux';
 import badgeReducer from 'gamification/reducers/badge-reducer';
 // TODO: Add other gamification reducers
+import energizerReducer from 'gamification/reducers/energizer-reducer';
 import authReducer from './auth-reducer';
 import projectsReducer from './projects-reducer';
 import tasksReducer from './tasks-reducer';
@@ -48,6 +49,7 @@ export default function createRootReducer(): Reducer {
         organizations: organizationsReducer,
         // gamification reducers
         badges: badgeReducer,
+        energizer: energizerReducer,
         // TODO: Add other gamification reducers when applicable
     });
 }

@@ -37,8 +37,17 @@ export interface ChallengeState {
     availableChallenges: number;
 }
 
+export enum EnergizerType {
+    TETRIS = 'TETRIS',
+    SNAKE = 'SNAKE',
+    QUIZ = 'QUIZ',
+    NONE = 'NONE',
+}
+
 export interface EnergizerState {
-    id: number;
+    energyLevel: number,
+    active: boolean,
+    activeEnergizer: EnergizerType,
 }
 export interface ShopState {
     id: number;

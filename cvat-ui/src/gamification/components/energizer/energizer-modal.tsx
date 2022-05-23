@@ -5,15 +5,33 @@
 import React from 'react';
 import Modal from 'antd/lib/modal/Modal';
 import 'gamification/gamif-styles.scss';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { CombinedState } from 'reducers/interfaces';
 
-export default function EnergizerModal(): JSX.Element {
+interface EnergizerProps {
+    visible: boolean;
+    onClose(): void;
+}
+
+function EnergizerModal(props: EnergizerProps): JSX.Element {
+    const { visible, onClose } = props;
+
+    // const energizer = useSelector((state: CombinedState) => state.energizer);
+    // const dispatch = useDispatch();
+    /*
+    useEffect(() =>
+        //TODO: update current energy based on time
+    ); */
+
     return (
         <>
             {/* <EnergizerContent /> + <EnergizerLeaderboard /> */}
             <Modal
+                className='gamif-energizer-modal'
                 title='EnergizerModal'
                 width={1000}
-                className='gamif-energizer-modal'
+                visible={visible}
+                onCancel={onClose}
                 footer={(
                     <>
                         Insert the back button here. Can take inspiration from the settings-modal
@@ -25,3 +43,6 @@ export default function EnergizerModal(): JSX.Element {
         </>
     );
 }
+
+export default React.memo(EnergizerModal);
+// export default connect(mapStateToProps, mapDispatchToProps)(BadgeOverview);

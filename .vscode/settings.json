@@ -57,6 +57,10 @@
         {
             "filePath": "cvat-ui/src/gamification/components/badges/badge-overview.tsx",
             "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/reducers/root-reducer.ts",
+            "group": "Default"
         }
     ],
     "favorites.sortOrder": "MANUAL"
