@@ -4,37 +4,56 @@
 
 import React from 'react';
 import 'gamification/gamif-styles.scss';
-import { Row, Col } from 'antd';
+import {
+    Tabs,
+    Row,
+    Col,
+    Collapse,
+}
+    from 'antd';
 import Statistic from './statistics-component';
+
+const { Panel } = Collapse;
+const { TabPane } = Tabs;
 
 export default function StatisticsList(): JSX.Element {
     // TODO: Probably do a for-loop for all avaialble statistics -- not sure where to get size yet
     return (
         <>
-            <Row>
-                <Col>
-                    <Statistic id={1} />
-                </Col>
-                <Col>
-                    <Statistic id={2} />
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Statistic id={3} />
-                </Col>
-                <Col>
-                    <Statistic id={4} />
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Statistic id={5} />
-                </Col>
-                <Col>
-                    <Statistic id={6} />
-                </Col>
-            </Row>
+            <Tabs type='card' defaultActiveKey='1' className='statistics-overview-tabs'>
+                <TabPane tab='Statistics' key='1'>
+                    <Row>
+                        <Col span={4}>
+                            <Statistic id={1} />
+                        </Col>
+                        <Col span={4}>
+                            <Statistic id={2} />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={4}>
+                            <Statistic id={3} />
+                        </Col>
+                        <Col span={4}>
+                            <Statistic id={4} />
+                        </Col>
+                    </Row>
+                    <Collapse bordered={false} defaultActiveKey={['1']}>
+                        {/* expandIcon */}
+                        <Panel header='This is panel header 1' key='1'>
+                            <Row>
+                                <Col span={4}>
+                                    <Statistic id={5} />
+                                    {/* create 3 * 4 grid with stats */}
+                                </Col>
+                            </Row>
+                        </Panel>
+                    </Collapse>
+                </TabPane>
+                <TabPane tab='Challenges' key='2'>
+                    Content of Tab Pane 2
+                </TabPane>
+            </Tabs>
         </>
     );
 }
