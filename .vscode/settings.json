@@ -61,7 +61,19 @@
         {
             "filePath": "cvat-ui/src/reducers/root-reducer.ts",
             "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/components/statistics/statisticslist-component.tsx",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/gamif-styles.scss",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/gamif-interfaces.ts",
+            "group": "Default"
         }
     ],
-    "favorites.sortOrder": "MANUAL"
+    "favorites.sortOrder": "ASC"
 }

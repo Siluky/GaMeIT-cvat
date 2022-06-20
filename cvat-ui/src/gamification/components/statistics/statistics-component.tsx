@@ -6,11 +6,16 @@ import 'gamification/gamif-styles.scss';
 
 interface Props {
     id: number;
+    name?: string;
+    value?: number;
+    hoverOverText?: string;
+    icon?: any;
 }
 
 export default function Statistic(props: Props): JSX.Element {
-    const x = props;
+    const { value } = props;
+
     return (
-        <>{`Statistic ${x.id}`}</>
+        <>{`Statistic ${value}`}</>
     );
 }

@@ -25,13 +25,13 @@ import Icon, {
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
-import Popover from 'antd/lib/Popover';
+// import Popover from 'antd/lib/Popover';
 import Dropdown from 'antd/lib/dropdown';
 import Modal from 'antd/lib/modal';
 import Text from 'antd/lib/typography/Text';
 import Select from 'antd/lib/select';
 
-import BadgeOverview from 'gamification/components/badges/badge-overview';
+// import BadgeOverview from 'gamification/components/badges/badge-overview';
 
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
@@ -284,7 +284,7 @@ function HeaderContainer(props: Props): JSX.Element {
                 icon={<RadarChartOutlined />}
                 key='badge_profile'
             >
-                {/* TODO: Make popover extend to the whole menu item */}
+                {/* TODO: Make popover extend to the whole menu item
                 <Popover
                     placement='leftTop'
                     trigger='click'
@@ -292,7 +292,7 @@ function HeaderContainer(props: Props): JSX.Element {
                     mouseLeaveDelay={10}
                 >
                     Badges
-                </Popover>
+                </Popover> */}
             </Menu.Item>
             {user.isStaff && (
                 <Menu.Item
