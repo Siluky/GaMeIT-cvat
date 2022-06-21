@@ -8,10 +8,14 @@ import { AnyAction } from 'redux';
 // const cvat = getCore();
 
 export enum ChallengeActionTypes {
-    // ADD_CHALLENGE = 'ADD_CHALLENGE',
+    // TODO:
     GET_CHALLENGES = 'GET_CHALLENGES',
+    ADD_CHALLENGE = 'ADD_CHALLENGE',
+    UPDATE_CHALLENGE = 'UPDATE_CHALLENGE',
+    COMPLETE_CHALLENGE = 'COMPLETE_CHALLENGE',
 }
 
+/**  Load the currently active challenges of a user */
 export function getChallenges(): AnyAction {
     return {
         type: ChallengeActionTypes.GET_CHALLENGES,

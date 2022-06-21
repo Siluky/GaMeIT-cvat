@@ -18,6 +18,7 @@ export enum BadgeActionTypes {
     SAVE_BADGES = 'SAVE_BADGES',
 }
 
+/** Dispatched when loading of badges failed */
 function loadBadgesFailed(error: any): AnyAction {
     const action = {
         type: BadgeActionTypes.LOAD_BADGES_FAILED,
@@ -26,6 +27,7 @@ function loadBadgesFailed(error: any): AnyAction {
     return action;
 }
 
+/** Dispatched when loading of badges succeeded */
 function loadBadgesSuccess(badges: any[]): AnyAction {
     console.log('LOAD_BADGES_SUCCESS should be dispatched now with data: ');
     console.log(badges);
@@ -37,6 +39,10 @@ function loadBadgesSuccess(badges: any[]): AnyAction {
     return action;
 }
 
+/** Try to load badges from database
+ * @async
+ * @returns a list of badges or an error
+*/
 export function loadBadgesAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function loadBadgesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let allBadgesImport = null;
@@ -63,6 +69,7 @@ export function loadBadgesAsync(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
+/** Increment the current value of a badge by one */
 export function incrementBadge(badge: Badge): AnyAction {
     return {
         type: BadgeActionTypes.INCREMENT_BADGE,
@@ -70,6 +77,7 @@ export function incrementBadge(badge: Badge): AnyAction {
     };
 }
 
+/** Save badges to database */
 export function saveBadges(): AnyAction {
     // TODO:
 
@@ -79,6 +87,7 @@ export function saveBadges(): AnyAction {
     };
 }
 
+/** Set the currently selected badge to show in detail view */
 export function setCurrentBadge(badge: Badge): AnyAction {
     return {
         type: BadgeActionTypes.SET_CURRENT_BADGE,

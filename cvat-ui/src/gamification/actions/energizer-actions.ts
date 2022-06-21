@@ -9,8 +9,9 @@ import { AnyAction } from 'redux';
 
 export enum EnergizerActionTypes {
     SWITCH_ENERGIZER = 'SWITCH_ENERGIZER',
-    SET_CURRENT_ENERGIZER = 'SET_CURRENT_ENERGIZER',
     INCREMENT_ENERGY = 'INCREMENT_ENERGY',
+    // TODO:
+    SET_CURRENT_ENERGIZER = 'SET_CURRENT_ENERGIZER',
 }
 
 export function switchEnergizerModal(show: boolean): AnyAction {
