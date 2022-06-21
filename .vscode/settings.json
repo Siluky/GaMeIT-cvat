@@ -57,6 +57,10 @@
         {
             "filePath": "cvat-ui/src/gamification/components/badges/badge-overview.tsx",
             "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/gamif-interfaces.ts",
+            "group": "Default"
         }
     ],
     "favorites.sortOrder": "MANUAL"

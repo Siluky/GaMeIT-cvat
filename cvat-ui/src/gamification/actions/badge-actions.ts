@@ -39,9 +39,22 @@ function loadBadgesSuccess(badges: any[]): AnyAction {
 
 export function loadBadgesAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function loadBadgesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        let allBadgesImport = null;
         let allBadges = null;
+
         try {
-            allBadges = await cvat.badges.getStatus();
+            allBadgesImport = await cvat.badges.getStatus();
+
+            allBadges = allBadgesImport.map((_badge: any): Badge => ({
+                title: _badge.badge.title,
+                instruction: _badge.badge.instruction,
+                progress: _badge.progress,
+                goal: _badge.badge.goal,
+                goalunit: _badge.badge.goalunit,
+                got: _badge.got,
+                receivedOn: _badge.receivedOn,
+                visible: _badge.badge.visible,
+            }));
         } catch (error) {
             dispatch(loadBadgesFailed(error));
         }
