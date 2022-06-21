@@ -1771,7 +1771,7 @@
             async function getBadgeStatus() {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/badges/user-badges`);
+                response = await Axios.get(`${backendAPI}/user-badges`);
                 return response.data.results;
             }
 

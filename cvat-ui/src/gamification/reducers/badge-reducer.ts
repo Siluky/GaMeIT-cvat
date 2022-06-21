@@ -54,6 +54,14 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
 
         case BadgeActionTypes.INCREMENT_BADGE: {
             const { badge } = action.payload;
+            console.log(badge);
+            console.log(action.payload);
+            console.log(state.availableBadges[badge]);
+            console.log(state.availableBadges[action.payload]);
+
+            // TODO: Problem lies with the whole [badge] notation
+            // --> find a way to identify and update the respective badge
+
             // TODO: CHeck if goal reached!
             return {
                 ...state,
