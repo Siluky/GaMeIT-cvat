@@ -25,6 +25,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('cvat.apps.engine.urls')),
+    path('', include('cvat.apps.gamification.urls')),
     path('django-rq/', include('django_rq.urls')),
 ]
 

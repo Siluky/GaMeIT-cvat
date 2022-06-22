@@ -32,5 +32,48 @@
             "name": "cvat",
             "database": "${workspaceFolder:cvat}/db.sqlite3"
         }
-    ]
+    ],
+    "favorites.resources": [
+        {
+            "filePath": "cvat-core/src/api.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-core/src/server-proxy.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/components/header/header.tsx",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/cvat-core-wrapper.ts",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat/settings/base.py",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/components/badges/badge-overview.tsx",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/reducers/root-reducer.ts",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/components/statistics/statisticslist-component.tsx",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/gamif-styles.scss",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/gamif-interfaces.ts",
+            "group": "Default"
+        }
+    ],
+    "favorites.sortOrder": "ASC"
 }

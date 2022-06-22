@@ -320,6 +320,16 @@ const config = require('./config');
             config.organizationID = null;
         };
 
+        cvat.badges.get.implementation = async () => {
+            const badges = await serverProxy.badges.get();
+            return badges;
+        };
+
+        cvat.badges.getStatus.implementation = async () => {
+            const badges = await serverProxy.badges.getStatus();
+            return badges;
+        };
+
         return cvat;
     }
 

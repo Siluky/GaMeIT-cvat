@@ -1,4 +1,4 @@
-// Copyright (C) 2019-2021 Intel Corporation
+// Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
 
@@ -843,6 +843,31 @@ function build() {
                 return result;
             },
         },
+
+        /**
+         * Namespace is used for access to badges
+         * @namespace badges
+         * @memberof module:API.cvat
+        */
+        badges: {
+            /**
+             * TODO:
+             * @returns
+             */
+            async get() {
+                const result = await PluginRegistry.apiWrapper(cvat.badges.get);
+                return result;
+            },
+            /**
+             * TODO:
+             * @returns the status of all badges regarding the currently active user
+             */
+            async getStatus() {
+                const result = await PluginRegistry.apiWrapper(cvat.badges.getStatus);
+                return result;
+            },
+        },
+
         /**
          * Namespace is used for access to classes
          * @namespace classes
@@ -865,6 +890,7 @@ function build() {
             CloudStorage,
             Organization,
         },
+
     };
 
     cvat.server = Object.freeze(cvat.server);
@@ -878,6 +904,8 @@ function build() {
     cvat.enums = Object.freeze(cvat.enums);
     cvat.cloudStorages = Object.freeze(cvat.cloudStorages);
     cvat.organizations = Object.freeze(cvat.organizations);
+
+    cvat.badges = Object.freeze(cvat.badges);
 
     const implementAPI = require('./api-implementation');
 

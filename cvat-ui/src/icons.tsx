@@ -54,8 +54,9 @@ import SVGCVATGoogleCloudProvider from './assets/google-cloud.svg';
 import SVGOpenVINO from './assets/openvino.svg';
 // gamification stuff
 import SVGEnergizerIcon from './assets/energizer-button-icon.svg';
-import SVGBadgeIcon from './assets/badge-icon.svg';
-import SVGBadgeGreyIcon from './assets/badge-grey-icon.svg';
+import SVGBadge from './assets/badge-icon.svg';
+import SVGBadgeGrey from './assets/badge-grey-icon.svg';
+import SVGAnnotationCoin from './assets/annotation-coin-icon.svg';
 
 export const CVATLogo = React.memo((): JSX.Element => <SVGCVATLogo />);
 export const EmptyTasksIcon = React.memo((): JSX.Element => <SVGEmptyTasksIcon />);
@@ -107,5 +108,6 @@ export const GoogleCloudProvider = React.memo((): JSX.Element => <SVGCVATGoogleC
 export const OpenVINOIcon = React.memo((): JSX.Element => <SVGOpenVINO />);
 // gamification stuff
 export const EnergizerIcon = React.memo((): JSX.Element => <SVGEnergizerIcon />);
-export const BadgeIcon = React.memo((): JSX.Element => <SVGBadgeIcon />);
-export const BadgeGreyIcon = React.memo((): JSX.Element => <SVGBadgeGreyIcon />);
+export const BadgeIcon = React.memo((): JSX.Element => <SVGBadge />);
+export const BadgeGreyIcon = React.memo((): JSX.Element => <SVGBadgeGrey />);
+export const AnnotationCoinIcon = React.memo((): JSX.Element => <SVGAnnotationCoin />);

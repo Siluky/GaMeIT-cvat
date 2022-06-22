@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import './styles.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Row, Col } from 'antd/lib/grid';
@@ -25,13 +25,13 @@ import Icon, {
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
-import Popover from 'antd/lib/Popover';
+// import Popover from 'antd/lib/Popover';
 import Dropdown from 'antd/lib/dropdown';
 import Modal from 'antd/lib/modal';
 import Text from 'antd/lib/typography/Text';
 import Select from 'antd/lib/select';
 
-import BadgeProfile from 'components/gamification/badges/badgeprofile';
+// import BadgeOverview from 'gamification/components/badges/badge-overview';
 
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
@@ -42,6 +42,8 @@ import CVATTooltip from 'components/common/cvat-tooltip';
 import { switchSettingsDialog as switchSettingsDialogAction } from 'actions/settings-actions';
 import { logoutAsync, authActions } from 'actions/auth-actions';
 import { CombinedState } from 'reducers/interfaces';
+import { switchEnergizerModal as switchEnergizerModalAction, incrementEnergy as incrementEnergyAction } from 'gamification/actions/energizer-actions';
+import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -79,12 +81,17 @@ interface StateToProps {
     organizationsFetching: boolean;
     organizationsList: any[];
     currentOrganization: any | null;
+    // energizer stuff
+    energizerShown: boolean
+    currentEnergy: number
 }
 
 interface DispatchToProps {
     onLogout: () => void;
     switchSettingsDialog: (show: boolean) => void;
     switchChangePasswordDialog: (show: boolean) => void;
+    switchEnergizerModal: (show: boolean) => void;
+    incrementEnergy: (increment: number) => void;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
@@ -101,6 +108,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         shortcuts: { normalizedKeyMap },
         settings: { showDialog: settingsDialogShown },
         organizations: { fetching: organizationsFetching, current: currentOrganization, list: organizationsList },
+        energizer: { energyLevel: currentEnergy, active: energizerShown },
     } = state;
 
     return {
@@ -134,6 +142,8 @@ function mapStateToProps(state: CombinedState): StateToProps {
         organizationsFetching,
         currentOrganization,
         organizationsList,
+        currentEnergy,
+        energizerShown,
     };
 }
 
@@ -142,6 +152,8 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
         onLogout: (): void => dispatch(logoutAsync()),
         switchSettingsDialog: (show: boolean): void => dispatch(switchSettingsDialogAction(show)),
         switchChangePasswordDialog: (show: boolean): void => dispatch(authActions.switchChangePasswordDialog(show)),
+        switchEnergizerModal: (show: boolean): void => dispatch(switchEnergizerModalAction(show)),
+        incrementEnergy: (increment: number): void => dispatch(incrementEnergyAction(increment)),
     };
 }
 
@@ -158,12 +170,16 @@ function HeaderContainer(props: Props): JSX.Element {
         onLogout,
         switchSettingsDialog,
         switchChangePasswordDialog,
+        switchEnergizerModal,
+        incrementEnergy,
         renderChangePasswordItem,
         isAnalyticsPluginActive,
         isModelsPluginActive,
         organizationsFetching,
         currentOrganization,
         organizationsList,
+        currentEnergy,
+        energizerShown,
     } = props;
 
     const {
@@ -171,6 +187,16 @@ function HeaderContainer(props: Props): JSX.Element {
     } = consts;
 
     const history = useHistory();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            incrementEnergy(1);
+        }, 5000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
     function showAboutModal(): void {
         Modal.info({
@@ -251,20 +277,22 @@ function HeaderContainer(props: Props): JSX.Element {
     const userMenu = (
         <Menu className='cvat-header-menu'>
             {/* gamificationEnabled && [...]
-            --> Possibility to implement the gamification on-off switch! TODO:
+            --> Possibility to implement the gamification on-off switch TODO:
             */}
             <Menu.Item
                 // TODO: Insert custom badge icon
                 icon={<RadarChartOutlined />}
                 key='badge_profile'
             >
-                {/* TODO: Make popover extend to the whole menu item */}
+                {/* TODO: Make popover extend to the whole menu item
                 <Popover
                     placement='leftTop'
-                    content={<BadgeProfile />}
+                    trigger='click'
+                    content={<BadgeOverview />}
+                    mouseLeaveDelay={10}
                 >
                     Badges
-                </Popover>
+                </Popover> */}
             </Menu.Item>
             {user.isStaff && (
                 <Menu.Item
@@ -472,14 +500,21 @@ function HeaderContainer(props: Props): JSX.Element {
                     </Button>
                 )}
                 {/* TODO: Create an EnergizerButton component in gamification/energizer-button.tsx */}
-                <CVATTooltip overlay='Click to start an Energizer!'>
+                <CVATTooltip overlay={`Current Energy: ${currentEnergy}`}>
                     <Button
+                        type='text'
                         icon={<EnergizerIcon />}
-                        onClick={(): void => {
-                            // TODO: switch energizerStarted to false
-                        }}
+                        onClick={(): void => { if (currentEnergy >= 10) { switchEnergizerModal(true); } }}
                     />
                 </CVATTooltip>
+                <Button
+                    type='text'
+                    icon={<PlusOutlined />}
+                    onClick={(): void => {
+                        incrementEnergy(1);
+                        console.log('Test button pressed');
+                    }}
+                />
             </div>
             <div className='cvat-right-header'>
                 <CVATTooltip overlay='Click to open repository'>
@@ -535,11 +570,7 @@ function HeaderContainer(props: Props): JSX.Element {
             </div>
             <SettingsModal visible={settingsDialogShown} onClose={() => switchSettingsDialog(false)} />
             {renderChangePasswordItem && <ChangePasswordDialog onClose={() => switchChangePasswordDialog(false)} />}
-            {/*
-            TODO: Same idea as with the Settings modal above --> create EnergizerModal component!
-            <EnergizerModal visible={energizerStarted} onClose={() => switchEnergizerReady(false)}
-            TODO: Implement the switch action in a separate "energizer-actions.tsx file"
-            */}
+            <EnergizerModal visible={energizerShown} onClose={() => switchEnergizerModal(false)} />
         </Layout.Header>
     );
 }

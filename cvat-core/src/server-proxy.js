@@ -1759,6 +1759,26 @@
                 return response.data;
             }
 
+            // Gamification part from here
+            async function getBadges() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/badges`);
+                return response.data.results;
+            }
+
+            //
+            async function getBadgeStatus() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/user-badges`);
+                return response.data.results;
+            }
+
+            /* async function updateBadges() {
+                const { backendAPI } = config;
+            } */
+
             Object.defineProperties(
                 this,
                 Object.freeze({
@@ -1914,6 +1934,15 @@
                             invite: inviteOrganizationMembers,
                             updateMembership: updateOrganizationMembership,
                             deleteMembership: deleteOrganizationMembership,
+                        }),
+                        writable: false,
+                    },
+
+                    badges: {
+                        value: Object.freeze({
+                            get: getBadges,
+                            getStatus: getBadgeStatus,
+                            // update: updateBadges, //TODO:
                         }),
                         writable: false,
                     },
