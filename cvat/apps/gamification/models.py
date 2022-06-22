@@ -34,13 +34,48 @@ class EnergizerData(models.Model):
     energizersDone = models.IntegerField()
     #TODO: Data for individual energizers
 
+
+
+class ShopItem(models.Model):
+    itemName = models.CharField(max_length=40)
+    price = models.IntegerField()
+    iconpath = models.CharField(max_length=40) #TODO: not sure about this one yet
+
+class Statistic(models.Model):
+    name = models.CharField(max_length=40)
+    value = models.CharField(max_length=40)
+    hoverOverText = models.CharField(max_length=40)
+    iconpath = models.CharField(max_length=40) #TODO: s.o
+
+
+
 # Stores additional information about exactly one user
 # Gets automatically updated with user
 class UserProfile(models.Model):
+    # general data
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    badges = models.ManyToManyField(Badge, through='BadgeStatus')
     last_login = models.DateField(default=now)
+
+    # badge-related data
+    badges = models.ManyToManyField(Badge, through='BadgeStatus')
+    # TODO: Selected badges
+
+    # challenge-related data
+    challenges = models.ManyToManyField(Challenge, through='ChallengeStatus')
+
+    # energizer-related data
     energizer_data = models.OneToOneField(EnergizerData, on_delete=models.CASCADE)
+
+    # shop-related data
+    items = models.ManyToManyField(ShopItem, through='ItemStatus')
+    current_balance = models.IntegerField(default=0)
+
+    # social-related data
+    # TODO: not sure how to model this yet
+
+    # statistics-related data
+    statistics = models.ManyToManyField(Statistic, through='StatisticsStatus')
+
 
     def __str__(self) -> str:
         return self.user.get_username()
@@ -57,8 +92,13 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 """
-# Models a user's individual progress on specific badge
-# Intermediate model with additional info on the m:n relationship between User and Badge
+
+
+# The following status models are intermediate models with additional information
+# on the m:n relationship between a User(UserProfile) and other Models
+# including Badges, Challenges, ShopItems, Energizers
+
+# Models a user's individual progress on specific badges
 class BadgeStatus(models.Model):
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     badge = models.ForeignKey(Badge, on_delete=models.CASCADE, default=None)
@@ -70,6 +110,20 @@ class BadgeStatus(models.Model):
     def __str__(self) -> str:
         return (self.userProfile,': ', self.badge)
 
+# Model's a user's individual status of the shop (i.e., items bought, current balance, ...)
+# TODO: Not sure about this one yet
+class ChallengeStatus(models.Model):
+    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, default=None)
 
 
+# Model's a user's individual status of the shop (i.e., items bought, current balance, ...)
+class ItemStatus(models.Model):
+    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+    item = models.ForeignKey(ShopItem, on_delete=models.CASCADE, default=None)
+
+# Model's a user's individual status of individual statistics
+class StatisticsStatus(models.Model):
+    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+    statistic = models.ForeignKey(Statistic, on_delete=models.CASCADE, default=None)
 

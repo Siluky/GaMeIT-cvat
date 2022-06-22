@@ -3,9 +3,14 @@
 // SPDX-License-Identifier: MIT
 
 import { combineReducers, Reducer } from 'redux';
+// Gamification slices
 import badgeReducer from 'gamification/reducers/badge-reducer';
-// TODO: Add other gamification reducers
+import challengeReducer from 'gamification/reducers/challenge-reducer';
 import energizerReducer from 'gamification/reducers/energizer-reducer';
+import shopReducer from 'gamification/reducers/shop-reducer';
+import socialReducer from 'gamification/reducers/social-reducer';
+import statisticsReducer from 'gamification/reducers/statistics-reducer';
+
 import authReducer from './auth-reducer';
 import projectsReducer from './projects-reducer';
 import tasksReducer from './tasks-reducer';
@@ -49,7 +54,10 @@ export default function createRootReducer(): Reducer {
         organizations: organizationsReducer,
         // gamification reducers
         badges: badgeReducer,
+        challenges: challengeReducer,
         energizer: energizerReducer,
-        // TODO: Add other gamification reducers when applicable
+        shop: shopReducer,
+        social: socialReducer,
+        statistics: statisticsReducer,
     });
 }

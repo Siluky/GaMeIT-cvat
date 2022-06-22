@@ -21,6 +21,7 @@ import AppearanceBlock from 'components/annotation-page/appearance-block';
 import IssuesListComponent from 'components/annotation-page/standard-workspace/objects-side-bar/issues-list';
 import ChallengeList from 'gamification/components/challenges/challengelist-component';
 import StatisticsList from 'gamification/components/statistics/statisticslist-component';
+import SocialBar from 'gamification/components/social/social-bar';
 
 interface OwnProps {
     objectsList: JSX.Element;
@@ -127,6 +128,7 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
             </Tabs>
 
             {!sidebarCollapsed && <AppearanceBlock />}
+            <SocialBar />
         </Layout.Sider>
     );
 }
