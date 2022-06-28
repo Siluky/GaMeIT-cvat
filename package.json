@@ -14,7 +14,8 @@
     "cvat-ui"
   ],
   "dependencies": {
-    "@ant-design/colors": "^6.0.0"
+    "@ant-design/colors": "^6.0.0",
+    "@ant-design/icons": "^4.7.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",

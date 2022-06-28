@@ -250,3 +250,52 @@
     background: #1e3d59;
     border-radius: 8px;
   }
+// Statistics
+// TODO: Namings
+.statistics-panel {
+    background:#B5BECA;
+    border-radius: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.statistics-col {
+    background: #E6E6E6;
+    border-radius: 15px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;;
+}
+.selected-prop {
+    background: #E6E6E6;
+    border-radius: 15px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid black;
+    vertical-align: middle;
+}
+.single-statistic-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background: green;
+}
+
+.single-statistic-prop{
+    margin-left: 5px;
+    margin-right: 5px;
+    // border: 2px solid blue;
+}
+.collapse {
+    background: #B5BECA;
+}
+.collapse-panel {
+    background: #B5BECA;
+}
+
+/*big icon size: 40px x 40px */
+/*small icon size: 25px x 25px */
