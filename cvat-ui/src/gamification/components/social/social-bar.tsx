@@ -1,11 +1,11 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-import '../gamif-styles.scss';
 import React from 'react';
-import 'gamification/gamif-styles.scss';
+import '../../gamif-styles.scss';
 import { Menu, Popover } from 'antd';
 import { RadarChartOutlined } from '@ant-design/icons';
+import StatusMenu from './status-menu';
 import FriendsList from './friends-list';
 import ChatBox from './chat-box';
 
@@ -15,7 +15,16 @@ export default function SocialBar(): JSX.Element {
         <Menu className='gamif-social-bar' mode='horizontal'>
             <Menu.Item
                 className='gamif-friends-list-button'
-                icon={<RadarChartOutlined />}
+                icon={(
+                    <Popover
+                        placement='leftBottom'
+                        trigger='click'
+                        content={<StatusMenu />}
+                        mouseLeaveDelay={10}
+                    >
+                        <RadarChartOutlined />
+                    </Popover>
+                )}
                 key='friends_list'
             >
                 <Popover
@@ -24,7 +33,7 @@ export default function SocialBar(): JSX.Element {
                     content={<FriendsList />}
                     mouseLeaveDelay={10}
                 >
-                    Online
+                    Online (3)
                 </Popover>
             </Menu.Item>
             <Menu.Item

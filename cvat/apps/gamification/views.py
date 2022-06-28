@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 from rest_framework import viewsets, mixins
+from rest_framework.decorators import action
 from .models import Badge, BadgeStatus, UserProfile
 from .serializers import BadgeSerializer, BadgeStatusSerializer, UserProfileSerializer
 
@@ -20,8 +21,9 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 class UserBadgeList(viewsets.GenericViewSet, mixins.ListModelMixin,
     mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
-    queryset = BadgeStatus.objects.all()
+    queryset = BadgeStatus.objects.all().order_by('id')
     serializer_class = BadgeStatusSerializer
+    # lookup_field
 
     def get_queryset(self):
         currentUser = self.request.user
@@ -31,5 +33,9 @@ class UserBadgeList(viewsets.GenericViewSet, mixins.ListModelMixin,
         # https://books.agiliq.com/projects/django-orm-cookbook/en/latest/select_some_fields.html
         # https://docs.djangoproject.com/en/4.0/ref/models/querysets/
         return queryset
+
+    @action(detail=False, methods=['GET'])
+    def test(self):
+        pass
 
 

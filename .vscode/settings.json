@@ -47,14 +47,6 @@
             "group": "Default"
         },
         {
-            "filePath": "cvat-ui/src/cvat-core-wrapper.ts",
-            "group": "Default"
-        },
-        {
-            "filePath": "cvat/settings/base.py",
-            "group": "Default"
-        },
-        {
             "filePath": "cvat-ui/src/gamification/components/badges/badge-overview.tsx",
             "group": "Default"
         },
@@ -72,6 +64,14 @@
         },
         {
             "filePath": "cvat-ui/src/gamification/gamif-interfaces.ts",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-core/src/api-implementation.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat/apps/gamification/urls.py",
             "group": "Default"
         }
     ],

@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import './styles.scss';
+import '../../gamification/gamif-styles.scss';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -25,13 +26,13 @@ import Icon, {
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
-// import Popover from 'antd/lib/Popover';
+import Popover from 'antd/lib/Popover';
 import Dropdown from 'antd/lib/dropdown';
 import Modal from 'antd/lib/modal';
 import Text from 'antd/lib/typography/Text';
 import Select from 'antd/lib/select';
 
-// import BadgeOverview from 'gamification/components/badges/badge-overview';
+import BadgeOverview from 'gamification/components/badges/badge-overview';
 
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
@@ -191,7 +192,7 @@ function HeaderContainer(props: Props): JSX.Element {
     useEffect(() => {
         const interval = setInterval(() => {
             incrementEnergy(1);
-        }, 5000);
+        }, 30000);
 
         return () => {
             clearInterval(interval);
@@ -279,21 +280,21 @@ function HeaderContainer(props: Props): JSX.Element {
             {/* gamificationEnabled && [...]
             --> Possibility to implement the gamification on-off switch TODO:
             */}
-            <Menu.Item
-                // TODO: Insert custom badge icon
-                icon={<RadarChartOutlined />}
-                key='badge_profile'
+            <Popover
+                placement='leftTop'
+                className='gamif-badge-popover'
+                trigger='click'
+                content={<BadgeOverview />}
+                mouseLeaveDelay={10}
             >
-                {/* TODO: Make popover extend to the whole menu item
-                <Popover
-                    placement='leftTop'
-                    trigger='click'
-                    content={<BadgeOverview />}
-                    mouseLeaveDelay={10}
+                <Menu.Item
+                    // TODO: Insert custom badge icon
+                    icon={<RadarChartOutlined />}
+                    key='badge_profile'
                 >
                     Badges
-                </Popover> */}
-            </Menu.Item>
+                </Menu.Item>
+            </Popover>
             {user.isStaff && (
                 <Menu.Item
                     icon={<ControlOutlined />}

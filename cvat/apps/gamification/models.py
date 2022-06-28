@@ -2,11 +2,27 @@
 #
 # SPDX-License-Identifier: MIT
 
+from enum import Enum
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-from django.dispatch import receiver #TODO: Double check import
+from django.dispatch import receiver
 from django.utils.timezone import now
+
+
+#TODO: Testing this currently
+class ChallengeChoice(str, Enum):
+    DAILY = 'Daily'
+    WEEKLY = 'Weekly'
+    SPECIAL = 'Special'
+
+    @classmethod
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
+
+    def __str__(self):
+        return self.value
 
 class Badge(models.Model):
     title = models.CharField(max_length=40, default='Cool Badge 123')
@@ -20,32 +36,33 @@ class Badge(models.Model):
         return self.title
 
 class Challenge(models.Model):
-    instruction = models.CharField(max_length=80)
-    progress = models.IntegerField()
-    goal = models.IntegerField()
-    reward = models.IntegerField()
-    challengeType = models.CharField(max_length=80)
+    instruction = models.CharField(max_length=80, default='')
+    progress = models.IntegerField(default=0)
+    goal = models.IntegerField(default=10)
+    reward = models.IntegerField(default=100)
+    challengeType = models.CharField(max_length=32, choices=ChallengeChoice.choices(),
+                                    default=ChallengeChoice.DAILY)
 
     def __str__(self):
         return self.instruction
 
 class EnergizerData(models.Model):
-    currentEnergy = models.IntegerField()
-    energizersDone = models.IntegerField()
+    currentEnergy = models.IntegerField(default=0)
+    energizersDone = models.IntegerField(default=0)
     #TODO: Data for individual energizers
 
 
 
 class ShopItem(models.Model):
-    itemName = models.CharField(max_length=40)
-    price = models.IntegerField()
-    iconpath = models.CharField(max_length=40) #TODO: not sure about this one yet
+    itemName = models.CharField(max_length=40, default='Item')
+    price = models.IntegerField(default=100)
+    iconpath = models.CharField(max_length=40, default='') #TODO: not sure about this one yet
 
 class Statistic(models.Model):
-    name = models.CharField(max_length=40)
-    value = models.CharField(max_length=40)
-    hoverOverText = models.CharField(max_length=40)
-    iconpath = models.CharField(max_length=40) #TODO: s.o
+    name = models.CharField(max_length=40, default='')
+    value = models.CharField(max_length=40, default='')
+    hoverOverText = models.CharField(max_length=40, default='')
+    iconpath = models.CharField(max_length=40, default='') #TODO: s.o
 
 
 
@@ -64,7 +81,8 @@ class UserProfile(models.Model):
     challenges = models.ManyToManyField(Challenge, through='ChallengeStatus')
 
     # energizer-related data
-    energizer_data = models.OneToOneField(EnergizerData, on_delete=models.CASCADE)
+    # TODO: add proper default
+    # energizer_data = models.OneToOneField(EnergizerData, on_delete=models.CASCADE)
 
     # shop-related data
     items = models.ManyToManyField(ShopItem, through='ItemStatus')
@@ -103,12 +121,18 @@ class BadgeStatus(models.Model):
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     badge = models.ForeignKey(Badge, on_delete=models.CASCADE, default=None)
 
+    id = models.CharField(default='0-0', primary_key=True, max_length=8)
+
     progress = models.IntegerField(default=0)
     got = models.BooleanField(default=False)
     receivedOn = models.DateTimeField(default=now)
 
-    def __str__(self) -> str:
-        return (self.userProfile,': ', self.badge)
+    def __str__(self):
+        return (self.id + ': ' + self.userProfile.user.get_username() + '-' + self.badge.title)
+
+    def save(self, *args, **kwargs):
+        self.id = str(self.userProfile.id) + '-' + str(self.badge.id)
+        super(BadgeStatus, self).save(*args, **kwargs)
 
 # Model's a user's individual status of the shop (i.e., items bought, current balance, ...)
 # TODO: Not sure about this one yet

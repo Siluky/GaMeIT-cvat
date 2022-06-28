@@ -5,9 +5,17 @@
 // File for all gamification elements scss stuff
 
 // Badges
+
+.gamif-badge-popover {
+    border: none;
+    border-radius: 5px;
+}
+
 .badge-overview-tabs {
     padding: 5px;
     background: #CCCCCC;
+    border-radius: 5px 5px 0px 0px;
+
 
     .ant-tabs {
         background: #97A4B4;
@@ -35,20 +43,19 @@
     }
 }
 
-.gamif-badge-overview-header {
-    height: 0px;
-}
-
 .gamif-badge-overview-container {
     height: 300px;
     width: 400px;
+    background: #CCCCCC;
+    padding: 5px;
 }
 
 .gamif-badge-overview-content {
-    height: 150px;
-    padding: 10px;
+    height: 50%;
+    padding: 5px;
     overflow-y: scroll;
-    background: #B5BECA;
+    background: #B6BECB;
+    border-radius: 5px 5px 0px 0px;
 
     ::-webkit-scrollbar {
         width: 15px;
@@ -69,16 +76,18 @@
 }
 
 .gamif-badge-detail-view {
+    height: 50%;
     padding-left: 5%;
     padding-right: 5%;
     background: #B5BECA;
     display: flex;
-    height: 150px;
+    border-radius: 0px 0px 5px 5px;
 }
 
 .gamif-badge-icon {
     width: 30%;
     font-size: 200%;
+    margin-right: 10px;
 }
 
 .gamif-badge-details {
@@ -92,31 +101,62 @@
 // Challenges
 
 .gamif-challenge-list {
-    background: #1D3C62;
-}
+    width: 300px;
+    background: #607185;
+    border-radius: 0px 5px 5px 5px;
+  }
 
-.gamif-challenge-pane-wrapper {
+  .gamif-challenge-pane-wrapper {
     width: 100%;
     height: 80px;
+    background: #e6e6e6;
+    margin: 5px;
+    border-radius: 8px;
     display: flex;
-    background: #E6E6E6;
-    margin-top: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
-    border-radius: 5px;
+    flex-direction: column;
+  }
 
-}
+  .gamif-challenge-pane-top {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 80%;
+    margin: 2% 2% 0% 2%;
+  }
 
-.gamif-challenge-pane-left {
+  .gamif-challenge-pane-top-left {
     width: 70%;
-    justify-content: center;
+    height: 80%;
     margin: auto;
-}
-.gamif-challenge-pane-right {
+    font-size: 12px;
+  }
+
+  .gamif-challenge-pane-top-right {
     width: 30%;
+    height: 80%;
     justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
     margin: auto;
-}
+  }
+
+  .gamif-challenge-reward-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .gamif-challenge-pane-bottom-text {
+    height: 20%;
+    width: 30%;
+    font-size: 12px;
+    background: #1d3c62;
+    color: white;
+    margin-left: auto;
+    text-align: center;
+    border-radius: 10px 0px 0px 0px;
+  }
 
 
 // energizer
@@ -139,3 +179,74 @@
     width: 300px;
     background: #E4E3E9
 }
+
+.gamif-status-menu {
+    width: 180px;
+    height: 120px;
+    margin: 5px;
+    border: 1px solid #1E3D59;
+    border-radius: 5px;
+    background: #ADC6D1;
+}
+
+
+.gamif-quick-profile-container {
+    outline: 1px solid #1e3d59;
+    width: 240px;
+    height: 160px;
+    border-radius: 5px;
+    background: #e6e6e6;
+  }
+
+  .gamif-quick-profile {
+    display: flex;
+    width: 100%;
+
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gamif-quick-profile.status {
+    height: 20%;
+    border: none;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-right: 5px;
+    font-weight: bold;
+  }
+
+  .gamif-quick-profile.avatar-name-container {
+    flex-direction: row;
+    border: none;
+    height: 40px;
+    border-bottom: 2px solid #1e3d59;
+  }
+
+  .gamif-quick-profile.avatar {
+    width: 30%;
+    font-size: 200%;
+  }
+  .gamif-quick-profile.name {
+    font-size: 16px;
+    width: 70%;
+    text-decoration: underline;
+  }
+
+  .gamif-quick-profile.badges {
+    flex-direction: row;
+    justify-content: space-around;
+    height: 50px;
+    width: 50%;
+    font-size: 200%;
+  }
+
+  .gamif-quick-profile.message-button {
+    flex-direction: row;
+    font-size: 16px;
+    width: 50%;
+    height: 40px;
+    color: white;
+    font-weight: bold;
+    background: #1e3d59;
+    border-radius: 8px;
+  }

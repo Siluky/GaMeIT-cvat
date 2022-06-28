@@ -6,7 +6,8 @@ import { AnyAction } from 'redux';
 import { BadgeActionTypes } from '../actions/badge-actions';
 import { BadgeState } from '../gamif-interfaces';
 
-const dummyBadge = {
+/* const dummyBadge = {
+    id: 0,
     title: '',
     instruction: 'Select a Badge to see details about it!',
     progress: 0,
@@ -15,10 +16,11 @@ const dummyBadge = {
     got: true,
     receivedOn: null,
     visible: true,
-};
+}; */
 
 const defaultState: BadgeState = {
     availableBadges: [{
+        id: 0,
         title: '',
         instruction: '',
         progress: 0,
@@ -28,7 +30,8 @@ const defaultState: BadgeState = {
         receivedOn: null,
         visible: true,
     }],
-    selectedBadge: dummyBadge, // no selected badge at the start
+    selectedBadgeId: 0, // no selected badge at the start
+    currentUserId: 0,
     loading: false,
 };
 
@@ -37,7 +40,14 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
         case BadgeActionTypes.SET_CURRENT_BADGE: {
             return {
                 ...state,
-                selectedBadge: action.payload,
+                selectedBadgeId: action.payload,
+            };
+        }
+
+        case BadgeActionTypes.SET_USER_PROFILE: {
+            return {
+                ...state,
+                currentUserId: action.payload,
             };
         }
 
@@ -52,26 +62,32 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             return state;
         }
 
-        case BadgeActionTypes.INCREMENT_BADGE: {
-            const { badge } = action.payload;
-            console.log(badge);
-            console.log(action.payload);
-            console.log(state.availableBadges[badge]);
-            console.log(state.availableBadges[action.payload]);
+        case BadgeActionTypes.INCREMENT_BADGE_FAILED: {
+            return state;
+        }
 
-            // TODO: Problem lies with the whole [badge] notation
-            // --> find a way to identify and update the respective badge
+        case BadgeActionTypes.INCREMENT_BADGE_SUCCESS: {
+            // TODO: Maybe pull the ternary operator into the actions to ensure consistency with DB
 
-            // TODO: CHeck if goal reached!
+            console.log('🚀 ~ file: badge-reducer.ts ~ line 72 ~ action.payload', action.payload);
+            // TODO: Establish better structure in action.payload, super unelegant rn
+            const updatedBadges = state.availableBadges.map(
+                (_badge) => {
+                    console.log('🚀 ~ file: badge-reducer.ts ~ line 76 ~ _badge', _badge);
+                    if (_badge.id === action.payload.badge.id) {
+                        if (action.payload.progress === action.payload.badge.goal) {
+                            console.log('🚀 ~ file: badge-reducer.ts ~ line 78 ~ action.payload.progress === action.payload.badge.goal', action.payload.progress === action.payload.badge.goal);
+                            return { ..._badge, progress: _badge.goal, got: true };
+                        }
+                        return { ..._badge, progress: action.payload.progress };
+                    }
+                    return _badge;
+                },
+            );
+
             return {
                 ...state,
-                availableBadges: {
-                    ...state.availableBadges,
-                    [badge]: {
-                        ...state.availableBadges[badge],
-                        progress: state.availableBadges[badge].progress + 1,
-                    },
-                },
+                availableBadges: updatedBadges,
             };
         }
 

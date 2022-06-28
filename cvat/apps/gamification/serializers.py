@@ -8,7 +8,7 @@ from cvat.apps.gamification import models
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Badge
-        fields = ('title','instruction','goal','goalunit','visible')
+        fields = ('id','title','instruction','goal','goalunit','visible')
 
 class BadgeStatusSerializer(serializers.ModelSerializer):
     badge = BadgeSerializer()

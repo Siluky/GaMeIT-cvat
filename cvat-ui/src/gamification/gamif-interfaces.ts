@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 export interface Badge {
+    id: number,
     title: string;
     instruction: string;
     progress: number;
@@ -15,7 +16,8 @@ export interface Badge {
 
 export interface BadgeState {
     availableBadges: Badge[];
-    selectedBadge: Badge;
+    selectedBadgeId: number;
+    currentUserId: number;
     loading: boolean;
 }
 

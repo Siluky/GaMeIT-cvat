@@ -11,11 +11,21 @@ const cvat = getCore();
 
 export enum BadgeActionTypes {
     LOAD_BADGES = 'LOAD_BADGES',
+    SET_USER_PROFILE = 'SET_USER_PROFILE',
     LOAD_BADGES_FAILED = 'LOAD_BADGES_FAILED',
     LOAD_BADGES_SUCCESS = 'LOAD_BADGES_SUCCESS',
     SET_CURRENT_BADGE = 'SET_CURRENT_BADGE',
-    INCREMENT_BADGE = 'INCREMENT_BADGE',
+    INCREMENT_BADGE_SUCCESS = 'INCREMENT_BADGE_SUCCESS',
+    INCREMENT_BADGE_FAILED = 'INCREMENT_BADGE_FAILED',
     SAVE_BADGES = 'SAVE_BADGES',
+}
+
+function setCurrentUserProfileId(id: number): AnyAction {
+    const action = {
+        type: BadgeActionTypes.SET_USER_PROFILE,
+        payload: id,
+    };
+    return action;
 }
 
 /** Dispatched when loading of badges failed */
@@ -29,9 +39,6 @@ function loadBadgesFailed(error: any): AnyAction {
 
 /** Dispatched when loading of badges succeeded */
 function loadBadgesSuccess(badges: any[]): AnyAction {
-    console.log('LOAD_BADGES_SUCCESS should be dispatched now with data: ');
-    console.log(badges);
-
     const action = {
         type: BadgeActionTypes.LOAD_BADGES_SUCCESS,
         payload: badges,
@@ -50,30 +57,64 @@ export function loadBadgesAsync(): ThunkAction<void, {}, {}, AnyAction> {
 
         try {
             allBadgesImport = await cvat.badges.getStatus();
+            console.log('🚀 ~ file: badge-actions.ts ~ line 51 ~ loadBadgesThunk ~ allBadgesImport', allBadgesImport);
+
+            const currentUserProfileId = allBadgesImport[0].userProfile;
 
             allBadges = allBadgesImport.map((_badge: any): Badge => ({
+                id: _badge.badge.id,
                 title: _badge.badge.title,
                 instruction: _badge.badge.instruction,
-                progress: _badge.progress,
                 goal: _badge.badge.goal,
                 goalunit: _badge.badge.goalunit,
-                got: _badge.got,
-                receivedOn: _badge.receivedOn,
                 visible: _badge.badge.visible,
+                // extra attributes of BadgeStatus relationship
+                progress: _badge.progress,
+                got: _badge.progress >= _badge.badge.goal,
+                receivedOn: _badge.receivedOn,
             }));
+            dispatch(setCurrentUserProfileId(currentUserProfileId));
+            dispatch(loadBadgesSuccess(allBadges));
         } catch (error) {
             dispatch(loadBadgesFailed(error));
         }
-
-        dispatch(loadBadgesSuccess(allBadges));
     };
 }
 
-/** Increment the current value of a badge by one */
-export function incrementBadge(badge: Badge): AnyAction {
-    return {
-        type: BadgeActionTypes.INCREMENT_BADGE,
+/** Dispatched when incrementing badge succeeded */
+function incrementBadgeSuccess(badge: Badge): AnyAction {
+    const action = {
+        type: BadgeActionTypes.INCREMENT_BADGE_SUCCESS,
         payload: badge,
+    };
+    return action;
+}
+
+/** Dispatched when incrementing badge failed */
+function incrementBadgeFailed(error: any): AnyAction {
+    const action = {
+        type: BadgeActionTypes.INCREMENT_BADGE_FAILED,
+        payload: { error },
+    };
+    return action;
+}
+
+/** Increment the current value of a badge that belongs to the current user
+ * @param userId: The id of the current user
+ * @param badge: The badge to increment
+ * @param increment: The amount by which to increment the badge
+ */
+export function incrementBadge(userId: number, badge: Badge, increment: number): ThunkAction<void, {}, {}, AnyAction> {
+    return async function loadBadgesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        try {
+            const updatedBadge = await cvat.badges.save(userId, badge.id, badge.progress + increment);
+
+            console.log('🚀 ~ file: badge-actions.ts ~ line 73 ~ incrementBadge ~ updatedBadge', updatedBadge);
+
+            dispatch(incrementBadgeSuccess(updatedBadge));
+        } catch (error) {
+            dispatch(incrementBadgeFailed(error));
+        }
     };
 }
 
@@ -88,10 +129,10 @@ export function saveBadges(): AnyAction {
 }
 
 /** Set the currently selected badge to show in detail view */
-export function setCurrentBadge(badge: Badge): AnyAction {
+export function setCurrentBadge(badgeId: number): AnyAction {
     return {
         type: BadgeActionTypes.SET_CURRENT_BADGE,
-        payload: badge,
+        payload: badgeId,
 
     };
 }

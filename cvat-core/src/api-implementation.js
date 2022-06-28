@@ -330,6 +330,11 @@ const config = require('./config');
             return badges;
         };
 
+        cvat.badges.save.implementation = async (userId, badgeId, progress) => {
+            const badges = await serverProxy.badges.save(userId, badgeId, progress);
+            return badges;
+        };
+
         return cvat;
     }
 

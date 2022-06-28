@@ -3,10 +3,12 @@
 // SPDX-License-Identifier: MIT
 
 import React from 'react';
-import 'gamification/gamif-styles.scss';
+import '../../gamif-styles.scss';
 import { Challenge } from 'gamification/gamif-interfaces';
 import { Button, Progress } from 'antd';
 import { AnnotationCoinIcon } from 'icons';
+
+// import { blue, geekblue } from '@ant-design/colors';
 
 interface Props {
     id: number;
@@ -17,17 +19,24 @@ export default function ChallengePane(props: Props): JSX.Element {
     const { challenge } = props;
     return (
         <div className='gamif-challenge-pane-wrapper'>
-            <div className='gamif-challenge-pane-left'>
-                {challenge.instruction}
-                <Progress
-                    percent={(challenge.progress / challenge.goal) * 100}
-                    steps={challenge.goal}
-                />
+            <div className='gamif-challenge-pane-top'>
+                <div className='gamif-challenge-pane-top-left'>
+                    {challenge.instruction}
+                    <Progress
+                        percent={(challenge.progress / challenge.goal) * 100}
+                        steps={challenge.goal}
+                        // TODO: Fix color imports, add dependency
+                        // trailColor={geekblue[1]}
+                        // strokeColor={blue[4]}
+                    />
+                </div>
+                <div className='gamif-challenge-pane-top-right'>
+                    <Button icon={<AnnotationCoinIcon />} type='text' />
+                    {challenge.reward}
+                </div>
             </div>
-            <div className='gamif-challenge-pane-right'>
-                <Button icon={<AnnotationCoinIcon />} type='text' />
-                {challenge.reward}
-                <p style={{ float: 'right' }}>{challenge.challengeType}</p>
+            <div className='gamif-challenge-pane-bottom-text'>
+                {challenge.challengeType}
             </div>
         </div>
     );

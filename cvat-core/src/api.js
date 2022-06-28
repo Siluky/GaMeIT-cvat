@@ -866,6 +866,11 @@ function build() {
                 const result = await PluginRegistry.apiWrapper(cvat.badges.getStatus);
                 return result;
             },
+
+            async save(userId, badgeId, progress) {
+                const result = await PluginRegistry.apiWrapper(cvat.badges.save, userId, badgeId, progress);
+                return result;
+            },
         },
 
         /**

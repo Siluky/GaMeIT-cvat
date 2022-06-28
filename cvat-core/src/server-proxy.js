@@ -1775,6 +1775,25 @@
                 return response.data.results;
             }
 
+            async function saveBadge(userId, badgeId, newProgress) {
+                const { backendAPI } = config;
+                let response = null;
+
+                try {
+                    // TODO: careful, link is "badge-status" now! Fix id to patch at proper place
+                    // intended link: `${backendAPI}/badge-status/${userID}-${badgeID}`
+                    response = await Axios.patch(`${backendAPI}/badge-status/${userId}-${badgeId}`,
+                        { progress: newProgress }, {
+                            proxy: config.proxy,
+                        });
+                } catch (error) {
+                    throw generateError(error);
+                }
+
+                console.log('🚀 ~ file: server-proxy.js ~ line 1793 ~ ServerProxy ~ saveBadge ~ response', response);
+                return response.data;
+            }
+
             /* async function updateBadges() {
                 const { backendAPI } = config;
             } */
@@ -1942,7 +1961,10 @@
                         value: Object.freeze({
                             get: getBadges,
                             getStatus: getBadgeStatus,
-                            // update: updateBadges, //TODO:
+                            save: saveBadge,
+                            // TODO:
+                            // save_all: saveAllBadges,
+                            // update: updateBadges,
                         }),
                         writable: false,
                     },
