@@ -43,8 +43,13 @@ import CVATTooltip from 'components/common/cvat-tooltip';
 import { switchSettingsDialog as switchSettingsDialogAction } from 'actions/settings-actions';
 import { logoutAsync, authActions } from 'actions/auth-actions';
 import { CombinedState } from 'reducers/interfaces';
-import { switchEnergizerModal as switchEnergizerModalAction, incrementEnergy as incrementEnergyAction } from 'gamification/actions/energizer-actions';
+import {
+    switchEnergizerModal as switchEnergizerModalAction,
+    incrementEnergy as incrementEnergyAction,
+    switchEnergizerPopUp as switchEnergizerPopUpAction,
+} from 'gamification/actions/energizer-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
+import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -83,8 +88,9 @@ interface StateToProps {
     organizationsList: any[];
     currentOrganization: any | null;
     // energizer stuff
-    energizerShown: boolean
-    currentEnergy: number
+    energizerShown: boolean;
+    energizerPopUpShown: boolean;
+    currentEnergy: number;
 }
 
 interface DispatchToProps {
@@ -92,6 +98,7 @@ interface DispatchToProps {
     switchSettingsDialog: (show: boolean) => void;
     switchChangePasswordDialog: (show: boolean) => void;
     switchEnergizerModal: (show: boolean) => void;
+    switchEnergizerPopUp: (show: boolean) => void;
     incrementEnergy: (increment: number) => void;
 }
 
@@ -109,7 +116,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         shortcuts: { normalizedKeyMap },
         settings: { showDialog: settingsDialogShown },
         organizations: { fetching: organizationsFetching, current: currentOrganization, list: organizationsList },
-        energizer: { energyLevel: currentEnergy, active: energizerShown },
+        energizer: { energyLevel: currentEnergy, active: energizerShown, popupOpen: energizerPopUpShown },
     } = state;
 
     return {
@@ -145,6 +152,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         organizationsList,
         currentEnergy,
         energizerShown,
+        energizerPopUpShown,
     };
 }
 
@@ -154,6 +162,7 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
         switchSettingsDialog: (show: boolean): void => dispatch(switchSettingsDialogAction(show)),
         switchChangePasswordDialog: (show: boolean): void => dispatch(authActions.switchChangePasswordDialog(show)),
         switchEnergizerModal: (show: boolean): void => dispatch(switchEnergizerModalAction(show)),
+        switchEnergizerPopUp: (show: boolean): void => dispatch(switchEnergizerPopUpAction(show)),
         incrementEnergy: (increment: number): void => dispatch(incrementEnergyAction(increment)),
     };
 }
@@ -181,6 +190,7 @@ function HeaderContainer(props: Props): JSX.Element {
         organizationsList,
         currentEnergy,
         energizerShown,
+        energizerPopUpShown,
     } = props;
 
     const {
@@ -189,9 +199,12 @@ function HeaderContainer(props: Props): JSX.Element {
 
     const history = useHistory();
 
+    // TODO: Change the hard-coded values
     useEffect(() => {
         const interval = setInterval(() => {
-            incrementEnergy(1);
+            if (currentEnergy < 20) {
+                incrementEnergy(1);
+            }
         }, 30000);
 
         return () => {
@@ -500,13 +513,17 @@ function HeaderContainer(props: Props): JSX.Element {
                         Analytics
                     </Button>
                 )}
-                {/* TODO: Create an EnergizerButton component in gamification/energizer-button.tsx */}
                 <CVATTooltip overlay={`Current Energy: ${currentEnergy}`}>
-                    <Button
-                        type='text'
-                        icon={<EnergizerIcon />}
-                        onClick={(): void => { if (currentEnergy >= 10) { switchEnergizerModal(true); } }}
-                    />
+                    <Popover
+                        content={<EnergizerPopUp currentEnergy={currentEnergy} />}
+                        trigger='click'
+                        visible={energizerPopUpShown}
+                    >
+                        <Button
+                            type='text'
+                            icon={<EnergizerIcon />}
+                        />
+                    </Popover>
                 </CVATTooltip>
                 <Button
                     type='text'

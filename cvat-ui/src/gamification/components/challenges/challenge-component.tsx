@@ -8,7 +8,7 @@ import { Challenge } from 'gamification/gamif-interfaces';
 import { Button, Progress } from 'antd';
 import { AnnotationCoinIcon } from 'icons';
 
-// import { blue, geekblue } from '@ant-design/colors';
+import { blue, geekblue } from '@ant-design/colors';
 
 interface Props {
     id: number;
@@ -25,9 +25,8 @@ export default function ChallengePane(props: Props): JSX.Element {
                     <Progress
                         percent={(challenge.progress / challenge.goal) * 100}
                         steps={challenge.goal}
-                        // TODO: Fix color imports, add dependency
-                        // trailColor={geekblue[1]}
-                        // strokeColor={blue[4]}
+                        trailColor={geekblue[1]}
+                        strokeColor={blue[4]}
                     />
                 </div>
                 <div className='gamif-challenge-pane-top-right'>

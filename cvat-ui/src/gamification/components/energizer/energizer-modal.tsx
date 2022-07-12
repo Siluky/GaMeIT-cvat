@@ -5,6 +5,7 @@
 import React from 'react';
 import Modal from 'antd/lib/modal/Modal';
 import 'gamification/gamif-styles.scss';
+
 // import { useDispatch, useSelector } from 'react-redux';
 // import { CombinedState } from 'reducers/interfaces';
 

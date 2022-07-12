@@ -10,6 +10,7 @@ import { AnyAction } from 'redux';
 export enum EnergizerActionTypes {
     SWITCH_ENERGIZER = 'SWITCH_ENERGIZER',
     INCREMENT_ENERGY = 'INCREMENT_ENERGY',
+    SWITCH_ENERGIZER_POPUP = 'SWITCH_ENERGIZER_POPUP',
     // TODO:
     SET_CURRENT_ENERGIZER = 'SET_CURRENT_ENERGIZER',
 }
@@ -17,6 +18,13 @@ export enum EnergizerActionTypes {
 export function switchEnergizerModal(show: boolean): AnyAction {
     return {
         type: EnergizerActionTypes.SWITCH_ENERGIZER,
+        payload: show,
+    };
+}
+
+export function switchEnergizerPopUp(show: boolean): AnyAction {
+    return {
+        type: EnergizerActionTypes.SWITCH_ENERGIZER_POPUP,
         payload: show,
     };
 }

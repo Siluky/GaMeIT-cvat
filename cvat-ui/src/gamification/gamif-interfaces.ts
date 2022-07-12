@@ -49,6 +49,7 @@ export enum EnergizerType {
 export interface EnergizerState {
     energyLevel: number,
     active: boolean,
+    popupOpen: boolean,
     activeEnergizer: EnergizerType,
 }
 export interface ShopState {

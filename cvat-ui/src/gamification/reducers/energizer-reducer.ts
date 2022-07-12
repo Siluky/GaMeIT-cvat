@@ -9,6 +9,7 @@ import { EnergizerState, EnergizerType } from '../gamif-interfaces';
 const defaultState: EnergizerState = {
     energyLevel: 0,
     active: false,
+    popupOpen: false,
     activeEnergizer: EnergizerType.NONE,
 };
 
@@ -20,6 +21,13 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
             return {
                 ...state,
                 active: action.payload,
+            };
+        }
+
+        case EnergizerActionTypes.SWITCH_ENERGIZER_POPUP: {
+            return {
+                ...state,
+                popupOpen: action.payload,
             };
         }
 
