@@ -282,6 +282,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #E6E6E6;
+    border-radius: 5px;
+    margin-top: 5px;
     // background: green;
 }
 
@@ -299,3 +302,14 @@
 
 /*big icon size: 40px x 40px */
 /*small icon size: 25px x 25px */
+
+
+//quick statistics
+.cvat-annotation-header-quick-statistics {
+  background-color: green;
+  width: 300px;
+}
+
+.single-quick-statistic-component {
+  background-color: purple;
+}
