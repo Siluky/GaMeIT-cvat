@@ -4,10 +4,10 @@
 
 import React from 'react';
 import 'gamification/gamif-styles.scss';
-import { Slider } from 'antd';
+import { Progress } from 'antd';
 
 export default function ProgressBar(): JSX.Element {
     return (
-        <Slider />
+        <Progress percent={30} />
     );
 }

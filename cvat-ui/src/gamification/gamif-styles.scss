@@ -305,11 +305,27 @@
 
 
 //quick statistics
-.cvat-annotation-header-quick-statistics {
-  background-color: green;
-  width: 300px;
+.cvat-annotation-header-quick-statistics > div {
+    height: 48px;
+    background-color: green;
+    width: 300px;
+    flex-wrap: nowrap;
+    /*
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 48px;
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-right: 8px;
+  }*/
 }
 
 .single-quick-statistic-component {
-  background-color: purple;
+    background-color: purple;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

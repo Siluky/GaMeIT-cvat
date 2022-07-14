@@ -11,8 +11,8 @@ function QuickStatisticsPanel(): JSX.Element {
     const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
 
     return (
-        <div className='cvat-annotation-header-quick-statistics'>
-            <Row>
+        <Col className='cvat-annotation-header-quick-statistics'>
+            <Row align='bottom'>
                 <Col>
                     <QuickStatistic id={1} value={22} icon={iconSmall} unit='hrs' />
                 </Col>
@@ -23,12 +23,10 @@ function QuickStatisticsPanel(): JSX.Element {
                     <QuickStatistic id={3} value={14} icon={iconSmall} unit='min' />
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <ProgressBar />
-                </Col>
+            <Row justify='center'>
+                <ProgressBar />
             </Row>
-        </div>
+        </Col>
     );
 }
 // TODO: include React.memo where appropriate
