@@ -181,6 +181,7 @@ function HeaderContainer(props: Props): JSX.Element {
         switchSettingsDialog,
         switchChangePasswordDialog,
         switchEnergizerModal,
+        switchEnergizerPopUp,
         incrementEnergy,
         renderChangePasswordItem,
         isAnalyticsPluginActive,
@@ -522,6 +523,7 @@ function HeaderContainer(props: Props): JSX.Element {
                         <Button
                             type='text'
                             icon={<EnergizerIcon />}
+                            onClick={(): void => switchEnergizerPopUp(true)}
                         />
                     </Popover>
                 </CVATTooltip>
@@ -588,7 +590,10 @@ function HeaderContainer(props: Props): JSX.Element {
             </div>
             <SettingsModal visible={settingsDialogShown} onClose={() => switchSettingsDialog(false)} />
             {renderChangePasswordItem && <ChangePasswordDialog onClose={() => switchChangePasswordDialog(false)} />}
-            <EnergizerModal visible={energizerShown} onClose={() => switchEnergizerModal(false)} />
+            <EnergizerModal
+                visible={energizerShown}
+                onClose={() => switchEnergizerModal(false)}
+            />
         </Layout.Header>
     );
 }

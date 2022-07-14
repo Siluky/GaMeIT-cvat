@@ -225,6 +225,155 @@
   color: #f07c41;
 }
 
+.gamif-energizer-modal {
+  background: #b5beca;
+}
+
+.gamif-energizer-modal-content-wrapper {
+  display: flex;
+  background: #9ebecb;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.gamif-energizer-modal-content-wrapper h1 {
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  margin: 0.1em 0 0.1em 0;
+}
+
+.quiz-duel-heading {
+  width: 20%;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.quiz-duel-status-bar {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 20px 0px 20px;
+  width: 40%;
+  height: 10px;
+  margin: 5px 0px 1px 0px;
+}
+
+.quiz-duel-status-bar-element-empty {
+  width: 33%;
+  background: #b6afac;
+  border: 1px solid #595959;
+  border-radius: 5px;
+}
+
+.quiz-duel-status-bar-element-correct {
+  width: 33%;
+  background: #53a567;
+  border: 1px solid #3a7348;
+  border-radius: 5px;
+}
+
+.quiz-duel-status-bar-element-wrong {
+  width: 33%;
+  background: #e77970;
+  border: 1px solid #8c4b57;
+  border-radius: 5px;
+}
+
+.gamif-energizer-modal-content-wrapper h2 {
+  margin: 0.2em 0 0 0;
+}
+
+.quiz-duel-question {
+  background: #152f3e;
+  width: 40%;
+  border-radius: 15px;
+}
+
+.quiz-duel-answer-box {
+  flex-direction: row;
+}
+
+.quiz-duel-answer-button {
+  width: 240px;
+  height: 60px;
+  margin: 20px;
+  border-radius: 10px;
+  background: #0f526f;
+  color: white;
+  font-weight: bold;
+}
+
+.gamif-energizer-continue-button {
+  background: #0e2b4d;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.gamif-energizer-leaderboard {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.energizer-leaderboard-headline h2 {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+
+.energizer-leaderboard-header {
+  background: #3d82a3;
+  border-radius: 10px 10px 0 0;
+}
+.energizer-leaderboard-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+  width: 60%;
+}
+
+.energizer-leaderboard-header-text {
+  color: white;
+  width: 33%;
+}
+.energizer-leaderboard-content {
+  background: #e6e6e6;
+}
+.energizer-leaderboard-content-header {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 10px 0;
+}
+
+.energizer-leaderboard-row {
+  background: #d9d9d9;
+  text-align: center;
+  margin: 5px 0px 5px 0px;
+}
+
+.energizer-leaderboard-row-highlight {
+  background: #fddeef;
+}
+
+.energizer-leaderboard-row:last-of-type {
+  margin: 5px 0 0 0;
+}
+
+.energizer-leaderboard-footer {
+  background: #e6e6e6;
+  padding: 100px 0 0 0;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  justify-content: center;
+}
+
+
 
 // shop
 

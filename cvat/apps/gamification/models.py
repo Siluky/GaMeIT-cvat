@@ -46,8 +46,9 @@ class Challenge(models.Model):
     def __str__(self):
         return self.instruction
 
+
+
 class EnergizerData(models.Model):
-    currentEnergy = models.IntegerField(default=0)
     energizersDone = models.IntegerField(default=0)
     #TODO: Data for individual energizers
 
@@ -73,6 +74,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     last_login = models.DateField(default=now)
 
+
     # badge-related data
     badges = models.ManyToManyField(Badge, through='BadgeStatus')
     # TODO: Selected badges
@@ -81,15 +83,15 @@ class UserProfile(models.Model):
     challenges = models.ManyToManyField(Challenge, through='ChallengeStatus')
 
     # energizer-related data
-    # TODO: add proper default
-    # energizer_data = models.OneToOneField(EnergizerData, on_delete=models.CASCADE)
+    # TODO: 
+    # currentEnergy = models.IntegerField(default=0)
 
     # shop-related data
     items = models.ManyToManyField(ShopItem, through='ItemStatus')
     current_balance = models.IntegerField(default=0)
 
     # social-related data
-    # TODO: not sure how to model this yet
+    # not sure how to model this yet
 
     # statistics-related data
     statistics = models.ManyToManyField(Statistic, through='StatisticsStatus')

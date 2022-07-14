@@ -46,6 +46,23 @@ export enum EnergizerType {
     NONE = 'NONE',
 }
 
+// TODO:
+// enum Answer {
+//     A = 'A',
+//     B = 'B',
+//     C = 'C',
+//     D = 'D',
+// }
+
+export interface QuizDuelQuestion {
+    question: string;
+    answerA: string;
+    answerB: string;
+    answerC: string;
+    answerD: string;
+    correctAnswer: number;
+}
+
 export interface EnergizerState {
     energyLevel: number,
     active: boolean,
