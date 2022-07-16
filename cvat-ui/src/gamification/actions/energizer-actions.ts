@@ -13,6 +13,7 @@ export enum EnergizerActionTypes {
     SWITCH_ENERGIZER_POPUP = 'SWITCH_ENERGIZER_POPUP',
     // TODO:
     SET_CURRENT_ENERGIZER = 'SET_CURRENT_ENERGIZER',
+    SWITCH_ENERGIZER_LEADERBOARD = 'SWITCH_ENERGIZER_LEADERBOARD',
 }
 
 export function switchEnergizerModal(show: boolean): AnyAction {
@@ -42,5 +43,12 @@ export function setCurrentEnergizer(energizerName: string): AnyAction {
         type: EnergizerActionTypes.SET_CURRENT_ENERGIZER,
         payload: energizerName,
 
+    };
+}
+
+export function switchEnergizerLeaderboard(show: boolean): AnyAction {
+    return {
+        type: EnergizerActionTypes.SWITCH_ENERGIZER_LEADERBOARD,
+        payload: show,
     };
 }

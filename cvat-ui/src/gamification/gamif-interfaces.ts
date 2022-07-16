@@ -46,14 +46,6 @@ export enum EnergizerType {
     NONE = 'NONE',
 }
 
-// TODO:
-// enum Answer {
-//     A = 'A',
-//     B = 'B',
-//     C = 'C',
-//     D = 'D',
-// }
-
 export interface QuizDuelQuestion {
     question: string;
     answerA: string;

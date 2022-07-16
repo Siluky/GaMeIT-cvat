@@ -34,9 +34,18 @@ const generateQuestions = (): QuizDuelQuestion[] => {
     return dummyQuestions;
 };
 
+enum Answer {
+    A = 'A',
+    B = 'B',
+    C = 'C',
+    D = 'D',
+    NONE = 'NONE',
+}
+
 export default function QuizDuel(): JSX.Element {
     const [progress, setProgress] = useState(1);
     const [readyToContinue, setContinue] = useState(false);
+    const [currentAnswer, setCurrentAnswer] = useState(Answer.NONE);
 
     const questions = generateQuestions();
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
@@ -57,19 +66,40 @@ export default function QuizDuel(): JSX.Element {
             </div>
             <div className='quiz-duel-answer-box'>
                 <div>
-                    <Button className='quiz-duel-answer-button'>
+                    <Button
+                        className='quiz-duel-answer-button'
+                        onClick={(): void => {
+                            setCurrentAnswer(Answer.A);
+                        }}
+                    >
                         {currentQuestion.answerA}
                     </Button>
-                    <Button className='quiz-duel-answer-button'>
+                    <Button
+                        className='quiz-duel-answer-button'
+                        onClick={(): void => {
+                            setCurrentAnswer(Answer.B);
+                        }}
+                    >
                         {currentQuestion.answerB}
                     </Button>
 
                 </div>
                 <div>
-                    <Button className='quiz-duel-answer-button'>
+                    <Button
+                        className='quiz-duel-answer-button'
+                        onClick={(): void => {
+                            setCurrentAnswer(Answer.C);
+                        }}
+
+                    >
                         {currentQuestion.answerC}
                     </Button>
-                    <Button className='quiz-duel-answer-button'>
+                    <Button
+                        className='quiz-duel-answer-button'
+                        onClick={(): void => {
+                            setCurrentAnswer(Answer.D);
+                        }}
+                    >
                         {currentQuestion.answerD}
                     </Button>
                 </div>
@@ -79,11 +109,20 @@ export default function QuizDuel(): JSX.Element {
                 type='text'
                 disabled={readyToContinue}
                 onClick={(): void => {
-                    setProgress(progress + 1);
-                    setContinue(false);
-                    setCurrentQuestion(questions[progress - 1]);
-                    // TODO: Show leaderboard + wrap up when finished
-                    // TODO: Show correct answer!
+                    if (currentAnswer !== Answer.NONE) {
+                        // showCorrectAnswer();
+                        setContinue(true);
+                    }
+
+                    if (progress === 3 && readyToContinue) {
+                        // TODO: Show leaderboard + wrap up when finished
+                        // showLeaderBoard();
+                    } else if (readyToContinue) {
+                        setContinue(false);
+                        setProgress(progress + 1);
+                        setCurrentQuestion(questions[progress - 1]);
+                        setCurrentAnswer(Answer.NONE);
+                    }
                 }}
             >
                 Continue
