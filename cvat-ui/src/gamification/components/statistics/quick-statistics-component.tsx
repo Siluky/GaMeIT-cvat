@@ -3,11 +3,6 @@
 // SPDX-License-Identifier: MIT
 import 'gamification/gamif-styles.scss';
 import React from 'react';
-import {
-    Row,
-    Col,
-}
-    from 'antd';
 
 interface Props {
     id: number;
@@ -22,25 +17,11 @@ export default function QuickStatistic(props: Props): JSX.Element {
     const { icon, value, unit } = props;
 
     return (
-        <Row>
-            <div className='single-quick-statistic-component'>
-                <Col>
-                    <div className='statistic-icon'>
-                        {/* <Button icon='' type='text'> button </Button> */}
-                        {icon}
-                    </div>
-                </Col>
-                <Col>
-                    <div className='single-statistic-prop'>
-                        {value}
-                    </div>
-                </Col>
-                <Col>
-                    <div className='single-statistic-prop'>
-                        {unit}
-                    </div>
-                </Col>
-            </div>
-        </Row>
+        <div className='single-quick-statistic-component'>
+            {/* <Button icon='' type='text'> button </Button> */}
+            {icon}
+            {value}
+            {unit}
+        </div>
     );
 }

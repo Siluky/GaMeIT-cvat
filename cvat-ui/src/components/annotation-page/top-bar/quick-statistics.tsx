@@ -11,17 +11,11 @@ function QuickStatisticsPanel(): JSX.Element {
     const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
 
     return (
-        <Col className='cvat-annotation-header-quick-statistics'>
-            <Row align='bottom'>
-                <Col>
-                    <QuickStatistic id={1} value={22} icon={iconSmall} unit='hrs' />
-                </Col>
-                <Col>
-                    <QuickStatistic id={2} value={24} icon={iconSmall} />
-                </Col>
-                <Col>
-                    <QuickStatistic id={3} value={14} icon={iconSmall} unit='min' />
-                </Col>
+        <Col className='cvat-annotation-header-quick-statistics-group'>
+            <Row className='cvat-annotation-header-quick-statistics'>
+                <QuickStatistic id={1} value={22} icon={iconSmall} unit='hrs' />
+                <QuickStatistic id={2} value={24} icon={iconSmall} />
+                <QuickStatistic id={3} value={14} icon={iconSmall} unit='min' />
             </Row>
             <Row justify='center'>
                 <ProgressBar />

@@ -305,27 +305,27 @@
 
 
 //quick statistics
-.cvat-annotation-header-quick-statistics > div {
+.cvat-annotation-header-quick-statistics-group {
     height: 48px;
-    background-color: green;
     width: 300px;
-    flex-wrap: nowrap;
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-direction: column;
     /*
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 48px;
+    height: 48px;*/
     > div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-right: 8px;
-  }*/
+      height: 50%;
+  }
+}
+.cvat-annotation-header-quick-statistics {
+  justify-content: center;
 }
 
 .single-quick-statistic-component {
-    background-color: purple;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    height: 24px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
