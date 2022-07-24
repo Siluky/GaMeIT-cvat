@@ -8,6 +8,7 @@ import {
     Button,
     Modal,
 } from 'antd';
+// eslint-disable-next-line import/no-named-as-default
 import EnergizerLeaderboard from './energizer-leaderboard';
 import QuizDuel from './energizer-quiz-duel';
 
@@ -22,9 +23,12 @@ interface EnergizerModalProps {
 function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     const { visible, onClose } = props;
     const [leaderboardShown, setLeaderboardShown] = useState(false);
+    const [newLeaderboardScore, setNewLeaderboardScore] = useState(0);
 
-    // const energizer = useSelector((state: CombinedState) => state.energizer);
-    // const dispatch = useDispatch();
+    const generateLeaderboard = (show: boolean, score: number): void => {
+        setLeaderboardShown(show);
+        setNewLeaderboardScore(score);
+    };
 
     return (
         <>
@@ -37,13 +41,13 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 footer={null}
                 maskClosable={false}
             >
-                <QuizDuel />
+                <QuizDuel showLeaderboard={(show: boolean, score: number) => generateLeaderboard(show, score)} />
                 <Button
                     className='gamif-energizer-continue-button'
                     type='text'
                     onClick={(): void => setLeaderboardShown(true)}
                 >
-                    Continue
+                    Show Leaderboard
                 </Button>
             </Modal>
 
@@ -56,7 +60,8 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 footer={null}
                 maskClosable={false}
             >
-                <EnergizerLeaderboard newScore={1} /* TODO: make newScore right --> return value from energizer? */ />
+                <EnergizerLeaderboard newScore={newLeaderboardScore} />
+
                 <div className='energizer-leaderboard-footer'>
                     <Button
                         className='gamif-energizer-continue-button'

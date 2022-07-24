@@ -308,6 +308,15 @@
   font-weight: bold;
 }
 
+.answer-correct {
+  background: limegreen;
+}
+.answer-wrong {
+  background: red;
+}
+
+
+
 .gamif-energizer-continue-button {
   background: #0e2b4d;
   color: white;
@@ -355,14 +364,14 @@
   background: #d9d9d9;
   text-align: center;
   margin: 5px 0px 5px 0px;
-}
 
-.energizer-leaderboard-row-highlight {
-  background: #fddeef;
-}
+  .highlight {
+    background: #fddeef;
+  }
 
-.energizer-leaderboard-row:last-of-type {
-  margin: 5px 0 0 0;
+  :last-of-type {
+    margin: 5px 0 0 0;
+  }
 }
 
 .energizer-leaderboard-footer {
@@ -376,6 +385,120 @@
 
 
 // shop
+
+.gamif-shop-window {
+  width: 450px;
+  height: 300px;
+  border-radius: 10px;
+  border: 2px solid #1d3c62;
+  background: #d2d8df;
+}
+
+.gamif-shop-window-header {
+  margin: 4px 0 4px 0;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid black;
+}
+
+.gamif-shop-window-button {
+  background: #1d3c62;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-left: 5%;
+  margin-bottom: 2px;
+
+  }
+
+.gamif-shop-balance-display {
+  background: #1d3c62;
+  margin-left: auto;
+  margin-right: 10%;
+  font-weight: bold;
+  border-radius: 8px;
+  width: 172px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+
+}
+
+.gamif-shop-balance-display h3 {
+  color: white;
+  font-size: 14px;
+  text-align: center;
+}
+
+.gamif-shop-window-items-wrapper {
+  margin: 0 10px 6px 10px;
+  overflow-y: scroll;
+  height: 85%;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #b5beca;
+  height: 20%;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1d3c62;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #9fbecc;
+}
+
+// .gamif-shop-window-items-row {
+// }
+
+.gamif-shop-item-card {
+  width: 80px;
+  height: 120px;
+  background: #9fbecc;
+  border: 1px solid #1d3c62;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.gamif-shop-item-card-top {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gamif-shop-item-icon {
+  display: flex;
+  justify-content: center;
+  font-size: 200%;
+  align-items: center;
+  margin-top: auto;
+}
+
+.gamif-shop-item-title {
+  color: white;
+  margin-top: auto;
+}
+
+.gamif-shop-item-footer {
+  height: 20%;
+  background: #1d3c62;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
 
 // social
 .gamif-social-bar {

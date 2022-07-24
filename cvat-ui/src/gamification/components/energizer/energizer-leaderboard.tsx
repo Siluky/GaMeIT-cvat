@@ -1,59 +1,75 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'gamification/gamif-styles.scss';
 // import { EnergizerType } from 'gamification/gamif-interfaces';
+import { CombinedState } from 'reducers/interfaces';
+import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
 import {
     Row,
     Col,
     Radio,
 } from 'antd';
 import { AndroidFilled } from '@ant-design/icons';
+import { getLeaderboardAsync } from 'gamification/actions/energizer-actions';
+import { connect } from 'react-redux';
+import getCore from 'cvat-core-wrapper';
 
-interface LeaderboardEntry {
-    username: string;
-    score: number;
-    avatar: any;
-}
-
-/**
- *
- * @param energizerName
- * @returns All relevant leaderboard entries for the energizer in question
- * TODO: Add database call + energizerType as a parameter
- */
-function getLeaderboardEntries(): LeaderboardEntry[] {
-    const dummyEntries = [{
-        username: 'Annotator 1',
-        score: 23,
-        avatar: 1,
-    },
-    {
-        username: 'Annotator 2',
-        score: 74,
-        avatar: 1,
-    },
-    ];
-
-    return dummyEntries;
-}
+const cvat = getCore();
 
 interface EnergizerLeaderboardProps {
     newScore: number;
+    leaderboardEntries: LeaderboardEntry[];
+    activeEnergizer: EnergizerType;
+    currentUserId: number;
+    getLeaderboardEntries: (energizerName: string) => void;
 }
 
-export default function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Element {
-    const { newScore } = props;
-    const entries = getLeaderboardEntries();
-    // TODO: Add the actual user entry (+ save to database!)
-    const updatedEntries = entries.push({
-        username: 'test',
-        score: newScore,
-        avatar: 1,
-    });
-    console.log('🚀 ~ file: energizer-leaderboard.tsx ~ line 55 ~ EnergizerLeaderboard ~ updatedEntries', updatedEntries);
-    entries.sort((a, b) => ((a.score > b.score) ? 1 : -1));
+interface StateToProps {
+    leaderboardEntries: LeaderboardEntry[];
+    activeEnergizer: EnergizerType;
+    currentUserId: number;
+}
+
+interface DispatchToProps {
+    getLeaderboardEntries: (energizerName: string) => void;
+}
+
+function mapStateToProps(state: CombinedState): StateToProps {
+    const { energizer, badges } = state;
+
+    return {
+        leaderboardEntries: energizer.leaderboardEntries,
+        activeEnergizer: energizer.activeEnergizer,
+        currentUserId: badges.currentUserId,
+    };
+}
+
+function mapDispatchToProps(dispatch: any): DispatchToProps {
+    return {
+        getLeaderboardEntries: (energizerName: string): void => dispatch(getLeaderboardAsync(energizerName)),
+    };
+}
+
+export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Element {
+    const {
+        newScore, activeEnergizer, leaderboardEntries, currentUserId, getLeaderboardEntries,
+    } = props;
+
+    useEffect(() => {
+        console.log('Energizer leaderboard: useEffect Hook triggered');
+        const addLeaderboardEntry = async (energizer: EnergizerType, score: number): Promise<void> => {
+            const newEntry = await cvat.energizer.addScore(currentUserId, energizer, score);
+            console.log('🚀 ~ file: energizer-leaderboard.tsx ~ line 64 ~ addLeaderboardEntry ~ newEntry', newEntry);
+        };
+
+        console.log('🚀 ~ file: energizer-leaderboard.tsx ~ line 71 ~ useEffect ~ newScore', newScore);
+        console.log('🚀 ~ file: energizer-leaderboard.tsx ~ line 71 ~ useEffect ~ activeEnergizer', activeEnergizer);
+        addLeaderboardEntry(activeEnergizer, newScore);
+
+        getLeaderboardEntries(activeEnergizer);
+    }, []);
 
     return (
         <>
@@ -80,7 +96,7 @@ export default function EnergizerLeaderboard(props: EnergizerLeaderboardProps): 
                     </Radio.Group>
                 </div>
                 {
-                    entries.map((entry: LeaderboardEntry, index: number) => (
+                    leaderboardEntries.map((entry: LeaderboardEntry, index: number) => (
                         // TODO: Highlight the current user's row
                         // --> className='energizer-leaderboard-row energizer-leaderboard-row-highlight'
                         <Row className='energizer-leaderboard-row' wrap>
@@ -106,3 +122,5 @@ export default function EnergizerLeaderboard(props: EnergizerLeaderboardProps): 
         </>
     );
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(EnergizerLeaderboard);

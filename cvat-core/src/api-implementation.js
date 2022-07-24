@@ -320,6 +320,10 @@ const config = require('./config');
             config.organizationID = null;
         };
 
+        // gamification stuff from here
+
+        // badges
+
         cvat.badges.get.implementation = async () => {
             const badges = await serverProxy.badges.get();
             return badges;
@@ -333,6 +337,34 @@ const config = require('./config');
         cvat.badges.save.implementation = async (userId, badgeId, progress) => {
             const badges = await serverProxy.badges.save(userId, badgeId, progress);
             return badges;
+        };
+
+        // challenges TODO:
+
+        // energizer
+        cvat.energizer.currentEnergy.implementation = async () => {
+            const energy = await serverProxy.energizer.currentEnergy();
+            return energy;
+        };
+
+        cvat.energizer.setEnergy.implementation = async (newEnergy) => {
+            const energy = await serverProxy.energizer.setEnergy(newEnergy);
+            return energy;
+        };
+
+        cvat.energizer.quizDuelQuestions.implementation = async () => {
+            const questions = await serverProxy.energizer.quizDuelQuestions();
+            return questions;
+        };
+
+        cvat.energizer.leaderboard.implementation = async (energizerName) => {
+            const leaderboard = await serverProxy.energizer.leaderboard(energizerName);
+            return leaderboard;
+        };
+
+        cvat.energizer.addScore.implementation = async (userId, energizerName, score) => {
+            const leaderboard = await serverProxy.energizer.addScore(userId, energizerName, score);
+            return leaderboard;
         };
 
         return cvat;

@@ -7,8 +7,11 @@ import 'gamification/gamif-styles.scss';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
-import { incrementEnergy, switchEnergizerModal, switchEnergizerPopUp } from 'gamification/actions/energizer-actions';
+import {
+    incrementEnergy, setActiveEnergizer, switchEnergizerModal, switchEnergizerPopUp,
+} from 'gamification/actions/energizer-actions';
 import { EnergizerIcon } from 'icons';
+import { EnergizerType } from 'gamification/gamif-interfaces';
 
 interface EnergizerPopUpProps {
     currentEnergy: number;
@@ -19,28 +22,31 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
 
     const dispatch = useDispatch();
 
-    // TODO: refactor the hard-coded 10
+    // TODO: refactor the hard-coded 10 --> make a const
     const energizerReady = currentEnergy < 10;
     const buttonDisabled = { disabled: energizerReady };
 
-    // TODO: Fix this mess, look into arrow function again
-    // Basically: Show appropriate message based on energy level
-    /*
-    const popupMessage = () => {
-        if (energizerReady) {
-            return
-        }
-
-        return (
-            <>
+    const messageReady = (
+        <>
             <h1> Energy is Full! </h1>
             <h2>
                 Ready to do
                 <br />
                 an Energizer?
-                </h2>
-            </>);
-    }; */
+            </h2>
+        </>
+    );
+
+    const messageNotReady = (
+        <>
+            <h1> Energy is still recharging </h1>
+            <h2>
+                Collect 10 Energy
+                <br />
+                to do an Energizer.
+            </h2>
+        </>
+    );
 
     return (
         <div className='gamif-energizer-popup'>
@@ -74,12 +80,7 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                 </div>
             </div>
             <div className='gamif-energizer-popup-bottom'>
-                <h1> Energy is Full! </h1>
-                <h2>
-                    Ready to do
-                    <br />
-                    an Energizer?
-                </h2>
+                {buttonDisabled ? messageReady : messageNotReady }
                 <Button
                     {...buttonDisabled}
                     className='gamif-energizer-popup-start-energizer-button'
@@ -89,6 +90,8 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                             dispatch(incrementEnergy(-10));
                             dispatch(switchEnergizerPopUp(false));
                             dispatch(switchEnergizerModal(true));
+                            // TODO: Give choice or start random energizer!
+                            dispatch(setActiveEnergizer(EnergizerType.QUIZ));
                         }
                     }}
                 >
