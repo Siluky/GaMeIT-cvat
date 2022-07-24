@@ -4,13 +4,30 @@
 import React from 'react';
 import 'gamification/gamif-styles.scss';
 import { Radio, Space } from 'antd';
+import { useDispatch } from 'react-redux';
+import { setStatus } from 'gamification/actions/social-actions';
+import { OnlineStatus } from 'gamification/gamif-interfaces';
+
+const valuetoStatus = (value: number): OnlineStatus => {
+    switch (value) {
+        case 1: return OnlineStatus.ONLINE;
+        case 2: return OnlineStatus.DO_NOT_DISTURB;
+        case 3: return OnlineStatus.OFFLINE;
+        default: return OnlineStatus.ONLINE;
+    }
+};
 
 export default function StatusMenu(): JSX.Element {
-    // TODO: 2 onClick handlers for swinging out friends list / setting own status
+    const dispatch = useDispatch();
+
     return (
-        <Radio.Group className='gamif-status-menu' buttonStyle='solid'>
+        <Radio.Group
+            className='gamif-status-menu'
+            buttonStyle='solid'
+            onChange={(event) => dispatch(setStatus(valuetoStatus(event.target.value)))}
+        >
             <Space direction='vertical'>
-                <Radio value={1}>Online</Radio>
+                <Radio value={1} defaultChecked>Online</Radio>
                 <Radio value={2}>Do not Disturb</Radio>
                 <Radio value={3}>Offline</Radio>
             </Space>

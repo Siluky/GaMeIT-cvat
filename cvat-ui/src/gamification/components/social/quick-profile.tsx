@@ -10,26 +10,38 @@ import {
     SmileFilled,
 } from '@ant-design/icons';
 import { BadgeIcon } from 'icons';
+import { Profile } from 'gamification/gamif-interfaces';
+import { useDispatch } from 'react-redux';
+import { toggleChat } from 'gamification/actions/social-actions';
 
-export default function QuickProfile(): JSX.Element {
+interface QuickProfileProps {
+    profile: Profile,
+}
+
+export default function QuickProfile(props: QuickProfileProps): JSX.Element {
+    const { profile } = props;
+    const dispatch = useDispatch();
+
     return (
         <div className='gamif-quick-profile-container'>
             <div className='gamif-quick-profile'>
                 <div className='gamif-quick-profile status'>
                     <SmileFilled />
-                    <span>Online</span>
+                    <span>{profile.status}</span>
                 </div>
                 <div className='gamif-quick-profile avatar-name-container'>
                     <QuestionCircleOutlined className='gamif-quick-profile avatar' />
-                    <span className='gamif-quick-profile name'>Annotator 1</span>
+                    <span className='gamif-quick-profile name'>{profile.username}</span>
                 </div>
                 <div className='gamif-quick-profile badges'>
                     <BadgeIcon />
                     <BadgeIcon />
                     <BadgeIcon />
                 </div>
-                { /* TODO: onClick method for button to open Chat Tab */ }
-                <Button className='gamif-quick-profile message-button'>
+                <Button
+                    className='gamif-quick-profile message-button'
+                    onClick={() => dispatch(toggleChat(profile.userId, true))}
+                >
                     Message
                     <MailFilled />
                 </Button>
