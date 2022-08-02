@@ -487,6 +487,8 @@
 .gamif-shop-item-title {
   color: white;
   margin-top: auto;
+  font-size: 11px;
+  text-align: center;
 }
 
 .gamif-shop-item-footer {
@@ -662,6 +664,10 @@
     border-radius: 5px;
     margin-top: 5px;
     // background: green;
+}
+
+.statistic-icon {
+  margin-left: 2px;
 }
 
 .single-statistic-prop{

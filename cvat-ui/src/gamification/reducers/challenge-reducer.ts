@@ -7,27 +7,27 @@ import { ChallengeActionTypes } from '../actions/challenge-actions';
 import { ChallengeState, ChallengeType, Challenge } from '../gamif-interfaces';
 
 const testChallenge1: Challenge = {
-    instruction: 'Annotate 5 images in a row',
-    progress: 1,
-    goal: 5,
-    reward: 1000,
+    instruction: 'Annotate 10 images',
+    progress: 5,
+    goal: 10,
+    reward: 100,
     challengeType: ChallengeType.DAILY,
 };
 
 const testChallenge2: Challenge = {
-    instruction: 'Do something fun',
+    instruction: 'Finish one job',
     progress: 0,
-    goal: 100,
-    reward: 222,
+    goal: 10,
+    reward: 100,
     challengeType: ChallengeType.DAILY,
 };
 
 const testChallenge3: Challenge = {
-    instruction: 'Annotate 10 images in a row',
-    progress: 7,
-    goal: 10,
-    reward: 10000,
-    challengeType: ChallengeType.WEEKLY,
+    instruction: 'Annotate 5 images in one session',
+    progress: 3,
+    goal: 5,
+    reward: 60,
+    challengeType: ChallengeType.DAILY,
 };
 
 const defaultState: ChallengeState = {

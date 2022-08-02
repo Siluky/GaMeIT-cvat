@@ -15,13 +15,20 @@ interface Props {
 
 export default function QuickStatistic(props: Props): JSX.Element {
     const { icon, value, unit } = props;
-
+    // TODO: Tooltips
     return (
         <div className='single-quick-statistic-component'>
-            {/* <Button icon='' type='text'> button </Button> */}
-            {icon}
-            {value}
-            {unit}
+            <div>
+                {icon}
+            </div>
+            <div>
+                &nbsp;
+                {value}
+            </div>
+            <div>
+                &nbsp;
+                {unit}
+            </div>
         </div>
     );
 }

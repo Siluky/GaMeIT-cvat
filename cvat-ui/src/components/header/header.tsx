@@ -33,6 +33,7 @@ import Text from 'antd/lib/typography/Text';
 import Select from 'antd/lib/select';
 
 import BadgeOverview from 'gamification/components/badges/badge-overview';
+import ShopWindow from 'gamification/components/reward-shop/shop-window';
 
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
@@ -52,7 +53,6 @@ import {
 } from 'gamification/actions/energizer-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
-import { ShopWindow } from 'gamification/components/reward-shop/shop-window';
 import { loadBadgesAsync } from 'gamification/actions/badge-actions';
 import SettingsModal from './settings-modal/settings-modal';
 
@@ -191,7 +191,7 @@ function HeaderContainer(props: Props): JSX.Element {
         switchEnergizerModal,
         switchEnergizerPopUp,
         incrementEnergy,
-        saveCurrentEnergy,
+        // saveCurrentEnergy, //TODO: uncomment as necessary!
         getCurrentEnergy,
         renderChangePasswordItem,
         isAnalyticsPluginActive,
@@ -546,7 +546,7 @@ function HeaderContainer(props: Props): JSX.Element {
                         console.log('Test button pressed');
                     }}
                 />
-                <Button
+                {/* <Button
                     type='text'
                     onClick={(): void => {
                         console.log('Save Energy to DB');
@@ -555,8 +555,8 @@ function HeaderContainer(props: Props): JSX.Element {
                     }}
                 >
                     Save
-                </Button>
-                <Popover content={<ShopWindow items={[]} currentBalance={0} selectedItemId={0} />}>
+                </Button> */}
+                <Popover content={<ShopWindow />} mouseLeaveDelay={3}>
                     <Button type='text'> Open Shop </Button>
                 </Popover>
             </div>

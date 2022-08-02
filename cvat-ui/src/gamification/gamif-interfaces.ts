@@ -79,7 +79,7 @@ export interface ShopItem {
     title: string;
     price: number;
     bought: boolean;
-    iconpath: string; // TODO:
+    icon: any;
     onPurchase: () => void;
 }
 

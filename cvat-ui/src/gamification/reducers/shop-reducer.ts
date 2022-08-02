@@ -3,39 +3,84 @@
 // SPDX-License-Identifier: MIT
 
 import { AnyAction } from 'redux';
+import {
+    GreenAvatarBorderIcon,
+    RedAvatarBorderIcon,
+    LoadingItemIcon,
+} from 'icons';
 import { ShopActionTypes } from '../actions/shop-actions';
 import { ShopItem, ShopState } from '../gamif-interfaces';
 
 const dummyItems: ShopItem[] = [{
     id: 1,
-    title: 'Cool item 123',
+    title: 'Charge Pack',
     price: 100,
-    bought: true,
-    iconpath: '',
+    bought: false,
+    icon: GreenAvatarBorderIcon,
     onPurchase: () => {},
 },
 {
     id: 2,
-    title: 'Red Avatar Border',
+    title: 'Mystery Gift',
     price: 80,
     bought: false,
-    iconpath: '',
-    onPurchase: () => {},
-},
-{
-    id: 3,
-    title: 'Charge Pack',
-    price: 500,
-    bought: true,
-    iconpath: '',
+    icon: RedAvatarBorderIcon,
     onPurchase: () => {},
 },
 {
     id: 4,
-    title: 'Cool item 123',
+    title: 'Locked',
     price: 100,
-    bought: true,
-    iconpath: '',
+    bought: false,
+    icon: LoadingItemIcon,
+    onPurchase: () => {},
+},
+{
+    id: 4,
+    title: 'Locked',
+    price: 100,
+    bought: false,
+    icon: LoadingItemIcon,
+    onPurchase: () => {},
+},
+{
+    id: 4,
+    title: 'Locked',
+    price: 100,
+    bought: false,
+    icon: LoadingItemIcon,
+    onPurchase: () => {},
+},
+{
+    id: 4,
+    title: 'Locked',
+    price: 100,
+    bought: false,
+    icon: LoadingItemIcon,
+    onPurchase: () => {},
+},
+{
+    id: 4,
+    title: 'Locked',
+    price: 100,
+    bought: false,
+    icon: LoadingItemIcon,
+    onPurchase: () => {},
+},
+{
+    id: 4,
+    title: 'Locked',
+    price: 100,
+    bought: false,
+    icon: LoadingItemIcon,
+    onPurchase: () => {},
+},
+{
+    id: 4,
+    title: 'Locked',
+    price: 100,
+    bought: false,
+    icon: LoadingItemIcon,
     onPurchase: () => {},
 },
 ];

@@ -3,11 +3,8 @@
 // SPDX-License-Identifier: MIT
 import React from 'react';
 import 'gamification/gamif-styles.scss';
-import {
-    Row,
-    Col,
-}
-    from 'antd';
+import { Row, Col } from 'antd';
+import { BorderOutlined } from '@ant-design/icons';
 
 interface Props {
     id: number;
@@ -19,27 +16,28 @@ interface Props {
 }
 
 export default function Statistic(props: Props): JSX.Element {
-    const { value, unit, icon } = props;
+    const { value, unit } = props;
     return (
-        // <>{`Statistic ${x.id}`}</>
         <Row>
             <div className='single-statistic-row'>
                 <Col>
                     <div className='statistic-icon'>
                         {/* <Button icon='' type='text'> button </Button> */}
-                        {icon}
+                        <BorderOutlined />
                     </div>
                 </Col>
                 <Col>
                     <div className='single-statistic-prop'>
                         {value}
-                    </div>
-                </Col>
-                <Col>
-                    <div className='single-statistic-prop'>
+                        &nbsp;
                         {unit}
                     </div>
                 </Col>
+                {/* <Col>
+                    <div className='single-statistic-prop'>
+                        {unit}
+                    </div>
+                </Col> */}
             </div>
         </Row>
     );

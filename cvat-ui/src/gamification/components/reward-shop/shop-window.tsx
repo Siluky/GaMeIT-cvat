@@ -11,6 +11,12 @@ import { purchaseItem } from 'gamification/actions/shop-actions';
 import { SketchOutlined } from '@ant-design/icons';
 import { ShopItemComponent } from './shop-item';
 
+interface ShopWindowProps {
+    items: ShopItem[];
+    currentBalance: number;
+    selectedItemId: number;
+}
+
 interface StateToProps {
     items: ShopItem[];
     currentBalance: number;
@@ -26,14 +32,9 @@ function mapStateToProps(state: CombinedState): StateToProps {
     };
 }
 
-interface ShopWindowProps {
-    items: ShopItem[];
-    currentBalance: number;
-    selectedItemId: number;
-}
-
 export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const { items, currentBalance, selectedItemId } = props;
+    console.log('🚀 ~ file: shop-window.tsx ~ line 37 ~ ShopWindow ~ items', items);
     const dispatch = useDispatch();
 
     return (
@@ -69,4 +70,4 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
     );
 }
 
-export default connect(mapStateToProps, null)(ShopWindow);
+export default connect(mapStateToProps)(ShopWindow);

@@ -41,6 +41,7 @@ const chatBar = (friend: Profile): JSX.Element => {
                 trigger='click'
                 content={<ChatBox />}
                 mouseLeaveDelay={10}
+                defaultVisible
             >
                 {friend.username}
             </Popover>

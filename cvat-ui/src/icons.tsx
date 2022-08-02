@@ -57,6 +57,11 @@ import SVGEnergizerIcon from './assets/energizer-button-icon.svg';
 import SVGBadge from './assets/badge-icon.svg';
 import SVGBadgeGrey from './assets/badge-grey-icon.svg';
 import SVGAnnotationCoin from './assets/annotation-coin-icon.svg';
+import SVGGreenAvatarBorder from './assets/green-avatar-border.svg';
+import SVGRedAvatarBorder from './assets/red-avatar-border.svg';
+import SVGLoadingItem from './assets/loading-item.svg';
+import SVGMoneyHoarderBadge from './assets/money-hoarder-badge.svg';
+import SVGImageIcon from './assets/images-icon.svg';
 
 export const CVATLogo = React.memo((): JSX.Element => <SVGCVATLogo />);
 export const EmptyTasksIcon = React.memo((): JSX.Element => <SVGEmptyTasksIcon />);
@@ -111,3 +116,8 @@ export const EnergizerIcon = React.memo((): JSX.Element => <SVGEnergizerIcon />)
 export const BadgeIcon = React.memo((): JSX.Element => <SVGBadge />);
 export const BadgeGreyIcon = React.memo((): JSX.Element => <SVGBadgeGrey />);
 export const AnnotationCoinIcon = React.memo((): JSX.Element => <SVGAnnotationCoin />);
+export const GreenAvatarBorderIcon = React.memo((): JSX.Element => <SVGGreenAvatarBorder />);
+export const RedAvatarBorderIcon = React.memo((): JSX.Element => <SVGRedAvatarBorder />);
+export const LoadingItemIcon = React.memo((): JSX.Element => <SVGLoadingItem />);
+export const MoneyHoarderBadgeIcon = React.memo((): JSX.Element => <SVGMoneyHoarderBadge />);
+export const ImageIcon = React.memo((): JSX.Element => <SVGImageIcon />);
