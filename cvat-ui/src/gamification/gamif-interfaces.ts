@@ -36,7 +36,7 @@ export interface Challenge {
 }
 
 export interface ChallengeState {
-    availableChallenges: number;
+    availableChallenges: Challenge[];
 }
 
 export enum EnergizerType {
@@ -46,17 +46,71 @@ export enum EnergizerType {
     NONE = 'NONE',
 }
 
+export interface EnergizerProps {
+    showLeaderboard: (show: boolean, score: number) => void;
+}
+
+export interface QuizDuelQuestion {
+    question: string;
+    answerA: string;
+    answerB: string;
+    answerC: string;
+    answerD: string;
+    correctAnswer: number;
+}
+
+export interface LeaderboardEntry {
+    username: string;
+    score: number;
+    avatar: any;
+}
+
 export interface EnergizerState {
     energyLevel: number,
     active: boolean,
+    popupOpen: boolean,
     activeEnergizer: EnergizerType,
+    leaderboardEntries: LeaderboardEntry[],
+    questions: QuizDuelQuestion[],
 }
+
+export interface ShopItem {
+    id: number;
+    title: string;
+    price: number;
+    bought: boolean;
+    iconpath: string; // TODO:
+    onPurchase: () => void;
+}
+
 export interface ShopState {
-    id: number;
+    availableItems: ShopItem[];
+    currentBalance: number;
+    selectedItemId: number;
 }
+
+export enum OnlineStatus {
+    ONLINE = 'ONLINE',
+    DO_NOT_DISTURB = 'DO_NOT_DISTURB',
+    OFFLINE = 'OFFLINE',
+}
+
+export interface Profile {
+    username: string,
+    userId: number,
+    avatar: number, // TODO: figure out best way to save this.
+    status: OnlineStatus,
+    shownBadges: Badge[],
+    chatActive: boolean,
+}
+
 export interface SocialState {
+    status: OnlineStatus,
+    friendListEntries: Profile[],
     id: number;
+
 }
+
 export interface StatisticsState {
     id: number;
 }

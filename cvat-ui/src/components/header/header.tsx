@@ -5,7 +5,7 @@
 import './styles.scss';
 import '../../gamification/gamif-styles.scss';
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Row, Col } from 'antd/lib/grid';
 import Icon, {
@@ -43,8 +43,17 @@ import CVATTooltip from 'components/common/cvat-tooltip';
 import { switchSettingsDialog as switchSettingsDialogAction } from 'actions/settings-actions';
 import { logoutAsync, authActions } from 'actions/auth-actions';
 import { CombinedState } from 'reducers/interfaces';
-import { switchEnergizerModal as switchEnergizerModalAction, incrementEnergy as incrementEnergyAction } from 'gamification/actions/energizer-actions';
+import {
+    switchEnergizerModal as switchEnergizerModalAction,
+    incrementEnergy as incrementEnergyAction,
+    switchEnergizerPopUp as switchEnergizerPopUpAction,
+    saveCurrentEnergyAsync,
+    getCurrentEnergyAsync,
+} from 'gamification/actions/energizer-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
+import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
+import { ShopWindow } from 'gamification/components/reward-shop/shop-window';
+import { loadBadgesAsync } from 'gamification/actions/badge-actions';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -83,8 +92,9 @@ interface StateToProps {
     organizationsList: any[];
     currentOrganization: any | null;
     // energizer stuff
-    energizerShown: boolean
-    currentEnergy: number
+    energizerShown: boolean;
+    energizerPopUpShown: boolean;
+    currentEnergy: number;
 }
 
 interface DispatchToProps {
@@ -92,7 +102,10 @@ interface DispatchToProps {
     switchSettingsDialog: (show: boolean) => void;
     switchChangePasswordDialog: (show: boolean) => void;
     switchEnergizerModal: (show: boolean) => void;
+    switchEnergizerPopUp: (show: boolean) => void;
     incrementEnergy: (increment: number) => void;
+    saveCurrentEnergy: (newEnergy: number) => void;
+    getCurrentEnergy: () => void;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
@@ -109,7 +122,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         shortcuts: { normalizedKeyMap },
         settings: { showDialog: settingsDialogShown },
         organizations: { fetching: organizationsFetching, current: currentOrganization, list: organizationsList },
-        energizer: { energyLevel: currentEnergy, active: energizerShown },
+        energizer: { energyLevel: currentEnergy, active: energizerShown, popupOpen: energizerPopUpShown },
     } = state;
 
     return {
@@ -145,6 +158,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         organizationsList,
         currentEnergy,
         energizerShown,
+        energizerPopUpShown,
     };
 }
 
@@ -154,7 +168,10 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
         switchSettingsDialog: (show: boolean): void => dispatch(switchSettingsDialogAction(show)),
         switchChangePasswordDialog: (show: boolean): void => dispatch(authActions.switchChangePasswordDialog(show)),
         switchEnergizerModal: (show: boolean): void => dispatch(switchEnergizerModalAction(show)),
+        switchEnergizerPopUp: (show: boolean): void => dispatch(switchEnergizerPopUpAction(show)),
         incrementEnergy: (increment: number): void => dispatch(incrementEnergyAction(increment)),
+        saveCurrentEnergy: (newEnergy: number): void => dispatch(saveCurrentEnergyAsync(newEnergy)),
+        getCurrentEnergy: (): void => dispatch(getCurrentEnergyAsync()),
     };
 }
 
@@ -172,7 +189,10 @@ function HeaderContainer(props: Props): JSX.Element {
         switchSettingsDialog,
         switchChangePasswordDialog,
         switchEnergizerModal,
+        switchEnergizerPopUp,
         incrementEnergy,
+        saveCurrentEnergy,
+        getCurrentEnergy,
         renderChangePasswordItem,
         isAnalyticsPluginActive,
         isModelsPluginActive,
@@ -181,6 +201,7 @@ function HeaderContainer(props: Props): JSX.Element {
         organizationsList,
         currentEnergy,
         energizerShown,
+        energizerPopUpShown,
     } = props;
 
     const {
@@ -188,8 +209,12 @@ function HeaderContainer(props: Props): JSX.Element {
     } = consts;
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
+    // TODO: Change the hard-coded values
     useEffect(() => {
+        getCurrentEnergy();
+        dispatch(loadBadgesAsync()); // TODO: TESTING
         const interval = setInterval(() => {
             incrementEnergy(1);
         }, 30000);
@@ -500,13 +525,18 @@ function HeaderContainer(props: Props): JSX.Element {
                         Analytics
                     </Button>
                 )}
-                {/* TODO: Create an EnergizerButton component in gamification/energizer-button.tsx */}
                 <CVATTooltip overlay={`Current Energy: ${currentEnergy}`}>
-                    <Button
-                        type='text'
-                        icon={<EnergizerIcon />}
-                        onClick={(): void => { if (currentEnergy >= 10) { switchEnergizerModal(true); } }}
-                    />
+                    <Popover
+                        content={<EnergizerPopUp currentEnergy={currentEnergy} />}
+                        trigger='click'
+                        visible={energizerPopUpShown}
+                    >
+                        <Button
+                            type='text'
+                            icon={<EnergizerIcon />}
+                            onClick={(): void => switchEnergizerPopUp(true)}
+                        />
+                    </Popover>
                 </CVATTooltip>
                 <Button
                     type='text'
@@ -516,6 +546,19 @@ function HeaderContainer(props: Props): JSX.Element {
                         console.log('Test button pressed');
                     }}
                 />
+                <Button
+                    type='text'
+                    onClick={(): void => {
+                        console.log('Save Energy to DB');
+                        saveCurrentEnergy(currentEnergy);
+                        console.log('🚀 ~ file: header.tsx ~ line 550 ~ HeaderContainer ~ currentEnergy', currentEnergy);
+                    }}
+                >
+                    Save
+                </Button>
+                <Popover content={<ShopWindow items={[]} currentBalance={0} selectedItemId={0} />}>
+                    <Button type='text'> Open Shop </Button>
+                </Popover>
             </div>
             <div className='cvat-right-header'>
                 <CVATTooltip overlay='Click to open repository'>
@@ -571,7 +614,10 @@ function HeaderContainer(props: Props): JSX.Element {
             </div>
             <SettingsModal visible={settingsDialogShown} onClose={() => switchSettingsDialog(false)} />
             {renderChangePasswordItem && <ChangePasswordDialog onClose={() => switchChangePasswordDialog(false)} />}
-            <EnergizerModal visible={energizerShown} onClose={() => switchEnergizerModal(false)} />
+            <EnergizerModal
+                visible={energizerShown}
+                onClose={() => switchEnergizerModal(false)}
+            />
         </Layout.Header>
     );
 }

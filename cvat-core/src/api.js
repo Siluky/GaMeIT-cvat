@@ -873,6 +873,56 @@ function build() {
             },
         },
 
+        energizer: {
+            /**
+             * @returns current energy of the user
+             */
+            async currentEnergy() {
+                const result = await PluginRegistry.apiWrapper(cvat.energizer.currentEnergy);
+                return result;
+            },
+
+            /**
+             * Stores the energy value of the user
+             * @param {*} newEnergyValue: The new energy value
+             */
+            async setEnergy(newEnergyValue) {
+                const result = await PluginRegistry.apiWrapper(cvat.energizer.setEnergy, newEnergyValue);
+                return result;
+            },
+
+            /**
+             * Randomly draws 3 questions from the database for the quiz duel energizer
+             * @returns 3 questions
+             */
+            async quizDuelQuestions() {
+                const result = await PluginRegistry.apiWrapper(cvat.energizer.quizDuelQuestions);
+                return result;
+            },
+
+            /**
+             *
+             * @param {*} energizerName The name of the energizer for which entries should be retrieved
+             * @returns all leaderboard entries for the energizer in question
+             */
+            async leaderboard(energizerName) {
+                const result = await PluginRegistry.apiWrapper(cvat.energizer.leaderboard, energizerName);
+                return result;
+            },
+
+            /**
+             * Adds a leaderboard entry to the database after a user has finished an energizer
+             * @param {*} userId The user
+             * @param {*} energizerName The name of the energizer for which the entry should be set
+             * @param {*} score the score of the user in said energizer
+             */
+            async addScore(userId, energizerName, score) {
+                const result = await PluginRegistry.apiWrapper(cvat.energizer.addScore, userId, energizerName, score);
+                return result;
+            },
+
+        },
+
         /**
          * Namespace is used for access to classes
          * @namespace classes
@@ -911,6 +961,7 @@ function build() {
     cvat.organizations = Object.freeze(cvat.organizations);
 
     cvat.badges = Object.freeze(cvat.badges);
+    cvat.energizer = Object.freeze(cvat.energizer);
 
     const implementAPI = require('./api-implementation');
 

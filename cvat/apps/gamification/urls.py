@@ -15,8 +15,10 @@ from rest_framework import routers
 router = routers.DefaultRouter(trailing_slash=False)
 router.register('badges', views.BadgeViewSet)
 router.register('badge-status', views.BadgeStatusViewSet)
-router.register('user-profile', views.UserProfileViewSet)
+router.register('user', views.UserProfileViewSet)
 router.register('user-badges', views.UserBadgeList)
+router.register('energizer-data', views.EnergizerLeaderboardViewSet)
+router.register('questions', views.QuizDuelQuestionsViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

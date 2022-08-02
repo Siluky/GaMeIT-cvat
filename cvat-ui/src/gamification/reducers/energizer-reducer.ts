@@ -9,7 +9,10 @@ import { EnergizerState, EnergizerType } from '../gamif-interfaces';
 const defaultState: EnergizerState = {
     energyLevel: 0,
     active: false,
+    popupOpen: false,
     activeEnergizer: EnergizerType.NONE,
+    leaderboardEntries: [],
+    questions: [],
 };
 
 // TODO: avoid overcapping energy
@@ -23,12 +26,72 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
             };
         }
 
-        case EnergizerActionTypes.INCREMENT_ENERGY: {
+        case EnergizerActionTypes.SWITCH_ENERGIZER_POPUP: {
             return {
                 ...state,
-                energyLevel: state.energyLevel + action.payload,
+                popupOpen: action.payload,
             };
         }
+
+        case EnergizerActionTypes.SET_ACTIVE_ENERGIZER: {
+            return {
+                ...state,
+                activeEnergizer: action.payload,
+            };
+        }
+
+        case EnergizerActionTypes.INCREMENT_ENERGY: {
+            console.log('🚀 ~ file: energizer-reducer.ts ~ line 38 ~ state.energyLevel + action.payload', state.energyLevel + action.payload);
+            return {
+                ...state,
+                energyLevel: Math.min(state.energyLevel + action.payload, 20),
+            };
+        }
+
+        case EnergizerActionTypes.GET_CURRENT_ENERGY_FAILED: {
+            return state;
+        }
+
+        case EnergizerActionTypes.GET_CURRENT_ENERGY_SUCCESS: {
+            return {
+                ...state,
+                energyLevel: action.payload,
+            };
+        }
+
+        case EnergizerActionTypes.SAVE_CURRENT_ENERGY_FAILED: {
+            return state;
+        }
+
+        case EnergizerActionTypes.SAVE_CURRENT_ENERGY_SUCCESS: {
+            return {
+                ...state,
+                energyLevel: action.payload,
+            };
+        }
+
+        case EnergizerActionTypes.GET_LEADERBOARD_DATA_FAILED: {
+            return state;
+        }
+
+        case EnergizerActionTypes.GET_LEADERBOARD_DATA_SUCCESS: {
+            return {
+                ...state,
+                leaderboardEntries: action.payload,
+
+            };
+        }
+
+        // case EnergizerActionTypes.GET_QUIZDUEL_QUESTIONS_FAILED: {
+        //     return state;
+        // }
+
+        // case EnergizerActionTypes.GET_QUIZDUEL_QUESTIONS_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         questions: action.payload,
+        //     };
+        // }
 
         default: {
             return state;

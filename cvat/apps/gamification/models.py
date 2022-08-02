@@ -11,7 +11,6 @@ from django.dispatch import receiver
 from django.utils.timezone import now
 
 
-#TODO: Testing this currently
 class ChallengeChoice(str, Enum):
     DAILY = 'Daily'
     WEEKLY = 'Weekly'
@@ -46,13 +45,6 @@ class Challenge(models.Model):
     def __str__(self):
         return self.instruction
 
-class EnergizerData(models.Model):
-    currentEnergy = models.IntegerField(default=0)
-    energizersDone = models.IntegerField(default=0)
-    #TODO: Data for individual energizers
-
-
-
 class ShopItem(models.Model):
     itemName = models.CharField(max_length=40, default='Item')
     price = models.IntegerField(default=100)
@@ -73,6 +65,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     last_login = models.DateField(default=now)
 
+
     # badge-related data
     badges = models.ManyToManyField(Badge, through='BadgeStatus')
     # TODO: Selected badges
@@ -81,15 +74,15 @@ class UserProfile(models.Model):
     challenges = models.ManyToManyField(Challenge, through='ChallengeStatus')
 
     # energizer-related data
-    # TODO: add proper default
-    # energizer_data = models.OneToOneField(EnergizerData, on_delete=models.CASCADE)
+    currentEnergy = models.IntegerField(default=0)
+    energizersDone = models.IntegerField(default=0)
 
     # shop-related data
     items = models.ManyToManyField(ShopItem, through='ItemStatus')
     current_balance = models.IntegerField(default=0)
 
     # social-related data
-    # TODO: not sure how to model this yet
+    # not sure how to model this yet
 
     # statistics-related data
     statistics = models.ManyToManyField(Statistic, through='StatisticsStatus')
@@ -114,7 +107,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 # The following status models are intermediate models with additional information
 # on the m:n relationship between a User(UserProfile) and other Models
-# including Badges, Challenges, ShopItems, Energizers
+# including Badges, Challenges, ShopItems
 
 # Models a user's individual progress on specific badges
 class BadgeStatus(models.Model):
@@ -136,6 +129,7 @@ class BadgeStatus(models.Model):
 
 # Model's a user's individual status of the shop (i.e., items bought, current balance, ...)
 # TODO: Not sure about this one yet
+# TODO: idea: save 3 numbers for each user profile, which correspond to challenge IDs
 class ChallengeStatus(models.Model):
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, default=None)
@@ -145,6 +139,49 @@ class ChallengeStatus(models.Model):
 class ItemStatus(models.Model):
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     item = models.ForeignKey(ShopItem, on_delete=models.CASCADE, default=None)
+
+
+class EnergizerChoice(str, Enum):
+    TETRIS = 'TETRIS',
+    SNAKE = 'SNAKE',
+    QUIZ = 'QUIZ',
+    NONE = 'NONE',
+
+    @classmethod
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
+
+    def __str__(self):
+        return self.value
+
+class EnergizerData(models.Model):
+    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+    energizer = models.CharField(max_length=32, choices=EnergizerChoice.choices(),
+                                    default=EnergizerChoice.NONE)
+    score = models.IntegerField(default=0)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return (self.userProfile.user.get_username() + '-' + self.energizer + ': ' + str(self.score))
+
+
+class Question(models.Model):
+    class correctAnswer(models.IntegerChoices):
+        A = 1
+        B = 2
+        C = 3
+        D = 4
+
+    question = models.CharField(max_length=80, default='')
+    answerA = models.CharField(max_length=32, default='A: ')
+    answerB = models.CharField(max_length=32, default='B: ')
+    answerC = models.CharField(max_length=32, default='C: ')
+    answerD = models.CharField(max_length=32, default='D: ')
+    correctAnswer = models.IntegerField(choices=correctAnswer.choices, default=1)
+
+    def __str__(self):
+        return self.question
+
 
 # Model's a user's individual status of individual statistics
 class StatisticsStatus(models.Model):

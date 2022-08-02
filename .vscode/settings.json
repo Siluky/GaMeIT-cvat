@@ -55,10 +55,6 @@
             "group": "Default"
         },
         {
-            "filePath": "cvat-ui/src/gamification/components/statistics/statisticslist-component.tsx",
-            "group": "Default"
-        },
-        {
             "filePath": "cvat-ui/src/gamification/gamif-styles.scss",
             "group": "Default"
         },
@@ -72,6 +68,18 @@
         },
         {
             "filePath": "cvat/apps/gamification/urls.py",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat/apps/gamification/models.py",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/actions/social-actions.ts",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/index.tsx",
             "group": "Default"
         }
     ],

@@ -2,22 +2,45 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { AnyAction } from 'redux';
-// import getCore from 'cvat-core-wrapper';
+import { ActionCreator, AnyAction, Dispatch } from 'redux';
+import getCore from 'cvat-core-wrapper';
+import { ThunkAction } from 'redux-thunk';
+import { Challenge } from 'gamification/gamif-interfaces';
 
-// const cvat = getCore();
+const cvat = getCore();
 
 export enum ChallengeActionTypes {
     // TODO:
-    GET_CHALLENGES = 'GET_CHALLENGES',
+    GET_CHALLENGES_SUCCESS = 'GET_CHALLENGES_SUCCESS',
+    GET_CHALLENGES_FAILED = 'GET_CHALLENGES_FAILED',
+
     ADD_CHALLENGE = 'ADD_CHALLENGE',
     UPDATE_CHALLENGE = 'UPDATE_CHALLENGE',
     COMPLETE_CHALLENGE = 'COMPLETE_CHALLENGE',
 }
 
-/**  Load the currently active challenges of a user */
-export function getChallenges(): AnyAction {
+export function getChallengesSuccess(challenges: Challenge[]): AnyAction {
     return {
-        type: ChallengeActionTypes.GET_CHALLENGES,
+        type: ChallengeActionTypes.GET_CHALLENGES_SUCCESS,
+        payload: challenges,
+    };
+}
+
+export function getChallengesFailed(error: any): AnyAction {
+    return {
+        type: ChallengeActionTypes.GET_CHALLENGES_FAILED,
+        payload: error,
+    };
+}
+
+export function getChallengesAsync(): ThunkAction<void, {}, {}, AnyAction> {
+    return async function getChallengesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        let challengesImport = null;
+        try {
+            challengesImport = await cvat.challenges.get(); // TODO: Not implemented yet!
+            dispatch(getChallengesSuccess(challengesImport));
+        } catch (error) {
+            dispatch(getChallengesFailed(error));
+        }
     };
 }
