@@ -191,7 +191,7 @@ function HeaderContainer(props: Props): JSX.Element {
         switchEnergizerModal,
         switchEnergizerPopUp,
         incrementEnergy,
-        // saveCurrentEnergy, //TODO: uncomment as necessary!
+        saveCurrentEnergy,
         getCurrentEnergy,
         renderChangePasswordItem,
         isAnalyticsPluginActive,
@@ -546,7 +546,7 @@ function HeaderContainer(props: Props): JSX.Element {
                         console.log('Test button pressed');
                     }}
                 />
-                {/* <Button
+                <Button
                     type='text'
                     onClick={(): void => {
                         console.log('Save Energy to DB');
@@ -555,7 +555,7 @@ function HeaderContainer(props: Props): JSX.Element {
                     }}
                 >
                     Save
-                </Button> */}
+                </Button>
                 <Popover content={<ShopWindow />} mouseLeaveDelay={3}>
                     <Button type='text'> Open Shop </Button>
                 </Popover>

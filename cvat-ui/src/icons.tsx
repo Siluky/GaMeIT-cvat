@@ -62,6 +62,7 @@ import SVGRedAvatarBorder from './assets/red-avatar-border.svg';
 import SVGLoadingItem from './assets/loading-item.svg';
 import SVGMoneyHoarderBadge from './assets/money-hoarder-badge.svg';
 import SVGImageIcon from './assets/images-icon.svg';
+import SVGTimeIcon from './assets/time-icon.svg';
 
 export const CVATLogo = React.memo((): JSX.Element => <SVGCVATLogo />);
 export const EmptyTasksIcon = React.memo((): JSX.Element => <SVGEmptyTasksIcon />);
@@ -121,3 +122,4 @@ export const RedAvatarBorderIcon = React.memo((): JSX.Element => <SVGRedAvatarBo
 export const LoadingItemIcon = React.memo((): JSX.Element => <SVGLoadingItem />);
 export const MoneyHoarderBadgeIcon = React.memo((): JSX.Element => <SVGMoneyHoarderBadge />);
 export const ImageIcon = React.memo((): JSX.Element => <SVGImageIcon />);
+export const TimeIcon = React.memo((): JSX.Element => <SVGTimeIcon />);

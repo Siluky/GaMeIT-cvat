@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 import React, { useEffect } from 'react';
 import '../../gamif-styles.scss';
+import 'react-chat-widget/lib/styles.css';
 import { Menu, Popover, Button } from 'antd';
 import { RadarChartOutlined, CloseOutlined } from '@ant-design/icons';
 import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
@@ -39,13 +40,13 @@ const chatBar = (friend: Profile): JSX.Element => {
             <Popover
                 placement='top'
                 trigger='click'
-                content={<ChatBox />}
+                content={<ChatBox userId={friend.userId} />}
                 mouseLeaveDelay={10}
                 defaultVisible
             >
                 {friend.username}
             </Popover>
-            {/* TODO: TEST */}
+
             <Button icon={<CloseOutlined />} onClick={() => dispatch(toggleChat(friend.userId, false))} />
         </Menu.Item>
     );
