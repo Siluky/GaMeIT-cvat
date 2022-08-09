@@ -5,8 +5,8 @@
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Badge, BadgeStatus, EnergizerData, Question, UserProfile
-from .serializers import BadgeSerializer, BadgeStatusSerializer, EnergizerDataSerializer, EnergySerializer, QuestionSerializer, UserProfileSerializer
+from .models import Badge, BadgeStatus, ChatMessage, ChatRoom, EnergizerData, Question, UserProfile
+from .serializers import BadgeSerializer, BadgeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer, QuestionSerializer, UserProfileSerializer
 
 def currentUserProfile(self):
     currentUser = self.request.user
@@ -38,7 +38,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
         elif request.method == 'PUT':
-            print (request.data.get('currentEnergy')) # FIXME: 
+            print (request.data.get('currentEnergy')) # FIXME:
             currentUserProfile.currentEnergy = request.data.get('currentEnergy')
             currentUserProfile.save()
 
@@ -89,3 +89,17 @@ class QuizDuelQuestionsViewSet(viewsets.ModelViewSet):
         serializer = QuestionSerializer(random_questions, many=True)
         return Response(serializer.data)
 
+
+
+class ChatViewSet(viewsets.ModelViewSet):
+    queryset = ChatRoom.objects.all()
+    serializer_class = ChatSerializer
+
+    def get_queryset(self):
+        chatRoomId = self.request.query_params.get('chatId')
+        queryset = ChatMessage.objects.all()
+
+        if chatRoomId:
+            targetChatRoom = ChatRoom.objects.filter(id = chatRoomId).first()
+            queryset = ChatMessage.objects.filter(room = targetChatRoom)
+        return queryset

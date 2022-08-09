@@ -49,3 +49,11 @@ class EnergizerDataSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
         rep['userProfile'] = instance.userProfile.user.get_username()
         return rep
+
+
+class ChatSerializer(serializers.ModelSerializer):
+    room = serializers.PrimaryKeyRelatedField(many=False, read_only=False, queryset=models.ChatRoom.objects.all())
+
+    class Meta:
+        model = models.ChatMessage
+        fields = ('room','content', 'timestamp')

@@ -141,6 +141,25 @@ class ItemStatus(models.Model):
     item = models.ForeignKey(ShopItem, on_delete=models.CASCADE, default=None)
 
 
+class ChatRoom(models.Model):
+    user1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user1')
+    user2 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user2')
+    id = models.CharField(default='0-0', primary_key=True, max_length=8)
+
+    def __str__(self):
+        return (self.id + ': ' + self.user1.user.get_username() + '-' + self.user2.user.get_username())
+
+    def save(self, *args, **kwargs):
+        self.id = str(self.user1.id) + '-' + str(self.user2.id)
+        super(ChatRoom, self).save(*args, **kwargs)
+
+
+class ChatMessage(models.Model):
+    content = models.CharField(max_length=1000)
+    timestamp = models.DateTimeField(auto_now=True)
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+
+
 class EnergizerChoice(str, Enum):
     TETRIS = 'TETRIS',
     SNAKE = 'SNAKE',

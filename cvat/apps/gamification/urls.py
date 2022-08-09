@@ -19,6 +19,7 @@ router.register('user', views.UserProfileViewSet)
 router.register('user-badges', views.UserBadgeList)
 router.register('energizer-data', views.EnergizerLeaderboardViewSet)
 router.register('questions', views.QuizDuelQuestionsViewSet)
+router.register('chat', views.ChatViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
