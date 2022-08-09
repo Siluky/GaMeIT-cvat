@@ -1760,6 +1760,7 @@
             }
 
             // Gamification part from here
+            // badges
             async function getBadges() {
                 const { backendAPI } = config;
                 let response = null;
@@ -1792,11 +1793,22 @@
                 return response.data;
             }
 
-            /* async function updateBadges() {
+            // challenges
+            async function getChallenges() {
                 const { backendAPI } = config;
-            } */
+                let response = null;
+                response = await Axios.get(`${backendAPI}/`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
 
-            // TODO: from here on
+            async function addChallenge() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            // energizer
 
             async function getCurrentEnergy() {
                 const { backendAPI } = config;
@@ -1867,6 +1879,101 @@
                 }
 
                 return response.data.results;
+            }
+
+            // shop
+            async function getItems() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/items`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function buyItem(itemId) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.post(`${backendAPI}/items/${itemId}`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function getBalance() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/balance`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function updateCurrentBalance(newBalance) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.post(`${backendAPI}/balance`, newBalance); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            // social
+            async function getFriendsList() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function getChatHistory(userId) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/chat/${userId}/userId2`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function sendMessageToUser(userId, message) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.post(`${backendAPI}/chat/${userId}/userId2`, message); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function getOnlineStatus() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/status`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function setOnlineStatus(status) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.post(`${backendAPI}/status`, status); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            // statistics
+
+            async function getStatistic() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function setStatistic(statisticId, value) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.post(`${backendAPI}/statistics/${statisticId}`, value); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function getQuickStatistics() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/statistics/quick`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function setQuickStatistic(statisticId) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.post(`${backendAPI}/statistics/${statisticId}`); // TODO:
+                return response.data; // TODO: double-check, maybe response.data.results
             }
 
             Object.defineProperties(
@@ -2033,9 +2140,14 @@
                             get: getBadges,
                             getStatus: getBadgeStatus,
                             save: saveBadge,
-                            // TODO:
-                            // save_all: saveAllBadges,
-                            // update: updateBadges,
+                        }),
+                        writable: false,
+                    },
+
+                    challenges: {
+                        value: Object.freeze({
+                            get: getChallenges,
+                            add: addChallenge,
                         }),
                         writable: false,
                     },
@@ -2048,6 +2160,38 @@
                             leaderboard: getLeaderboard,
                             addScore: addLeaderboardEntry,
                         }),
+                        writable: false,
+                    },
+
+                    shop: {
+                        value: Object.freeze({
+                            items: getItems,
+                            buy: buyItem,
+                            balance: getBalance,
+                            updateBalance: updateCurrentBalance,
+                        }),
+                        writable: false,
+                    },
+
+                    social: {
+                        value: Object.freeze({
+                            friends: getFriendsList,
+                            chatHistory: getChatHistory,
+                            sendMessage: sendMessageToUser,
+                            getStatus: getOnlineStatus,
+                            setStatus: setOnlineStatus,
+                        }),
+                        writable: false,
+                    },
+
+                    statistics: {
+                        value: Object.freeze({
+                            get: getStatistic,
+                            set: setStatistic,
+                            quickStatistics: getQuickStatistics,
+                            setQuick: setQuickStatistic,
+                        }),
+                        writable: false,
                     },
                 }),
             );

@@ -339,7 +339,16 @@ const config = require('./config');
             return badges;
         };
 
-        // challenges TODO:
+        // challenges
+        cvat.challenges.get.implementation = async () => {
+            const challenges = await serverProxy.challenges.get();
+            return challenges;
+        };
+
+        cvat.challenges.add.implementation = async () => {
+            const challenges = await serverProxy.challenges.add();
+            return challenges;
+        };
 
         // energizer
         cvat.energizer.currentEnergy.implementation = async () => {
@@ -365,6 +374,77 @@ const config = require('./config');
         cvat.energizer.addScore.implementation = async (userId, energizerName, score) => {
             const leaderboard = await serverProxy.energizer.addScore(userId, energizerName, score);
             return leaderboard;
+        };
+
+        // shop
+
+        cvat.shop.items.implementation = async () => {
+            const items = await serverProxy.shop.items();
+            return items;
+        };
+
+        cvat.shop.buy.implementation = async (itemId) => {
+            const items = await serverProxy.shop.buy(itemId);
+            return items;
+        };
+
+        cvat.shop.balance.implementation = async () => {
+            const items = await serverProxy.shop.balance();
+            return items;
+        };
+
+        cvat.shop.updateBalance.implementation = async (newBalance) => {
+            const items = await serverProxy.shop.updateBalance(newBalance);
+            return items;
+        };
+
+        // social
+
+        cvat.social.friends.implementation = async () => {
+            const friends = await serverProxy.social.friends();
+            return friends;
+        };
+
+        cvat.social.chatHistory.implementation = async (userId) => {
+            const items = await serverProxy.social.chatHistory(userId);
+            return items;
+        };
+
+        cvat.social.sendMessage.implementation = async (userId, message) => {
+            const items = await serverProxy.sendMessage.friends(userId, message);
+            return items;
+        };
+
+        cvat.social.getStatus.implementation = async () => {
+            const status = await serverProxy.social.getStatus();
+            return status;
+        };
+
+        cvat.social.setStatus.implementation = async (status) => {
+            const newStatus = await serverProxy.social.setStatus(status);
+            return newStatus;
+        };
+
+        // statistics
+
+        cvat.statistics.get.implementation = async () => {
+            const statistics = await serverProxy.statistics.get();
+            return statistics;
+        };
+
+        cvat.statistics.set.implementation = async (statisticId, value) => {
+            const statistic = await serverProxy.statistics.set(statisticId, value);
+            return statistic;
+        };
+
+        cvat.statistics.quickStatistics.implementation = async () => {
+            const statistic = await serverProxy.statistics.quickStatistics();
+            return statistic;
+        };
+
+        cvat.statistics.setQuick.implementation = async (statisticId) => {
+            const statistic = await serverProxy.statistics.setQuick(statisticId);
+            return statistic;
         };
 
         return cvat;

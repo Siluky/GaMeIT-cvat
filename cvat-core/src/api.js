@@ -845,7 +845,7 @@ function build() {
         },
 
         /**
-         * Namespace is used for access to badges
+         * Namespace is used for access to badge data
          * @namespace badges
          * @memberof module:API.cvat
         */
@@ -873,6 +873,30 @@ function build() {
             },
         },
 
+        /**
+         * Namespace is used for access to challenge data
+         * @namespace challenges
+         * @memberof module:API.cvat
+        */
+        challenges: {
+
+            async get() {
+                const result = await PluginRegistry.apiWrapper(cvat.challenges.get);
+                return result;
+            },
+
+            async add() {
+                const result = await PluginRegistry.apiWrapper(cvat.challenges.add);
+                return result;
+            },
+
+        },
+
+        /**
+         * Namespace is used for access to energizers
+         * @namespace energizer
+         * @memberof module:API.cvat
+        */
         energizer: {
             /**
              * @returns current energy of the user
@@ -924,6 +948,93 @@ function build() {
         },
 
         /**
+         * Namespace is used for access to shop data
+         * @namespace shop
+         * @memberof module:API.cvat
+        */
+        shop: {
+            async items() {
+                const result = await PluginRegistry.apiWrapper(cvat.shop.items);
+                return result;
+            },
+
+            async buy(itemId) {
+                const result = await PluginRegistry.apiWrapper(cvat.shop.buy, itemId);
+                return result;
+            },
+
+            async balance() {
+                const result = await PluginRegistry.apiWrapper(cvat.shop.balance);
+                return result;
+            },
+
+            async updateBalance(newBalance) {
+                const result = await PluginRegistry.apiWrapper(cvat.shop.updateBalance, newBalance);
+                return result;
+            },
+
+        },
+
+        /**
+         * Namespace is used for access to social features data
+         * @namespace social
+         * @memberof module:API.cvat
+        */
+        social: {
+            async friends() {
+                const result = await PluginRegistry.apiWrapper(cvat.social.getFriends);
+                return result;
+            },
+
+            async chatHistory(userId) {
+                const result = await PluginRegistry.apiWrapper(cvat.social.getChatHistory, userId);
+                return result;
+            },
+
+            async sendMessage(userId, content) {
+                const result = await PluginRegistry.apiWrapper(cvat.social.sendMessage, userId, content);
+                return result;
+            },
+
+            async getStatus() {
+                const result = await PluginRegistry.apiWrapper(cvat.social.getStatus);
+                return result;
+            },
+
+            async setStatus(status) {
+                const result = await PluginRegistry.apiWrapper(cvat.social.setStatus, status);
+                return result;
+            },
+        },
+
+        /**
+         * Namespace is used for access to statistics data
+         * @namespace statistics
+         * @memberof module:API.cvat
+        */
+        statistics: {
+            async get() {
+                const result = await PluginRegistry.apiWrapper(cvat.statistics.setStatus);
+                return result;
+            },
+
+            async set(statisticId, newValue) {
+                const result = await PluginRegistry.apiWrapper(cvat.statistics.setStatus, statisticId, newValue);
+                return result;
+            },
+
+            async quickStatistics() {
+                const result = await PluginRegistry.apiWrapper(cvat.statistics.quickStatistics);
+                return result;
+            },
+
+            async setQuick(statisticId) {
+                const result = await PluginRegistry.apiWrapper(cvat.statistics.setQuick, statisticId);
+                return result;
+            },
+        },
+
+        /**
          * Namespace is used for access to classes
          * @namespace classes
          * @memberof module:API.cvat
@@ -961,7 +1072,11 @@ function build() {
     cvat.organizations = Object.freeze(cvat.organizations);
 
     cvat.badges = Object.freeze(cvat.badges);
+    cvat.challenges = Object.freeze(cvat.challenges);
     cvat.energizer = Object.freeze(cvat.energizer);
+    cvat.shop = Object.freeze(cvat.shop);
+    cvat.social = Object.freeze(cvat.social);
+    cvat.statistics = Object.freeze(cvat.statistics);
 
     const implementAPI = require('./api-implementation');
 
