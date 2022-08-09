@@ -75,6 +75,10 @@
     }
 }
 
+.gamif-badge-overview-individual-badge:hover {
+  box-shadow: 0 0 40px 20px yellow;
+}
+
 .gamif-badge-detail-view {
     height: 50%;
     padding-left: 5%;
@@ -116,6 +120,7 @@
     flex-direction: column;
   }
 
+
   .gamif-challenge-pane-top {
     flex-direction: row;
     align-items: center;
@@ -130,6 +135,28 @@
     height: 80%;
     margin: auto;
     font-size: 12px;
+
+    .ant-progress-steps-item {
+      margin-right: 0;
+
+      & :first-of-type {
+        border-radius: 5px 0 0 5px;
+      }
+
+      & :last-of-type {
+        border-radius: 0 5px 5px 0;
+      }
+    }
+
+    .ant-progress-text {
+      margin-left: auto;
+    }
+
+
+  }
+
+  .gamif-challenge-pane-progress {
+    width: 200px;
   }
 
   .gamif-challenge-pane-top-right {
@@ -438,7 +465,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 15px;
+  width: 10px;
 }
 
 /* Track */
@@ -528,66 +555,93 @@
 
 
 .gamif-quick-profile-container {
-    outline: 1px solid #1e3d59;
-    width: 240px;
-    height: 160px;
-    border-radius: 5px;
-    background: #e6e6e6;
+  outline: 1px solid #1e3d59;
+  width: 240px;
+  height: 160px;
+  border-radius: 5px;
+  background: #e6e6e6;
+}
+
+.gamif-quick-profile {
+  display: flex;
+  width: 100%;
+
+  flex-direction: column;
+  align-items: center;
+}
+
+.gamif-quick-profile.status {
+  height: 20%;
+  border: none;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-right: 5px;
+}
+
+.gamif-quick-profile-status-text {
+  font-weight: bold;
+}
+
+.gamif-quick-profile-status-icon {
+  height: 20px;
+  width: 20px;
+  background: grey;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.gamif-quick-profile-avatar-name-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  border: none;
+  height: 40px;
+  font-size: 16px;
+
+  background-image: linear-gradient(#1e3d59,#ccc);
+  background-size: 80% 2px;
+  background-position: bottom left 50%;
+  background-repeat: no-repeat
+}
+.gamif-quick-profile-avatar {
+}
+
+.gamif-quick-profile-name {
+  width: 70%;
+  margin-top: auto;
+  text-align: center;
+  color: #1e3d59;
+  font-weight: bold;
+  margin-right: auto 10%;
+}
+
+.gamif-quick-profile.badges {
+  flex-direction: row;
+  justify-content: space-around;
+  height: 50px;
+  width: 50%;
+  font-size: 200%;
+}
+
+.gamif-quick-profile.message-button {
+  flex-direction: row;
+  font-size: 16px;
+  width: 50%;
+  height: 40px;
+  color: white;
+  font-weight: bold;
+  background: #1e3d59;
+  border-radius: 8px;
+}
+
+  .gamif-chat-box-messages-container {
+    height: 80%;
+    overflow-y: scroll;
+    border-bottom: 1px solid black;
   }
 
-  .gamif-quick-profile {
-    display: flex;
-    width: 100%;
-
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .gamif-quick-profile.status {
-    height: 20%;
-    border: none;
-    flex-direction: row;
-    justify-content: flex-end;
-    padding-right: 5px;
-    font-weight: bold;
-  }
-
-  .gamif-quick-profile.avatar-name-container {
-    flex-direction: row;
-    border: none;
-    height: 40px;
-    border-bottom: 2px solid #1e3d59;
-  }
-
-  .gamif-quick-profile.avatar {
-    width: 30%;
-    font-size: 200%;
-  }
-  .gamif-quick-profile.name {
-    font-size: 16px;
-    width: 70%;
-    text-decoration: underline;
-  }
-
-  .gamif-quick-profile.badges {
-    flex-direction: row;
-    justify-content: space-around;
-    height: 50px;
-    width: 50%;
-    font-size: 200%;
-  }
-
-  .gamif-quick-profile.message-button {
-    flex-direction: row;
-    font-size: 16px;
-    width: 50%;
-    height: 40px;
-    color: white;
-    font-weight: bold;
-    background: #1e3d59;
-    border-radius: 8px;
-  }
-  .gamif-chat-box-wrapper {
+  .gamif-chat-box-container {
     width: 240px;
     height: 240px;
     background: #97A4B4;
@@ -616,6 +670,7 @@
 
     .gamif-chat-box-input {
       background: #EEFBFB;
+      margin: auto;
       width: 90%;
       height: 20px;
       font-style: italic;
@@ -625,8 +680,8 @@
       border-radius: 5px;
       align-items: flex-end;
       margin: auto auto 8px auto;
-
   }
+
 
 // Statistics
 // TODO: Namings

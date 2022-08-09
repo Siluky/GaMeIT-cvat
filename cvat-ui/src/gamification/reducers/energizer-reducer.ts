@@ -41,7 +41,6 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
         }
 
         case EnergizerActionTypes.INCREMENT_ENERGY: {
-            console.log('🚀 ~ file: energizer-reducer.ts ~ line 38 ~ state.energyLevel + action.payload', state.energyLevel + action.payload);
             return {
                 ...state,
                 energyLevel: Math.min(state.energyLevel + action.payload, 20),

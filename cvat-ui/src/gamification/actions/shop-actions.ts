@@ -6,7 +6,6 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { ShopItem } from 'gamification/gamif-interfaces';
-import { useDispatch } from 'react-redux';
 import { getCVATStore } from 'cvat-store';
 
 const cvat = getCore();
@@ -76,16 +75,18 @@ export function purchaseItemSuccess(itemId: number): AnyAction {
     };
 }
 
-export function purchaseItem(itemId: number): void {
-    // TODO: FIXME
-
-    const dispatch = useDispatch();
+export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyAction> {
     const shopState = getCVATStore().getState().shop;
     const item = shopState.availableItems.find((_item: ShopItem) => _item.id === itemId);
-    console.log('🚀 ~ file: shop-actions.ts ~ line 83 ~ purchaseItem ~ state.currentBalance', shopState.currentBalance);
-    console.log('🚀 ~ file: shop-actions.ts ~ line 84 ~ purchaseItem ~ item.price', item.price);
-    if (shopState.currentBalance <= item.price) {
-        dispatch(purchaseItemFailed());
-    }
-    dispatch(purchaseItemSuccess(itemId));
+    // console.log('🚀 ~ file: shop-actions.ts ~ line 83 ~ purchaseItem ~ state.currentBalance',
+    // shopState.currentBalance);
+    // console.log('🚀 ~ file: shop-actions.ts ~ line 84 ~ purchaseItem ~ item.price', item.price);
+    return (dispatch) => {
+        if (shopState.currentBalance <= item.price || item.bought) {
+            dispatch(purchaseItemFailed());
+        } else {
+            dispatch(purchaseItemSuccess(itemId));
+            dispatch(updateBalance(-item.price));
+        }
+    };
 }

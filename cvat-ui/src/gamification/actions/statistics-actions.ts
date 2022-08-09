@@ -8,11 +8,13 @@ import { AnyAction } from 'redux';
 // const cvat = getCore();
 
 export enum StatisticsActionTypes {
-    GET_STATISTICS = 'GET_STATISTICS',
+    SET_QUICK_STATISTIC = 'SET_QUICK_STATISTIC',
+    // maybe use REMOVE / ADD
+
 }
 
 export function getStatistics(): AnyAction {
     return {
-        type: StatisticsActionTypes.GET_STATISTICS,
+        type: StatisticsActionTypes.SET_QUICK_STATISTIC,
     };
 }

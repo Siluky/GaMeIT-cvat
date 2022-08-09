@@ -15,9 +15,10 @@ export interface Badge {
 }
 
 export interface BadgeState {
+    currentUserId: number;
     availableBadges: Badge[];
     selectedBadgeId: number;
-    currentUserId: number;
+    badgesinProfile: number[];
     loading: boolean;
 }
 
@@ -28,6 +29,7 @@ export enum ChallengeType {
 }
 
 export interface Challenge {
+    id: number;
     instruction: string;
     progress: number;
     goal: number;
@@ -111,6 +113,16 @@ export interface SocialState {
 
 }
 
-export interface StatisticsState {
+export interface Statistic {
     id: number;
+    name?: string;
+    value?: number;
+    unit?: string;
+    hoverOverText?: string;
+    icon?: any;
+}
+
+export interface StatisticsState {
+    statistics: Statistic[],
+    selectedStatistics: number[],
 }

@@ -4,6 +4,7 @@
 
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
+import { getCVATStore } from 'cvat-store';
 import { ThunkAction } from 'redux-thunk';
 import { Badge } from '../gamif-interfaces';
 
@@ -18,6 +19,9 @@ export enum BadgeActionTypes {
     INCREMENT_BADGE_SUCCESS = 'INCREMENT_BADGE_SUCCESS',
     INCREMENT_BADGE_FAILED = 'INCREMENT_BADGE_FAILED',
     SAVE_BADGES = 'SAVE_BADGES',
+    ADD_BADGE_TO_PROFILE_SUCCESS = 'ADD_BADGE_TO_PROFILE_SUCCESS',
+    ADD_BADGE_TO_PROFILE_FAILED = 'ADD_BADGE_TO_PROFILE_FAILED',
+    REMOVE_BADGE_FROM_PROFILE = 'REMOVE_BADGE_FROM_PROFILE',
 }
 
 function setCurrentUserProfileId(id: number): AnyAction {
@@ -134,5 +138,45 @@ export function setCurrentBadge(badgeId: number): AnyAction {
         type: BadgeActionTypes.SET_CURRENT_BADGE,
         payload: badgeId,
 
+    };
+}
+
+export function addBadgetoProfileSuccess(badgeId: number): AnyAction {
+    return {
+        type: BadgeActionTypes.ADD_BADGE_TO_PROFILE_SUCCESS,
+        payload: badgeId,
+    };
+}
+
+export function addBadgetoProfileFailed(): AnyAction {
+    return {
+        type: BadgeActionTypes.ADD_BADGE_TO_PROFILE_FAILED,
+        payload: { },
+
+    };
+}
+
+export function removeBadgefromProfile(badgeId: number): AnyAction {
+    return {
+        type: BadgeActionTypes.REMOVE_BADGE_FROM_PROFILE,
+        payload: badgeId,
+    };
+}
+
+export function toggleBadgeInProfile(badgeId: number): ThunkAction<void, {}, {}, AnyAction> {
+    const badgeState = getCVATStore().getState().badges;
+    const found = badgeState.badgesinProfile.find((el: number) => el === badgeId);
+
+    return (dispatch) => {
+        if (found) {
+            console.log('Badge found in Profile!');
+            dispatch(removeBadgefromProfile(badgeId));
+        } else if (badgeState.badgesinProfile.length >= 3) {
+            console.log('Badge Profile already contains 3 badges!');
+            dispatch(addBadgetoProfileFailed());
+        } else {
+            console.log('Adding badge to Profile');
+            dispatch(addBadgetoProfileSuccess(badgeId));
+        }
     };
 }

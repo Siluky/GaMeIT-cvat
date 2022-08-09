@@ -86,7 +86,7 @@ const dummyItems: ShopItem[] = [{
 ];
 
 const defaultState: ShopState = {
-    currentBalance: 0,
+    currentBalance: 100,
     availableItems: dummyItems,
     selectedItemId: 0,
 };
@@ -114,7 +114,7 @@ export default (state = defaultState, action: AnyAction): ShopState => {
         case ShopActionTypes.UPDATE_BALANCE: {
             return {
                 ...state,
-                currentBalance: state.currentBalance - action.payload,
+                currentBalance: state.currentBalance + action.payload,
             };
         }
 
