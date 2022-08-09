@@ -4,7 +4,7 @@
 import 'gamification/gamif-styles.scss';
 import React from 'react';
 
-interface Props {
+interface StatisticProps {
     id: number;
     name?: string;
     value?: number;
@@ -13,7 +13,7 @@ interface Props {
     icon?: any;
 }
 
-export default function QuickStatistic(props: Props): JSX.Element {
+export default function QuickStatistic(props: StatisticProps): JSX.Element {
     const { icon, value, unit } = props;
     // TODO: Tooltips
     return (

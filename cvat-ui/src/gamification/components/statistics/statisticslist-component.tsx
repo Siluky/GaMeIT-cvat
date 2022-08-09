@@ -11,6 +11,7 @@ import {
 }
     from 'antd';
 import { QuestionOutlined } from '@ant-design/icons';
+import { TimeIcon } from 'icons';
 import Statistic from './statistics-component';
 
 const { Panel } = Collapse;
@@ -26,7 +27,7 @@ export default function StatisticsList(): JSX.Element {
                 <Row>
                     <Col span={12}>
                         <div className='statistics-col'>
-                            <Statistic id={1} value={156} icon={icon} unit='Images' />
+                            <Statistic id={1} value={156} icon={<TimeIcon />} unit='Images' />
                         </div>
                     </Col>
                     <Col span={12}>

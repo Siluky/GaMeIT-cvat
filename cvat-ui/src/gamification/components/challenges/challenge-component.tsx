@@ -9,6 +9,8 @@ import { Button, Progress } from 'antd';
 import { AnnotationCoinIcon } from 'icons';
 
 import { blue, geekblue } from '@ant-design/colors';
+import { useDispatch } from 'react-redux';
+import { completeChallenge, updateChallengeProgress } from 'gamification/actions/challenge-actions';
 
 interface Props {
     id: number;
@@ -17,20 +19,34 @@ interface Props {
 
 export default function ChallengePane(props: Props): JSX.Element {
     const { challenge } = props;
+    const dispatch = useDispatch();
+
     return (
         <div className='gamif-challenge-pane-wrapper'>
             <div className='gamif-challenge-pane-top'>
                 <div className='gamif-challenge-pane-top-left'>
                     {challenge.instruction}
                     <Progress
+                        className='gamif-challenge-pane-progress'
                         percent={(challenge.progress / challenge.goal) * 100}
-                        steps={challenge.goal}
+                        strokeWidth={8}
+                        steps={Math.min(challenge.goal, 10)}
                         trailColor={geekblue[1]}
                         strokeColor={blue[4]}
                     />
                 </div>
                 <div className='gamif-challenge-pane-top-right'>
-                    <Button icon={<AnnotationCoinIcon />} type='text' />
+                    <Button
+                        icon={<AnnotationCoinIcon />}
+                        type='text'
+                        onClick={() => {
+                            if (challenge.goal === challenge.progress) {
+                                dispatch(completeChallenge(challenge));
+                            } else {
+                                dispatch(updateChallengeProgress(challenge.id, 1));
+                            }
+                        }}
+                    />
                     {challenge.reward}
                 </div>
             </div>

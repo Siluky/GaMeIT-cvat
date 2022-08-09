@@ -14,11 +14,13 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 
 import { BadgeIcon, BadgeGreyIcon } from 'icons';
+import { CloseOutlined } from '@ant-design/icons';
 import { Badge } from '../../gamif-interfaces';
 import {
     setCurrentBadge,
     loadBadgesAsync,
     incrementBadge,
+    toggleBadgeInProfile,
 } from '../../actions/badge-actions';
 
 interface BadgeOverviewProps {
@@ -63,7 +65,10 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
 }
 
 function showSelectedBadge(badge: Badge): JSX.Element {
-    // TODO: Show a tooltip when no badge is selected
+    const progress = `Current Progress: ${badge.progress} / ${badge.goal} ${badge.goalunit}`;
+    const receivedOn = `Achieved on ${badge.receivedOn}`;
+    const dispatch = useDispatch();
+
     return (
         <>
             <div className='gamif-badge-icon'>
@@ -73,7 +78,18 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                 <p><strong>{badge.title}</strong></p>
                 <p>{badge.instruction}</p>
                 <Progress percent={(badge.progress / badge.goal) * 100} />
-                {`Current Progress: ${badge.progress} / ${badge.goal} ${badge.goalunit}`}
+                {badge.got ? receivedOn : progress}
+                {badge.got && (
+                    <div>
+                        <Button
+                            icon={<CloseOutlined />}
+                            onClick={() => dispatch(toggleBadgeInProfile(badge.id))}
+                            size='small'
+                        />
+
+                    </div>
+                )}
+
             </div>
         </>
     );
@@ -120,6 +136,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                             {Object.values(badges.availableBadges).map((badge: Badge) => (
                                 <Col span={4}>
                                     <Button
+                                        className='gamif-badge-overview-individual-badge'
                                         type='text'
                                         icon={badge.got ? <BadgeIcon /> : <BadgeGreyIcon />}
                                         onClick={(): void => { dispatch(setCurrentBadge(badge.id)); }}
@@ -149,9 +166,25 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                     </div>
                 </div>
             </Tabs.TabPane>
-            { /* TODO: Refactor */}
             <Tabs.TabPane tab='Seasonal Badges' key='2'>
-                TODO: Seasonal Badges
+                <Row>
+                    {badges.badgesinProfile.map((id: number) => {
+                        const badge = badges.availableBadges.find((b: Badge) => b.id === id);
+                        if (badge) {
+                            return (
+                                <Col span={4}>
+                                    <Button
+                                        type='text'
+                                        icon={badge.got ? <BadgeIcon /> : <BadgeGreyIcon />}
+                                        onClick={(): void => { dispatch(setCurrentBadge(badge.id)); }}
+                                    />
+                                    {badge.id}
+                                </Col>
+                            );
+                        }
+                        return 'No badge found';
+                    })}
+                </Row>
             </Tabs.TabPane>
         </Tabs>
     );

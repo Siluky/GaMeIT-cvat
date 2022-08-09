@@ -34,7 +34,6 @@ function mapStateToProps(state: CombinedState): StateToProps {
 
 export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const { items, currentBalance, selectedItemId } = props;
-    console.log('🚀 ~ file: shop-window.tsx ~ line 37 ~ ShopWindow ~ items', items);
     const dispatch = useDispatch();
 
     return (
