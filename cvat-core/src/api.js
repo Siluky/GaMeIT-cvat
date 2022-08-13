@@ -910,8 +910,8 @@ function build() {
              * Stores the energy value of the user
              * @param {*} newEnergyValue: The new energy value
              */
-            async setEnergy(newEnergyValue) {
-                const result = await PluginRegistry.apiWrapper(cvat.energizer.setEnergy, newEnergyValue);
+            async setEnergy(userId, newEnergyValue) {
+                const result = await PluginRegistry.apiWrapper(cvat.energizer.setEnergy, userId, newEnergyValue);
                 return result;
             },
 

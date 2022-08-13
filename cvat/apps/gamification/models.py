@@ -10,6 +10,15 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
 
+class Badge(models.Model):
+    title = models.CharField(max_length=40, default='Cool Badge 123')
+    instruction = models.CharField(max_length=80, default='Do something cool')
+    goal = models.IntegerField(default=10)
+    goalunit = models.CharField(max_length=20, default='images')
+    visible = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
 
 class ChallengeChoice(str, Enum):
     DAILY = 'Daily'
@@ -23,20 +32,8 @@ class ChallengeChoice(str, Enum):
     def __str__(self):
         return self.value
 
-class Badge(models.Model):
-    title = models.CharField(max_length=40, default='Cool Badge 123')
-    instruction = models.CharField(max_length=80, default='Do something cool')
-    goal = models.IntegerField(default=10)
-    #TODO: Make an enum for goalunit + migrate
-    goalunit = models.CharField(max_length=20, default='images')
-    visible = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.title
-
 class Challenge(models.Model):
     instruction = models.CharField(max_length=80, default='')
-    progress = models.IntegerField(default=0)
     goal = models.IntegerField(default=10)
     reward = models.IntegerField(default=100)
     challengeType = models.CharField(max_length=32, choices=ChallengeChoice.choices(),
@@ -46,47 +43,46 @@ class Challenge(models.Model):
         return self.instruction
 
 class ShopItem(models.Model):
-    itemName = models.CharField(max_length=40, default='Item')
+    itemName = models.CharField(max_length=40, default='Item X')
     price = models.IntegerField(default=100)
-    iconpath = models.CharField(max_length=40, default='') #TODO: not sure about this one yet
+    repeatable = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.itemName
 
 class Statistic(models.Model):
     name = models.CharField(max_length=40, default='')
-    value = models.CharField(max_length=40, default='')
-    hoverOverText = models.CharField(max_length=40, default='')
-    iconpath = models.CharField(max_length=40, default='') #TODO: s.o
+    unit = models.CharField(max_length=40, default='')
+    tooltip = models.CharField(max_length=255, default='')
 
-
+    def __str__(self):
+        return self.name
 
 # Stores additional information about exactly one user
 # Gets automatically updated with user
 class UserProfile(models.Model):
-    # general data
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    last_login = models.DateField(default=now)
 
+    # meta-level data
+    last_login = models.DateTimeField(auto_now=True)
+    total_annotation_time = models.TimeField
+    annotationStreak = models.IntegerField(default=0)
 
-    # badge-related data
-    badges = models.ManyToManyField(Badge, through='BadgeStatus')
-    # TODO: Selected badges
-
-    # challenge-related data
-    challenges = models.ManyToManyField(Challenge, through='ChallengeStatus')
 
     # energizer-related data
     currentEnergy = models.IntegerField(default=0)
+    totalEnergyCollected = models.IntegerField(default=0)
     energizersDone = models.IntegerField(default=0)
 
     # shop-related data
+    currentBalance = models.IntegerField(default=0)
+
+    # Extra intermediate models that characterizethe relationship to Gamification elements
+    # i.e., progress on individual badges / challenges / statistics / items
+    badges = models.ManyToManyField(Badge, through='BadgeStatus')
+    challenges = models.ManyToManyField(Challenge, through='ChallengeStatus')
     items = models.ManyToManyField(ShopItem, through='ItemStatus')
-    current_balance = models.IntegerField(default=0)
-
-    # social-related data
-    # not sure how to model this yet
-
-    # statistics-related data
     statistics = models.ManyToManyField(Statistic, through='StatisticsStatus')
-
 
     def __str__(self) -> str:
         return self.user.get_username()
@@ -96,7 +92,6 @@ class UserProfile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
-
 
 """
 @receiver(post_save, sender=User)
@@ -109,7 +104,6 @@ def save_user_profile(sender, instance, **kwargs):
 # on the m:n relationship between a User(UserProfile) and other Models
 # including Badges, Challenges, ShopItems
 
-# Models a user's individual progress on specific badges
 class BadgeStatus(models.Model):
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     badge = models.ForeignKey(Badge, on_delete=models.CASCADE, default=None)
@@ -127,18 +121,41 @@ class BadgeStatus(models.Model):
         self.id = str(self.userProfile.id) + '-' + str(self.badge.id)
         super(BadgeStatus, self).save(*args, **kwargs)
 
-# Model's a user's individual status of the shop (i.e., items bought, current balance, ...)
-# TODO: Not sure about this one yet
-# TODO: idea: save 3 numbers for each user profile, which correspond to challenge IDs
 class ChallengeStatus(models.Model):
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, default=None)
 
+    id = models.CharField(default='0-0', primary_key=True, max_length=8)
+    progress = models.IntegerField(default=0)
 
-# Model's a user's individual status of the shop (i.e., items bought, current balance, ...)
+    def __str__(self):
+        return (self.userProfile.user.get_username() + '-' + self.challenge.instruction)
+
+    def save(self, *args, **kwargs):
+        self.id = str(self.userProfile.id) + '-' + str(self.challenge.id)
+        super(ChallengeStatus, self).save(*args, **kwargs)
+
 class ItemStatus(models.Model):
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     item = models.ForeignKey(ShopItem, on_delete=models.CASCADE, default=None)
+
+    id = models.CharField(default='0-0', primary_key=True, max_length=8)
+
+    inUse = models.BooleanField(default=False)
+    purchased = models.BooleanField(default=False)
+
+    def __str__(self):
+        return (self.userProfile.user.get_username() + '-' + self.item.itemName)
+
+    def save(self, *args, **kwargs):
+        self.id = str(self.userProfile.id) + '-' + str(self.item.id)
+        super(ItemStatus, self).save(*args, **kwargs)
+
+class StatisticsStatus(models.Model):
+    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+    statistic = models.ForeignKey(Statistic, on_delete=models.CASCADE, default=None)
+
+    value = models.IntegerField(default=0)
 
 
 class ChatRoom(models.Model):
@@ -178,7 +195,7 @@ class EnergizerData(models.Model):
     energizer = models.CharField(max_length=32, choices=EnergizerChoice.choices(),
                                     default=EnergizerChoice.NONE)
     score = models.IntegerField(default=0)
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateField(auto_now=True)
 
     def __str__(self):
         return (self.userProfile.user.get_username() + '-' + self.energizer + ': ' + str(self.score))
@@ -201,9 +218,4 @@ class Question(models.Model):
     def __str__(self):
         return self.question
 
-
-# Model's a user's individual status of individual statistics
-class StatisticsStatus(models.Model):
-    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
-    statistic = models.ForeignKey(Statistic, on_delete=models.CASCADE, default=None)
 

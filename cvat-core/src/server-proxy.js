@@ -1813,20 +1813,18 @@
             async function getCurrentEnergy() {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/user/currentEnergy`);
-                console.log('🚀 ~ file: server-proxy.js ~ line 1805 ~ ServerProxy ~ getCurrentEnergy ~ response', response);
+                response = await Axios.get(`${backendAPI}/userProfile/currentEnergy`);
                 return response.data;
             }
 
-            async function setEnergyLevel(newEnergy) {
-                console.log('🚀 ~ file: server-proxy.js ~ line 1810 ~ ServerProxy ~ setEnergyLevel ~ newEnergy', newEnergy);
+            async function setEnergyLevel(userId, newEnergy) {
                 const { backendAPI } = config;
                 let response = null;
                 try {
-                    response = await Axios.put(`${backendAPI}/user/currentEnergy`, newEnergy, {
-                        proxy: config.proxy,
-                    });
-                    console.log('🚀 ~ file: server-proxy.js ~ line 1815 ~ ServerProxy ~ setEnergyLevel ~ response', response);
+                    response = await Axios.patch(`${backendAPI}/userProfiles/${userId}`,
+                        { currentEnergy: newEnergy }, {
+                            proxy: config.proxy,
+                        });
                 } catch (error) {
                     throw generateError(error);
                 }
@@ -1852,8 +1850,6 @@
                 let response = null;
                 try {
                     response = await Axios.get(`${backendAPI}/energizer-data?energizer=${energizerName}`);
-                    console.log(`🚀 ~  ServerProxy ~ Leaderboard Link ~
-                     ${backendAPI}/energizer-data?energizer=${energizerName}`);
                 } catch (error) {
                     throw generateError(error);
                 }
@@ -1861,15 +1857,14 @@
                 return response.data.results;
             }
 
-            async function addLeaderboardEntry(userId, energizerName, score) {
+            async function addLeaderboardEntry(userId, energizerName, userScore) {
                 const { backendAPI } = config;
                 let response = null;
                 const data = JSON.stringify({
                     userProfile: userId,
                     energizer: energizerName,
-                    score,
+                    score: userScore,
                 });
-                console.log('🚀 ~ file: server-proxy.js ~ line 1862 ~ ServerProxy ~ addLeaderboardEntry ~ data', data);
                 try {
                     response = await Axios.post(`${backendAPI}/energizer-data`, data, {
                         proxy: config.proxy,

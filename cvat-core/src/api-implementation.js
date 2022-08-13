@@ -356,8 +356,8 @@ const config = require('./config');
             return energy;
         };
 
-        cvat.energizer.setEnergy.implementation = async (newEnergy) => {
-            const energy = await serverProxy.energizer.setEnergy(newEnergy);
+        cvat.energizer.setEnergy.implementation = async (userId, newEnergy) => {
+            const energy = await serverProxy.energizer.setEnergy(userId, newEnergy);
             return energy;
         };
 

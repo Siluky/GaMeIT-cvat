@@ -64,7 +64,7 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
         case EnergizerActionTypes.SAVE_CURRENT_ENERGY_SUCCESS: {
             return {
                 ...state,
-                energyLevel: action.payload,
+                // energyLevel: action.payload,
             };
         }
 

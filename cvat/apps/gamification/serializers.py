@@ -9,31 +9,63 @@ from cvat.apps.gamification import models
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
-        fields = ('user','last_login','currentEnergy')
+        fields = '__all__'
+
+class UserDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserProfile
+        fields = ('last_login','total_annotation_time','annotationStreak','currentEnergy','totalEnergyCollected', 'energizersDone', 'currentBalance')
 
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Badge
-        fields = ('id','title','instruction','goal','goalunit','visible')
+        fields = '__all__'
 
 class BadgeStatusSerializer(serializers.ModelSerializer):
     badge = BadgeSerializer()
 
     class Meta:
         model = models.BadgeStatus
-        fields = ('userProfile','badge','progress','got','receivedOn')
+        fields = '__all__'
 
     def create(self, validated_data):
         return super().create(validated_data)
 
-
-class QuestionSerializer(serializers.ModelSerializer):
+class ChallengeSerializer(serializers.ModelSerializer):
     class Meta:
-        model=models.Question
-        fields= ('__all__')
+        model = models.Challenge
+        fields = '__all__'
 
-    def create(self, validated_data):
-        return super().create(validated_data)
+class ChallengeStatusSerializer(serializers.ModelSerializer):
+    challenge = ChallengeSerializer()
+
+    class Meta:
+        model = models.ChallengeStatus
+        fields = '__all__'
+
+class ShopItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ShopItem
+        fields = '__all__'
+
+class ItemStatusSerializer(serializers.ModelSerializer):
+    item = ShopItemSerializer()
+
+    class Meta:
+        model = models.ItemStatus
+        fields = '__all__'
+
+class StatisticSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Statistic
+        fields = '__all__'
+
+class StatisticStatusSerializer(serializers.ModelSerializer):
+    statistic = StatisticSerializer()
+
+    class Meta:
+        model = models.StatisticsStatus
+        fields = '__all__'
 
 class EnergySerializer(serializers.Serializer):
     currentEnergy = serializers.IntegerField()
@@ -57,3 +89,11 @@ class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ChatMessage
         fields = ('room','content', 'timestamp')
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=models.Question
+        fields= '__all__'
+
+    def create(self, validated_data):
+        return super().create(validated_data)
