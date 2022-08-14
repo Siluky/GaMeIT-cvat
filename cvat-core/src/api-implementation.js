@@ -350,6 +350,11 @@ const config = require('./config');
             return challenges;
         };
 
+        cvat.challenges.remove.implementation = async (userId, challengeId) => {
+            const challenges = await serverProxy.challenges.remove(userId, challengeId);
+            return challenges;
+        };
+
         // energizer
         cvat.energizer.currentEnergy.implementation = async () => {
             const energy = await serverProxy.energizer.currentEnergy();

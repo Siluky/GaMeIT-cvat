@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, ItemStatus, Question, ShopItem, Statistic, StatisticsStatus, UserProfile
@@ -79,6 +79,13 @@ class UserBadgeList(viewsets.GenericViewSet, mixins.ListModelMixin,
 class ChallengeViewSet(viewsets.ModelViewSet):
     queryset = Challenge.objects.all()
     serializer_class = ChallengeSerializer
+
+    @action(detail=False, methods=['GET'])
+    def pickChallenge(self, request):
+        # pick 1 random challenge
+        challenge = Question.objects.all().order_by('?')[:1]
+        serializer = ChallengeSerializer(challenge, many=False)
+        return Response(serializer.data)
 
 class ChallengeStatusViewSet(viewsets.ModelViewSet):
     queryset = ChallengeStatus.objects.all()

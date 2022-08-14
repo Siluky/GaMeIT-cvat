@@ -1760,6 +1760,8 @@
             }
 
             // Gamification part from here
+            // gamification Meta
+
             // badges
             async function getBadges() {
                 const { backendAPI } = config;
@@ -1797,15 +1799,33 @@
             async function getChallenges() {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/`); // TODO:
+                response = await Axios.get(`${backendAPI}/user-challenges`); // TODO:
                 return response.data; // TODO: double-check, maybe response.data.results
             }
 
             async function addChallenge() {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/`); // TODO:
+                response = await Axios.get(`${backendAPI}/challenges/pickChallenge`); // TODO:
                 return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            // async function saveChallenge(userId, challengeId) {
+            //     const { backendAPI } = config;
+            //     let response = null;
+            //     response = await Axios.get(`${backendAPI}/user-challenges`); // TODO:
+            //     return response.data; // TODO: double-check, maybe response.data.results
+            // }
+
+            async function removeChallenge(userId, challengeId) {
+                const { backendAPI } = config;
+                try {
+                    await Axios.delete(`${backendAPI}/${userId}-${challengeId}`, {
+                        proxy: config.proxy,
+                    });
+                } catch (errorData) {
+                    throw generateError(errorData);
+                }
             }
 
             // energizer
@@ -1865,9 +1885,13 @@
                     energizer: energizerName,
                     score: userScore,
                 });
+                console.log('🚀 ~ file: server-proxy.js ~ line 1868 ~ ServerProxy ~ addLeaderboardEntry ~ data', data);
                 try {
                     response = await Axios.post(`${backendAPI}/energizer-data`, data, {
                         proxy: config.proxy,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
                     });
                 } catch (error) {
                     throw generateError(error);
@@ -2143,6 +2167,7 @@
                         value: Object.freeze({
                             get: getChallenges,
                             add: addChallenge,
+                            remove: removeChallenge,
                         }),
                         writable: false,
                     },

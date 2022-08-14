@@ -13,27 +13,19 @@ import {
 } from 'antd';
 import { AndroidFilled } from '@ant-design/icons';
 import { getLeaderboardAsync } from 'gamification/actions/energizer-actions';
-import { connect } from 'react-redux';
-import getCore from 'cvat-core-wrapper';
-
-const cvat = getCore();
+import { connect, useDispatch } from 'react-redux';
 
 interface EnergizerLeaderboardProps {
-    newScore: number;
+    // newScore: number;
     leaderboardEntries: LeaderboardEntry[];
     activeEnergizer: EnergizerType;
     currentUserId: number;
-    getLeaderboardEntries: (energizerName: string) => void;
 }
 
 interface StateToProps {
     leaderboardEntries: LeaderboardEntry[];
     activeEnergizer: EnergizerType;
     currentUserId: number;
-}
-
-interface DispatchToProps {
-    getLeaderboardEntries: (energizerName: string) => void;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
@@ -46,29 +38,15 @@ function mapStateToProps(state: CombinedState): StateToProps {
     };
 }
 
-function mapDispatchToProps(dispatch: any): DispatchToProps {
-    return {
-        getLeaderboardEntries: (energizerName: string): void => dispatch(getLeaderboardAsync(energizerName)),
-    };
-}
-
 export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Element {
     const {
-        newScore, activeEnergizer, leaderboardEntries, currentUserId, getLeaderboardEntries,
+        activeEnergizer, leaderboardEntries,
     } = props;
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        console.log('Energizer leaderboard: useEffect Hook triggered');
-        const addLeaderboardEntry = async (energizer: EnergizerType, score: number): Promise<void> => {
-            const newEntry = await cvat.energizer.addScore(currentUserId, energizer, score);
-            console.log('🚀 ~ file: energizer-leaderboard.tsx ~ line 64 ~ addLeaderboardEntry ~ newEntry', newEntry);
-        };
-
-        console.log('🚀 ~ file: energizer-leaderboard.tsx ~ line 71 ~ useEffect ~ newScore', newScore);
-        console.log('🚀 ~ file: energizer-leaderboard.tsx ~ line 71 ~ useEffect ~ activeEnergizer', activeEnergizer);
-        addLeaderboardEntry(activeEnergizer, newScore);
-
-        getLeaderboardEntries(activeEnergizer);
+        dispatch(getLeaderboardAsync(activeEnergizer));
     }, []);
 
     return (
@@ -123,4 +101,4 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
     );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EnergizerLeaderboard);
+export default connect(mapStateToProps)(EnergizerLeaderboard);

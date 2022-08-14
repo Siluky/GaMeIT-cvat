@@ -879,7 +879,6 @@ function build() {
          * @memberof module:API.cvat
         */
         challenges: {
-
             async get() {
                 const result = await PluginRegistry.apiWrapper(cvat.challenges.get);
                 return result;
@@ -887,6 +886,11 @@ function build() {
 
             async add() {
                 const result = await PluginRegistry.apiWrapper(cvat.challenges.add);
+                return result;
+            },
+
+            async remove(userId, challengeId) {
+                const result = await PluginRegistry.apiWrapper(cvat.challenges.remove, userId, challengeId);
                 return result;
             },
 

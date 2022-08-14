@@ -195,7 +195,7 @@ class EnergizerData(models.Model):
     energizer = models.CharField(max_length=32, choices=EnergizerChoice.choices(),
                                     default=EnergizerChoice.NONE)
     score = models.IntegerField(default=0)
-    timestamp = models.DateField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return (self.userProfile.user.get_username() + '-' + self.energizer + ': ' + str(self.score))

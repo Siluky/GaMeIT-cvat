@@ -49,7 +49,7 @@ export enum EnergizerType {
 }
 
 export interface EnergizerProps {
-    showLeaderboard: (show: boolean, score: number) => void;
+    showLeaderboard: (show: boolean) => void;
 }
 
 export interface QuizDuelQuestion {
@@ -71,8 +71,10 @@ export interface EnergizerState {
     energyLevel: number,
     active: boolean,
     popupOpen: boolean,
+
     activeEnergizer: EnergizerType,
     leaderboardEntries: LeaderboardEntry[],
+
     questions: QuizDuelQuestion[],
 }
 

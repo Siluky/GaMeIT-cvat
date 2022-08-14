@@ -80,16 +80,14 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
             };
         }
 
-        // case EnergizerActionTypes.GET_QUIZDUEL_QUESTIONS_FAILED: {
-        //     return state;
-        // }
+        case EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_FAILED: {
+            return state;
+        }
 
-        // case EnergizerActionTypes.GET_QUIZDUEL_QUESTIONS_SUCCESS: {
-        //     return {
-        //         ...state,
-        //         questions: action.payload,
-        //     };
-        // }
+        case EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_SUCCESS: {
+            // const newEntries = state.leaderboardEntries.concat(action.payload);
+            return state;
+        }
 
         default: {
             return state;
