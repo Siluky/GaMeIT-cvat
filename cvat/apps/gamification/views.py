@@ -72,9 +72,9 @@ class UserBadgeList(viewsets.GenericViewSet, mixins.ListModelMixin,
         queryset = BadgeStatus.objects.filter(userProfile = currentUserProfile)
         return queryset
 
-    @action(detail=False, methods=['GET'])
-    def test(self):
-        pass
+    # @action(detail=False, methods=['GET'])
+    # def test(self):
+    #     pass
 
 class ChallengeViewSet(viewsets.ModelViewSet):
     queryset = Challenge.objects.all()
@@ -83,8 +83,11 @@ class ChallengeViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'])
     def pickChallenge(self, request):
         # pick 1 random challenge
-        challenge = Question.objects.all().order_by('?')[:1]
-        serializer = ChallengeSerializer(challenge, many=False)
+        challenge = Challenge.objects.all().order_by('?').first()
+        # TODO: Logic so that no challenge is picked that already exists
+        print(challenge)
+        ChallengeStatus.objects.create(challenge = challenge, userProfile = UserProfile.objects.get(user = self.request.user))
+        serializer = ChallengeSerializer(challenge)
         return Response(serializer.data)
 
 class ChallengeStatusViewSet(viewsets.ModelViewSet):

@@ -894,6 +894,11 @@ function build() {
                 return result;
             },
 
+            async save(userId, challenges) {
+                const result = await PluginRegistry.apiWrapper(cvat.challenges.save, userId, challenges);
+                return result;
+            },
+
         },
 
         /**

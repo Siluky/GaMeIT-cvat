@@ -355,6 +355,11 @@ const config = require('./config');
             return challenges;
         };
 
+        cvat.challenges.save.implementation = async (userId, challenges) => {
+            const saved = await serverProxy.challenges.save(userId, challenges);
+            return saved;
+        };
+
         // energizer
         cvat.energizer.currentEnergy.implementation = async () => {
             const energy = await serverProxy.energizer.currentEnergy();

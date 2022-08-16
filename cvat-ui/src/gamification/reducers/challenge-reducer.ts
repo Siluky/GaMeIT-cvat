@@ -66,7 +66,31 @@ export default (state = defaultState, action: AnyAction): ChallengeState => {
             };
         }
 
-        case ChallengeActionTypes.REMOVE_CHALLENGE: {
+        case ChallengeActionTypes.ADD_CHALLENGE_SUCCESS: {
+            const challenges = state.availableChallenges.concat(action.payload);
+            return {
+                ...state,
+                availableChallenges: challenges,
+            };
+        }
+
+        case ChallengeActionTypes.ADD_CHALLENGE_FAILED: {
+            return state;
+        }
+
+        case ChallengeActionTypes.REMOVE_CHALLENGE_FAILED: {
+            return state;
+        }
+
+        case ChallengeActionTypes.SAVE_CHALLENGES_FAILED: {
+            return state;
+        }
+
+        case ChallengeActionTypes.SAVE_CHALLENGES_SUCCESS: {
+            return state;
+        }
+
+        case ChallengeActionTypes.REMOVE_CHALLENGE_SUCCESS: {
             const updatedChallenges = state.availableChallenges.filter((challenge) => challenge.id !== action.payload);
             console.log('🚀 ~ file: challenge-reducer.ts ~ line 57 ~ updatedChallenges', updatedChallenges);
             return {

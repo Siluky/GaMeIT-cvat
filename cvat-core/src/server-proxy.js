@@ -1800,7 +1800,29 @@
                 const { backendAPI } = config;
                 let response = null;
                 response = await Axios.get(`${backendAPI}/user-challenges`); // TODO:
-                return response.data; // TODO: double-check, maybe response.data.results
+                return response.data.results; // TODO: double-check, maybe response.data.results
+            }
+
+            async function saveChallenges(userId, challenges) {
+                // FIXME:
+                console.log('🚀 ~ file: server-proxy.js ~ line 1807 ~ ServerProxy ~ saveChallenges ~ challenges', challenges);
+                const { backendAPI } = config;
+                let response = null;
+                try {
+                    // eslint-disable-next-line max-len
+                    response = await challenges.map((challenge) => Axios.patch(`${backendAPI}/challenge-status/${userId}-${challenge.id}`,
+                        { progress: challenge.progress },
+                        {
+                            proxy: config.proxy,
+                            // headers: {
+                            //     'Content-Type': 'application/json',
+                            // },
+                        }));
+                    console.log('🚀 ~ file: server-proxy.js ~ line 1812 ~ ServerProxy ~ saveChallenges ~ response', response);
+                } catch (error) {
+                    throw generateError(error);
+                }
+                return response.data;
             }
 
             async function addChallenge() {
@@ -1810,17 +1832,11 @@
                 return response.data; // TODO: double-check, maybe response.data.results
             }
 
-            // async function saveChallenge(userId, challengeId) {
-            //     const { backendAPI } = config;
-            //     let response = null;
-            //     response = await Axios.get(`${backendAPI}/user-challenges`); // TODO:
-            //     return response.data; // TODO: double-check, maybe response.data.results
-            // }
-
             async function removeChallenge(userId, challengeId) {
                 const { backendAPI } = config;
+                console.log('🚀 ~ file: server-proxy.js ~ line 1817 ~ ServerProxy ~ removeChallenge ~ Link: ', `${backendAPI}/${userId}-${challengeId}`);
                 try {
-                    await Axios.delete(`${backendAPI}/${userId}-${challengeId}`, {
+                    await Axios.delete(`${backendAPI}/challenge-status/${userId}-${challengeId}`, {
                         proxy: config.proxy,
                     });
                 } catch (errorData) {
@@ -2166,6 +2182,7 @@
                     challenges: {
                         value: Object.freeze({
                             get: getChallenges,
+                            save: saveChallenges,
                             add: addChallenge,
                             remove: removeChallenge,
                         }),
