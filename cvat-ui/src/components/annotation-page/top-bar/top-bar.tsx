@@ -13,7 +13,8 @@ import LeftGroup from './left-group';
 import PlayerButtons from './player-buttons';
 import PlayerNavigation from './player-navigation';
 import RightGroup from './right-group';
-import QuickStatisticsPanel from './quick-statistics';
+// eslint-disable-next-line import/no-named-as-default
+// import QuickStatisticsPanel from './quick-statistics';
 
 interface Props {
     playing: boolean;
@@ -176,7 +177,7 @@ export default function AnnotationTopBarComponent(props: Props): JSX.Element {
                     />
                 </Row>
             </Col>
-            <QuickStatisticsPanel />
+            {/* <QuickStatisticsPanel /> */}
             <RightGroup
                 predictor={predictor}
                 workspace={workspace}

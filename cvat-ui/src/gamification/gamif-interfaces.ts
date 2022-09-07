@@ -159,4 +159,5 @@ export interface Statistic {
 export interface StatisticsState {
     statistics: Statistic[],
     selectedStatistics: number[],
+    selecting: boolean,
 }

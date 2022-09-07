@@ -692,14 +692,15 @@
     padding-top: 5px;
 }
 .statistics-col {
-    background: #E6E6E6;
+    /* background: #E6E6E6;
     border-radius: 15px;
     margin: 5px;
-    display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px;;
+    padding: 5px; */
+    display: flex;
 }
+/*
 .selected-prop {
     background: #E6E6E6;
     border-radius: 15px;
@@ -711,6 +712,7 @@
     border: 1px solid black;
     vertical-align: middle;
 }
+*/
 .single-statistic-row {
     display: flex;
     justify-content: center;
@@ -719,6 +721,20 @@
     border-radius: 5px;
     margin-top: 5px;
     // background: green;
+}
+
+.statistic-button {
+  padding: 5px;
+  margin: 5px;
+  border-radius: 15px;
+  background: #e6e6e6;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.statistic-button:hover {
+  background-color: pink;
 }
 
 .statistic-icon {

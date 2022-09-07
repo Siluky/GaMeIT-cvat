@@ -5,18 +5,45 @@ import React from 'react';
 import { Row, Col } from 'antd/lib/grid';
 import QuickStatistic from 'gamification/components/statistics/quick-statistics-component';
 import ProgressBar from 'gamification/components/progressbar-component';
-import { CheckCircleOutlined, FieldTimeOutlined, TagOutlined } from '@ant-design/icons';
+// import { CheckCircleOutlined, FieldTimeOutlined, TagOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined } from '@ant-design/icons';
+import { CombinedState } from 'reducers/interfaces';
+import { connect, useSelector } from 'react-redux';
 // import { ImageIcon } from 'icons';
 
-function QuickStatisticsPanel(): JSX.Element {
+interface StateToProps {
+    ids: number[];
+}
+
+function mapStateToProps(state: CombinedState): StateToProps {
+    const { stats } = state;
+    console.log(stats);
+
+    return {
+        ids: stats.selectedStatistics,
+    };
+}
+
+interface QuickStatisticGroupProps {
+    ids: number[];
+}
+
+export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Element {
     // const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
+    const { ids } = props;
+    const stats = useSelector((state: CombinedState) => state.stats);
 
     return (
         <Col className='cvat-annotation-header-quick-statistics-group'>
             <Row className='cvat-annotation-header-quick-statistics'>
-                <QuickStatistic id={1} value={24} icon={<CheckCircleOutlined />} />
-                <QuickStatistic id={2} value={22} icon={<FieldTimeOutlined />} unit='hrs' />
-                <QuickStatistic id={3} value={222} icon={<TagOutlined />} unit='tags' />
+                {ids.map((id: number) => {
+                    const x = stats.statistics.find((statistic) => statistic.id === id);
+                    if (x) { return <QuickStatistic id={x.id} value={x?.value} icon={<CheckCircleOutlined />} />; }
+                    return null;
+                })}
+                ;
+                {/* <QuickStatistic id={2} value={22} icon={<FieldTimeOutlined />} unit='hrs' />
+                <QuickStatistic id={3} value={222} icon={<TagOutlined />} unit='tags' /> */}
             </Row>
             <Row justify='center'>
                 <ProgressBar />
@@ -25,4 +52,4 @@ function QuickStatisticsPanel(): JSX.Element {
     );
 }
 // TODO: include React.memo where appropriate
-export default React.memo(QuickStatisticsPanel);
+export default connect(mapStateToProps)(QuickStatisticsPanel);
