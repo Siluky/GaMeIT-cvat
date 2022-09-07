@@ -8,44 +8,11 @@ import {
     Button,
 } from 'antd';
 import getCore from 'cvat-core-wrapper';
-import { QuizDuelQuestion, EnergizerProps } from '../../gamif-interfaces';
+import { addLeaderboardEntry } from 'gamification/actions/energizer-actions';
+import { useDispatch } from 'react-redux';
+import { QuizDuelQuestion, EnergizerProps, EnergizerType } from '../../gamif-interfaces';
 
 const cvat = getCore();
-
-/**
- * Database call to draw out 3 random questions.
- * @returns 3 Questions for use in the quiz duel energizer
- */
-// async function generateQuestions(): Promise<QuizDuelQuestion[]> {
-//     const questions = await cvat.quizDuelQuestions;
-
-//     const dummyQuestions = [{
-//         question: 'What is 2x2',
-//         answerA: '1',
-//         answerB: '2',
-//         answerC: '3',
-//         answerD: '4',
-//         correctAnswer: 4,
-//     },
-//     {
-//         question: 'Who is the current president of the US',
-//         answerA: 'Biden',
-//         answerB: 'Trump',
-//         answerC: 'Merkel',
-//         answerD: 'Me',
-//         correctAnswer: 1,
-//     },
-//     {
-//         question: 'Dummy Question 123',
-//         answerA: 'AnswerA',
-//         answerB: 'AnswerB',
-//         answerC: 'AnswerC',
-//         answerD: 'AnswerD',
-//         correctAnswer: 3,
-//     }];
-
-//     return dummyQuestions;
-// }
 
 enum Answer {
     A = 'A',
@@ -97,10 +64,8 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
 
     function styleAnswerButtons(givenAnswer: number, correctAnswer: number): void {
         const newStyles = [...answerButtonStyle];
-        console.log('🚀 ~ file: energizer-quiz-duel.tsx ~ line 89 ~ styleAnswerButtons ~ newStyles', newStyles);
         newStyles[givenAnswer] = 'quiz-duel-answer-button answer-wrong';
         newStyles[correctAnswer] = 'quiz-duel-answer-button answer-correct';
-        console.log('🚀 ~ file: energizer-quiz-duel.tsx ~ line 92 ~ styleAnswerButtons ~ newStyles MODIFIED', newStyles);
         setAnswerButtonStyle(newStyles);
     }
 
@@ -121,7 +86,9 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
     const [score, setScore] = useState(0);
     const [questions, setQuestions] = useState([dummyQuestion]);
     const [loading, setLoading] = useState(true);
-    console.log('🚀 ~ file: energizer-quiz-duel.tsx ~ line 123 ~ QuizDuel ~ questions', questions);
+    const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const getEntries = async (): Promise<void> => {
@@ -129,12 +96,11 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
             setLoading(false);
             console.log('🚀 ~ file: energizer-quiz-duel.tsx ~ line 127 ~ getEntries ~ questionsImport', questionsImport);
             setQuestions(questionsImport);
+            setCurrentQuestion(questions[0]);
         };
 
         getEntries();
     }, []);
-
-    const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
 
     return (
         <div className='gamif-energizer-modal-content-wrapper'>
@@ -211,7 +177,8 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
                     // if on 3rd question and answer is checked --> show Leaderboard instead of
                     // continuing to the next question
                     if (progress === 3 && readyToContinue) {
-                        showLeaderboard(true, score);
+                        showLeaderboard(true);
+                        dispatch(addLeaderboardEntry(score, EnergizerType.QUIZ));
 
                     // second button click:
                     } else if (readyToContinue) {

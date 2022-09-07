@@ -37,6 +37,7 @@ import ShopWindow from 'gamification/components/reward-shop/shop-window';
 
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
+import gamifconsts from 'gamification/gamifconsts';
 
 import { CVATLogo, EnergizerIcon } from 'icons';
 import ChangePasswordDialog from 'components/change-password-modal/change-password-modal';
@@ -217,7 +218,7 @@ function HeaderContainer(props: Props): JSX.Element {
         dispatch(loadBadgesAsync()); // TODO: TESTING
         const interval = setInterval(() => {
             incrementEnergy(1);
-        }, 30000);
+        }, gamifconsts.ENERGY_RATE);
 
         return () => {
             clearInterval(interval);

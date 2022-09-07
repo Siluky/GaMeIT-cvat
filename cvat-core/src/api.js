@@ -879,7 +879,6 @@ function build() {
          * @memberof module:API.cvat
         */
         challenges: {
-
             async get() {
                 const result = await PluginRegistry.apiWrapper(cvat.challenges.get);
                 return result;
@@ -887,6 +886,16 @@ function build() {
 
             async add() {
                 const result = await PluginRegistry.apiWrapper(cvat.challenges.add);
+                return result;
+            },
+
+            async remove(userId, challengeId) {
+                const result = await PluginRegistry.apiWrapper(cvat.challenges.remove, userId, challengeId);
+                return result;
+            },
+
+            async save(userId, challenges) {
+                const result = await PluginRegistry.apiWrapper(cvat.challenges.save, userId, challenges);
                 return result;
             },
 
@@ -910,8 +919,8 @@ function build() {
              * Stores the energy value of the user
              * @param {*} newEnergyValue: The new energy value
              */
-            async setEnergy(newEnergyValue) {
-                const result = await PluginRegistry.apiWrapper(cvat.energizer.setEnergy, newEnergyValue);
+            async setEnergy(userId, newEnergyValue) {
+                const result = await PluginRegistry.apiWrapper(cvat.energizer.setEnergy, userId, newEnergyValue);
                 return result;
             },
 

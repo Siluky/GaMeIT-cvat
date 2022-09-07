@@ -28,7 +28,7 @@ export default function ChallengePane(props: Props): JSX.Element {
                     {challenge.instruction}
                     <Progress
                         className='gamif-challenge-pane-progress'
-                        percent={(challenge.progress / challenge.goal) * 100}
+                        percent={Math.floor((challenge.progress / challenge.goal) * 100)}
                         strokeWidth={8}
                         steps={Math.min(challenge.goal, 10)}
                         trailColor={geekblue[1]}

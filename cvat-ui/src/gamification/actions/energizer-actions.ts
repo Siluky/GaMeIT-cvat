@@ -2,10 +2,13 @@
 //
 // SPDX-License-Identifier: MIT
 
+// SPDX-License-Identifier: MIT
+
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
+import { getCVATStore } from 'cvat-store';
 
 const cvat = getCore();
 
@@ -27,7 +30,7 @@ export enum EnergizerActionTypes {
     SWITCH_ENERGIZER_LEADERBOARD = 'SWITCH_ENERGIZER_LEADERBOARD',
     GET_LEADERBOARD_DATA_SUCCESS = 'GET_LEADERBOARD_DATA_SUCCESS',
     GET_LEADERBOARD_DATA_FAILED = 'GET_LEADERBOARD_DATA_FAILED',
-    ADD_LEADERBOARD_ENTRY_SUCCESSS = 'ADD_LEADERBOARD_ENTRY_SUCCESS',
+    ADD_LEADERBOARD_ENTRY_SUCCESS = 'ADD_LEADERBOARD_ENTRY_SUCCESS',
     ADD_LEADERBOARD_ENTRY_FAILED = 'ADD_LEADERBOARD_ENTRY_FAILED',
 
 }
@@ -49,12 +52,10 @@ function getCurrentEnergyFailed(error: any): AnyAction {
 }
 
 export function getCurrentEnergyAsync(): ThunkAction<void, {}, {}, AnyAction> {
-    return async function loadBadgesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+    return async function getCurrentEnergyThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let energy = null;
-
         try {
             energy = await cvat.energizer.currentEnergy();
-            console.log('🚀 ~ file: energizer-actions.ts ~ line 32 ~ loadBadgesThunk ~ energy', energy);
             dispatch(getCurrentEnergySuccess(energy));
         } catch (error) {
             dispatch(getCurrentEnergyFailed(error));
@@ -81,8 +82,9 @@ function saveCurrentEnergyFailed(error: any): AnyAction {
 export function saveCurrentEnergyAsync(newEnergy: number): ThunkAction<void, {}, {}, AnyAction> {
     return async function saveCurrentEnergyThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let energy = null;
+        const userId = getCVATStore().getState().badges.currentUserId;
         try {
-            energy = await cvat.energizer.setEnergy(newEnergy);
+            energy = await cvat.energizer.setEnergy(userId, newEnergy);
             console.log('🚀 ~ file: energizer-actions.ts ~ line 84 ~ saveCurrentEnergyThunk ~ energy', energy);
             dispatch(saveCurrentEnergySuccess(energy));
         } catch (error) {
@@ -136,7 +138,7 @@ export function getLeaderboardDataSuccess(entries: LeaderboardEntry[]): AnyActio
 
 export function getLeaderboardDataFailed(error: any): AnyAction {
     return {
-        type: EnergizerActionTypes.GET_CURRENT_ENERGY_FAILED,
+        type: EnergizerActionTypes.GET_LEADERBOARD_DATA_FAILED,
         payload: error,
     };
 }
@@ -151,7 +153,7 @@ export function getLeaderboardAsync(energizerName: string): ThunkAction<void, {}
             entries = entriesImport.map((_entry: any): LeaderboardEntry => ({
                 username: _entry.userProfile,
                 score: _entry.score,
-                avatar: 1,
+                avatar: 1, // TODO:
             }));
             dispatch(getLeaderboardDataSuccess(entries));
         } catch (error) {
@@ -160,31 +162,30 @@ export function getLeaderboardAsync(energizerName: string): ThunkAction<void, {}
     };
 }
 
-// export function getQuizDuelQuestionsSuccess(questions: QuizDuelQuestion[]): AnyAction {
-//     return {
-//         type: EnergizerActionTypes.GET_QUIZDUEL_QUESTIONS_SUCCESS,
-//         payload: questions,
-//     };
-// }
+export function addLeaderboardEntrySuccess(): AnyAction {
+    return {
+        type: EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_SUCCESS,
+    };
+}
 
-// export function getQuizDuelQuestionsFailed(error: any): AnyAction {
-//     return {
-//         type: EnergizerActionTypes.GET_QUIZDUEL_QUESTIONS_FAILED,
-//         payload: error,
-//     };
-// }
+export function addLeaderboardEntryFailed(error: any): AnyAction {
+    return {
+        type: EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_FAILED,
+        payload: error,
+    };
+}
 
-// export function getQuizDuelQuestionsAsync(): ThunkAction<void, {}, {}, AnyAction> {
-//     return async function loadQuestionsThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-//         let questions = null;
+// eslint-disable-next-line max-len
+export function addLeaderboardEntry(score: number, energizer: EnergizerType): ThunkAction<void, {}, {}, AnyAction> {
+    return async function addLeaderboardEntryThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        const userId = getCVATStore().getState().badges.currentUserId;
+        try {
+            const addedEntry = await cvat.energizer.addScore(userId, energizer, score);
+            console.log('🚀 ~ file: energizer-actions.ts ~ line 186 ~ addLeaderboardThunk ~ addedEntry', addedEntry);
 
-//         try {
-//             // TODO: FOrmat response! from any -> Question
-//             questions = await cvat.energizer.quizDuelQuestions();
-//             console.log('🚀 ~ file: energizer-actions.ts ~ line 186 ~ loadQuestionsThunk ~ questions', questions);
-//             dispatch(getQuizDuelQuestionsSuccess(questions));
-//         } catch (error) {
-//             dispatch(getQuizDuelQuestionsFailed(error));
-//         }
-//     };
-// }
+            dispatch(addLeaderboardEntrySuccess());
+        } catch (error) {
+            dispatch(addLeaderboardEntryFailed(error));
+        }
+    };
+}

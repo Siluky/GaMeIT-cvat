@@ -23,12 +23,6 @@ interface EnergizerModalProps {
 function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     const { visible, onClose } = props;
     const [leaderboardShown, setLeaderboardShown] = useState(false);
-    const [newLeaderboardScore, setNewLeaderboardScore] = useState(0);
-
-    const generateLeaderboard = (show: boolean, score: number): void => {
-        setLeaderboardShown(show);
-        setNewLeaderboardScore(score);
-    };
 
     return (
         <>
@@ -41,7 +35,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 footer={null}
                 maskClosable={false}
             >
-                <QuizDuel showLeaderboard={(show: boolean, score: number) => generateLeaderboard(show, score)} />
+                <QuizDuel showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />
                 <Button
                     className='gamif-energizer-continue-button'
                     type='text'
@@ -60,7 +54,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 footer={null}
                 maskClosable={false}
             >
-                <EnergizerLeaderboard newScore={newLeaderboardScore} />
+                <EnergizerLeaderboard />
 
                 <div className='energizer-leaderboard-footer'>
                     <Button

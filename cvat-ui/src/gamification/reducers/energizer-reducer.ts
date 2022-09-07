@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+import gamifconsts from 'gamification/gamifconsts';
 import { AnyAction } from 'redux';
 import { EnergizerActionTypes } from '../actions/energizer-actions';
 import { EnergizerState, EnergizerType } from '../gamif-interfaces';
@@ -14,8 +15,6 @@ const defaultState: EnergizerState = {
     leaderboardEntries: [],
     questions: [],
 };
-
-// TODO: avoid overcapping energy
 
 export default (state = defaultState, action: AnyAction): EnergizerState => {
     switch (action.type) {
@@ -43,7 +42,7 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
         case EnergizerActionTypes.INCREMENT_ENERGY: {
             return {
                 ...state,
-                energyLevel: Math.min(state.energyLevel + action.payload, 20),
+                energyLevel: Math.min(state.energyLevel + action.payload, gamifconsts.MAXIMUM_ENERGY),
             };
         }
 
@@ -65,7 +64,7 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
         case EnergizerActionTypes.SAVE_CURRENT_ENERGY_SUCCESS: {
             return {
                 ...state,
-                energyLevel: action.payload,
+                // energyLevel: action.payload,
             };
         }
 
@@ -81,16 +80,14 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
             };
         }
 
-        // case EnergizerActionTypes.GET_QUIZDUEL_QUESTIONS_FAILED: {
-        //     return state;
-        // }
+        case EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_FAILED: {
+            return state;
+        }
 
-        // case EnergizerActionTypes.GET_QUIZDUEL_QUESTIONS_SUCCESS: {
-        //     return {
-        //         ...state,
-        //         questions: action.payload,
-        //     };
-        // }
+        case EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_SUCCESS: {
+            // const newEntries = state.leaderboardEntries.concat(action.payload);
+            return state;
+        }
 
         default: {
             return state;

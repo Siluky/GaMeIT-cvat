@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import React from 'react';
+import gamifconsts from 'gamification/gamifconsts';
 import 'gamification/gamif-styles.scss';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -86,8 +87,8 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                     className='gamif-energizer-popup-start-energizer-button'
                     type='text'
                     onClick={(): void => {
-                        if (currentEnergy >= 10) {
-                            dispatch(incrementEnergy(-10));
+                        if (currentEnergy >= gamifconsts.ENERGIZER_COST) {
+                            dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
                             dispatch(switchEnergizerPopUp(false));
                             dispatch(switchEnergizerModal(true));
                             // TODO: Give choice or start random energizer!
