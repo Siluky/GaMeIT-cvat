@@ -14,7 +14,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
-        fields = ('last_login','total_annotation_time','annotationStreak','currentEnergy','totalEnergyCollected', 'energizersDone', 'currentBalance')
+        fields = (
+        'last_login','annotation_time_total','tags_set_total', 'images_annotated_night',
+        'annotation_time_total', 'annotation_streak_current','annotation_streak_max',
+        'badges_obtained_total',
+        'challenges_completed',
+        'energy_current', 'energy_total','energizers_completed','energy_expired','tetris_played','quiz_played','snake_played',
+        'currentBalance','annotation_coins_total','annotation_coins_max','items_bought_total',
+        'chat_messages_total',
+        )
 
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:

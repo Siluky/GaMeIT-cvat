@@ -1762,6 +1762,26 @@
             // Gamification part from here
             // gamification Meta
 
+            async function getGamifUserData() {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/user-data`); // TODO:
+                return response.data.results;
+            }
+
+            async function saveGamifUserData(data) {
+                const { backendAPI } = config;
+                let response = null; // TODO:
+                response = await Axios.post(`${backendAPI}/user-data`,
+                    data, {
+                        proxy: config.proxy,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                return response.data.results;
+            }
+
             // badges
             async function getBadges() {
                 const { backendAPI } = config;
@@ -2166,6 +2186,14 @@
                             invite: inviteOrganizationMembers,
                             updateMembership: updateOrganizationMembership,
                             deleteMembership: deleteOrganizationMembership,
+                        }),
+                        writable: false,
+                    },
+
+                    gamifuserdata: {
+                        value: Object.freeze({
+                            get: getGamifUserData,
+                            save: saveGamifUserData,
                         }),
                         writable: false,
                     },

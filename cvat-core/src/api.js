@@ -845,6 +845,31 @@ function build() {
         },
 
         /**
+         * Namespace is used for access to gamification-related user data
+         * @namespace userdata
+         * @memberof module:API.cvat
+        */
+        gamifuserdata: {
+            /**
+             * TODO:
+             * @returns all relevant gamification-related userdata of the current user
+             */
+            async get() {
+                const result = await PluginRegistry.apiWrapper(cvat.gamifuserdata.get);
+                return result;
+            },
+            /**
+             * TODO:
+             * Saves all gamification-related userdata (on session close)
+             * @returns all relevant gamification-related userdata of the current user
+             */
+            async save(data) {
+                const result = await PluginRegistry.apiWrapper(cvat.gamifuserdata.save, data);
+                return result;
+            },
+        },
+
+        /**
          * Namespace is used for access to badge data
          * @namespace badges
          * @memberof module:API.cvat
@@ -1080,6 +1105,7 @@ function build() {
     cvat.cloudStorages = Object.freeze(cvat.cloudStorages);
     cvat.organizations = Object.freeze(cvat.organizations);
 
+    cvat.gamifuserdata = Object.freeze(cvat.gamifuserdata);
     cvat.badges = Object.freeze(cvat.badges);
     cvat.challenges = Object.freeze(cvat.challenges);
     cvat.energizer = Object.freeze(cvat.energizer);

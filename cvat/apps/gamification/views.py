@@ -31,7 +31,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         print(request.method)
 
         if request.method == 'GET':
-            return Response(data=currentUserProfile.currentEnergy)
+            return Response(data=currentUserProfile.energy_current)
 
         # elif request.method == 'PUT':
         #     print (request.data.get('currentEnergy'))

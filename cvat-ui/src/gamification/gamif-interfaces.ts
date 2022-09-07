@@ -2,6 +2,38 @@
 //
 // SPDX-License-Identifier: MIT
 
+export interface UserData {
+    last_login: number, // https://stackoverflow.com/questions/4744299/how-to-get-datetime-in-javascript
+    images_annotated: number,
+    tags_set: number,
+    images_annotated_night: number,
+
+    annotation_time: number, // TODO: in seconds?!
+    annotation_streak_current: number,
+    annotation_streak_max: number,
+
+    badges_obtained: number,
+    challenges_completed: number,
+
+    energy_gained: number,
+    energizers_completed: number,
+    energy_expired: number,
+    tetris_played: number,
+    quiz_played: number,
+    snake_played: number,
+
+    currentBalance: number,
+    annotation_coins_obtained: number,
+    items_bought: number,
+
+    chat_messages: number,
+}
+
+export interface UserDataState {
+    userdata_session: UserData,
+    userdata_total: UserData,
+}
+
 export interface Badge {
     id: number,
     title: string;

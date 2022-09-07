@@ -65,17 +65,37 @@ class UserProfile(models.Model):
 
     # meta-level data
     last_login = models.DateTimeField(auto_now=True)
-    total_annotation_time = models.TimeField
-    annotationStreak = models.IntegerField(default=0)
+    images_annotated_total = models.IntegerField(default=0)
+    tags_set_total = models.IntegerField(default=0)
+    images_annotated_night = models.IntegerField(default=0)
 
+    annotation_time_total = models.TimeField
+    annotation_streak_current = models.IntegerField(default=0)
+    annotation_streak_max = models.IntegerField(default=0)
+
+    # badge-related data
+    badges_obtained_total = models.IntegerField(default=0)
+
+    # challenges-related data
+    challenges_completed = models.IntegerField(default=0)
 
     # energizer-related data
-    currentEnergy = models.IntegerField(default=0)
-    totalEnergyCollected = models.IntegerField(default=0)
-    energizersDone = models.IntegerField(default=0)
+    energy_current = models.IntegerField(default=0)
+    energy_total = models.IntegerField(default=0)
+    energizers_completed = models.IntegerField(default=0)
+    energy_expired = models.IntegerField(default=0)
+    tetris_played = models.IntegerField(default=0)
+    quiz_played = models.IntegerField(default=0)
+    snake_played = models.IntegerField(default=0)
 
     # shop-related data
     currentBalance = models.IntegerField(default=0)
+    annotation_coins_total = models.IntegerField(default=0)
+    annotation_coins_max = models.IntegerField(default=0)
+    items_bought_total = models.IntegerField(default=0)
+
+    # social-related data
+    chat_messages_total = models.IntegerField(default=0)
 
     # Extra intermediate models that characterizethe relationship to Gamification elements
     # i.e., progress on individual badges / challenges / statistics / items

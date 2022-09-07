@@ -117,14 +117,12 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
 
     // Load in badges from database on open of profile.
     useEffect(() => {
-        console.log('Badge-Overview: useEffect Hook triggered');
         loadBadges();
-
-        /* TODO: save badges to database when component unmounts (is this a good idea?)
-        return () => {
-            saveBadges();
-        }; */
     }, []);
+
+    useEffect(() => {
+
+    }, [currentBadgeId]);
 
     // TODO: Add that only visible badges get shown
     return (

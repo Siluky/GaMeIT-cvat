@@ -321,6 +321,17 @@ const config = require('./config');
         };
 
         // gamification stuff from here
+        // user data
+
+        cvat.gamifuserdata.get.implementation = async () => {
+            const userdata = await serverProxy.gamifuserdata.get();
+            return userdata;
+        };
+
+        cvat.gamifuserdata.save.implementation = async (data) => {
+            const userdata = await serverProxy.gamifuserdata.save(data);
+            return userdata;
+        };
 
         // badges
 
