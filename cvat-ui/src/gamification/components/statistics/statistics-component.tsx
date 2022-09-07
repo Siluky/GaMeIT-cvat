@@ -3,8 +3,10 @@
 // SPDX-License-Identifier: MIT
 import React from 'react';
 import 'gamification/gamif-styles.scss';
-import { Row, Col } from 'antd';
+import { Button } from 'antd';
 import { BorderOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { selectStatistic } from 'gamification/actions/statistics-actions';
 
 interface Props {
     id: number;
@@ -15,30 +17,30 @@ interface Props {
     icon?: any;
 }
 
-export default function Statistic(props: Props): JSX.Element {
-    const { value, unit } = props;
+export default function StatisticComponent(props: Props): JSX.Element {
+    const { value, unit, id } = props;
+    const icon = <BorderOutlined />;
+    const dispatch = useDispatch();
+
     return (
-        <Row>
-            <div className='single-statistic-row'>
-                <Col>
-                    <div className='statistic-icon'>
-                        {/* <Button icon='' type='text'> button </Button> */}
-                        <BorderOutlined />
-                    </div>
-                </Col>
-                <Col>
-                    <div className='single-statistic-prop'>
-                        {value}
-                        &nbsp;
-                        {unit}
-                    </div>
-                </Col>
-                {/* <Col>
-                    <div className='single-statistic-prop'>
-                        {unit}
-                    </div>
-                </Col> */}
-            </div>
-        </Row>
+        <Button icon={icon} className='statistic-button' type='default' onClick={() => { dispatch(selectStatistic(id)); }}>
+            {value}
+            {unit}
+        </Button>
     );
 }
+
+// <div className='single-statistic-row'>
+//             <Col>
+//                 <div className='statistic-icon'>
+//                     <BorderOutlined />
+//                 </div>
+//             </Col>
+//             <Col>
+//                 <div className='single-statistic-prop'>
+//                     {value}
+//                     &nbsp;
+//                     {unit}
+//                 </div>
+//             </Col>
+//         </div>
