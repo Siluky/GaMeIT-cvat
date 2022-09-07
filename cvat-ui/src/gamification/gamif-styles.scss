@@ -724,13 +724,26 @@
 }
 
 .statistic-button {
+  width: 130px;
+  height: 45px;
   padding: 5px;
   margin: 5px;
   border-radius: 15px;
   background: #e6e6e6;
   display: flex;
   align-items: center;
-  /* justify-content: center; */
+  justify-content: center;
+}
+
+.statistic-button-left {
+  background: green;
+  width: 30%;
+}
+
+.statistic-button-right {
+  background: yellow;
+  width: 70%;
+  text-align: center;
 }
 
 .statistic-button:hover {

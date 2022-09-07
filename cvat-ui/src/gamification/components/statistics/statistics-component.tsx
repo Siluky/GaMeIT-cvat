@@ -19,13 +19,21 @@ interface Props {
 
 export default function StatisticComponent(props: Props): JSX.Element {
     const { value, unit, id } = props;
-    const icon = <BorderOutlined />;
     const dispatch = useDispatch();
 
     return (
-        <Button icon={icon} className='statistic-button' type='default' onClick={() => { dispatch(selectStatistic(id)); }}>
-            {value}
-            {unit}
+        <Button
+            className='statistic-button'
+            type='default'
+            onClick={() => { dispatch(selectStatistic(id)); }}
+        >
+            <div className='statistic-button-left'>
+                <BorderOutlined />
+            </div>
+            <div className='statistic-button-right'>
+                {value}
+                {unit}
+            </div>
         </Button>
     );
 }

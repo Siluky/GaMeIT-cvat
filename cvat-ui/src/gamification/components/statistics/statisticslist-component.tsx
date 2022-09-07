@@ -24,24 +24,25 @@ import StatisticComponent from './statistics-component';
 const { Panel } = Collapse;
 
 export default function StatisticsList(): JSX.Element {
-    // TODO: Probably do a for-loop for all avaialble statistics -- not sure where to get size yet
     const dispatch = useDispatch();
 
     const icon = <QuestionOutlined style={{ fontSize: '40px' }} />;
     const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
 
-    const stats = useSelector((state: CombinedState) => state.stats);
+    const stats = useSelector((state: CombinedState) => state.statistics);
+    console.log('🚀 ~ file: statisticslist-component.tsx ~ line 34 ~ StatisticsList ~ stats', stats);
+    console.log('🚀 ~ file: statisticslist-component.tsx ~ line 34 ~ StatisticsList ~ stats.statistics', stats.statistics);
 
     return (
         <>
             <div className='statistics-panel'>
                 <Row>
-                    {stats.statistics.map((statistic: Statistic) => (
+                    {stats.statistics.map((_stat: Statistic) => (
                         <Col span={12}>
                             <StatisticComponent
-                                id={statistic.id}
-                                value={statistic.value}
-                                unit={statistic.unit}
+                                id={_stat.id}
+                                value={_stat.value}
+                                unit={_stat.unit}
                                 icon={icon}
                             />
                         </Col>

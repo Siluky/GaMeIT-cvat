@@ -16,11 +16,9 @@ interface StateToProps {
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
-    const { stats } = state;
-    console.log(stats);
-
+    const { statistics } = state;
     return {
-        ids: stats.selectedStatistics,
+        ids: statistics.selectedStatistics,
     };
 }
 
@@ -31,19 +29,16 @@ interface QuickStatisticGroupProps {
 export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Element {
     // const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
     const { ids } = props;
-    const stats = useSelector((state: CombinedState) => state.stats);
+    const stats = useSelector((state: CombinedState) => state.statistics);
 
     return (
         <Col className='cvat-annotation-header-quick-statistics-group'>
             <Row className='cvat-annotation-header-quick-statistics'>
                 {ids.map((id: number) => {
                     const x = stats.statistics.find((statistic) => statistic.id === id);
-                    if (x) { return <QuickStatistic id={x.id} value={x?.value} icon={<CheckCircleOutlined />} />; }
+                    if (x) { return <QuickStatistic id={x.id} value={x.value} icon={<CheckCircleOutlined />} />; }
                     return null;
                 })}
-                ;
-                {/* <QuickStatistic id={2} value={22} icon={<FieldTimeOutlined />} unit='hrs' />
-                <QuickStatistic id={3} value={222} icon={<TagOutlined />} unit='tags' /> */}
             </Row>
             <Row justify='center'>
                 <ProgressBar />

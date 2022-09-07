@@ -796,7 +796,7 @@ export interface CombinedState {
     energizer: EnergizerState;
     shop: ShopState;
     social: SocialState;
-    stats: StatisticsState;
+    statistics: StatisticsState;
 
 }
 
