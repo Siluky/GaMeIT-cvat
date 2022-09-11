@@ -13,25 +13,54 @@ import {
     from 'antd';
 import { QuestionOutlined } from '@ant-design/icons';
 // import { TimeIcon } from 'icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, connect } from 'react-redux';
 
-import { toggleSelecting, selectStatistic } from 'gamification/actions/statistics-actions';
+import { toggleSelecting } from 'gamification/actions/statistics-actions';
 import { CombinedState } from 'reducers/interfaces';
-import { Statistic } from 'gamification/gamif-interfaces';
-import QuickStatisticsPanel from 'components/annotation-page/top-bar/quick-statistics';
+import { Statistic, UserData } from 'gamification/gamif-interfaces';
+import { updateUserData } from 'gamification/actions/user-data-actions';
+import { mapStatisticIdtoIcon } from 'components/annotation-page/top-bar/quick-statistics';
 import StatisticComponent from './statistics-component';
 
 const { Panel } = Collapse;
 
-export default function StatisticsList(): JSX.Element {
+interface StateToProps {
+    userdata: UserData;
+}
+
+function mapStateToProps(state: CombinedState): StateToProps {
+    const { gamifuserdata } = state;
+
+    return {
+        userdata: gamifuserdata.userdata_total,
+    };
+}
+
+interface StatisticsListProps {
+    userdata: UserData;
+}
+
+export function mapIdtoFieldName(id: number): keyof UserData {
+    switch (id) {
+        case 1: return 'images_annotated';
+        case 2: return 'tags_set';
+        case 3: return 'images_annotated_night';
+        case 4: return 'annotation_time';
+        case 5: return 'annotation_streak_current';
+        default: return 'images_annotated';
+    }
+}
+
+export function StatisticsList(props: StatisticsListProps): JSX.Element {
     const dispatch = useDispatch();
 
-    const icon = <QuestionOutlined style={{ fontSize: '40px' }} />;
+    const { userdata } = props;
+
+    // const icon = <QuestionOutlined style={{ fontSize: '40px' }} />;
     const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
 
     const stats = useSelector((state: CombinedState) => state.statistics);
-    console.log('🚀 ~ file: statisticslist-component.tsx ~ line 34 ~ StatisticsList ~ stats', stats);
-    console.log('🚀 ~ file: statisticslist-component.tsx ~ line 34 ~ StatisticsList ~ stats.statistics', stats.statistics);
+    const userdatatest = useSelector((state: CombinedState) => state.gamifuserdata);
 
     return (
         <>
@@ -41,49 +70,28 @@ export default function StatisticsList(): JSX.Element {
                         <Col span={12}>
                             <StatisticComponent
                                 id={_stat.id}
-                                value={_stat.value}
+                                value={userdata[mapIdtoFieldName(_stat.id)]}
                                 unit={_stat.unit}
-                                icon={icon}
+                                icon={mapStatisticIdtoIcon(_stat.id)}
                             />
                         </Col>
                     ))}
                 </Row>
-                <QuickStatisticsPanel />
-                {/* <Row>
-                    <Col span={12}>
-                        <div className='statistics-col'>
-                            <Statistic id={1} value={156} icon={<TimeIcon />} unit='Images' />
-                        </div>
-                    </Col>
-                    <Col span={12}>
-                        <div className='selected-prop'>
-                            <Statistic id={2} value={14.33} icon={icon} unit='min' />
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={12}>
-                        <div className='statistics-col'>
-                            <Statistic id={3} value={8238} icon={icon} />
-                        </div>
-                    </Col>
-                    <Col span={12}>
-                        <div className='statistics-col'>
-                            <Statistic id={4} value={82} icon={icon} unit='hours' />
-                        </div>
-                    </Col>
-                </Row> */}
-                <Button onClick={() => { dispatch(selectStatistic(1)); }}>
-                    1
+
+                <Button onClick={() => { dispatch(updateUserData('images_annotated', 1)); }}>
+                    images_annotated:
+                    {userdatatest.userdata_total.images_annotated}
                 </Button>
-                <Button onClick={() => { dispatch(selectStatistic(2)); }}>
-                    2
+                <Button onClick={() => { dispatch(updateUserData('tags_set', 1)); }}>
+                    tags_set:
+                    {userdatatest.userdata_total.tags_set}
                 </Button>
-                <Button onClick={() => { dispatch(selectStatistic(3)); }}>
-                    3
+                <Button onClick={() => { dispatch(updateUserData('images_annotated_night', 1)); }}>
+                    images_annotated_night:
+                    {userdatatest.userdata_total.images_annotated_night}
                 </Button>
+
                 <Collapse className='collapse' bordered={false} defaultActiveKey={['1']}>
-                    {/* TODO: ich bin ein Zahnrad */}
                     <Button
                         type='primary'
                         onClick={() => {
@@ -144,3 +152,5 @@ export default function StatisticsList(): JSX.Element {
         </>
     );
 }
+
+export default connect(mapStateToProps)(StatisticsList);

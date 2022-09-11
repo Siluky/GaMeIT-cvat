@@ -24,6 +24,7 @@ const userdataInit: UserData = {
     snake_played: 0,
     currentBalance: 0,
     annotation_coins_obtained: 0,
+    annotation_coins_max: 0,
     items_bought: 0,
     chat_messages: 0,
 };
@@ -36,6 +37,14 @@ const defaultState: UserDataState = {
 export default (state = defaultState, action: AnyAction): UserDataState => {
     switch (action.type) {
         case UserDataActionTypes.GET_USER_DATA_SUCCESS: {
+            console.log(action.payload);
+            return {
+                ...state,
+                userdata_total: action.payload,
+            };
+        }
+
+        case UserDataActionTypes.UPDATE_USER_DATA_FIELD_SUCCESS: {
             return {
                 ...state,
                 userdata_total: action.payload,
@@ -45,6 +54,7 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
         case UserDataActionTypes.SAVE_USER_DATA_SUCCESS: return state;
         case UserDataActionTypes.GET_USER_DATA_FAILED: return state;
         case UserDataActionTypes.SAVE_USER_DATA_FAILED: return state;
+        case UserDataActionTypes.UPDATE_USER_DATA_FIELD_FAILED: return state;
         default: return state;
     }
 };

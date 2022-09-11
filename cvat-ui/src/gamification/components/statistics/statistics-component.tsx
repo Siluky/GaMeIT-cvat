@@ -4,9 +4,9 @@
 import React from 'react';
 import 'gamification/gamif-styles.scss';
 import { Button } from 'antd';
-import { BorderOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { selectStatistic } from 'gamification/actions/statistics-actions';
+import { mapStatisticIdtoIcon } from 'components/annotation-page/top-bar/quick-statistics';
 
 interface Props {
     id: number;
@@ -28,27 +28,13 @@ export default function StatisticComponent(props: Props): JSX.Element {
             onClick={() => { dispatch(selectStatistic(id)); }}
         >
             <div className='statistic-button-left'>
-                <BorderOutlined />
+                {mapStatisticIdtoIcon(id)}
             </div>
             <div className='statistic-button-right'>
                 {value}
+                &nbsp;
                 {unit}
             </div>
         </Button>
     );
 }
-
-// <div className='single-statistic-row'>
-//             <Col>
-//                 <div className='statistic-icon'>
-//                     <BorderOutlined />
-//                 </div>
-//             </Col>
-//             <Col>
-//                 <div className='single-statistic-prop'>
-//                     {value}
-//                     &nbsp;
-//                     {unit}
-//                 </div>
-//             </Col>
-//         </div>

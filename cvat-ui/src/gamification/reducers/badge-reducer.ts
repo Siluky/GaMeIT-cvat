@@ -3,35 +3,14 @@
 // SPDX-License-Identifier: MIT
 
 import { AnyAction } from 'redux';
+import { badges } from 'gamification/gamif-items';
 import { BadgeActionTypes } from '../actions/badge-actions';
 import { BadgeState } from '../gamif-interfaces';
 
-/* const dummyBadge = {
-    id: 0,
-    title: '',
-    instruction: 'Select a Badge to see details about it!',
-    progress: 0,
-    goal: 10,
-    goalunit: '',
-    got: true,
-    receivedOn: null,
-    visible: true,
-}; */
-
 const defaultState: BadgeState = {
-    availableBadges: [{
-        id: 0,
-        title: '',
-        instruction: '',
-        progress: 0,
-        goal: 0,
-        goalunit: '',
-        got: true,
-        receivedOn: null,
-        visible: true,
-    }],
-    selectedBadgeId: 0, // no selected badge at the start
-    badgesinProfile: [7],
+    availableBadges: badges,
+    selectedBadgeId: 0,
+    badgesinProfile: [1],
     currentUserId: 0,
     loading: false,
 };
@@ -109,6 +88,13 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             return {
                 ...state,
                 badgesinProfile: newArray,
+            };
+        }
+
+        case BadgeActionTypes.UPDATE_BADGE_TIERS: {
+            return {
+                ...state,
+                availableBadges: action.payload,
             };
         }
 

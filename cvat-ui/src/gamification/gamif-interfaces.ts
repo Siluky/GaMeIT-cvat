@@ -24,6 +24,7 @@ export interface UserData {
 
     currentBalance: number,
     annotation_coins_obtained: number,
+    annotation_coins_max: number,
     items_bought: number,
 
     chat_messages: number,
@@ -34,14 +35,25 @@ export interface UserDataState {
     userdata_total: UserData,
 }
 
+export enum BadgeTier {
+    NOT_OBTAINED = 'NOT_OBTAINED',
+    BRONZE = 'BRONZE',
+    SILVER = 'SILVER',
+    GOLD = 'GOLD',
+}
+
 export interface Badge {
-    id: number,
+    id: number;
     title: string;
     instruction: string;
-    progress: number;
     goal: number;
+    tier: BadgeTier;
+    goal_silver?: number;
+    goal_bronze?: number;
+
+    progress: number;
     goalunit: string;
-    got: boolean;
+
     receivedOn: Date | null;
     visible: boolean;
 }
@@ -134,7 +146,7 @@ export enum OnlineStatus {
 export interface Profile {
     username: string,
     userId: number,
-    avatar: number, // TODO: figure out best way to save this.
+    avatar: number,
     status: OnlineStatus,
     shownBadges: Badge[],
     chatActive: boolean,
@@ -149,11 +161,9 @@ export interface SocialState {
 
 export interface Statistic {
     id: number;
-    name?: string;
-    value?: number;
-    unit?: string;
-    hoverOverText?: string;
-    icon?: any;
+    value: number;
+    unit: string;
+    hoverOverText: string;
 }
 
 export interface StatisticsState {

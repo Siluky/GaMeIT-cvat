@@ -14,6 +14,7 @@ import {
     ShopState,
     SocialState,
     StatisticsState,
+    UserDataState,
 } from 'gamification/gamif-interfaces';
 
 export type StringObject = {
@@ -797,6 +798,7 @@ export interface CombinedState {
     shop: ShopState;
     social: SocialState;
     statistics: StatisticsState;
+    gamifuserdata: UserDataState;
 
 }
 

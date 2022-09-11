@@ -52,9 +52,10 @@ import {
     saveCurrentEnergyAsync,
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
+import { initializeUserData } from 'gamification/actions/user-data-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
-import { loadBadgesAsync } from 'gamification/actions/badge-actions';
+// import { loadBadgesAsync } from 'gamification/actions/badge-actions';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -215,7 +216,7 @@ function HeaderContainer(props: Props): JSX.Element {
     // TODO: Change the hard-coded values
     useEffect(() => {
         getCurrentEnergy();
-        dispatch(loadBadgesAsync()); // TODO: TESTING
+        // dispatch(loadBadgesAsync()); // TODO: TESTING
         const interval = setInterval(() => {
             incrementEnergy(1);
         }, gamifconsts.ENERGY_RATE);
@@ -557,6 +558,7 @@ function HeaderContainer(props: Props): JSX.Element {
                 >
                     Save
                 </Button>
+                <Button onClick={() => dispatch(initializeUserData())}> Load</Button>
                 <Popover content={<ShopWindow />} mouseLeaveDelay={3}>
                     <Button type='text'> Open Shop </Button>
                 </Popover>

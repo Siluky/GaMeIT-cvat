@@ -23,7 +23,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         currentUser = self.request.user
         return UserProfile.objects.filter(user = currentUser)
-        # queryset = UserProfile.objects.filter(userProfile = currentUserProfile)
 
     @action(detail=False, methods=['GET','PUT'], serializer_class=EnergySerializer)
     def currentEnergy(self, request):

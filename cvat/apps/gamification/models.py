@@ -69,7 +69,7 @@ class UserProfile(models.Model):
     tags_set_total = models.IntegerField(default=0)
     images_annotated_night = models.IntegerField(default=0)
 
-    annotation_time_total = models.TimeField
+    annotation_time_total = models.IntegerField(default=0)
     annotation_streak_current = models.IntegerField(default=0)
     annotation_streak_max = models.IntegerField(default=0)
 

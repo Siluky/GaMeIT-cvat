@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 import 'gamification/gamif-styles.scss';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
     Row,
     Col,
@@ -13,14 +13,17 @@ import {
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 
-import { BadgeIcon, BadgeGreyIcon } from 'icons';
+import {
+    BadgeGoldIcon, BadgeSilverIcon, BadgeNotIcon, BadgeBronzeIcon,
+} from 'icons';
 import { CloseOutlined } from '@ant-design/icons';
-import { Badge } from '../../gamif-interfaces';
+import { Badge, BadgeTier } from '../../gamif-interfaces';
 import {
     setCurrentBadge,
     loadBadgesAsync,
     incrementBadge,
     toggleBadgeInProfile,
+    updateBadges,
 } from '../../actions/badge-actions';
 
 interface BadgeOverviewProps {
@@ -64,30 +67,50 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
     };
 }
 
+const mapTiertoIcon = (tier: BadgeTier): React.ReactNode => {
+    switch (tier) {
+        case BadgeTier.NOT_OBTAINED: return <BadgeNotIcon />;
+        case BadgeTier.GOLD: return <BadgeGoldIcon />;
+        case BadgeTier.SILVER: return <BadgeSilverIcon />;
+        case BadgeTier.BRONZE: return <BadgeBronzeIcon />;
+        default: return <BadgeNotIcon />;
+    }
+};
+
 function showSelectedBadge(badge: Badge): JSX.Element {
-    const progress = `Current Progress: ${badge.progress} / ${badge.goal} ${badge.goalunit}`;
+    const relevantGoal = (): number => {
+        if (badge.tier === BadgeTier.NOT_OBTAINED && badge.goal_bronze) {
+            return badge.goal_bronze;
+        } if (badge.tier === BadgeTier.BRONZE && badge.goal_silver) { return badge.goal_silver; }
+        return badge.goal;
+    };
+    const progress = `Current Progress: ${badge.progress} / ${relevantGoal()} ${badge.goalunit}`;
     const receivedOn = `Achieved on ${badge.receivedOn}`;
     const dispatch = useDispatch();
 
     return (
         <>
             <div className='gamif-badge-icon'>
-                {badge.got ? <BadgeIcon /> : <BadgeGreyIcon />}
+                {mapTiertoIcon(badge.tier)}
             </div>
             <div className='gamif-badge-details'>
                 <p><strong>{badge.title}</strong></p>
                 <p>{badge.instruction}</p>
                 <Progress percent={(badge.progress / badge.goal) * 100} />
-                {badge.got ? receivedOn : progress}
-                {badge.got && (
-                    <div>
-                        <Button
-                            icon={<CloseOutlined />}
-                            onClick={() => dispatch(toggleBadgeInProfile(badge.id))}
-                            size='small'
-                        />
+                {badge.tier !== BadgeTier.GOLD && progress}
+                {badge.tier !== BadgeTier.NOT_OBTAINED && (
+                    <>
+                        <span>{receivedOn}</span>
+                        <div>
+                            <Button
+                                icon={<CloseOutlined />}
+                                onClick={() => dispatch(toggleBadgeInProfile(badge.id))}
+                                size='small'
+                            />
 
-                    </div>
+                        </div>
+
+                    </>
                 )}
 
             </div>
@@ -100,14 +123,14 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
         currentUserId, currentBadgeId, availableBadges, loadBadges,
     } = props;
     const badges = useSelector((state: CombinedState) => state.badges);
-    const defaultBadge = {
+    const defaultBadge: Badge = {
         id: 0,
         title: '',
         instruction: 'Select a Badge to see details about it!',
         progress: 0,
         goal: 10,
+        tier: BadgeTier.NOT_OBTAINED,
         goalunit: '',
-        got: true,
         receivedOn: null,
         visible: true,
     };
@@ -116,13 +139,9 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
     const dispatch = useDispatch();
 
     // Load in badges from database on open of profile.
-    useEffect(() => {
-        loadBadges();
-    }, []);
-
-    useEffect(() => {
-
-    }, [currentBadgeId]);
+    // useEffect(() => {
+    //     loadBadges();
+    // }, []);
 
     // TODO: Add that only visible badges get shown
     return (
@@ -131,16 +150,22 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                 <div className='gamif-badge-overview-container'>
                     <div className='gamif-badge-overview-content'>
                         <Row>
-                            {Object.values(badges.availableBadges).map((badge: Badge) => (
-                                <Col span={4}>
-                                    <Button
-                                        className='gamif-badge-overview-individual-badge'
-                                        type='text'
-                                        icon={badge.got ? <BadgeIcon /> : <BadgeGreyIcon />}
-                                        onClick={(): void => { dispatch(setCurrentBadge(badge.id)); }}
-                                    />
-                                </Col>
-                            ))}
+                            {Object.values(badges.availableBadges).map((badge: Badge) => {
+                                if (badge.visible) {
+                                    return (
+                                        <Col span={4}>
+                                            <Button
+                                                className='gamif-badge-overview-individual-badge'
+                                                type='text'
+                                                icon={mapTiertoIcon(badge.tier)}
+                                                onClick={(): void => { dispatch(setCurrentBadge(badge.id)); }}
+                                            />
+                                        </Col>
+                                    );
+                                }
+                                return null;
+                            })}
+
                             <Button
                                 type='text'
                                 onClick={(): void => {
@@ -156,6 +181,22 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                 }}
                             >
                                 -
+                            </Button>
+                            <Button
+                                type='text'
+                                onClick={(): void => {
+                                    dispatch(updateBadges(availableBadges));
+                                }}
+                            >
+                                Update
+                            </Button>
+                            <Button
+                                type='text'
+                                onClick={(): void => {
+                                    dispatch(loadBadges());
+                                }}
+                            >
+                                Load
                             </Button>
                         </Row>
                     </div>
@@ -173,7 +214,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                 <Col span={4}>
                                     <Button
                                         type='text'
-                                        icon={badge.got ? <BadgeIcon /> : <BadgeGreyIcon />}
+                                        icon={mapTiertoIcon(badge.tier)}
                                         onClick={(): void => { dispatch(setCurrentBadge(badge.id)); }}
                                     />
                                     {badge.id}

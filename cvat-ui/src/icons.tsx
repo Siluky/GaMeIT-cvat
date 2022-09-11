@@ -64,6 +64,12 @@ import SVGMoneyHoarderBadge from './assets/money-hoarder-badge.svg';
 import SVGImageIcon from './assets/images-icon.svg';
 import SVGTimeIcon from './assets/time-icon.svg';
 
+// Badges
+import SVGBadgeGold from './assets/gamification/badges/badge-gold.svg';
+import SVGBadgeSilver from './assets/gamification/badges/badge-silver.svg';
+import SVGBadgeBronze from './assets/gamification/badges/badge-bronze.svg';
+import SVGBadgeNot from './assets/gamification/badges/badge-grey.svg';
+
 export const CVATLogo = React.memo((): JSX.Element => <SVGCVATLogo />);
 export const EmptyTasksIcon = React.memo((): JSX.Element => <SVGEmptyTasksIcon />);
 export const CursorIcon = React.memo((): JSX.Element => <SVGCursorIcon />);
@@ -116,6 +122,13 @@ export const OpenVINOIcon = React.memo((): JSX.Element => <SVGOpenVINO />);
 export const EnergizerIcon = React.memo((): JSX.Element => <SVGEnergizerIcon />);
 export const BadgeIcon = React.memo((): JSX.Element => <SVGBadge />);
 export const BadgeGreyIcon = React.memo((): JSX.Element => <SVGBadgeGrey />);
+
+// Badges
+export const BadgeGoldIcon = React.memo((): JSX.Element => <SVGBadgeGold />);
+export const BadgeSilverIcon = React.memo((): JSX.Element => <SVGBadgeSilver />);
+export const BadgeBronzeIcon = React.memo((): JSX.Element => <SVGBadgeBronze />);
+export const BadgeNotIcon = React.memo((): JSX.Element => <SVGBadgeNot />);
+
 export const AnnotationCoinIcon = React.memo((): JSX.Element => <SVGAnnotationCoin />);
 export const GreenAvatarBorderIcon = React.memo((): JSX.Element => <SVGGreenAvatarBorder />);
 export const RedAvatarBorderIcon = React.memo((): JSX.Element => <SVGRedAvatarBorder />);

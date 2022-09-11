@@ -10,6 +10,7 @@ import energizerReducer from 'gamification/reducers/energizer-reducer';
 import shopReducer from 'gamification/reducers/shop-reducer';
 import socialReducer from 'gamification/reducers/social-reducer';
 import statisticsReducer from 'gamification/reducers/statistics-reducer';
+import userDataReducer from 'gamification/reducers/user-data-reducer';
 
 import authReducer from './auth-reducer';
 import projectsReducer from './projects-reducer';
@@ -59,5 +60,6 @@ export default function createRootReducer(): Reducer {
         shop: shopReducer,
         social: socialReducer,
         statistics: statisticsReducer,
+        gamifuserdata: userDataReducer,
     });
 }

@@ -1765,8 +1765,8 @@
             async function getGamifUserData() {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/user-data`); // TODO:
-                return response.data.results;
+                response = await Axios.get(`${backendAPI}/user-data`);
+                return response.data.results[0];
             }
 
             async function saveGamifUserData(data) {
@@ -1779,6 +1779,7 @@
                             'Content-Type': 'application/json',
                         },
                     });
+                console.log('🚀 ~ file: server-proxy.js ~ line 1783 ~ ServerProxy ~ saveGamifUserData ~ response.data.results', response.data.results);
                 return response.data.results;
             }
 
