@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: MIT
 import React, { useEffect } from 'react';
 import '../../gamif-styles.scss';
-import 'react-chat-widget/lib/styles.css';
 import { Menu, Popover, Button } from 'antd';
 import { RadarChartOutlined, CloseOutlined } from '@ant-design/icons';
 import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';

@@ -2,7 +2,9 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Badge, BadgeTier } from './gamif-interfaces';
+import {
+    Badge, BadgeTier, Statistic, UserData,
+} from './gamif-interfaces';
 
 // TODO: File for individual challenges / badges, mapping them to their IDs etc
 
@@ -71,3 +73,61 @@ export const badges: Badge[] = [
         visible: false,
     },
 ];
+
+export const stats: Statistic[] = [
+    {
+        id: 1,
+        value: 0,
+        unit: 'Images',
+        tooltip_total: 'Images annotated total',
+        tooltip_session: 'Images annotated this session',
+    },
+    {
+        id: 2,
+        value: 0,
+        unit: 'Tags',
+        tooltip_total: 'Tags set in total',
+        tooltip_session: '',
+    },
+    {
+        id: 3,
+        value: 0,
+        unit: 'Images',
+        tooltip_total: 'Images annotated at night',
+        tooltip_session: '',
+    },
+    {
+        id: 4,
+        value: 0,
+        unit: 'hrs',
+        tooltip_total: 'Time spent annotating',
+        tooltip_session: '',
+    },
+    {
+        id: 5,
+        value: 0,
+        unit: '',
+        tooltip_total: '',
+        tooltip_session: '',
+    },
+
+];
+
+export function mapStatisticIdtoFieldName(id: number): keyof UserData {
+    switch (id) {
+        case 1: return 'images_annotated';
+        case 2: return 'tags_set';
+        case 3: return 'annotation_time';
+        case 4: return 'annotation_streak_current';
+        case 5: return 'annotation_time';
+        case 6: return 'energy_gained';
+        case 7: return 'tetris_played';
+        case 8: return 'quiz_played';
+        case 9: return 'snake_played';
+        case 10: return 'challenges_completed';
+        case 11: return 'items_bought';
+        case 12: return 'annotation_coins_obtained';
+        case 13: return 'annotation_coins_max';
+        default: return 'images_annotated';
+    }
+}

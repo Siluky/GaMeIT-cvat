@@ -163,7 +163,8 @@ export interface Statistic {
     id: number;
     value: number;
     unit: string;
-    hoverOverText: string;
+    tooltip_total: string;
+    tooltip_session: string;
 }
 
 export interface StatisticsState {

@@ -6,7 +6,6 @@ import 'gamification/gamif-styles.scss';
 import { Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { selectStatistic } from 'gamification/actions/statistics-actions';
-import { mapStatisticIdtoIcon } from 'components/annotation-page/top-bar/quick-statistics';
 
 interface Props {
     id: number;
@@ -14,11 +13,13 @@ interface Props {
     value?: number;
     unit?: string;
     hoverOverText?: string;
-    icon?: any;
+    icon: JSX.Element;
 }
 
 export default function StatisticComponent(props: Props): JSX.Element {
-    const { value, unit, id } = props;
+    const {
+        value, unit, id, icon,
+    } = props;
     const dispatch = useDispatch();
 
     return (
@@ -28,7 +29,7 @@ export default function StatisticComponent(props: Props): JSX.Element {
             onClick={() => { dispatch(selectStatistic(id)); }}
         >
             <div className='statistic-button-left'>
-                {mapStatisticIdtoIcon(id)}
+                {icon}
             </div>
             <div className='statistic-button-right'>
                 {value}

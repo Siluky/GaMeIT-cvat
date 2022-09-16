@@ -5,14 +5,10 @@ import React from 'react';
 import { Row, Col } from 'antd/lib/grid';
 import QuickStatistic from 'gamification/components/statistics/quick-statistics-component';
 import ProgressBar from 'gamification/components/progressbar-component';
-// import { CheckCircleOutlined, FieldTimeOutlined, TagOutlined } from '@ant-design/icons';
-import {
-    AndroidFilled, AndroidOutlined, CheckCircleOutlined, QuestionOutlined,
-} from '@ant-design/icons';
 import { CombinedState } from 'reducers/interfaces';
 import { connect, useSelector } from 'react-redux';
-import { mapIdtoFieldName } from 'gamification/components/statistics/statisticslist-component';
-// import { ImageIcon } from 'icons';
+import { mapStatisticIdtoFieldName } from 'gamification/gamif-items';
+import { mapStatisticIdtoIcon } from 'gamification/gamif-setup';
 
 interface StateToProps {
     ids: number[];
@@ -29,15 +25,6 @@ interface QuickStatisticGroupProps {
     ids: number[];
 }
 
-export const mapStatisticIdtoIcon = (id: number): JSX.Element => {
-    switch (id) {
-        case 1: return <AndroidFilled />;
-        case 2: return <AndroidOutlined />;
-        case 3: return <QuestionOutlined />;
-        default: return <CheckCircleOutlined />;
-    }
-};
-
 export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Element {
     // const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
     const { ids } = props;
@@ -53,9 +40,9 @@ export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Eleme
                     if (stat) {
                         return (
                             <QuickStatistic
-                                value={userdata[mapIdtoFieldName(stat.id)]}
+                                value={userdata[mapStatisticIdtoFieldName(stat.id)]}
                                 icon={mapStatisticIdtoIcon(stat.id)}
-                                hoverOverText={stat.hoverOverText ? stat.hoverOverText : 'Tooltip missing'}
+                                hoverOverText={stat.tooltip_total ? stat.tooltip_total : 'Tooltip missing'}
                             />
                         );
                     }

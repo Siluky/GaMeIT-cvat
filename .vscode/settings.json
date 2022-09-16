@@ -81,6 +81,10 @@
         {
             "filePath": "cvat-ui/src/index.tsx",
             "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/gamif-items.ts",
+            "group": "Default"
         }
     ],
     "favorites.sortOrder": "ASC"

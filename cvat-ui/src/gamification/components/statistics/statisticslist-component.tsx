@@ -15,11 +15,12 @@ import { QuestionOutlined } from '@ant-design/icons';
 // import { TimeIcon } from 'icons';
 import { useDispatch, useSelector, connect } from 'react-redux';
 
-import { toggleSelecting } from 'gamification/actions/statistics-actions';
+import { selectStatistic, toggleSelecting } from 'gamification/actions/statistics-actions';
 import { CombinedState } from 'reducers/interfaces';
 import { Statistic, UserData } from 'gamification/gamif-interfaces';
 import { updateUserData } from 'gamification/actions/user-data-actions';
-import { mapStatisticIdtoIcon } from 'components/annotation-page/top-bar/quick-statistics';
+import { mapStatisticIdtoIcon } from 'gamification/gamif-setup';
+import { mapStatisticIdtoFieldName } from 'gamification/gamif-items';
 import StatisticComponent from './statistics-component';
 
 const { Panel } = Collapse;
@@ -40,17 +41,6 @@ interface StatisticsListProps {
     userdata: UserData;
 }
 
-export function mapIdtoFieldName(id: number): keyof UserData {
-    switch (id) {
-        case 1: return 'images_annotated';
-        case 2: return 'tags_set';
-        case 3: return 'images_annotated_night';
-        case 4: return 'annotation_time';
-        case 5: return 'annotation_streak_current';
-        default: return 'images_annotated';
-    }
-}
-
 export function StatisticsList(props: StatisticsListProps): JSX.Element {
     const dispatch = useDispatch();
 
@@ -61,19 +51,32 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
 
     const stats = useSelector((state: CombinedState) => state.statistics);
     const userdatatest = useSelector((state: CombinedState) => state.gamifuserdata);
-
     return (
         <>
             <div className='statistics-panel'>
                 <Row>
                     {stats.statistics.map((_stat: Statistic) => (
                         <Col span={12}>
-                            <StatisticComponent
+                            <Button
+                                className='statistic-button'
+                                type='default'
+                                onClick={() => { dispatch(selectStatistic(_stat.id)); }}
+                            >
+                                <div className='statistic-button-left'>
+                                    {mapStatisticIdtoIcon(_stat.id)}
+                                </div>
+                                <div className='statistic-button-right'>
+                                    {userdata[mapStatisticIdtoFieldName(_stat.id)]}
+                                    &nbsp;
+                                    {_stat.unit}
+                                </div>
+                            </Button>
+                            {/* <StatisticComponent
                                 id={_stat.id}
-                                value={userdata[mapIdtoFieldName(_stat.id)]}
+                                value={userdata[mapStatisticIdtoFieldName(_stat.id)]}
                                 unit={_stat.unit}
                                 icon={mapStatisticIdtoIcon(_stat.id)}
-                            />
+                            /> */}
                         </Col>
                     ))}
                 </Row>

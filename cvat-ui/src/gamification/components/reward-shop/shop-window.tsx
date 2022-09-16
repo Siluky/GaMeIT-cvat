@@ -22,6 +22,7 @@ interface StateToProps {
     currentBalance: number;
     selectedItemId: number;
 }
+
 function mapStateToProps(state: CombinedState): StateToProps {
     const { shop } = state;
 
