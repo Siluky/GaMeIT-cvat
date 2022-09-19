@@ -6,7 +6,8 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { getCVATStore } from 'cvat-store';
 import { ThunkAction } from 'redux-thunk';
-import { Badge, BadgeTier, UserData } from '../gamif-interfaces';
+import { mapBadgeIdtoField } from 'gamification/gamif-items';
+import { Badge, BadgeTier } from '../gamif-interfaces';
 
 const cvat = getCore();
 
@@ -181,17 +182,6 @@ export function toggleBadgeInProfile(badgeId: number): ThunkAction<void, {}, {},
         }
     };
 }
-
-const mapBadgeIdtoField = (id: number): keyof UserData => {
-    switch (id) {
-        case 1: return 'images_annotated';
-        case 2: return 'images_annotated';
-        case 3: return 'tags_set';
-        case 4: return 'annotation_time';
-        case 5: return 'images_annotated_night';
-        default: return 'images_annotated';
-    }
-};
 
 export function updateBadges(badges: Badge[]): AnyAction {
     const userDataState = getCVATStore().getState().gamifuserdata.userdata_total;

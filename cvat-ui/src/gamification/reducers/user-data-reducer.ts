@@ -32,6 +32,7 @@ const userdataInit: UserData = {
 const defaultState: UserDataState = {
     userdata_session: userdataInit,
     userdata_total: userdataInit,
+    userId: 0,
 };
 
 export default (state = defaultState, action: AnyAction): UserDataState => {
@@ -40,20 +41,28 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
             console.log(action.payload);
             return {
                 ...state,
-                userdata_total: action.payload,
+                userdata_total: action.payload.allTime,
+                userdata_session: action.payload.session,
             };
         }
 
         case UserDataActionTypes.UPDATE_USER_DATA_FIELD_SUCCESS: {
             return {
                 ...state,
-                userdata_total: action.payload,
+                userdata_session: action.payload,
             };
         }
 
-        case UserDataActionTypes.SAVE_USER_DATA_SUCCESS: return state;
-        case UserDataActionTypes.GET_USER_DATA_FAILED: return state;
+        case UserDataActionTypes.SET_USER_ID: {
+            return {
+                ...state,
+                userId: action.payload,
+            };
+        }
+
         case UserDataActionTypes.SAVE_USER_DATA_FAILED: return state;
+        case UserDataActionTypes.SAVE_USER_DATA_SUCCESS: return state; // just to know API call worked, no state changes
+        case UserDataActionTypes.GET_USER_DATA_FAILED: return state;
         case UserDataActionTypes.UPDATE_USER_DATA_FIELD_FAILED: return state;
         default: return state;
     }

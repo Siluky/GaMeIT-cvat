@@ -9,6 +9,8 @@ import { Challenge } from 'gamification/gamif-interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 import { addChallenge, getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
+import { UndoOutlined } from '@ant-design/icons';
+import { AnnotationCoinIcon } from 'icons';
 import ChallengePane from './challenge-component';
 
 export default function ChallengeList(): JSX.Element {
@@ -18,16 +20,22 @@ export default function ChallengeList(): JSX.Element {
     return (
         <>
             <div className='gamif-challenge-list'>
-                {challenges.availableChallenges.map((_challenge: Challenge, index: number) => (
-                    <Row>
-                        <ChallengePane id={index + 1} challenge={_challenge} />
-                    </Row>
-                ))}
+                <div className='gamif-challenge-list-header'>
+                    Reroll: 20
+                    <AnnotationCoinIcon />
+                    <UndoOutlined />
+                </div>
+                <div>
+                    {challenges.availableChallenges.map((_challenge: Challenge, index: number) => (
+                        <Row>
+                            <ChallengePane id={index + 1} challenge={_challenge} />
+                        </Row>
+                    ))}
+                </div>
             </div>
             <Button onClick={() => dispatch(getChallengesAsync())}> Get Challenges </Button>
             <Button onClick={() => dispatch(addChallenge())}> Add Challenge </Button>
             <Button onClick={() => dispatch(saveChallenges(challenges.availableChallenges))}> Save Challenges </Button>
-
         </>
     );
 }

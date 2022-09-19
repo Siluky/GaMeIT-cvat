@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 from enum import Enum
+import json
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -97,6 +98,15 @@ class UserProfile(models.Model):
     # social-related data
     chat_messages_total = models.IntegerField(default=0)
 
+    # statistics-related data
+    selectedStatistics = models.CharField(max_length=255, default='')
+
+    def set_selectedStatistics(self, x):
+        self.selectedStatistics = json.dumps(x)
+
+    def get_selectedStatistics(self):
+        return json.loads(self.selectedStatistics)
+
     # Extra intermediate models that characterizethe relationship to Gamification elements
     # i.e., progress on individual badges / challenges / statistics / items
     badges = models.ManyToManyField(Badge, through='BadgeStatus')
@@ -118,7 +128,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 """
-
 
 # The following status models are intermediate models with additional information
 # on the m:n relationship between a User(UserProfile) and other Models
@@ -171,6 +180,7 @@ class ItemStatus(models.Model):
         self.id = str(self.userProfile.id) + '-' + str(self.item.id)
         super(ItemStatus, self).save(*args, **kwargs)
 
+# TODO: Remove!
 class StatisticsStatus(models.Model):
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     statistic = models.ForeignKey(Statistic, on_delete=models.CASCADE, default=None)

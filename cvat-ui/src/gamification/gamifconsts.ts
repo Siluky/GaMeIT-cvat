@@ -4,10 +4,12 @@
 
 const MAXIMUM_ENERGY = 20;
 const ENERGIZER_COST = 10;
-const ENERGY_RATE = 30000; // in milliseconds
+const ENERGY_RATE = 60000; // in milliseconds
+const ENERGY_INCREMENT = 1;
 
 export default {
     MAXIMUM_ENERGY,
     ENERGIZER_COST,
     ENERGY_RATE,
+    ENERGY_INCREMENT,
 };

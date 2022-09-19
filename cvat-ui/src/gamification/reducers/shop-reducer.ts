@@ -3,91 +3,14 @@
 // SPDX-License-Identifier: MIT
 
 import { AnyAction } from 'redux';
-import {
-    GreenAvatarBorderIcon,
-    RedAvatarBorderIcon,
-    LoadingItemIcon,
-} from 'icons';
+
+import { items } from 'gamification/gamif-items';
 import { ShopActionTypes } from '../actions/shop-actions';
 import { ShopItem, ShopState } from '../gamif-interfaces';
 
-const dummyItems: ShopItem[] = [{
-    id: 1,
-    title: 'Charge Pack',
-    price: 100,
-    bought: false,
-    icon: GreenAvatarBorderIcon,
-    onPurchase: () => {},
-},
-{
-    id: 2,
-    title: 'Mystery Gift',
-    price: 80,
-    bought: false,
-    icon: RedAvatarBorderIcon,
-    onPurchase: () => {},
-},
-{
-    id: 4,
-    title: 'Locked',
-    price: 100,
-    bought: false,
-    icon: LoadingItemIcon,
-    onPurchase: () => {},
-},
-{
-    id: 4,
-    title: 'Locked',
-    price: 100,
-    bought: false,
-    icon: LoadingItemIcon,
-    onPurchase: () => {},
-},
-{
-    id: 4,
-    title: 'Locked',
-    price: 100,
-    bought: false,
-    icon: LoadingItemIcon,
-    onPurchase: () => {},
-},
-{
-    id: 4,
-    title: 'Locked',
-    price: 100,
-    bought: false,
-    icon: LoadingItemIcon,
-    onPurchase: () => {},
-},
-{
-    id: 4,
-    title: 'Locked',
-    price: 100,
-    bought: false,
-    icon: LoadingItemIcon,
-    onPurchase: () => {},
-},
-{
-    id: 4,
-    title: 'Locked',
-    price: 100,
-    bought: false,
-    icon: LoadingItemIcon,
-    onPurchase: () => {},
-},
-{
-    id: 4,
-    title: 'Locked',
-    price: 100,
-    bought: false,
-    icon: LoadingItemIcon,
-    onPurchase: () => {},
-},
-];
-
 const defaultState: ShopState = {
-    currentBalance: 100,
-    availableItems: dummyItems,
+    currentBalance: 0,
+    availableItems: items,
     selectedItemId: 0,
 };
 
@@ -128,7 +51,7 @@ export default (state = defaultState, action: AnyAction): ShopState => {
         case ShopActionTypes.PURCHASE_ITEM_SUCCESS: {
             const updatedItems = state.availableItems.map(
                 (_item: ShopItem) => {
-                    if (_item.id === action.payload) { return { ..._item, bought: true }; }
+                    if (_item.id === action.payload && !_item.repeatable) { return { ..._item, bought: true }; }
                     return _item;
                 },
             );

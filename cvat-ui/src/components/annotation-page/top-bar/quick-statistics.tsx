@@ -40,6 +40,7 @@ export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Eleme
                     if (stat) {
                         return (
                             <QuickStatistic
+                                key={id}
                                 value={userdata[mapStatisticIdtoFieldName(stat.id)]}
                                 icon={mapStatisticIdtoIcon(stat.id)}
                                 hoverOverText={stat.tooltip_total ? stat.tooltip_total : 'Tooltip missing'}

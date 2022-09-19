@@ -84,6 +84,7 @@ function showSelectedBadge(badge: Badge): JSX.Element {
         } if (badge.tier === BadgeTier.BRONZE && badge.goal_silver) { return badge.goal_silver; }
         return badge.goal;
     };
+    console.log('🚀 ~ file: badge-overview.tsx ~ line 87 ~ relevantGoal ~ relevantGoal', relevantGoal);
     const progress = `Current Progress: ${badge.progress} / ${relevantGoal()} ${badge.goalunit}`;
     const receivedOn = `Achieved on ${badge.receivedOn}`;
     const dispatch = useDispatch();
@@ -120,7 +121,7 @@ function showSelectedBadge(badge: Badge): JSX.Element {
 
 export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
     const {
-        currentUserId, currentBadgeId, availableBadges, loadBadges,
+        currentBadgeId, availableBadges, loadBadges,
     } = props;
     const badges = useSelector((state: CombinedState) => state.badges);
     const defaultBadge: Badge = {
@@ -143,18 +144,18 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
     //     loadBadges();
     // }, []);
 
-    // TODO: Add that only visible badges get shown
     return (
         <Tabs type='card' defaultActiveKey='1' className='badge-overview-tabs'>
             <Tabs.TabPane tab='Permanent Badges' key='1'>
                 <div className='gamif-badge-overview-container'>
                     <div className='gamif-badge-overview-content'>
                         <Row>
-                            {Object.values(badges.availableBadges).map((badge: Badge) => {
+                            {Object.values(badges.availableBadges).map((badge: Badge, index: number) => {
                                 if (badge.visible) {
                                     return (
                                         <Col span={4}>
                                             <Button
+                                                key={index}
                                                 className='gamif-badge-overview-individual-badge'
                                                 type='text'
                                                 icon={mapTiertoIcon(badge.tier)}
@@ -166,22 +167,6 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                 return null;
                             })}
 
-                            <Button
-                                type='text'
-                                onClick={(): void => {
-                                    dispatch(incrementBadge(currentUserId, currentBadge, 1));
-                                }}
-                            >
-                                +
-                            </Button>
-                            <Button
-                                type='text'
-                                onClick={(): void => {
-                                    dispatch(incrementBadge(currentUserId, currentBadge, -1));
-                                }}
-                            >
-                                -
-                            </Button>
                             <Button
                                 type='text'
                                 onClick={(): void => {

@@ -82,7 +82,8 @@ function saveCurrentEnergyFailed(error: any): AnyAction {
 export function saveCurrentEnergyAsync(newEnergy: number): ThunkAction<void, {}, {}, AnyAction> {
     return async function saveCurrentEnergyThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let energy = null;
-        const userId = getCVATStore().getState().badges.currentUserId;
+        const { userId } = getCVATStore().getState().gamifuserdata;
+        console.log('🚀 ~ file: energizer-actions.ts ~ line 86 ~ saveCurrentEnergyThunk ~ userId', userId);
         try {
             energy = await cvat.energizer.setEnergy(userId, newEnergy);
             console.log('🚀 ~ file: energizer-actions.ts ~ line 84 ~ saveCurrentEnergyThunk ~ energy', energy);

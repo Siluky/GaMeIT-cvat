@@ -104,12 +104,19 @@
 
 // Challenges
 
-.gamif-challenge-list {
-    width: 300px;
-    background: #607185;
-    border-radius: 0px 5px 5px 5px;
-  }
 
+.gamif-challenge-list {
+  width: 300px;
+  background: #607185;
+  border-radius: 0px 5px 5px 5px;
+}
+
+.gamif-challenge-list-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 10px;
+  height: 15%;
+}
   .gamif-challenge-pane-wrapper {
     width: 100%;
     height: 80px;
@@ -494,6 +501,14 @@
   border: 1px solid #1d3c62;
   margin-bottom: 5px;
   border-radius: 5px;
+
+  :hover {
+    box-shadow: 0 0 10px 10px blue;
+  }
+}
+
+.gamif-shop-item-card-selected {
+  box-shadow: 0 0 10px 10px red;
 }
 
 .gamif-shop-item-card-top {
@@ -691,6 +706,31 @@
     padding-bottom: 5px;
     padding-top: 5px;
 }
+
+.statistics-panel-top {
+  height: 40px;
+  display: flex;
+  padding: 10px 0 10px 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.statistics-selecting-button-active {
+  margin-left: 1em;
+  font-size: 32px;
+  color: red;
+}
+
+.statistics-selecting-button-inactive {
+  margin-left: 1em;
+  color: grey;
+}
+
+.statistics-panel-bottom {
+  height: 240px;
+  overflow-y: scroll;
+}
+
 .statistics-col {
     /* background: #E6E6E6;
     border-radius: 15px;
@@ -771,7 +811,7 @@
 //quick statistics
 .cvat-annotation-header-quick-statistics-group {
     height: 48px;
-    width: 300px;
+    width: 160px;
     margin-left: 10px;
     margin-right: 10px;
     flex-direction: column;

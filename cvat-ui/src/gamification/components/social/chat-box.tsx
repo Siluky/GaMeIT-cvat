@@ -14,10 +14,10 @@ interface Message {
     content: string;
 }
 
-const chatMessage = (sender: boolean, message: string): JSX.Element => {
+const chatMessage = (sender: boolean, message: string, index: number): JSX.Element => {
     const style = sender ? 'gamif-chat-box-message-right' : 'gamif-chat-box-message-left';
     return (
-        <div className={style}>
+        <div className={style} key={index}>
             {message}
         </div>
     );
@@ -59,7 +59,7 @@ export default function ChatBox(props: ChatBoxProps): JSX.Element {
         <>
             <div className='gamif-chat-box-container'>
                 <div className='gamif-chat-box-messages-container'>
-                    {messages.map((m) => chatMessage(m.sender, m.content))}
+                    {messages.map((m, index) => chatMessage(m.sender, m.content, index))}
                 </div>
                 <div>
                     <Form>

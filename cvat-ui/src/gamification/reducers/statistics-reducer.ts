@@ -9,7 +9,7 @@ import { StatisticsState } from '../gamif-interfaces';
 
 const defaultState: StatisticsState = {
     statistics: stats,
-    selectedStatistics: [1],
+    selectedStatistics: [],
     selecting: false,
 };
 
@@ -35,7 +35,7 @@ export default (state = defaultState, action: AnyAction): StatisticsState => {
             };
         }
 
-        case StatisticsActionTypes.ADD_STATISTIC: {
+        case StatisticsActionTypes.ADD_QUICK_STATISTIC: {
             const newSelectedStatistics = state.selectedStatistics.concat(action.payload);
 
             return {

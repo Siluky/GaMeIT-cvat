@@ -15,6 +15,7 @@ class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
         fields = (
+        'id',
         'last_login','annotation_time_total','images_annotated_total', 'tags_set_total', 'images_annotated_night',
         'annotation_time_total', 'annotation_streak_current','annotation_streak_max',
         'badges_obtained_total',
@@ -22,6 +23,7 @@ class UserDataSerializer(serializers.ModelSerializer):
         'energy_current', 'energy_total','energizers_completed','energy_expired','tetris_played','quiz_played','snake_played',
         'currentBalance','annotation_coins_total','annotation_coins_max','items_bought_total',
         'chat_messages_total',
+        'selectedStatistics',
         )
 
 

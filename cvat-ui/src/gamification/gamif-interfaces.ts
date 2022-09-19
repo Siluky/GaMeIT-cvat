@@ -33,6 +33,7 @@ export interface UserData {
 export interface UserDataState {
     userdata_session: UserData,
     userdata_total: UserData,
+    userId: number,
 }
 
 export enum BadgeTier {
@@ -126,6 +127,7 @@ export interface ShopItem {
     id: number;
     title: string;
     price: number;
+    repeatable: boolean;
     bought: boolean;
     icon: any;
     onPurchase: () => void;

@@ -1,0 +1,489 @@
+// Copyright (C) 2022 Intel Corporation
+//
+// SPDX-License-Identifier: MIT
+
+import React from 'react';
+import {
+    ThunderboltFilled, GiftFilled, AndroidFilled,
+} from '@ant-design/icons';
+import {
+    Badge, BadgeTier, ShopItem, Statistic, UserData,
+} from './gamif-interfaces';
+
+// TODO: File for individual challenges / badges, mapping them to their IDs etc
+
+export const badges: Badge[] = [
+    {
+        id: 1,
+        title: 'Annotator',
+        instruction: 'Annotate images',
+        progress: 0,
+        goal_bronze: 1,
+        goal_silver: 5,
+        goal: 10,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: 'Images',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 2,
+        title: 'The Annotation Machine',
+        instruction: 'Annotate images in one session',
+        progress: 0,
+        goal_bronze: 13,
+        goal_silver: 25,
+        goal: 40,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: 'Images',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 3,
+        title: 'Tagger',
+        instruction: 'Set tags',
+        progress: 0,
+        goal_bronze: 5,
+        goal_silver: 10,
+        goal: 20,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: 'Tags',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 4,
+        title: 'Time Flies When...',
+        instruction: 'Spend hours annotating',
+        progress: 0,
+        goal_bronze: 1,
+        goal_silver: 5,
+        goal: 10,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: 'Hours',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 5,
+        title: 'Serial Annotator',
+        instruction: 'Annotate at least on image for days in a row',
+        progress: 0,
+        goal_bronze: 3,
+        goal_silver: 14,
+        goal: 21,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 6,
+        title: 'Energized',
+        instruction: 'Start Energizers',
+        progress: 0,
+        goal_bronze: 10,
+        goal_silver: 50,
+        goal: 100,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 7,
+        title: 'Energy Collector',
+        instruction: 'Collect Energy',
+        progress: 0,
+        goal_bronze: 100,
+        goal_silver: 500,
+        goal: 1000,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 8,
+        title: 'Balanced Energy',
+        instruction: 'Start each Energizer', // TODO: meh.
+        progress: 0,
+        goal_bronze: 1,
+        goal_silver: 5,
+        goal: 10,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 9,
+        title: 'Challenger',
+        instruction: 'Complete Challenges',
+        progress: 0,
+        goal_bronze: 5,
+        goal_silver: 20,
+        goal: 50,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 10,
+        title: 'Millionaire',
+        instruction: 'Earn annotation coins',
+        progress: 0,
+        goal_bronze: 1000,
+        goal_silver: 5000,
+        goal: 10000,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 11,
+        title: 'Hoarder',
+        instruction: 'Possess total annotation coins at one point', // TODO: meh.
+        progress: 0,
+        goal_bronze: 100,
+        goal_silver: 500,
+        goal: 1000,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 12,
+        title: 'Money Man',
+        instruction: 'Buy in shop',
+        progress: 0,
+        goal_bronze: 1,
+        goal_silver: 2,
+        goal: 3,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 13,
+        title: 'Unlocker',
+        instruction: 'Buy items from shop',
+        progress: 0,
+        goal_bronze: 10,
+        goal_silver: 20,
+        goal: 50,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+    {
+        id: 14,
+        title: 'Secretive',
+        instruction: 'Buy mystery gifts in shop',
+        progress: 0,
+        goal_bronze: 5,
+        goal_silver: 10,
+        goal: 50,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: true,
+    },
+
+    // Start hidden badges
+
+    {
+        id: 101,
+        title: 'Fun Hater',
+        instruction: 'Let Energy expire',
+        progress: 0,
+        goal: 10,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: false,
+    },
+    {
+        id: 102,
+        title: 'Night Owl',
+        instruction: 'Annotate images at night',
+        progress: 0,
+        goal: 50,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: false,
+    },
+    {
+        id: 103,
+        title: 'Chat Menace',
+        instruction: 'Write chat messages',
+        progress: 0,
+        goal: 1000,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: false,
+    },
+    {
+        id: 104,
+        title: 'E for Effort',
+        instruction: 'Answer every quiz question wrong',
+        progress: 0,
+        goal: 1,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: false,
+    },
+    {
+        id: 105,
+        title: 'Cobra',
+        instruction: 'Achieve a 50-foot long snake',
+        progress: 0,
+        goal: 1,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: false,
+    },
+
+    {
+        id: 106,
+        title: 'Tetris',
+        instruction: 'Score 2 Tetrises in a row',
+        progress: 0,
+        goal: 1,
+        tier: BadgeTier.NOT_OBTAINED,
+        goalunit: '',
+        receivedOn: null,
+        visible: false,
+    },
+];
+
+export function mapBadgeIdtoField(id: number): keyof UserData {
+    switch (id) {
+        case 1: return 'images_annotated';
+        case 2: return 'images_annotated'; // TODO: SESSION!
+        case 3: return 'tags_set';
+        case 4: return 'annotation_time';
+        case 5: return 'annotation_streak_max';
+        case 6: return 'energizers_completed';
+        case 7: return 'energy_gained';
+        case 8: return 'tetris_played'; // TODO: All energizers, not just tetris!
+        case 9: return 'challenges_completed';
+        case 10: return 'annotation_coins_obtained';
+        case 11: return 'annotation_coins_max';
+        case 12: return 'images_annotated'; // TODO: Money Badge!
+        case 13: return 'items_bought';
+        case 101: return 'energy_expired';
+        case 102: return 'images_annotated_night';
+        case 103: return 'chat_messages';
+        // case 104: return ''; // TODO: Quiz-based
+        // case 105: return 'images_annotated_night'; // TODO: Snake-based
+        // case 106: return 'images_annotated_night'; // TODO: Tetris-based
+        default: return 'images_annotated';
+    }
+}
+
+export const stats: Statistic[] = [
+    {
+        id: 1,
+        value: 0,
+        unit: 'Images',
+        tooltip_total: 'Images annotated total',
+        tooltip_session: 'Images annotated this session',
+    },
+    {
+        id: 2,
+        value: 0,
+        unit: 'Tags',
+        tooltip_total: 'Tags set in total',
+        tooltip_session: 'Tags set this session',
+    },
+    {
+        id: 3,
+        value: 0,
+        unit: 'sec',
+        tooltip_total: 'Average time per image all time',
+        tooltip_session: 'Average time per image this session',
+    },
+    {
+        id: 4,
+        value: 0,
+        unit: 'days',
+        tooltip_total: 'Longest annotation streak',
+        tooltip_session: 'Current annotation streak',
+    },
+    {
+        id: 5,
+        value: 0,
+        unit: 'hrs',
+        tooltip_total: 'Time spent annotating',
+        tooltip_session: 'Time spent annotating this session',
+    },
+    {
+        id: 6,
+        value: 0,
+        unit: '',
+        tooltip_total: 'Energy gained all time',
+        tooltip_session: 'Energy gained this session',
+    },
+    {
+        id: 7,
+        value: 0,
+        unit: '',
+        tooltip_total: 'Tetris played all time',
+        tooltip_session: 'Tetris played this session',
+    },
+    {
+        id: 8,
+        value: 0,
+        unit: '',
+        tooltip_total: 'Quiz played all time',
+        tooltip_session: 'Quiz played this session',
+    },
+    {
+        id: 9,
+        value: 0,
+        unit: '',
+        tooltip_total: 'Snake played all time',
+        tooltip_session: 'Snake played this session',
+    },
+    {
+        id: 10,
+        value: 0,
+        unit: '',
+        tooltip_total: 'Challenges completed all time',
+        tooltip_session: 'Challenges completed this session',
+    },
+    {
+        id: 11,
+        value: 0,
+        unit: 'Items',
+        tooltip_total: 'Shop items bought all time',
+        tooltip_session: 'Shop items bought this session',
+    },
+    {
+        id: 12,
+        value: 0,
+        unit: '',
+        tooltip_total: 'Annotation coins obtained all time',
+        tooltip_session: 'Annotation coins obtained this session',
+    },
+    {
+        id: 13,
+        value: 0,
+        unit: '',
+        tooltip_total: 'Annotation coin maximum',
+        tooltip_session: 'Current annotation coins',
+    },
+];
+
+export function mapStatisticIdtoFieldName(id: number): keyof UserData {
+    switch (id) {
+        case 1: return 'images_annotated';
+        case 2: return 'tags_set';
+        case 3: return 'annotation_time';
+        case 4: return 'annotation_streak_current';
+        case 5: return 'annotation_time';
+        case 6: return 'energy_gained';
+        case 7: return 'tetris_played';
+        case 8: return 'quiz_played';
+        case 9: return 'snake_played';
+        case 10: return 'challenges_completed';
+        case 11: return 'items_bought';
+        case 12: return 'annotation_coins_obtained';
+        case 13: return 'annotation_coins_max';
+        default: return 'images_annotated';
+    }
+}
+
+export const items: ShopItem[] = [{
+    id: 1,
+    title: 'Charge Pack',
+    price: 100,
+    repeatable: true,
+    bought: false,
+    icon: <ThunderboltFilled />,
+    onPurchase: () => {},
+},
+{
+    id: 2,
+    title: 'Mystery Gift',
+    price: 80,
+    repeatable: true,
+    bought: false,
+    icon: <GiftFilled />,
+    onPurchase: () => {},
+},
+{
+    id: 3,
+    title: 'Extra Challenge',
+    price: 100,
+    repeatable: true,
+    bought: false,
+    icon: <AndroidFilled />,
+    onPurchase: () => {},
+},
+{
+    id: 4,
+    title: 'Streak Saver',
+    price: 100,
+    repeatable: true,
+    bought: false,
+    icon: <AndroidFilled />,
+    onPurchase: () => {},
+},
+{
+    id: 5,
+    title: 'Locked',
+    price: 100,
+    repeatable: false,
+    bought: false,
+    icon: <AndroidFilled />,
+    onPurchase: () => {},
+},
+{
+    id: 6,
+    title: 'Locked',
+    price: 100,
+    repeatable: false,
+    bought: false,
+    icon: <AndroidFilled />,
+    onPurchase: () => {},
+},
+{
+    id: 7,
+    title: 'Locked',
+    price: 100,
+    repeatable: false,
+    bought: false,
+    icon: <AndroidFilled />,
+    onPurchase: () => {},
+},
+{
+    id: 8,
+    title: 'Locked',
+    price: 100,
+    repeatable: false,
+    bought: false,
+    icon: <AndroidFilled />,
+    onPurchase: () => {},
+},
+{
+    id: 9,
+    title: 'Locked',
+    price: 100,
+    repeatable: false,
+    bought: false,
+    icon: <AndroidFilled />,
+    onPurchase: () => {},
+},
+];

@@ -213,12 +213,11 @@ function HeaderContainer(props: Props): JSX.Element {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    // TODO: Change the hard-coded values
     useEffect(() => {
         getCurrentEnergy();
-        // dispatch(loadBadgesAsync()); // TODO: TESTING
+        dispatch(initializeUserData());
         const interval = setInterval(() => {
-            incrementEnergy(1);
+            incrementEnergy(gamifconsts.ENERGY_INCREMENT);
         }, gamifconsts.ENERGY_RATE);
 
         return () => {
@@ -558,9 +557,8 @@ function HeaderContainer(props: Props): JSX.Element {
                 >
                     Save
                 </Button>
-                <Button onClick={() => dispatch(initializeUserData())}> Load</Button>
                 <Popover content={<ShopWindow />} mouseLeaveDelay={3}>
-                    <Button type='text'> Open Shop </Button>
+                    <Button type='text'> Shop </Button>
                 </Popover>
             </div>
             <div className='cvat-right-header'>

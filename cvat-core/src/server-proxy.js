@@ -1771,13 +1771,14 @@
 
             async function saveGamifUserData(data) {
                 const { backendAPI } = config;
-                let response = null; // TODO:
-                response = await Axios.post(`${backendAPI}/user-data`,
-                    data, {
+                let response = null;
+                console.log('🚀 ~ file: server-proxy.js ~ line 1798 ~ ServerProxy ~ saveGamifUserData ~ data', data);
+                response = await Axios.patch(`${backendAPI}/userProfiles/1`, data,
+                    {
                         proxy: config.proxy,
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //     },
                     });
                 console.log('🚀 ~ file: server-proxy.js ~ line 1783 ~ ServerProxy ~ saveGamifUserData ~ response.data.results', response.data.results);
                 return response.data.results;
@@ -1879,7 +1880,7 @@
                 let response = null;
                 try {
                     response = await Axios.patch(`${backendAPI}/userProfiles/${userId}`,
-                        { currentEnergy: newEnergy }, {
+                        { energy_current: newEnergy }, {
                             proxy: config.proxy,
                         });
                 } catch (error) {

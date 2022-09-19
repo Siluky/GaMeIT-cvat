@@ -827,7 +827,7 @@ export default class CanvasWrapperComponent extends React.PureComponent<Props> {
 
                 <ContextImage />
 
-                <Dropdown trigger={['click']} placement='topCenter' overlay={<ImageSetupsContent />}>
+                <Dropdown trigger={['click']} placement='top' overlay={<ImageSetupsContent />}>
                     <UpOutlined className='cvat-canvas-image-setups-trigger' />
                 </Dropdown>
 

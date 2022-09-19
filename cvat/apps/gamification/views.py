@@ -32,10 +32,11 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         if request.method == 'GET':
             return Response(data=currentUserProfile.energy_current)
 
-        # elif request.method == 'PUT':
-        #     print (request.data.get('currentEnergy'))
-        #     currentUserProfile.currentEnergy = request.data.get('currentEnergy')
-        #     currentUserProfile.save()
+        elif request.method == 'PUT':
+            print (request.data.get('currentEnergy'))
+            print (request.data)
+            currentUserProfile.currentEnergy = request.data.get('currentEnergy')
+            currentUserProfile.save()
 
         #     serializer = EnergySerializer(data=request.data)
         #     if serializer.is_valid():

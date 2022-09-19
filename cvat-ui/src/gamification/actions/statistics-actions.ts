@@ -15,7 +15,7 @@ export enum StatisticsActionTypes {
     GET_QUICK_STATISTIC = 'GET_QUICK_STATISTIC',
     TOGGLE_SELECTING = 'TOGGLE_SELECTING',
     SELECT_STATISTIC_FAILED = 'SELECT_STATISTIC_FAILED',
-    ADD_STATISTIC = 'ADD_STATISTIC',
+    ADD_QUICK_STATISTIC = 'ADD_QUICK_STATISTIC',
     REMOVE_STATISTIC = 'REMOVE_STATISTIC',
     // maybe use REMOVE / ADD
 
@@ -40,9 +40,9 @@ export function toggleSelecting(): AnyAction {
     };
 }
 
-export function addStatistic(id: number): AnyAction {
+export function addQuickStatistic(id: number[]): AnyAction {
     return {
-        type: StatisticsActionTypes.ADD_STATISTIC,
+        type: StatisticsActionTypes.ADD_QUICK_STATISTIC,
         payload: id,
     };
 }
@@ -69,13 +69,13 @@ export function selectStatistic(id: number): ThunkAction<void, {}, {}, AnyAction
         if (statisticsState.selecting) {
             if (found) {
                 dispatch(removeStatistic(id));
-                console.log('remove quick statistics');
+                console.log(`remove quick statistic with id ${id}`);
             } else if (statisticsState.selectedStatistics.length === 3) {
                 dispatch(selectStatisticFailed(id));
                 console.log('quick statistics full');
             } else {
-                dispatch(addStatistic(id));
-                console.log('add quick statistics');
+                dispatch(addQuickStatistic([id]));
+                console.log(`add quick statistic with id ${id}`);
             }
         } else {
             dispatch(selectStatisticFailed(id));

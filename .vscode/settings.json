@@ -83,7 +83,11 @@
             "group": "Default"
         },
         {
-            "filePath": "cvat-ui/src/gamification/gamif-items.ts",
+            "filePath": "cvat-ui/src/gamification/gamif-setup.tsx",
+            "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/gamification/gamif-items.tsx",
             "group": "Default"
         }
     ],

@@ -9,7 +9,7 @@ import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
 import { purchaseItem } from 'gamification/actions/shop-actions';
 import { SketchOutlined } from '@ant-design/icons';
-import { ShopItemComponent } from './shop-item';
+import ShopItemComponent from './shop-item';
 
 interface ShopWindowProps {
     items: ShopItem[];
@@ -59,9 +59,9 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             </div>
             <div className='gamif-shop-window-items-wrapper'>
                 <Row className='gamif-shop-window-items-row'>
-                    {items.map((_item) => (
+                    {items.map((_item, index) => (
                         <Col span={6}>
-                            <ShopItemComponent item={_item} />
+                            <ShopItemComponent key={index} item={_item} selected={selectedItemId === _item.id} />
                         </Col>
                     ))}
                 </Row>
