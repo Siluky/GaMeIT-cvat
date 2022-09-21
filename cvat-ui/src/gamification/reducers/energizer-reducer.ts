@@ -13,6 +13,12 @@ const defaultState: EnergizerState = {
     popupOpen: false,
     activeEnergizer: EnergizerType.NONE,
     leaderboardEntries: [],
+    latestEntry: {
+        userId: 0,
+        username: '',
+        energizer: EnergizerType.NONE,
+        score: 0,
+    },
     questions: [],
 };
 
@@ -68,6 +74,13 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
             };
         }
 
+        case EnergizerActionTypes.SET_LATEST_ENTRY: {
+            return {
+                ...state,
+                latestEntry: action.payload,
+            };
+        }
+
         case EnergizerActionTypes.GET_LEADERBOARD_DATA_FAILED: {
             return state;
         }
@@ -85,8 +98,10 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
         }
 
         case EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_SUCCESS: {
-            // const newEntries = state.leaderboardEntries.concat(action.payload);
-            return state;
+            return {
+                ...state,
+                leaderboardEntries: state.leaderboardEntries.concat(action.payload),
+            };
         }
 
         default: {

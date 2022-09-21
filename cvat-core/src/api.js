@@ -963,8 +963,8 @@ function build() {
              * @param {*} energizerName The name of the energizer for which entries should be retrieved
              * @returns all leaderboard entries for the energizer in question
              */
-            async leaderboard(energizerName) {
-                const result = await PluginRegistry.apiWrapper(cvat.energizer.leaderboard, energizerName);
+            async leaderboard(energizerName, time) {
+                const result = await PluginRegistry.apiWrapper(cvat.energizer.leaderboard, energizerName, time);
                 return result;
             },
 

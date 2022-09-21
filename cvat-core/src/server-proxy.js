@@ -1903,11 +1903,11 @@
                 return response.data;
             }
 
-            async function getLeaderboard(energizerName) {
+            async function getLeaderboard(energizerName, time) {
                 const { backendAPI } = config;
                 let response = null;
                 try {
-                    response = await Axios.get(`${backendAPI}/energizer-data?energizer=${energizerName}`);
+                    response = await Axios.get(`${backendAPI}/energizer-data?energizer=${energizerName}?time=${time}`);
                 } catch (error) {
                     throw generateError(error);
                 }
