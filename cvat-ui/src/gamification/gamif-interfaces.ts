@@ -129,6 +129,7 @@ export interface ShopItem {
     price: number;
     repeatable: boolean;
     bought: boolean;
+    visible: boolean;
     icon: any;
     onPurchase: () => void;
 }
@@ -148,16 +149,20 @@ export enum OnlineStatus {
 export interface Profile {
     username: string,
     userId: number,
-    avatar: number,
     status: OnlineStatus,
-    shownBadges: Badge[],
+    avatar: string,
+    avatar_border: string,
+    profile_background: string,
+    profile_border: string,
+    shownBadgeIds: number[],
+
     chatActive: boolean,
 }
 
 export interface SocialState {
     status: OnlineStatus,
     friendListEntries: Profile[],
-    id: number;
+    ownProfile: Profile,
 
 }
 

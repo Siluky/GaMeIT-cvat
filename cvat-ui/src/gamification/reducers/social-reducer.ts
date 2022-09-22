@@ -9,33 +9,54 @@ import { SocialState, OnlineStatus, Profile } from '../gamif-interfaces';
 const dummyProfiles: Profile[] = [{
     username: 'Annotator 1',
     userId: 1,
-    avatar: 1,
     status: OnlineStatus.ONLINE,
-    shownBadges: [],
+    avatar: '',
+    avatar_border: '',
+    profile_background: '',
+    profile_border: '',
+    shownBadgeIds: [],
     chatActive: false,
 },
 {
     username: 'Annotator 2',
     userId: 2,
-    avatar: 1,
     status: OnlineStatus.DO_NOT_DISTURB,
-    shownBadges: [],
+    avatar: '',
+    avatar_border: '',
+    profile_background: '',
+    profile_border: '',
+    shownBadgeIds: [],
     chatActive: true,
 },
 {
     username: 'Annotator 3',
     userId: 3,
-    avatar: 1,
     status: OnlineStatus.OFFLINE,
-    shownBadges: [],
+    avatar: '',
+    avatar_border: '',
+    profile_background: '',
+    profile_border: '',
+    shownBadgeIds: [],
     chatActive: false,
 },
 ];
 
+const profile: Profile = {
+    username: '',
+    userId: 0,
+    status: OnlineStatus.ONLINE,
+    avatar: '',
+    avatar_border: '',
+    profile_background: '',
+    profile_border: '',
+    shownBadgeIds: [],
+    chatActive: false,
+};
+
 const defaultState: SocialState = {
     status: OnlineStatus.ONLINE,
-    id: 0,
     friendListEntries: dummyProfiles,
+    ownProfile: profile,
 };
 
 export default (state = defaultState, action: AnyAction): SocialState => {
@@ -70,6 +91,34 @@ export default (state = defaultState, action: AnyAction): SocialState => {
             return {
                 ...state,
                 status: action.payload,
+            };
+        }
+
+        case SocialActionTypes.SET_AVATAR: {
+            return {
+                ...state,
+                ownProfile: { ...state.ownProfile, avatar: action.payload },
+            };
+        }
+
+        case SocialActionTypes.SET_AVATAR_BORDER: {
+            return {
+                ...state,
+                ownProfile: { ...state.ownProfile, avatar_border: action.payload },
+            };
+        }
+
+        case SocialActionTypes.SET_PROFILE_BACKGROUND: {
+            return {
+                ...state,
+                ownProfile: { ...state.ownProfile, profile_background: action.payload },
+            };
+        }
+
+        case SocialActionTypes.SET_PROFILE_BORDER: {
+            return {
+                ...state,
+                ownProfile: { ...state.ownProfile, profile_border: action.payload },
             };
         }
 

@@ -18,6 +18,7 @@ export enum ShopActionTypes {
     UPDATE_BALANCE = 'UPDATE_BALANCE',
 
     SET_SELECTED_ITEM = 'SET_SELECTED_ITEM',
+    USE_ITEM = 'USE_ITEM',
 
     PURCHASE_ITEM_SUCCESS = 'PURCHASE_ITEM_SUCCESS',
     PURCHASE_ITEM_FAILED = 'PURCHASE_ITEM_FAILED',
@@ -62,6 +63,14 @@ export function setSelectedItem(itemId: number): AnyAction {
         payload: itemId,
     };
 }
+
+export function useItem(itemId: number): AnyAction {
+    return {
+        type: ShopActionTypes.USE_ITEM,
+        payload: itemId,
+    };
+}
+
 export function purchaseItemFailed(): AnyAction {
     return {
         type: ShopActionTypes.PURCHASE_ITEM_FAILED,

@@ -7,7 +7,7 @@ import { Row, Col, Button } from 'antd';
 import { connect, useDispatch } from 'react-redux';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
-import { purchaseItem } from 'gamification/actions/shop-actions';
+import { purchaseItem, useItem } from 'gamification/actions/shop-actions';
 import { SketchOutlined } from '@ant-design/icons';
 import ShopItemComponent from './shop-item';
 
@@ -46,7 +46,10 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 >
                     Buy
                 </Button>
-                <Button className='gamif-shop-window-button'>
+                <Button
+                    className='gamif-shop-window-button'
+                    onClick={() => dispatch(useItem(selectedItemId))}
+                >
                     Use
                 </Button>
                 <div className='gamif-shop-balance-display'>
@@ -59,7 +62,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             </div>
             <div className='gamif-shop-window-items-wrapper'>
                 <Row className='gamif-shop-window-items-row'>
-                    {items.map((_item, index) => (
+                    {items.map((_item, index) => (_item.bought || _item.visible) && (
                         <Col span={6}>
                             <ShopItemComponent key={index} item={_item} selected={selectedItemId === _item.id} />
                         </Col>

@@ -16,6 +16,13 @@ export enum SocialActionTypes {
     TOGGLE_CHAT_WINDOW = 'TOGGLE_CHAT_WINDOW',
 
     SET_STATUS = 'SET_STATUS',
+    SET_AVATAR = 'SET_AVATAR',
+    SET_AVATAR_BORDER = 'SET_AVATAR_BORDER',
+    SET_PROFILE_BACKGROUND = 'SET_PROFILE_BACKGROUND',
+    SET_PROFILE_BORDER = 'SET_PROFILE_BORDER',
+
+    SAVE_PROFILE_DATA_SUCCESS = 'SAVE_PROFILE_DATA_SUCCESS',
+    SAVE_PROFILE_DATA_FAILED = 'SAVE_PROFILE_DATA_FAILED',
 
     GET_CHAT_HISTORY_SUCCESS = 'GET_CHAT_HISTORY_SUCCESS', // TODO:
     GET_CHAT_HISTORY_FAILED = 'GET_CHAT_HISTORY_FAILED', // TODO:
@@ -59,6 +66,60 @@ export function setStatus(status: OnlineStatus): AnyAction {
     return {
         type: SocialActionTypes.SET_STATUS,
         payload: status,
+    };
+}
+
+export function setAvatar(avatar: string): AnyAction {
+    return {
+        type: SocialActionTypes.SET_AVATAR,
+        payload: avatar,
+    };
+}
+
+export function setAvatarBorder(border: string): AnyAction {
+    return {
+        type: SocialActionTypes.SET_AVATAR_BORDER,
+        payload: border,
+    };
+}
+
+export function setProfileBackground(background: string): AnyAction {
+    return {
+        type: SocialActionTypes.SET_PROFILE_BACKGROUND,
+        payload: background,
+    };
+}
+
+export function setProfileBorder(border: string): AnyAction {
+    return {
+        type: SocialActionTypes.SET_PROFILE_BORDER,
+        payload: border,
+    };
+}
+
+function saveProfileDataSuccess(profile: Profile): AnyAction {
+    return {
+        type: SocialActionTypes.SAVE_PROFILE_DATA_SUCCESS,
+        payload: profile,
+    };
+}
+function saveProfileDataFailed(error: any): AnyAction {
+    return {
+        type: SocialActionTypes.SET_PROFILE_BORDER,
+        payload: error,
+    };
+}
+
+export function saveProfileDataAsync(): ThunkAction<void, {}, {}, AnyAction> {
+    return async function saveProfileDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        try {
+            // TODO: Not implemented yet!
+            const profiles = await cvat.social.getProfiles();
+
+            dispatch(saveProfileDataSuccess(profiles));
+        } catch (error) {
+            dispatch(saveProfileDataFailed(error));
+        }
     };
 }
 
