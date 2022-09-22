@@ -22,6 +22,8 @@ export enum EnergizerActionTypes {
     // GET_QUIZDUEL_QUESTIONS_SUCCESS = 'GET_QUIZ_DUEL_QUESTIONS_SUCCESS',
     // GET_QUIZDUEL_QUESTIONS_FAILED = 'GET_QUIZ_DUEL_QUESTIONS_FAILED',
 
+    SET_LATEST_ENTRY = 'SET_LATEST_ENTRY',
+
     GET_CURRENT_ENERGY_FAILED = 'GET_CURRENT_ENERGY_FAILED ',
     GET_CURRENT_ENERGY_SUCCESS = 'GET_CURRENT_ENERGY_SUCCESS',
     SAVE_CURRENT_ENERGY_FAILED = 'SAVE_CURRENT_ENERGY_FAILED ',
@@ -94,6 +96,13 @@ export function saveCurrentEnergyAsync(newEnergy: number): ThunkAction<void, {},
     };
 }
 
+export function setLatestEntry(entry: LeaderboardEntry): AnyAction {
+    return {
+        type: EnergizerActionTypes.SET_LATEST_ENTRY,
+        payload: entry,
+    };
+}
+
 export function switchEnergizerModal(show: boolean): AnyAction {
     return {
         type: EnergizerActionTypes.SWITCH_ENERGIZER,
@@ -144,17 +153,18 @@ export function getLeaderboardDataFailed(error: any): AnyAction {
     };
 }
 
-export function getLeaderboardAsync(energizerName: string): ThunkAction<void, {}, {}, AnyAction> {
+export function getLeaderboardAsync(energizerName: EnergizerType, time?: string): ThunkAction<void, {}, {}, AnyAction> {
     return async function getLeaderboardThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let entriesImport = null;
         let entries = null;
         try {
-            entriesImport = await cvat.energizer.leaderboard(energizerName);
+            entriesImport = await cvat.energizer.leaderboard(energizerName, time);
 
             entries = entriesImport.map((_entry: any): LeaderboardEntry => ({
+                userId: 0,
                 username: _entry.userProfile,
+                energizer: energizerName,
                 score: _entry.score,
-                avatar: 1, // TODO:
             }));
             dispatch(getLeaderboardDataSuccess(entries));
         } catch (error) {
@@ -163,9 +173,11 @@ export function getLeaderboardAsync(energizerName: string): ThunkAction<void, {}
     };
 }
 
-export function addLeaderboardEntrySuccess(): AnyAction {
+export function addLeaderboardEntrySuccess(entry: LeaderboardEntry): AnyAction {
     return {
         type: EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_SUCCESS,
+        payload: entry,
+
     };
 }
 
@@ -177,14 +189,13 @@ export function addLeaderboardEntryFailed(error: any): AnyAction {
 }
 
 // eslint-disable-next-line max-len
-export function addLeaderboardEntry(score: number, energizer: EnergizerType): ThunkAction<void, {}, {}, AnyAction> {
+export function addLeaderboardEntry(entry: LeaderboardEntry): ThunkAction<void, {}, {}, AnyAction> {
     return async function addLeaderboardEntryThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-        const userId = getCVATStore().getState().badges.currentUserId;
         try {
-            const addedEntry = await cvat.energizer.addScore(userId, energizer, score);
+            const addedEntry = await cvat.energizer.addScore(entry.username, entry.energizer, entry.score);
             console.log('🚀 ~ file: energizer-actions.ts ~ line 186 ~ addLeaderboardThunk ~ addedEntry', addedEntry);
 
-            dispatch(addLeaderboardEntrySuccess());
+            dispatch(addLeaderboardEntrySuccess(entry));
         } catch (error) {
             dispatch(addLeaderboardEntryFailed(error));
         }

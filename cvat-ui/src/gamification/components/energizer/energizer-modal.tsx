@@ -9,8 +9,12 @@ import {
     Modal,
 } from 'antd';
 // eslint-disable-next-line import/no-named-as-default
-import EnergizerLeaderboard from './energizer-leaderboard';
+import { useDispatch, useSelector } from 'react-redux';
+import { CombinedState } from 'reducers/interfaces';
+import { addLeaderboardEntry, setActiveEnergizer } from 'gamification/actions/energizer-actions';
+import { EnergizerType } from 'gamification/gamif-interfaces';
 import QuizDuel from './energizer-quiz-duel';
+import Leaderboard from './energizer-leaderboard';
 
 // import { useDispatch, useSelector } from 'react-redux';
 // import { CombinedState } from 'reducers/interfaces';
@@ -23,6 +27,17 @@ interface EnergizerModalProps {
 function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     const { visible, onClose } = props;
     const [leaderboardShown, setLeaderboardShown] = useState(false);
+    const energizer = useSelector((state: CombinedState) => state.energizer);
+    const dispatch = useDispatch();
+
+    const showEnergizer = (activeEnergizer: EnergizerType): JSX.Element => {
+        switch (activeEnergizer) {
+            case EnergizerType.QUIZ: return <QuizDuel showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
+            case EnergizerType.SNAKE: return <></>;
+            case EnergizerType.TETRIS: return <></>;
+            default: return <QuizDuel showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
+        }
+    };
 
     return (
         <>
@@ -35,7 +50,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 footer={null}
                 maskClosable={false}
             >
-                <QuizDuel showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />
+                {showEnergizer(energizer.activeEnergizer)}
                 <Button
                     className='gamif-energizer-continue-button'
                     type='text'
@@ -54,7 +69,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 footer={null}
                 maskClosable={false}
             >
-                <EnergizerLeaderboard />
+                <Leaderboard />
 
                 <div className='energizer-leaderboard-footer'>
                     <Button
@@ -63,6 +78,8 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                         onClick={() => {
                             onClose();
                             setLeaderboardShown(false);
+                            dispatch(addLeaderboardEntry(energizer.latestEntry));
+                            dispatch(setActiveEnergizer(EnergizerType.NONE));
                         }}
                     >
                         Back to Annotation

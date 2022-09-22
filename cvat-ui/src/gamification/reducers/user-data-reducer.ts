@@ -33,6 +33,7 @@ const defaultState: UserDataState = {
     userdata_session: userdataInit,
     userdata_total: userdataInit,
     userId: 0,
+    username: 'test',
 };
 
 export default (state = defaultState, action: AnyAction): UserDataState => {

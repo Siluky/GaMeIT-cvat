@@ -34,6 +34,7 @@ export interface UserDataState {
     userdata_session: UserData,
     userdata_total: UserData,
     userId: number,
+    username: string,
 }
 
 export enum BadgeTier {
@@ -107,9 +108,10 @@ export interface QuizDuelQuestion {
 }
 
 export interface LeaderboardEntry {
+    userId: number,
     username: string;
+    energizer: EnergizerType;
     score: number;
-    avatar: any;
 }
 
 export interface EnergizerState {
@@ -119,6 +121,7 @@ export interface EnergizerState {
 
     activeEnergizer: EnergizerType,
     leaderboardEntries: LeaderboardEntry[],
+    latestEntry: LeaderboardEntry,
 
     questions: QuizDuelQuestion[],
 }

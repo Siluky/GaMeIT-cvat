@@ -167,6 +167,11 @@ class EnergizerLeaderboardViewSet(viewsets.ModelViewSet):
         energizerName = self.request.query_params.get('energizer')
         if energizerName:
             queryset = queryset.filter(energizer=energizerName)
+
+        # TODO: Filter by date as appropriate
+        # time = self.request.query_params.get('time')
+        # if timeframe:
+        #     queryset.filter(timestamp=###)
         return queryset
 
 class QuizDuelQuestionsViewSet(viewsets.ModelViewSet):
@@ -176,6 +181,6 @@ class QuizDuelQuestionsViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'])
     def pickQuestions(self, request):
         # pick 3 random questions from all questions
-        random_questions = Question.objects.all().order_by('?')[:3]
+        random_questions = Question.objects.all().order_by('?')[:5]
         serializer = QuestionSerializer(random_questions, many=True)
         return Response(serializer.data)

@@ -387,8 +387,8 @@ const config = require('./config');
             return questions;
         };
 
-        cvat.energizer.leaderboard.implementation = async (energizerName) => {
-            const leaderboard = await serverProxy.energizer.leaderboard(energizerName);
+        cvat.energizer.leaderboard.implementation = async (energizerName, time) => {
+            const leaderboard = await serverProxy.energizer.leaderboard(energizerName, time);
             return leaderboard;
         };
 

@@ -68,9 +68,9 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
             <div className='energizer-leaderboard-content'>
                 <div className='energizer-leaderboard-content-header'>
                     <Radio.Group>
-                        <Radio.Button value='a'>Daily</Radio.Button>
-                        <Radio.Button value='b'>Weekly</Radio.Button>
-                        <Radio.Button value='c'>All Time</Radio.Button>
+                        <Radio.Button value='a' onClick={() => dispatch(getLeaderboardAsync(activeEnergizer, 'Daily'))}>Daily</Radio.Button>
+                        <Radio.Button value='b' onClick={() => dispatch(getLeaderboardAsync(activeEnergizer, 'Weekly'))}>Weekly</Radio.Button>
+                        <Radio.Button value='c' onClick={() => dispatch(getLeaderboardAsync(activeEnergizer))}>All Time</Radio.Button>
                     </Radio.Group>
                 </div>
                 {
@@ -96,7 +96,6 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
                     ))
                 }
             </div>
-
         </>
     );
 }
