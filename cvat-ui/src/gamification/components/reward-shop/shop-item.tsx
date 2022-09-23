@@ -27,12 +27,12 @@ function mapStateToProps(state: CombinedState): StateToProps {
 function ShopItemComponent(props: ShopItemProps): JSX.Element {
     const { item, selected } = props;
     const dispatch = useDispatch();
-    const cardStyle = selected ? 'gamif-shop-item-card-selected' : 'gamif-shop-item-card';
+    const cardStyle = selected ? 'gamif-shop-item-card-selected' : '';
 
     return (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events
         <div
-            className={cardStyle}
+            className={`gamif-shop-item-card ${cardStyle}`}
             role='button'
             onClick={() => dispatch(setSelectedItem(item.id))}
             tabIndex={item.id}
@@ -40,7 +40,6 @@ function ShopItemComponent(props: ShopItemProps): JSX.Element {
             <div className='gamif-shop-item-card-top'>
                 <div className='gamif-shop-item-icon'>
                     {item.icon}
-                    {/* TODO: Add proper icons based on path */}
                 </div>
                 <div className='gamif-shop-item-title'>{item.title}</div>
             </div>

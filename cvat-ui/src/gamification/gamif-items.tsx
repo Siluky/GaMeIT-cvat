@@ -497,7 +497,7 @@ export const items: ShopItem[] = [{
 },
 {
     id: 10,
-    title: 'Profile Background 1',
+    title: 'Green Profile Background',
     price: 100,
     repeatable: false,
     bought: false,
@@ -507,7 +507,7 @@ export const items: ShopItem[] = [{
 },
 {
     id: 11,
-    title: 'Profile Background 2',
+    title: 'Red Profile Background',
     price: 100,
     repeatable: false,
     bought: false,
@@ -597,7 +597,7 @@ export const items: ShopItem[] = [{
 },
 {
     id: 20,
-    title: 'Profile Border 1',
+    title: 'Red Profile Border',
     price: 100,
     repeatable: false,
     bought: false,
@@ -607,7 +607,7 @@ export const items: ShopItem[] = [{
 },
 {
     id: 21,
-    title: 'Profile Border 2',
+    title: 'Blue Profile Border',
     price: 100,
     repeatable: false,
     bought: false,
@@ -617,7 +617,7 @@ export const items: ShopItem[] = [{
 },
 {
     id: 22,
-    title: 'Profile Border 3',
+    title: 'Dotted Profile Border',
     price: 100,
     repeatable: false,
     bought: false,

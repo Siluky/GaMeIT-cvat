@@ -32,7 +32,7 @@ const quickProfileBadge = (badgeid: number, index: number): JSX.Element => {
 
     return (
         <Col key={index}>
-            <CvatTooltip overlay={badge?.title}>
+            <CvatTooltip overlay={badge?.title ?? 'Unknown Badge'}>
                 <BadgeIcon />
             </CvatTooltip>
         </Col>

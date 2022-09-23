@@ -9,6 +9,7 @@ import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
+import { updateUserData } from './user-data-actions';
 
 const cvat = getCore();
 
@@ -117,10 +118,17 @@ export function switchEnergizerPopUp(show: boolean): AnyAction {
     };
 }
 
-export function incrementEnergy(increment: number): AnyAction {
+export function incrementEnergyAction(increment: number): AnyAction {
     return {
         type: EnergizerActionTypes.INCREMENT_ENERGY,
         payload: increment,
+    };
+}
+
+export function incrementEnergy(increment: number): ThunkAction<void, {}, {}, AnyAction> {
+    return (dispatch) => {
+        dispatch(incrementEnergyAction(increment));
+        dispatch(updateUserData('energy_gained', increment));
     };
 }
 

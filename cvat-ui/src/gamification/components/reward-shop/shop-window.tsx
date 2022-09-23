@@ -8,7 +8,7 @@ import { connect, useDispatch } from 'react-redux';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
 import { purchaseItem } from 'gamification/actions/shop-actions';
-import { setProfileBackground } from 'gamification/actions/social-actions';
+import { setProfileBackground, setProfileBorder } from 'gamification/actions/social-actions';
 import { incrementEnergy } from 'gamification/actions/energizer-actions';
 import { SketchOutlined } from '@ant-design/icons';
 import ShopItemComponent from './shop-item';
@@ -42,10 +42,12 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const useItem = (id: number): void => {
         switch (id) {
             case 1: dispatch(incrementEnergy(10)); break;
-            case 2: dispatch(setProfileBackground('green')); break;
-            case 3: dispatch(setProfileBackground('green')); break;
-            case 4: dispatch(setProfileBackground('green')); break;
-            case 5: dispatch(setProfileBackground('green')); break;
+
+            case 10: dispatch(setProfileBackground('green')); break;
+            case 11: dispatch(setProfileBackground('red')); break;
+            case 20: dispatch(setProfileBorder('blue')); break;
+            case 21: dispatch(setProfileBorder('red')); break;
+            case 22: dispatch(setProfileBackground('red')); break;
             default: break;
         }
     };

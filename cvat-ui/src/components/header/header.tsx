@@ -53,10 +53,8 @@ import {
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
 import { initializeUserData } from 'gamification/actions/user-data-actions';
-import { getFriendsListAsync } from 'gamification/actions/social-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
-// import { loadBadgesAsync } from 'gamification/actions/badge-actions';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -557,9 +555,6 @@ function HeaderContainer(props: Props): JSX.Element {
                     }}
                 >
                     Save
-                </Button>
-                <Button onClick={() => dispatch(getFriendsListAsync())}>
-                    Load_Profiles
                 </Button>
                 <Popover content={<ShopWindow />} mouseLeaveDelay={3}>
                     <Button type='text'> Shop </Button>
