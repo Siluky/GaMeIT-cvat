@@ -7,7 +7,7 @@ import {
     ThunderboltFilled, GiftFilled, AndroidFilled,
 } from '@ant-design/icons';
 import {
-    Badge, BadgeTier, ShopItem, Statistic, UserData,
+    Badge, BadgeTier, Challenge, ChallengeType, ShopItem, Statistic, UserData,
 } from './gamif-interfaces';
 
 // TODO: File for individual challenges / badges, mapping them to their IDs etc
@@ -686,3 +686,84 @@ export const items: ShopItem[] = [{
     onPurchase: () => {},
 },
 ];
+
+export const challenges: Challenge[] = [
+    {
+        id: 1,
+        instruction: 'Annotate Images',
+        progress: 0,
+        goal: 50,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+    {
+        id: 2,
+        instruction: 'Annotate Minutes',
+        progress: 0,
+        goal: 30,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+    {
+        id: 3,
+        instruction: 'Annotate Minutes in one Session',
+        progress: 0,
+        goal: 0,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+    {
+        id: 4,
+        instruction: 'Complete Energizers',
+        progress: 0,
+        goal: 3,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+    {
+        id: 5,
+        instruction: 'Play Tetris',
+        progress: 0,
+        goal: 2,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+    {
+        id: 6,
+        instruction: 'Play Snake',
+        progress: 0,
+        goal: 2,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+    {
+        id: 7,
+        instruction: 'Play Quiz',
+        progress: 0,
+        goal: 2,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+    {
+        id: 8,
+        instruction: 'Obtain a badge',
+        progress: 0,
+        goal: 1,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+];
+
+export function mapChallengeIdtoFieldName(id: number): keyof UserData {
+    switch (id) {
+        case 1: return 'images_annotated';
+        case 2: return 'annotation_time';
+        case 3: return 'annotation_time'; // TODO: Session!
+        case 4: return 'energizers_completed';
+        case 5: return 'tetris_played';
+        case 6: return 'snake_played';
+        case 7: return 'quiz_played';
+        case 8: return 'badges_obtained';
+        default: return 'images_annotated';
+    }
+}

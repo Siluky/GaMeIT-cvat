@@ -7,7 +7,9 @@ import { Row, Col, Button } from 'antd';
 import { connect, useDispatch } from 'react-redux';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
-import { purchaseItem, useItem } from 'gamification/actions/shop-actions';
+import { purchaseItem } from 'gamification/actions/shop-actions';
+import { setProfileBackground } from 'gamification/actions/social-actions';
+import { incrementEnergy } from 'gamification/actions/energizer-actions';
 import { SketchOutlined } from '@ant-design/icons';
 import ShopItemComponent from './shop-item';
 
@@ -37,6 +39,17 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const { items, currentBalance, selectedItemId } = props;
     const dispatch = useDispatch();
 
+    const useItem = (id: number): void => {
+        switch (id) {
+            case 1: dispatch(incrementEnergy(10)); break;
+            case 2: dispatch(setProfileBackground('green')); break;
+            case 3: dispatch(setProfileBackground('green')); break;
+            case 4: dispatch(setProfileBackground('green')); break;
+            case 5: dispatch(setProfileBackground('green')); break;
+            default: break;
+        }
+    };
+
     return (
         <div className='gamif-shop-window'>
             <div className='gamif-shop-window-header'>
@@ -48,13 +61,14 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 </Button>
                 <Button
                     className='gamif-shop-window-button'
-                    onClick={() => dispatch(useItem(selectedItemId))}
+                    onClick={() => useItem(selectedItemId)}
                 >
                     Use
                 </Button>
                 <div className='gamif-shop-balance-display'>
                     <h3>
                         <span>Current Balance: </span>
+                        &nbsp;
                         {currentBalance}
                         <SketchOutlined />
                     </h3>

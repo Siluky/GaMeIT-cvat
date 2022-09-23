@@ -157,7 +157,7 @@ export interface Profile {
     avatar_border: string,
     profile_background: string,
     profile_border: string,
-    shownBadgeIds: number[],
+    selectedBadges: number[],
 
     chatActive: boolean,
 }

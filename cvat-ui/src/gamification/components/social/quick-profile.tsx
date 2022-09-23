@@ -14,21 +14,30 @@ import Icon, {
     UserOutlined,
 } from '@ant-design/icons';
 import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleChat } from 'gamification/actions/social-actions';
 import CvatTooltip from 'components/common/cvat-tooltip';
-
-import SVGTimeIcon from 'assets/time-icon.svg';
-import SVGBrain from 'assets/brain.svg';
-import SVGLoadingItem from 'assets/loading-item.svg';
+import SVGBadgeGold from 'assets/gamification/badges/badge-gold.svg';
+import { CombinedState } from 'reducers/interfaces';
 
 interface QuickProfileProps {
     profile: Profile,
 }
 
-const TestIcon1 = (props: any): JSX.Element => <Icon component={SVGTimeIcon} {...props} />;
-const TestIcon2 = (props: any): JSX.Element => <Icon component={SVGBrain} {...props} />;
-const TestIcon3 = (props: any): JSX.Element => <Icon component={SVGLoadingItem} {...props} />;
+const quickProfileBadge = (badgeid: number, index: number): JSX.Element => {
+    const badges = useSelector((state: CombinedState) => state.badges);
+    const badge = badges.availableBadges.find((_badge) => _badge.id === badgeid);
+
+    const BadgeIcon = (props: any): JSX.Element => <Icon component={SVGBadgeGold} {...props} />;
+
+    return (
+        <Col key={index}>
+            <CvatTooltip overlay={badge?.title}>
+                <BadgeIcon />
+            </CvatTooltip>
+        </Col>
+    );
+};
 
 export default function QuickProfile(props: QuickProfileProps): JSX.Element {
     const { profile } = props;
@@ -42,11 +51,17 @@ export default function QuickProfile(props: QuickProfileProps): JSX.Element {
         default: statusStyle = { background: 'grey' };
     }
 
+    const compStyle = {
+        outline: `3px solid ${profile.profile_border}`,
+        background: profile.profile_background,
+    };
+
     return (
-        <div className='gamif-quick-profile-container'>
+        <div className='gamif-quick-profile-container' style={compStyle}>
             <div className='gamif-quick-profile'>
                 <div className='gamif-quick-profile status'>
                     <div className='gamif-quick-profile-status-icon' style={statusStyle}> &nbsp; </div>
+                    &nbsp;
                     <span className='gamif-quick-profile-status-text'>{profile.status}</span>
                 </div>
                 <div className='gamif-quick-profile-avatar-name-container'>
@@ -55,22 +70,7 @@ export default function QuickProfile(props: QuickProfileProps): JSX.Element {
                 </div>
                 <div className='gamif-quick-profile badges'>
                     <Row>
-
-                        <Col>
-                            <CvatTooltip overlay='Annotation Champion: 01-08-2022'>
-                                <TestIcon3 />
-                            </CvatTooltip>
-                        </Col>
-                        <Col>
-                            <CvatTooltip overlay='Night Owl: 03-04-2022'>
-                                <TestIcon1 />
-                            </CvatTooltip>
-                        </Col>
-                        <Col>
-                            <CvatTooltip overlay='Quiz Master: 21-06-2022' title='test'>
-                                <TestIcon2 />
-                            </CvatTooltip>
-                        </Col>
+                        {profile.selectedBadges.map((id, index) => quickProfileBadge(id, index))}
                     </Row>
 
                 </div>

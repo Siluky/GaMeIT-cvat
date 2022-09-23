@@ -36,6 +36,7 @@ router.register('user-statistics', views.UserStatisticList)
 router.register('energizer-data', views.EnergizerLeaderboardViewSet)
 router.register('questions', views.QuizDuelQuestionsViewSet)
 
+router.register('friends', views.FriendslistViewSet)
 router.register('chat', views.ChatViewSet)
 
 urlpatterns = [

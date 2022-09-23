@@ -45,9 +45,15 @@ function getFriendsListFailed(error: any): AnyAction {
 export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function getFriendsListThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
-            // TODO: Not implemented yet!
-            const profiles = await cvat.social.getProfiles();
-
+            const profilesImport = await cvat.social.friends();
+            console.log('🚀 ~ file: social-actions.ts ~ line 49 ~ getFriendsListThunk ~ profilesImport', profilesImport);
+            const profiles: Profile[] = profilesImport.map((profile: any) => ({
+                ...profile,
+                username: profile.user,
+                userId: profile.id,
+                selectedBadges: profile.selectedBadges.split(',').map((id: string) => parseInt(id, 10)) ?? [1, 2, 3],
+            }));
+            console.log('🚀 ~ file: social-actions.ts ~ line 57 ~ getFriendsListThunk ~ profiles', profiles);
             dispatch(getFriendsListSuccess(profiles));
         } catch (error) {
             dispatch(getFriendsListFailed(error));

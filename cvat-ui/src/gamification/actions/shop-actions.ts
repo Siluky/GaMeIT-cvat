@@ -7,6 +7,7 @@ import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
+import { setProfileBackground } from './social-actions';
 
 const cvat = getCore();
 
@@ -18,7 +19,8 @@ export enum ShopActionTypes {
     UPDATE_BALANCE = 'UPDATE_BALANCE',
 
     SET_SELECTED_ITEM = 'SET_SELECTED_ITEM',
-    USE_ITEM = 'USE_ITEM',
+    USE_ITEM_FAILED = 'USE_ITEM_FAILED',
+    USE_ITEM_SUCCESS = 'USE_ITEM_SUCCESS',
 
     PURCHASE_ITEM_SUCCESS = 'PURCHASE_ITEM_SUCCESS',
     PURCHASE_ITEM_FAILED = 'PURCHASE_ITEM_FAILED',
@@ -64,10 +66,26 @@ export function setSelectedItem(itemId: number): AnyAction {
     };
 }
 
-export function useItem(itemId: number): AnyAction {
+export function useItemSuccess(itemId: number): AnyAction {
     return {
-        type: ShopActionTypes.USE_ITEM,
+        type: ShopActionTypes.USE_ITEM_SUCCESS,
         payload: itemId,
+    };
+}
+
+export function useItemFailed(itemId: number): AnyAction {
+    return {
+        type: ShopActionTypes.USE_ITEM_FAILED,
+        payload: itemId,
+    };
+}
+
+export function useItem(itemId: number): ThunkAction<void, {}, {}, AnyAction> {
+    return (dispatch) => {
+        switch (itemId) {
+            case 1: dispatch(setProfileBackground('green')); break;
+            default: break;
+        }
     };
 }
 
@@ -95,6 +113,7 @@ export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyActio
             dispatch(purchaseItemFailed());
         } else {
             dispatch(purchaseItemSuccess(itemId));
+            if (item.repeatable) { dispatch(useItem(itemId)); }
             dispatch(updateBalance(-item.price));
         }
     };

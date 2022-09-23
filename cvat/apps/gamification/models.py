@@ -59,6 +59,18 @@ class Statistic(models.Model):
     def __str__(self):
         return self.name
 
+class OnlineStatusChoice(str, Enum):
+    ONLINE = 'Online'
+    DO_NOT_DISTURB = 'Do not Disturb'
+    OFFLINE = 'Offline'
+
+    @classmethod
+    def choices(cls):
+        return tuple((x.value, x.name) for x in cls)
+
+    def __str__(self):
+        return self.value
+
 # Stores additional information about exactly one user
 # Gets automatically updated with user
 class UserProfile(models.Model):
@@ -76,6 +88,7 @@ class UserProfile(models.Model):
 
     # badge-related data
     badges_obtained_total = models.IntegerField(default=0)
+    selectedBadges = models.CharField(max_length=255, default='')
 
     # challenges-related data
     challenges_completed = models.IntegerField(default=0)
@@ -91,12 +104,22 @@ class UserProfile(models.Model):
 
     # shop-related data
     currentBalance = models.IntegerField(default=0)
+    items_bought = models.CharField(max_length=255, default='')
     annotation_coins_total = models.IntegerField(default=0)
     annotation_coins_max = models.IntegerField(default=0)
     items_bought_total = models.IntegerField(default=0)
+    mystery_gifts_bought = models.IntegerField(default=0)
 
     # social-related data
     chat_messages_total = models.IntegerField(default=0)
+    profile_style = models.CharField(max_length=255, default='')
+    avatar = models.CharField(max_length=64, default='')
+    avatar_border = models.CharField(max_length=64, default='')
+    profile_border = models.CharField(max_length=64, default='')
+    profile_background = models.CharField(max_length=64, default='')
+    online_status = models.CharField(max_length=32, choices=OnlineStatusChoice.choices(),
+                    default=OnlineStatusChoice.ONLINE)
+
 
     # statistics-related data
     selectedStatistics = models.CharField(max_length=255, default='')

@@ -10,33 +10,33 @@ const dummyProfiles: Profile[] = [{
     username: 'Annotator 1',
     userId: 1,
     status: OnlineStatus.ONLINE,
-    avatar: '',
+    avatar: '1',
     avatar_border: '',
-    profile_background: '',
+    profile_background: 'yellow',
     profile_border: '',
-    shownBadgeIds: [],
+    selectedBadges: [1, 5, 12],
     chatActive: false,
 },
 {
     username: 'Annotator 2',
     userId: 2,
     status: OnlineStatus.DO_NOT_DISTURB,
-    avatar: '',
+    avatar: '2',
     avatar_border: '',
-    profile_background: '',
+    profile_background: 'green',
     profile_border: '',
-    shownBadgeIds: [],
+    selectedBadges: [1, 2, 4],
     chatActive: true,
 },
 {
     username: 'Annotator 3',
     userId: 3,
     status: OnlineStatus.OFFLINE,
-    avatar: '',
+    avatar: '3',
     avatar_border: '',
-    profile_background: '',
+    profile_background: 'red',
     profile_border: '',
-    shownBadgeIds: [],
+    selectedBadges: [8, 13, 2],
     chatActive: false,
 },
 ];
@@ -49,7 +49,7 @@ const profile: Profile = {
     avatar_border: '',
     profile_background: '',
     profile_border: '',
-    shownBadgeIds: [],
+    selectedBadges: [],
     chatActive: false,
 };
 
@@ -69,7 +69,7 @@ export default (state = defaultState, action: AnyAction): SocialState => {
         case SocialActionTypes.GET_FRIENDS_LIST_SUCCESS: {
             return {
                 ...state,
-                // TODO: use action.payload somehow
+                friendListEntries: action.payload,
             };
         }
 

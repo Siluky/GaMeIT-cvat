@@ -34,7 +34,7 @@ const chatBar = (friend: Profile): JSX.Element => {
     return (
         <Menu.Item
             icon={<RadarChartOutlined />}
-            key='chat_window'
+            key={friend.userId}
         >
             <Popover
                 placement='top'
@@ -45,8 +45,12 @@ const chatBar = (friend: Profile): JSX.Element => {
             >
                 {friend.username}
             </Popover>
-
-            <Button icon={<CloseOutlined />} onClick={() => dispatch(toggleChat(friend.userId, false))} />
+            <Button
+                icon={<CloseOutlined />}
+                onClick={() => dispatch(toggleChat(friend.userId, false))}
+                type='text'
+                size='small'
+            />
         </Menu.Item>
     );
 };

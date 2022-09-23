@@ -1016,12 +1016,12 @@ function build() {
         */
         social: {
             async friends() {
-                const result = await PluginRegistry.apiWrapper(cvat.social.getFriends);
+                const result = await PluginRegistry.apiWrapper(cvat.social.friends);
                 return result;
             },
 
             async chatHistory(userId) {
-                const result = await PluginRegistry.apiWrapper(cvat.social.getChatHistory, userId);
+                const result = await PluginRegistry.apiWrapper(cvat.social.chatHistory, userId);
                 return result;
             },
 

@@ -6,7 +6,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, ItemStatus, Question, ShopItem, Statistic, StatisticsStatus, UserProfile
-from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer, ItemStatusSerializer, QuestionSerializer, ShopItemSerializer, StatisticSerializer, StatisticStatusSerializer, UserDataSerializer, UserProfileSerializer
+from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer, ItemStatusSerializer, ProfileDataSerializer, QuestionSerializer, ShopItemSerializer, StatisticSerializer, StatisticStatusSerializer, UserDataSerializer, UserProfileSerializer
 
 # def currentUserProfile(self):
 #     currentUser = self.request.user
@@ -52,6 +52,10 @@ class UserDataViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         currentUser = self.request.user
         return UserProfile.objects.filter(user = currentUser)
+
+class FriendslistViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = ProfileDataSerializer
 
 class BadgeViewSet(viewsets.ModelViewSet):
     queryset = Badge.objects.all()

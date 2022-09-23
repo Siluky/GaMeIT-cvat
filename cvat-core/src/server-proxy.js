@@ -1971,8 +1971,15 @@
             async function getFriendsList() {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/`); // TODO:
-                return response.data; // TODO: double-check, maybe response.data.results
+                console.log('getting friends list');
+
+                try {
+                    response = await Axios.get(`${backendAPI}/friends`);
+                    console.log('🚀 ~ file: server-proxy.js ~ line 1977 ~ ServerProxy ~ getFriendsList ~ response', response);
+                } catch (error) {
+                    throw (generateError(error));
+                }
+                return response.data.results;
             }
 
             async function getChatHistory(userId) {

@@ -39,7 +39,6 @@ const defaultState: UserDataState = {
 export default (state = defaultState, action: AnyAction): UserDataState => {
     switch (action.type) {
         case UserDataActionTypes.GET_USER_DATA_SUCCESS: {
-            console.log(action.payload);
             return {
                 ...state,
                 userdata_total: action.payload.allTime,

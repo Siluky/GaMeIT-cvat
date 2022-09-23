@@ -48,6 +48,18 @@ export default (state = defaultState, action: AnyAction): ShopState => {
             };
         }
 
+        case ShopActionTypes.USE_ITEM_SUCCESS: {
+            return {
+                ...state,
+            };
+        }
+
+        case ShopActionTypes.USE_ITEM_FAILED: {
+            return {
+                ...state,
+            };
+        }
+
         case ShopActionTypes.PURCHASE_ITEM_SUCCESS: {
             const updatedItems = state.availableItems.map(
                 (_item: ShopItem) => {

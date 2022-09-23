@@ -15,18 +15,32 @@ class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
         fields = (
-        'id',
+        'id', 'user',
         'last_login','annotation_time_total','images_annotated_total', 'tags_set_total', 'images_annotated_night',
         'annotation_time_total', 'annotation_streak_current','annotation_streak_max',
-        'badges_obtained_total',
+        'badges_obtained_total', 'selectedBadges',
         'challenges_completed',
         'energy_current', 'energy_total','energizers_completed','energy_expired','tetris_played','quiz_played','snake_played',
-        'currentBalance','annotation_coins_total','annotation_coins_max','items_bought_total',
+        'currentBalance','items_bought','annotation_coins_total','annotation_coins_max','items_bought_total','mystery_gifts_bought',
         'chat_messages_total',
         'selectedStatistics',
         )
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['user'] = instance.user.get_username()
+        return rep
 
+class ProfileDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserProfile
+        fields = ('id', 'user','online_status', 'profile_style', 'selectedBadges',
+        'avatar','avatar_border','profile_border','profile_background',)
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['user'] = instance.user.get_username()
+        return rep
 
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:

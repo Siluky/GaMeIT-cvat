@@ -82,15 +82,6 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             userDataImport = await cvat.gamifuserdata.get();
             console.log('🚀 ~ file: user-data-actions.ts ~ line 73 ~ loadUserDataThunk ~ userDataImport', userDataImport);
 
-            const userId = userDataImport.id;
-            dispatch(updateUserId(userId));
-
-            const selectedStatsImport = userDataImport.selectedStatistics.split(',') ?? '1,2,3';
-            console.log('🚀 ~ file: user-data-actions.ts ~ line 74 ~ loadUserDataThunk ~ selectedStatsImport', selectedStatsImport);
-            const selectedStatIds = selectedStatsImport.map((id: string) => parseInt(id, 10));
-            console.log('🚀 ~ file: user-data-actions.ts ~ line 76 ~ loadUserDataThunk ~ selectedStatIds', selectedStatIds);
-            dispatch(addQuickStatistic(selectedStatIds));
-
             const userDataAllTime: UserData = {
                 last_login: userDataImport.last_login,
                 images_annotated: userDataImport.images_annotated_total,
@@ -113,6 +104,13 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 items_bought: userDataImport.items_bought_total,
                 chat_messages: userDataImport.chat_messages_total,
             };
+
+            const userId = userDataImport.id;
+            dispatch(updateUserId(userId));
+
+            const selectedStatsImport = userDataImport.selectedStatistics.split(',') ?? '1,2,3';
+            const selectedStatIds = selectedStatsImport.map((id: string) => parseInt(id, 10));
+            dispatch(addQuickStatistic(selectedStatIds));
 
             dispatch(updateBalance(userDataAllTime.currentBalance));
 
