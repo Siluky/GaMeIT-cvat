@@ -9,8 +9,10 @@ import { Button, Progress } from 'antd';
 import { AnnotationCoinIcon } from 'icons';
 
 import { blue, geekblue } from '@ant-design/colors';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { completeChallenge, updateChallengeProgress } from 'gamification/actions/challenge-actions';
+import { CombinedState } from 'reducers/interfaces';
+import { mapChallengeIdtoFieldName } from 'gamification/gamif-items';
 
 interface Props {
     id: number;
@@ -20,6 +22,9 @@ interface Props {
 export default function ChallengePane(props: Props): JSX.Element {
     const { challenge } = props;
     const dispatch = useDispatch();
+    const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
+
+    const progress = userdata.userdata_total[mapChallengeIdtoFieldName(challenge.id)];
 
     return (
         <div className='gamif-challenge-pane-wrapper'>
@@ -52,6 +57,9 @@ export default function ChallengePane(props: Props): JSX.Element {
             </div>
             <div className='gamif-challenge-pane-bottom-text'>
                 {challenge.challengeType}
+            </div>
+            <div>
+                { progress }
             </div>
         </div>
     );

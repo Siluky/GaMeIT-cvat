@@ -2,11 +2,11 @@
 #
 # SPDX-License-Identifier: MIT
 
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, ItemStatus, Question, ShopItem, Statistic, StatisticsStatus, UserProfile
-from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer, ItemStatusSerializer, ProfileDataSerializer, QuestionSerializer, ShopItemSerializer, StatisticSerializer, StatisticStatusSerializer, UserDataSerializer, UserProfileSerializer
+from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, Question, ShopItem, Statistic, UserProfile
+from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer,ProfileDataSerializer, QuestionSerializer, SaveChallengesSerializer, ShopItemSerializer, StatisticSerializer, UserDataSerializer, UserProfileSerializer
 
 # def currentUserProfile(self):
 #     currentUser = self.request.user
@@ -98,6 +98,17 @@ class ChallengeStatusViewSet(viewsets.ModelViewSet):
     queryset = ChallengeStatus.objects.all()
     serializer_class = ChallengeStatusSerializer
 
+    @action(detail=False, methods=['GET','PUT'], serializer_class=SaveChallengesSerializer)
+    def save(self, request):
+        serializer = SaveChallengesSerializer(data=request.data)
+        print('Trying to save challenge')
+        print(serializer)
+        print(request.data)
+        if serializer.is_valid(raise_exception=True):
+            print('SaveChallengeSerializer is valid')
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
 class UserChallengeList(viewsets.GenericViewSet, mixins.ListModelMixin,
     mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     queryset = ChallengeStatus.objects.all().order_by('id')
@@ -106,46 +117,17 @@ class UserChallengeList(viewsets.GenericViewSet, mixins.ListModelMixin,
     def get_queryset(self):
         currentUser = self.request.user
         currentUserProfile = UserProfile.objects.get(user = currentUser)
-        queryset = ChallengeStatus.objects.filter(userProfile = currentUserProfile)
+        queryset = ChallengeStatus.objects.filter(userId = currentUserProfile)
         return queryset
 
 class ShopItemViewSet(viewsets.ModelViewSet):
     queryset = ShopItem.objects.all()
     serializer_class = ShopItemSerializer
 
-class ShopItemStatusViewSet(viewsets.ModelViewSet):
-    queryset = ItemStatus.objects.all()
-    serializer_class = ItemStatusSerializer
-
-class UserItemList(viewsets.GenericViewSet, mixins.ListModelMixin,
-    mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
-    queryset = ItemStatus.objects.all().order_by('id')
-    serializer_class = ItemStatusSerializer
-
-    def get_queryset(self):
-        currentUser = self.request.user
-        currentUserProfile = UserProfile.objects.get(user = currentUser)
-        queryset = ItemStatus.objects.filter(userProfile = currentUserProfile)
-        return queryset
 
 class StatisticViewSet(viewsets.ModelViewSet):
     queryset = Statistic.objects.all()
     serializer_class = StatisticSerializer
-
-class StatisticStatusViewSet(viewsets.ModelViewSet):
-    queryset = StatisticsStatus.objects.all()
-    serializer_class = StatisticStatusSerializer
-
-class UserStatisticList(viewsets.GenericViewSet, mixins.ListModelMixin,
-    mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
-    queryset = StatisticsStatus.objects.all().order_by('id')
-    serializer_class = StatisticStatusSerializer
-
-    def get_queryset(self):
-        currentUser = self.request.user
-        currentUserProfile = UserProfile.objects.get(user = currentUser)
-        queryset = StatisticsStatus.objects.filter(userProfile = currentUserProfile)
-        return queryset
 
 # TODO: Chat stuff
 

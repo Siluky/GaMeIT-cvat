@@ -85,6 +85,7 @@ class UserProfile(models.Model):
     annotation_time_total = models.IntegerField(default=0)
     annotation_streak_current = models.IntegerField(default=0)
     annotation_streak_max = models.IntegerField(default=0)
+    annotation_streak_saver = models.BooleanField(default=False)
 
     # badge-related data
     badges_obtained_total = models.IntegerField(default=0)
@@ -120,7 +121,6 @@ class UserProfile(models.Model):
     online_status = models.CharField(max_length=32, choices=OnlineStatusChoice.choices(),
                     default=OnlineStatusChoice.ONLINE)
 
-
     # statistics-related data
     selectedStatistics = models.CharField(max_length=255, default='')
 
@@ -129,13 +129,6 @@ class UserProfile(models.Model):
 
     def get_selectedStatistics(self):
         return json.loads(self.selectedStatistics)
-
-    # Extra intermediate models that characterizethe relationship to Gamification elements
-    # i.e., progress on individual badges / challenges / statistics / items
-    badges = models.ManyToManyField(Badge, through='BadgeStatus')
-    challenges = models.ManyToManyField(Challenge, through='ChallengeStatus')
-    items = models.ManyToManyField(ShopItem, through='ItemStatus')
-    statistics = models.ManyToManyField(Statistic, through='StatisticsStatus')
 
     def __str__(self) -> str:
         return self.user.get_username()
@@ -157,59 +150,37 @@ def save_user_profile(sender, instance, **kwargs):
 # including Badges, Challenges, ShopItems
 
 class BadgeStatus(models.Model):
-    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
-    badge = models.ForeignKey(Badge, on_delete=models.CASCADE, default=None)
-
     id = models.CharField(default='0-0', primary_key=True, max_length=8)
+    userId = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+    # badge = models.ForeignKey(Badge, on_delete=models.CASCADE, default=None)
+    badgeId = models.IntegerField(default=0)
+    title = models.CharField(default='', max_length=255)
 
-    progress = models.IntegerField(default=0)
-    got = models.BooleanField(default=False)
     receivedOn = models.DateTimeField(default=now)
 
     def __str__(self):
-        return (self.id + ': ' + self.userProfile.user.get_username() + '-' + self.badge.title)
+        return (str(self.badgeId) + ': ' + self.userId.user.get_username() + '-' + self.title)
 
     def save(self, *args, **kwargs):
-        self.id = str(self.userProfile.id) + '-' + str(self.badge.id)
+        self.id = str(self.userId.id) + '-' + str(self.badgeId)
         super(BadgeStatus, self).save(*args, **kwargs)
 
 class ChallengeStatus(models.Model):
-    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE, default=None)
-
     id = models.CharField(default='0-0', primary_key=True, max_length=8)
+    userId = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+    challengeId = models.IntegerField(default=0)
+    title = models.CharField(default='', max_length=255)
+
+    goal = models.IntegerField(default=0)
     progress = models.IntegerField(default=0)
 
     def __str__(self):
-        return (self.userProfile.user.get_username() + '-' + self.challenge.instruction)
+        return (self.userId.user.get_username() + '-' + str(self.challengeId))
 
     def save(self, *args, **kwargs):
-        self.id = str(self.userProfile.id) + '-' + str(self.challenge.id)
-        super(ChallengeStatus, self).save(*args, **kwargs)
-
-class ItemStatus(models.Model):
-    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
-    item = models.ForeignKey(ShopItem, on_delete=models.CASCADE, default=None)
-
-    id = models.CharField(default='0-0', primary_key=True, max_length=8)
-
-    inUse = models.BooleanField(default=False)
-    purchased = models.BooleanField(default=False)
-
-    def __str__(self):
-        return (self.userProfile.user.get_username() + '-' + self.item.itemName)
-
-    def save(self, *args, **kwargs):
-        self.id = str(self.userProfile.id) + '-' + str(self.item.id)
-        super(ItemStatus, self).save(*args, **kwargs)
-
-# TODO: Remove!
-class StatisticsStatus(models.Model):
-    userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
-    statistic = models.ForeignKey(Statistic, on_delete=models.CASCADE, default=None)
-
-    value = models.IntegerField(default=0)
-
+        self.id = str(self.userId.id) + '-' + str(self.challengeId)
+        print('Saving Challenge Status')
+        super().save(**kwargs)
 
 class ChatRoom(models.Model):
     user1 = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='user1')
@@ -223,12 +194,10 @@ class ChatRoom(models.Model):
         self.id = str(self.user1.id) + '-' + str(self.user2.id)
         super(ChatRoom, self).save(*args, **kwargs)
 
-
 class ChatMessage(models.Model):
     content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now=True)
     room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
-
 
 class EnergizerChoice(str, Enum):
     TETRIS = 'TETRIS',
@@ -252,7 +221,6 @@ class EnergizerData(models.Model):
 
     def __str__(self):
         return (self.userProfile.user.get_username() + '-' + self.energizer + ': ' + str(self.score))
-
 
 class Question(models.Model):
     class correctAnswer(models.IntegerChoices):

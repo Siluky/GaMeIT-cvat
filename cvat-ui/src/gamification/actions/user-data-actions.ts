@@ -16,6 +16,7 @@ export enum UserDataActionTypes {
     GET_USER_DATA_SUCCESS = 'GET_USER_DATA_SUCCESS',
     GET_USER_DATA_FAILED = 'GET_USER_DATA_FAILED',
     SET_USER_ID = 'SET_USER_ID',
+    SET_USER_NAME = 'SET_USER_NAME',
     SAVE_USER_DATA_SUCCESS = 'SAVE_USER_DATA_SUCCESS',
     SAVE_USER_DATA_FAILED = 'SAVE_USER_DATA_FAILED',
 
@@ -44,6 +45,13 @@ export function updateUserId(id: number): AnyAction {
     return {
         type: UserDataActionTypes.SET_USER_ID,
         payload: id,
+    };
+}
+
+export function updateUserName(name: string): AnyAction {
+    return {
+        type: UserDataActionTypes.SET_USER_NAME,
+        payload: name,
     };
 }
 
@@ -107,6 +115,9 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
 
             const userId = userDataImport.id;
             dispatch(updateUserId(userId));
+
+            const username = userDataImport.user;
+            dispatch(updateUserName(username));
 
             const selectedStatsImport = userDataImport.selectedStatistics.split(',') ?? '1,2,3';
             const selectedStatIds = selectedStatsImport.map((id: string) => parseInt(id, 10));

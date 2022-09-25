@@ -60,6 +60,13 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
             };
         }
 
+        case UserDataActionTypes.SET_USER_NAME: {
+            return {
+                ...state,
+                username: action.payload,
+            };
+        }
+
         case UserDataActionTypes.SAVE_USER_DATA_FAILED: return state;
         case UserDataActionTypes.SAVE_USER_DATA_SUCCESS: return state; // just to know API call worked, no state changes
         case UserDataActionTypes.GET_USER_DATA_FAILED: return state;

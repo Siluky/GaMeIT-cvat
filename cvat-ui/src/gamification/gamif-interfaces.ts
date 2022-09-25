@@ -79,7 +79,7 @@ export interface Challenge {
     instruction: string;
     progress: number;
     goal: number;
-    reward: number; // TODO: establiosh rewards
+    reward: number;
     challengeType: ChallengeType;
 }
 

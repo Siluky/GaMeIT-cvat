@@ -22,8 +22,8 @@ export default function ChallengeList(): JSX.Element {
             <div className='gamif-challenge-list'>
                 <div className='gamif-challenge-list-header'>
                     Reroll: 20
-                    <AnnotationCoinIcon />
-                    <UndoOutlined />
+                    <Button type='text' icon={<AnnotationCoinIcon />} />
+                    <Button type='text' icon={<UndoOutlined />} />
                 </div>
                 <div>
                     {challenges.availableChallenges.map((_challenge: Challenge, index: number) => (

@@ -25,14 +25,6 @@ router.register('challenges', views.ChallengeViewSet)
 router.register('challenge-status', views.ChallengeStatusViewSet)
 router.register('user-challenges', views.UserChallengeList)
 
-router.register('items', views.ShopItemViewSet)
-router.register('item-status', views.ShopItemStatusViewSet)
-router.register('user-items', views.UserItemList)
-
-router.register('statistics', views.StatisticViewSet)
-router.register('statistic-status', views.StatisticStatusViewSet)
-router.register('user-statistics', views.UserStatisticList)
-
 router.register('energizer-data', views.EnergizerLeaderboardViewSet)
 router.register('questions', views.QuizDuelQuestionsViewSet)
 

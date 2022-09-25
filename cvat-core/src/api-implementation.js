@@ -366,8 +366,8 @@ const config = require('./config');
             return challenges;
         };
 
-        cvat.challenges.save.implementation = async (userId, challenges) => {
-            const saved = await serverProxy.challenges.save(userId, challenges);
+        cvat.challenges.save.implementation = async (challenges) => {
+            const saved = await serverProxy.challenges.save(challenges);
             return saved;
         };
 

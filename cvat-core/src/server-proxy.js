@@ -1825,20 +1825,19 @@
                 return response.data.results; // TODO: double-check, maybe response.data.results
             }
 
-            async function saveChallenges(userId, challenges) {
-                // FIXME:
-                console.log('🚀 ~ file: server-proxy.js ~ line 1807 ~ ServerProxy ~ saveChallenges ~ challenges', challenges);
+            async function saveChallenges(challenges) {
+                console.log('🚀 ~ file: server-proxy.js ~ line 1829 ~ ServerProxy ~ saveChallenges ~ challenges', challenges);
                 const { backendAPI } = config;
                 let response = null;
                 try {
                     // eslint-disable-next-line max-len
-                    response = await challenges.map((challenge) => Axios.patch(`${backendAPI}/challenge-status/${userId}-${challenge.id}`,
-                        { progress: challenge.progress },
+                    response = await challenges.map((chal) => Axios.put(`${backendAPI}/challenge-status/save`,
+                        chal,
                         {
                             proxy: config.proxy,
-                            // headers: {
-                            //     'Content-Type': 'application/json',
-                            // },
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
                         }));
                     console.log('🚀 ~ file: server-proxy.js ~ line 1812 ~ ServerProxy ~ saveChallenges ~ response', response);
                 } catch (error) {
@@ -1850,8 +1849,8 @@
             async function addChallenge() {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/challenges/pickChallenge`); // TODO:
-                return response.data; // TODO: double-check, maybe response.data.results
+                response = await Axios.get(`${backendAPI}/challenges/pickChallenge`);
+                return response.data;
             }
 
             async function removeChallenge(userId, challengeId) {

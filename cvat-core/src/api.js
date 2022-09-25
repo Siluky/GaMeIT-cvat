@@ -919,8 +919,8 @@ function build() {
                 return result;
             },
 
-            async save(userId, challenges) {
-                const result = await PluginRegistry.apiWrapper(cvat.challenges.save, userId, challenges);
+            async save(challenges) {
+                const result = await PluginRegistry.apiWrapper(cvat.challenges.save, challenges);
                 return result;
             },
 

@@ -63,34 +63,31 @@ class ChallengeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ChallengeStatusSerializer(serializers.ModelSerializer):
-    challenge = ChallengeSerializer()
-
     class Meta:
         model = models.ChallengeStatus
         fields = '__all__'
+
+
+class SaveChallengesSerializer(serializers.ModelSerializer):
+    # userId = serializers.PrimaryKeyRelatedField(queryset = models.UserProfile.objects.all())
+    userId = serializers.SlugRelatedField(
+        slug_field='id',
+        queryset = models.UserProfile.objects.all(),
+    )
+
+    class Meta:
+        model = models.ChallengeStatus
+        # fields = '__all__'
+        fields = ('challengeId','goal','progress','title','userId',)
 
 class ShopItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ShopItem
         fields = '__all__'
 
-class ItemStatusSerializer(serializers.ModelSerializer):
-    item = ShopItemSerializer()
-
-    class Meta:
-        model = models.ItemStatus
-        fields = '__all__'
-
 class StatisticSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Statistic
-        fields = '__all__'
-
-class StatisticStatusSerializer(serializers.ModelSerializer):
-    statistic = StatisticSerializer()
-
-    class Meta:
-        model = models.StatisticsStatus
         fields = '__all__'
 
 class EnergySerializer(serializers.Serializer):
@@ -107,7 +104,6 @@ class EnergizerDataSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
         rep['userProfile'] = instance.userProfile.user.get_username()
         return rep
-
 
 class ChatSerializer(serializers.ModelSerializer):
     room = serializers.PrimaryKeyRelatedField(many=False, read_only=False, queryset=models.ChatRoom.objects.all())

@@ -5,6 +5,7 @@
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
+import { availableChallenges } from 'gamification/gamif-items';
 import { Challenge } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
 import { updateBalance } from './shop-actions';
@@ -48,15 +49,17 @@ export function getChallengesAsync(): ThunkAction<void, {}, {}, AnyAction> {
         try {
             challengesImport = await cvat.challenges.get();
             console.log('🚀 ~ file: challenge-actions.ts ~ line 42 ~ getChallengesThunk ~ challengesImport', challengesImport);
-            const challenges = challengesImport.map((chal: any): Challenge => ({
-                id: chal.challenge.id,
-                instruction: chal.challenge.instruction,
-                goal: chal.challenge.goal,
-                reward: chal.challenge.reward,
-                challengeType: chal.challenge.challengeType,
-                // extra info from ChallengeStatus model
-                progress: chal.progress,
-            }));
+
+            const challenges = challengesImport.map((chal: any): Challenge => {
+                const challenge = availableChallenges.find((c) => c.id === chal.challengeId) ?? availableChallenges[0];
+
+                return {
+                    ...challenge,
+                    progress: chal.progress,
+                    goal: chal.goal,
+                    instruction: challenge.instruction.replace('GOAL', chal.goal.toString()),
+                };
+            });
             console.log('🚀 ~ file: challenge-actions.ts ~ line 52 ~ challenges ~ challenges', challenges);
             dispatch(getChallengesSuccess(challenges));
         } catch (error) {
@@ -81,11 +84,27 @@ export function addChallengeFailed(error: any): AnyAction {
 
 export function addChallenge(): ThunkAction<void, {}, {}, AnyAction> {
     return async function addChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-        let challengeImport = null;
         try {
-            challengeImport = await cvat.challenges.add();
-            console.log('🚀 ~ file: challenge-actions.ts ~ line 81 ~ addChallengeThunk ~ challengeImport', challengeImport);
-            dispatch(addChallengeSuccess({ ...challengeImport, progress: 0 }));
+            // Pick a random new challenge
+            // TODO: No duplicate ids
+            // const currentChallenges = getCVATStore().getState().challenges.availableChallenges;
+            const newChallenge = availableChallenges[Math.floor(Math.random() * availableChallenges.length)];
+
+            // randomize goal by ~20 %
+            const randomFactor = 1 + (Math.random() * 21) / 100;
+            const goalAdjusted = Math.floor(newChallenge.goal * randomFactor);
+
+            // TODO: multiply reward with same factor
+
+            const newChal = {
+                ...newChallenge,
+                goal: goalAdjusted,
+                instruction: newChallenge.instruction.replace('GOAL', goalAdjusted.toString()),
+                progress: 0,
+            };
+            console.log('🚀 ~ file: challenge-actions.ts ~ line 107 ~ addChallengeThunk ~ newChal', newChal);
+
+            dispatch(addChallengeSuccess(newChal));
         } catch (error) {
             dispatch(addChallengeFailed(error));
         }
@@ -105,11 +124,19 @@ export function saveChallengesFailed(error: any): AnyAction {
     };
 }
 
-export function saveChallenges(challenges: Challenge[]): ThunkAction<void, {}, {}, AnyAction> {
+export function saveChallenges(_challenges: Challenge[]): ThunkAction<void, {}, {}, AnyAction> {
     return async function saveChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        const id = getCVATStore().getState().gamifuserdata.userId;
         try {
-            await cvat.challenges.save(challenges);
+            const challenges = _challenges.map((chal: Challenge) => ({
+                userId: id,
+                challengeId: chal.id,
+                title: chal.instruction,
+                goal: chal.goal,
+                progress: chal.progress,
+            }));
 
+            await cvat.challenges.save(challenges);
             dispatch(saveChallengesSuccess);
         } catch (error) {
             dispatch(saveChallengesFailed(error));
@@ -140,10 +167,11 @@ export function removeChallengeFailed(error: any): AnyAction {
 
 export function completeChallenge(challenge: Challenge): ThunkAction<void, {}, {}, AnyAction> {
     return async function addChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-        const userId = getCVATStore().getState().badges.currentUserId;
+        const { userId } = getCVATStore().getState().gamifuserdata;
+        console.log('🚀 ~ file: challenge-actions.ts ~ line 164 ~ addChallengeThunk ~ userId', userId);
         try {
-            await cvat.challenges.remove(userId, challenge.id);
             dispatch(updateBalance(challenge.reward));
+            await cvat.challenges.remove(userId, challenge.id);
             dispatch(removeChallengeSuccess(challenge.id));
         } catch (error) {
             dispatch(removeChallengeFailed(error));

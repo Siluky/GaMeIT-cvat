@@ -687,10 +687,10 @@ export const items: ShopItem[] = [{
 },
 ];
 
-export const challenges: Challenge[] = [
+export const availableChallenges: Challenge[] = [
     {
         id: 1,
-        instruction: 'Annotate Images',
+        instruction: 'Annotate GOAL Images',
         progress: 0,
         goal: 50,
         reward: 80,
@@ -698,7 +698,7 @@ export const challenges: Challenge[] = [
     },
     {
         id: 2,
-        instruction: 'Annotate Minutes',
+        instruction: 'Annotate GOAL Minutes',
         progress: 0,
         goal: 30,
         reward: 80,
@@ -706,7 +706,7 @@ export const challenges: Challenge[] = [
     },
     {
         id: 3,
-        instruction: 'Annotate Minutes in one Session',
+        instruction: 'Annotate GOAL Minutes in one Session',
         progress: 0,
         goal: 0,
         reward: 80,
@@ -714,7 +714,7 @@ export const challenges: Challenge[] = [
     },
     {
         id: 4,
-        instruction: 'Complete Energizers',
+        instruction: 'Complete GOAL Energizers',
         progress: 0,
         goal: 3,
         reward: 80,
@@ -722,7 +722,7 @@ export const challenges: Challenge[] = [
     },
     {
         id: 5,
-        instruction: 'Play Tetris',
+        instruction: 'Play Tetris GOAL times',
         progress: 0,
         goal: 2,
         reward: 80,
@@ -730,7 +730,7 @@ export const challenges: Challenge[] = [
     },
     {
         id: 6,
-        instruction: 'Play Snake',
+        instruction: 'Play Snake GOAL times',
         progress: 0,
         goal: 2,
         reward: 80,
@@ -738,7 +738,7 @@ export const challenges: Challenge[] = [
     },
     {
         id: 7,
-        instruction: 'Play Quiz',
+        instruction: 'Play Quiz GOAL times',
         progress: 0,
         goal: 2,
         reward: 80,
@@ -746,9 +746,17 @@ export const challenges: Challenge[] = [
     },
     {
         id: 8,
-        instruction: 'Obtain a badge',
+        instruction: 'Obtain GOAL badges',
         progress: 0,
         goal: 1,
+        reward: 80,
+        challengeType: ChallengeType.DAILY,
+    },
+    {
+        id: 9,
+        instruction: 'Collect GOAL Energy',
+        progress: 0,
+        goal: 100,
         reward: 80,
         challengeType: ChallengeType.DAILY,
     },
@@ -764,6 +772,7 @@ export function mapChallengeIdtoFieldName(id: number): keyof UserData {
         case 6: return 'snake_played';
         case 7: return 'quiz_played';
         case 8: return 'badges_obtained';
+        case 9: return 'energy_gained';
         default: return 'images_annotated';
     }
 }
