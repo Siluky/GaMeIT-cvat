@@ -1773,12 +1773,12 @@
                 const { backendAPI } = config;
                 let response = null;
                 console.log('🚀 ~ file: server-proxy.js ~ line 1798 ~ ServerProxy ~ saveGamifUserData ~ data', data);
-                response = await Axios.patch(`${backendAPI}/userProfiles/1`, data,
+                response = await Axios.put(`${backendAPI}/userProfiles/${data.id}`, data,
                     {
                         proxy: config.proxy,
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //     },
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
                     });
                 console.log('🚀 ~ file: server-proxy.js ~ line 1783 ~ ServerProxy ~ saveGamifUserData ~ response.data.results', response.data.results);
                 return response.data.results;
@@ -1831,7 +1831,7 @@
                 let response = null;
                 try {
                     // eslint-disable-next-line max-len
-                    response = await challenges.map((chal) => Axios.put(`${backendAPI}/challenge-status/save`,
+                    response = await challenges.map((chal) => Axios.put(`${backendAPI}/challenge-status/${chal.userId}-${chal.challengeId}`,
                         chal,
                         {
                             proxy: config.proxy,

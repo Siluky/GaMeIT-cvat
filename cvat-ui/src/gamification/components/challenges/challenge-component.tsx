@@ -24,7 +24,7 @@ export default function ChallengePane(props: Props): JSX.Element {
     const dispatch = useDispatch();
     const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
 
-    const progress = userdata.userdata_total[mapChallengeIdtoFieldName(challenge.id)];
+    const progress = challenge.progress + userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)];
 
     return (
         <div className='gamif-challenge-pane-wrapper'>

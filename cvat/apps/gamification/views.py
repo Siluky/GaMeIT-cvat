@@ -5,6 +5,8 @@
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
+from django.http import Http404
 from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, Question, ShopItem, Statistic, UserProfile
 from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer,ProfileDataSerializer, QuestionSerializer, SaveChallengesSerializer, ShopItemSerializer, StatisticSerializer, UserDataSerializer, UserProfileSerializer
 
@@ -37,13 +39,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             print (request.data)
             currentUserProfile.currentEnergy = request.data.get('currentEnergy')
             currentUserProfile.save()
-
-        #     serializer = EnergySerializer(data=request.data)
-        #     if serializer.is_valid():
-        #         print('currentEnergy: Serializer Valid')
-        #         serializer.save()
-        #         return Response(data=serializer.data, status=status.HTTP_200_OK)
-        #     return Response(data=serializer.initial_data, status=status.HTTP_200_OK)
 
 class UserDataViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -108,6 +103,23 @@ class ChallengeStatusViewSet(viewsets.ModelViewSet):
             print('SaveChallengeSerializer is valid')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+        except Http404:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True) # will throw ValidationError
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except ValidationError:  # typically serializer is not valid
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserChallengeList(viewsets.GenericViewSet, mixins.ListModelMixin,
     mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):

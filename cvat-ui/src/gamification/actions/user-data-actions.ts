@@ -55,12 +55,18 @@ export function updateUserName(name: string): AnyAction {
     };
 }
 
-export function updateUserDataSuccess(userData: UserData): AnyAction {
+export function updateUserDataSuccess(field_name: keyof UserData, increment: number): AnyAction {
     return {
         type: UserDataActionTypes.UPDATE_USER_DATA_FIELD_SUCCESS,
-        payload: userData,
+        payload: { field_name, increment },
     };
 }
+// export function updateUserDataSuccess(userData: UserData): AnyAction {
+//     return {
+//         type: UserDataActionTypes.UPDATE_USER_DATA_FIELD_SUCCESS,
+//         payload: userData,
+//     };
+// }
 
 export function updateUserDataFailed(error: any): AnyAction {
     return {
@@ -71,12 +77,8 @@ export function updateUserDataFailed(error: any): AnyAction {
 
 export function updateUserData(field_name: keyof UserData, increment: number): ThunkAction<void, {}, {}, AnyAction> {
     return async function updateUserDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-        const userDataState = getCVATStore().getState().gamifuserdata;
-
         try {
-            const updatedUserData = userDataState.userdata_total;
-            updatedUserData[field_name] += increment;
-            dispatch(updateUserDataSuccess(updatedUserData));
+            dispatch(updateUserDataSuccess(field_name, increment));
         } catch (error) {
             dispatch(updateUserDataFailed(error));
         }
@@ -172,30 +174,32 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
     const userDataState = getCVATStore().getState().gamifuserdata;
 
     // eslint-disable-next-line max-len
-    const userdata = userDataState.userdata_total;
-    console.log('🚀 ~ file: user-data-actions.ts ~ line 126 ~ saveUserData ~ userdata ', userdata);
+    const totalData = userDataState.userdata_total;
+    const sessionData = userDataState.userdata_session;
 
     const userDataPrepared = {
-        last_login: userdata.last_login,
-        image_annotated_total: userdata.images_annotated,
-        tags_set_total: userdata.tags_set,
-        images_annotated_night: userdata.images_annotated_night,
-        annotation_time_total: userdata.annotation_time,
-        annotation_streak_current: userdata.annotation_streak_current,
-        annotation_streak_max: userdata.annotation_streak_max,
-        badges_obtained_total: userdata.badges_obtained,
-        challenges_completed: userdata.challenges_completed,
-        energy_total: userdata.energy_gained,
-        energizers_completed: userdata.energizers_completed,
-        energy_expired: userdata.energy_expired,
-        tetris_played: userdata.tetris_played,
-        quiz_played: userdata.quiz_played,
-        snake_played: userdata.snake_played,
-        currentBalance: userdata.currentBalance,
-        annotation_coins_total: userdata.annotation_coins_obtained,
-        annotation_coins_max: userdata.annotation_coins_max,
-        items_bought_total: userdata.items_bought,
-        chat_messages_total: userdata.chat_messages,
+        id: userDataState.userId,
+        user: userDataState.userId,
+        last_login: sessionData.last_login,
+        image_annotated_total: totalData.images_annotated,
+        tags_set_total: totalData.tags_set,
+        images_annotated_night: totalData.images_annotated_night,
+        annotation_time_total: totalData.annotation_time,
+        annotation_streak_current: sessionData.annotation_streak_current,
+        annotation_streak_max: totalData.annotation_streak_max,
+        badges_obtained_total: totalData.badges_obtained,
+        challenges_completed: totalData.challenges_completed,
+        energy_total: totalData.energy_gained,
+        energizers_completed: totalData.energizers_completed,
+        energy_expired: totalData.energy_expired,
+        tetris_played: totalData.tetris_played,
+        quiz_played: totalData.quiz_played,
+        snake_played: totalData.snake_played,
+        currentBalance: sessionData.currentBalance,
+        annotation_coins_total: totalData.annotation_coins_obtained,
+        annotation_coins_max: totalData.annotation_coins_max,
+        items_bought_total: totalData.items_bought,
+        chat_messages_total: totalData.chat_messages,
     };
 
     return async (dispatch) => {

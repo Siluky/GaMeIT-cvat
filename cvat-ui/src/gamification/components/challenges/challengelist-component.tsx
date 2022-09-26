@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import 'gamification/gamif-styles.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Row } from 'antd';
 import { Challenge } from 'gamification/gamif-interfaces';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,8 @@ import ChallengePane from './challenge-component';
 export default function ChallengeList(): JSX.Element {
     const challenges = useSelector((state: CombinedState) => state.challenges);
     const dispatch = useDispatch();
+
+    useEffect(() => { dispatch(getChallengesAsync()); }, []);
 
     return (
         <>
