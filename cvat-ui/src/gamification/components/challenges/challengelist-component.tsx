@@ -29,7 +29,7 @@ export default function ChallengeList(): JSX.Element {
                 </div>
                 <div>
                     {challenges.availableChallenges.map((_challenge: Challenge, index: number) => (
-                        <Row>
+                        <Row key={index}>
                             <ChallengePane id={index} key={index} challenge={_challenge} />
                         </Row>
                     ))}

@@ -68,10 +68,9 @@ export function getChallengesAsync(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
-export function addChallengeSuccess(challenge: Challenge): AnyAction {
+export function addChallengeSuccess(): AnyAction {
     return {
         type: ChallengeActionTypes.ADD_CHALLENGE_SUCCESS,
-        payload: challenge,
     };
 }
 
@@ -85,26 +84,7 @@ export function addChallengeFailed(error: any): AnyAction {
 export function addChallenge(): ThunkAction<void, {}, {}, AnyAction> {
     return async function addChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
-            // Pick a random new challenge
-            // TODO: No duplicate ids
-            // const currentChallenges = getCVATStore().getState().challenges.availableChallenges;
-            const newChallenge = availableChallenges[Math.floor(Math.random() * availableChallenges.length)];
-
-            // randomize goal by ~20 %
-            const randomFactor = 1 + (Math.random() * 21) / 100;
-            const goalAdjusted = Math.floor(newChallenge.goal * randomFactor);
-
-            // TODO: multiply reward with same factor
-
-            const newChal = {
-                ...newChallenge,
-                goal: goalAdjusted,
-                instruction: newChallenge.instruction.replace('GOAL', goalAdjusted.toString()),
-                progress: 0,
-            };
-            console.log('🚀 ~ file: challenge-actions.ts ~ line 107 ~ addChallengeThunk ~ newChal', newChal);
-
-            dispatch(addChallengeSuccess(newChal));
+            dispatch(addChallengeSuccess());
         } catch (error) {
             dispatch(addChallengeFailed(error));
         }

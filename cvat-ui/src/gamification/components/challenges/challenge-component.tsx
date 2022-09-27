@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../gamif-styles.scss';
 import { Challenge } from 'gamification/gamif-interfaces';
 import { Button, Progress } from 'antd';
@@ -26,6 +26,11 @@ export default function ChallengePane(props: Props): JSX.Element {
 
     const progress = challenge.progress + userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)];
 
+    useEffect(() => {
+        console.log('useEffect of challenge triggered');
+        if (challenge.progress >= challenge.goal) { dispatch(completeChallenge(challenge)); }
+    }, [challenge.progress]);
+
     return (
         <div className='gamif-challenge-pane-wrapper'>
             <div className='gamif-challenge-pane-top'>
@@ -33,12 +38,13 @@ export default function ChallengePane(props: Props): JSX.Element {
                     {challenge.instruction}
                     <Progress
                         className='gamif-challenge-pane-progress'
-                        percent={Math.floor((challenge.progress / challenge.goal) * 100)}
+                        percent={Math.floor((progress / challenge.goal) * 100)}
                         strokeWidth={8}
                         steps={Math.min(challenge.goal, 10)}
                         trailColor={geekblue[1]}
                         strokeColor={blue[4]}
                     />
+                    { progress }
                 </div>
                 <div className='gamif-challenge-pane-top-right'>
                     <Button
@@ -57,9 +63,6 @@ export default function ChallengePane(props: Props): JSX.Element {
             </div>
             <div className='gamif-challenge-pane-bottom-text'>
                 {challenge.challengeType}
-            </div>
-            <div>
-                { progress }
             </div>
         </div>
     );

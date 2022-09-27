@@ -92,7 +92,10 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                     <Row>
                         {stats.statistics.map((_stat: Statistic, index: number) => (
                             <Col span={12} key={index}>
-                                <CvatTooltip overlay={allTime ? _stat.tooltip_total : _stat.tooltip_session}>
+                                <CvatTooltip
+                                    overlay={allTime ? _stat.tooltip_total : _stat.tooltip_session}
+                                    defaultVisible
+                                >
                                     <Button
                                         className='statistic-button'
                                         type='default'
@@ -120,63 +123,6 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                     </Row>
                 </div>
                 <Button onClick={() => dispatch(saveUserData())}> Save User Data</Button>
-
-                {/* <Collapse className='collapse' bordered={false} defaultActiveKey={['1']}>
-                    <Button
-                        type='primary'
-                        onClick={() => {
-                            dispatch(toggleSelecting());
-                        }}
-                    >
-                        Select Statistic
-                    </Button>
-                    <Panel header='Show more stats' key='1'>
-                        <div className='collapse-panel'>
-                            <Row>
-                                <Col span={6}>
-                                    <StatisticComponent id={5} icon={iconSmall} value={5} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={6} icon={iconSmall} value={6} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={7} icon={iconSmall} value={7} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={8} icon={iconSmall} value={8} />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col span={6}>
-                                    <StatisticComponent id={9} icon={iconSmall} value={9} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={10} icon={iconSmall} value={10} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={11} icon={iconSmall} value={11} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={12} icon={iconSmall} value={12} />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col span={6}>
-                                    <StatisticComponent id={13} icon={iconSmall} value={13} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={14} icon={iconSmall} value={14} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={15} icon={iconSmall} value={15} />
-                                </Col>
-                                <Col span={6}>
-                                    <StatisticComponent id={16} icon={iconSmall} value={16} />
-                                </Col>
-                            </Row>
-                        </div>
-                    </Panel>
-                </Collapse> */}
             </div>
         </>
     );

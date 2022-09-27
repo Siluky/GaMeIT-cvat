@@ -12,6 +12,7 @@ const userdataInit: UserData = {
     tags_set: 0,
     images_annotated_night: 0,
     annotation_time: 0,
+    annotation_time_avg: 0,
     annotation_streak_current: 0,
     annotation_streak_max: 0,
     badges_obtained: 0,
@@ -56,6 +57,10 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                 case 'images_annotated': {
                     sessionData.images_annotated += action.payload.increment;
                     totalData.images_annotated += action.payload.increment;
+                    // eslint-disable-next-line max-len
+                    sessionData.annotation_time_avg = Math.round((sessionData.images_annotated / sessionData.annotation_time) * 10) / 10;
+                    // eslint-disable-next-line max-len
+                    totalData.annotation_time_avg = Math.round((totalData.images_annotated / totalData.annotation_time) * 10) / 10;
                     break;
                 }
                 case 'tags_set': {

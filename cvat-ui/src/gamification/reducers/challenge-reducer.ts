@@ -2,39 +2,13 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { availableChallenges } from 'gamification/gamif-items';
 import { AnyAction } from 'redux';
 import { ChallengeActionTypes } from '../actions/challenge-actions';
-import { ChallengeState, ChallengeType, Challenge } from '../gamif-interfaces';
-
-const testChallenge1: Challenge = {
-    id: 1,
-    instruction: 'Annotate 10 images',
-    progress: 5,
-    goal: 10,
-    reward: 100,
-    challengeType: ChallengeType.DAILY,
-};
-
-const testChallenge2: Challenge = {
-    id: 2,
-    instruction: 'Finish one job',
-    progress: 0,
-    goal: 10,
-    reward: 100,
-    challengeType: ChallengeType.DAILY,
-};
-
-const testChallenge3: Challenge = {
-    id: 3,
-    instruction: 'Annotate 5 images in one session',
-    progress: 3,
-    goal: 5,
-    reward: 60,
-    challengeType: ChallengeType.DAILY,
-};
+import { ChallengeState } from '../gamif-interfaces';
 
 const defaultState: ChallengeState = {
-    availableChallenges: [testChallenge1, testChallenge2, testChallenge3],
+    availableChallenges: [],
 };
 
 export default (state = defaultState, action: AnyAction): ChallengeState => {
@@ -67,7 +41,36 @@ export default (state = defaultState, action: AnyAction): ChallengeState => {
         }
 
         case ChallengeActionTypes.ADD_CHALLENGE_SUCCESS: {
-            const challenges = state.availableChallenges.concat(action.payload);
+            // Pick a new, not already existing challenge
+            const existingIds = state.availableChallenges.map((chal) => chal.id);
+            let idExists = true;
+            let newId = 0;
+            while (idExists) {
+                newId = Math.floor(Math.random() * availableChallenges.length);
+                console.log('🚀 ~ file: challenge-reducer.ts ~ line 77 ~ newId', newId);
+                idExists = existingIds.includes(newId);
+                console.log('🚀 ~ file: challenge-reducer.ts ~ line 78 ~ idExists', idExists);
+            }
+
+            const newChallenge = availableChallenges.find((chal) => chal.id === newId) ?? availableChallenges[0];
+            console.log('🚀 ~ file: challenge-reducer.ts ~ line 83 ~ newChallenge', newChallenge);
+
+            // randomize goal and reward by same factor
+            const randomFactor = Math.random();
+            const goalAdjusted = Math.floor(newChallenge.goal + (randomFactor * newChallenge.goal_variance));
+            // eslint-disable-next-line max-len
+            const rewardAdjusted = Math.round((newChallenge.reward + (randomFactor * newChallenge.reward_variance)) / 5) * 5;
+
+            const newChal = {
+                ...newChallenge,
+                goal: goalAdjusted,
+                reward: rewardAdjusted,
+                instruction: newChallenge.instruction.replace('GOAL', goalAdjusted.toString()),
+                progress: 0,
+            };
+            console.log('🚀 ~ file: challenge-actions.ts ~ line 107 ~ addChallengeThunk ~ newChal', newChal);
+
+            const challenges = state.availableChallenges.concat(newChal);
             return {
                 ...state,
                 availableChallenges: challenges,

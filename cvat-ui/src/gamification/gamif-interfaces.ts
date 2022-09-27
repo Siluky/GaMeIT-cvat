@@ -9,6 +9,7 @@ export interface UserData {
     images_annotated_night: number,
 
     annotation_time: number, // TODO: in seconds?!
+    annotation_time_avg: number,
     annotation_streak_current: number,
     annotation_streak_max: number,
 
@@ -79,7 +80,9 @@ export interface Challenge {
     instruction: string;
     progress: number;
     goal: number;
+    goal_variance: number;
     reward: number;
+    reward_variance: number;
     challengeType: ChallengeType;
 }
 

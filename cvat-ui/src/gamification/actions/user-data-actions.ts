@@ -98,6 +98,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 tags_set: userDataImport.tags_set_total,
                 images_annotated_night: userDataImport.images_annotated_night,
                 annotation_time: userDataImport.annotation_time_total,
+                annotation_time_avg: userDataImport.annotation_time_total / userDataImport.images_annotated_total,
                 annotation_streak_current: userDataImport.annotation_streak_current,
                 annotation_streak_max: userDataImport.annotation_streak_max,
                 badges_obtained: userDataImport.badges_obtained_total,
@@ -133,19 +134,20 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 tags_set: 0,
                 images_annotated_night: 0,
                 annotation_time: 0,
-                annotation_streak_current: 0, // TODO:
+                annotation_time_avg: 0,
+                annotation_streak_current: userDataAllTime.annotation_streak_current,
                 annotation_streak_max: 0,
                 badges_obtained: 0,
                 challenges_completed: 0,
                 energy_gained: 0,
                 energizers_completed: 0,
-                energy_expired: 0, // TODO:
+                energy_expired: 0,
                 tetris_played: 0,
                 quiz_played: 0,
                 snake_played: 0,
                 currentBalance: 0,
                 annotation_coins_obtained: 0,
-                annotation_coins_max: 0, // TODO:
+                annotation_coins_max: userDataAllTime.annotation_coins_max,
                 items_bought: 0,
                 chat_messages: 0,
             };

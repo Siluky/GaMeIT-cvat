@@ -390,7 +390,7 @@ export function mapStatisticIdtoFieldName(id: number): keyof UserData {
     switch (id) {
         case 1: return 'images_annotated';
         case 2: return 'tags_set';
-        case 3: return 'annotation_time';
+        case 3: return 'annotation_time_avg';
         case 4: return 'annotation_streak_current';
         case 5: return 'annotation_time';
         case 6: return 'energy_gained';
@@ -693,7 +693,9 @@ export const availableChallenges: Challenge[] = [
         instruction: 'Annotate GOAL Images',
         progress: 0,
         goal: 50,
-        reward: 80,
+        goal_variance: 20,
+        reward: 150,
+        reward_variance: 20,
         challengeType: ChallengeType.DAILY,
     },
     {
@@ -701,7 +703,9 @@ export const availableChallenges: Challenge[] = [
         instruction: 'Annotate GOAL Minutes',
         progress: 0,
         goal: 60,
-        reward: 80,
+        goal_variance: 15,
+        reward: 90,
+        reward_variance: 25,
         challengeType: ChallengeType.DAILY,
     },
     {
@@ -709,7 +713,9 @@ export const availableChallenges: Challenge[] = [
         instruction: 'Annotate GOAL Minutes in one Session',
         progress: 0,
         goal: 30,
-        reward: 80,
+        goal_variance: 10,
+        reward: 90,
+        reward_variance: 30,
         challengeType: ChallengeType.DAILY,
     },
     {
@@ -717,7 +723,9 @@ export const availableChallenges: Challenge[] = [
         instruction: 'Complete GOAL Energizers',
         progress: 0,
         goal: 3,
-        reward: 80,
+        goal_variance: 2,
+        reward: 60,
+        reward_variance: 40,
         challengeType: ChallengeType.DAILY,
     },
     {
@@ -725,7 +733,9 @@ export const availableChallenges: Challenge[] = [
         instruction: 'Play Tetris GOAL times',
         progress: 0,
         goal: 2,
-        reward: 80,
+        goal_variance: 1,
+        reward: 50,
+        reward_variance: 25,
         challengeType: ChallengeType.DAILY,
     },
     {
@@ -733,7 +743,9 @@ export const availableChallenges: Challenge[] = [
         instruction: 'Play Snake GOAL times',
         progress: 0,
         goal: 2,
-        reward: 80,
+        goal_variance: 1,
+        reward: 50,
+        reward_variance: 25,
         challengeType: ChallengeType.DAILY,
     },
     {
@@ -741,7 +753,9 @@ export const availableChallenges: Challenge[] = [
         instruction: 'Play Quiz GOAL times',
         progress: 0,
         goal: 2,
-        reward: 80,
+        goal_variance: 1,
+        reward: 50,
+        reward_variance: 25,
         challengeType: ChallengeType.DAILY,
     },
     {
@@ -749,15 +763,19 @@ export const availableChallenges: Challenge[] = [
         instruction: 'Obtain GOAL badges',
         progress: 0,
         goal: 1,
+        goal_variance: 0,
         reward: 80,
+        reward_variance: 10,
         challengeType: ChallengeType.DAILY,
     },
     {
         id: 9,
         instruction: 'Collect GOAL Energy',
         progress: 0,
-        goal: 100,
-        reward: 80,
+        goal: 20,
+        goal_variance: 10,
+        reward: 60,
+        reward_variance: 30,
         challengeType: ChallengeType.DAILY,
     },
 ];
