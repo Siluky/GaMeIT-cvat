@@ -384,6 +384,13 @@ export const stats: Statistic[] = [
         tooltip_total: 'Annotation coin maximum',
         tooltip_session: 'Current annotation coins',
     },
+    {
+        id: 14,
+        value: 0,
+        unit: '',
+        tooltip_total: 'Badges obtained total',
+        tooltip_session: 'Badges obtained this session',
+    },
 ];
 
 export function mapStatisticIdtoFieldName(id: number): keyof UserData {
@@ -401,6 +408,7 @@ export function mapStatisticIdtoFieldName(id: number): keyof UserData {
         case 11: return 'items_bought';
         case 12: return 'annotation_coins_obtained';
         case 13: return 'annotation_coins_max';
+        case 14: return 'badges_obtained';
         default: return 'images_annotated';
     }
 }

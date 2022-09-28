@@ -14,7 +14,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 
 import {
-    BadgeGoldIcon, BadgeSilverIcon, BadgeNotIcon, BadgeBronzeIcon,
+    BadgeGoldIcon, BadgeSilverIcon, BadgeNotIcon, BadgeTestIcon,
 } from 'icons';
 import { CloseOutlined } from '@ant-design/icons';
 import { Badge, BadgeTier } from '../../gamif-interfaces';
@@ -72,7 +72,7 @@ const mapTiertoIcon = (tier: BadgeTier): React.ReactNode => {
         case BadgeTier.NOT_OBTAINED: return <BadgeNotIcon />;
         case BadgeTier.GOLD: return <BadgeGoldIcon />;
         case BadgeTier.SILVER: return <BadgeSilverIcon />;
-        case BadgeTier.BRONZE: return <BadgeBronzeIcon />;
+        case BadgeTier.BRONZE: return <BadgeTestIcon />;
         default: return <BadgeNotIcon />;
     }
 };

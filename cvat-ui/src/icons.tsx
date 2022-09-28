@@ -70,6 +70,8 @@ import SVGBadgeSilver from './assets/gamification/badges/badge-silver.svg';
 import SVGBadgeBronze from './assets/gamification/badges/badge-bronze.svg';
 import SVGBadgeNot from './assets/gamification/badges/badge-grey.svg';
 
+import SVGBadgeTest from './assets/gamification/badges/badge-test.svg';
+
 export const CVATLogo = React.memo((): JSX.Element => <SVGCVATLogo />);
 export const EmptyTasksIcon = React.memo((): JSX.Element => <SVGEmptyTasksIcon />);
 export const CursorIcon = React.memo((): JSX.Element => <SVGCursorIcon />);
@@ -128,6 +130,7 @@ export const BadgeGoldIcon = React.memo((): JSX.Element => <SVGBadgeGold />);
 export const BadgeSilverIcon = React.memo((): JSX.Element => <SVGBadgeSilver />);
 export const BadgeBronzeIcon = React.memo((): JSX.Element => <SVGBadgeBronze />);
 export const BadgeNotIcon = React.memo((): JSX.Element => <SVGBadgeNot />);
+export const BadgeTestIcon = React.memo((): JSX.Element => <SVGBadgeTest />);
 
 export const AnnotationCoinIcon = React.memo((): JSX.Element => <SVGAnnotationCoin />);
 export const GreenAvatarBorderIcon = React.memo((): JSX.Element => <SVGGreenAvatarBorder />);

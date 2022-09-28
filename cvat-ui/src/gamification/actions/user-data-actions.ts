@@ -173,11 +173,21 @@ function saveUserDataFailed(error: any): AnyAction {
 }
 
 export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
-    const userDataState = getCVATStore().getState().gamifuserdata;
+    const state = getCVATStore().getState();
+    const userDataState = state.gamifuserdata;
 
-    // eslint-disable-next-line max-len
     const totalData = userDataState.userdata_total;
     const sessionData = userDataState.userdata_session;
+
+    const { selectedStatistics } = state.statistics;
+    let stats = '';
+    for (const id of selectedStatistics) {
+        stats += id.toString();
+        stats += ',';
+    }
+    stats = stats.slice(0, -1); // remove trailing comma
+
+    console.log('🚀 ~ file: user-data-actions.ts ~ line 184 ~ saveUserData ~ stats', stats);
 
     const userDataPrepared = {
         id: userDataState.userId,
@@ -202,6 +212,8 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         annotation_coins_max: totalData.annotation_coins_max,
         items_bought_total: totalData.items_bought,
         chat_messages_total: totalData.chat_messages,
+
+        selectedStatistics: stats,
     };
 
     return async (dispatch) => {

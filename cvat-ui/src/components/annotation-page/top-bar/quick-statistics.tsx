@@ -29,21 +29,24 @@ export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Eleme
     // const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
     const { ids } = props;
     const stats = useSelector((state: CombinedState) => state.statistics);
-    const userdatastate = useSelector((state: CombinedState) => state.gamifuserdata);
-    const userdata = userdatastate.userdata_total;
+    const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
 
     return (
         <Col className='cvat-annotation-header-quick-statistics-group'>
             <Row className='cvat-annotation-header-quick-statistics'>
                 {ids.map((id: number) => {
-                    const stat = stats.statistics.find((statistic) => statistic.id === id);
+                    const session = id > 100;
+                    const val = !session ? userdata.userdata_total[mapStatisticIdtoFieldName(id)] :
+                        userdata.userdata_session[mapStatisticIdtoFieldName(id - 100)];
+                    const relevantId = session ? id - 100 : id;
+                    const stat = stats.statistics.find((statistic) => statistic.id === relevantId);
                     if (stat) {
                         return (
                             <QuickStatistic
                                 key={id}
-                                value={userdata[mapStatisticIdtoFieldName(stat.id)]}
+                                value={val}
                                 icon={mapStatisticIdtoIcon(stat.id)}
-                                hoverOverText={stat.tooltip_total ? stat.tooltip_total : 'Tooltip missing'}
+                                tooltip={session ? stat.tooltip_session : stat.tooltip_total ?? 'Tooltip missing'}
                             />
                         );
                     }

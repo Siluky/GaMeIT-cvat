@@ -94,14 +94,13 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                             <Col span={12} key={index}>
                                 <CvatTooltip
                                     overlay={allTime ? _stat.tooltip_total : _stat.tooltip_session}
-                                    defaultVisible
                                 >
                                     <Button
                                         className='statistic-button'
                                         type='default'
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            dispatch(selectStatistic(_stat.id));
+                                            dispatch(selectStatistic(allTime ? _stat.id : _stat.id + 100));
                                             if (inc) {
                                                 dispatch(updateUserData(mapStatisticIdtoFieldName(_stat.id), 1));
                                             }

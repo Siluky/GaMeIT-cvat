@@ -531,11 +531,21 @@ function HeaderContainer(props: Props): JSX.Element {
                         trigger='click'
                         visible={energizerPopUpShown}
                     >
-                        <Button
-                            type='text'
-                            icon={<EnergizerIcon />}
-                            onClick={(): void => switchEnergizerPopUp(true)}
-                        />
+                        <div className='gamif-energizer-button-wrapper'>
+                            <Button
+                                type='text'
+                                className='gamif-energizer-button'
+                                icon={<EnergizerIcon />}
+                                onClick={(): void => switchEnergizerPopUp(true)}
+                            />
+                            <div
+                                // eslint-disable-next-line max-len
+                                style={{ height: `${Math.max((100 - (currentEnergy / gamifconsts.ENERGIZER_COST) * 100), 0)}%` }}
+                                className='gamif-energizer-button-overlay'
+                            >
+                                &nbsp;
+                            </div>
+                        </div>
                     </Popover>
                 </CVATTooltip>
                 <Button

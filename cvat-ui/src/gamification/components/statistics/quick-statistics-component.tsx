@@ -8,14 +8,14 @@ import React from 'react';
 interface QuickStatisticProps {
     value: number;
     icon: any;
-    hoverOverText: string;
+    tooltip: string;
 }
 
 export default function QuickStatistic(props: QuickStatisticProps): JSX.Element {
-    const { icon, value, hoverOverText } = props;
+    const { icon, value, tooltip } = props;
     return (
         <div className='single-quick-statistic-component'>
-            <CvatTooltip overlay={hoverOverText}>
+            <CvatTooltip overlay={tooltip}>
                 <div>
                     {icon}
                 </div>

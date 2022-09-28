@@ -63,7 +63,7 @@ export function selectStatisticFailed(id: number): AnyAction {
 
 export function selectStatistic(id: number): ThunkAction<void, {}, {}, AnyAction> {
     const statisticsState = getCVATStore().getState().statistics;
-    const found = statisticsState.selectedStatistics.find((element: number) => element === id);
+    const found = statisticsState.selectedStatistics.find((el: number) => el === id);
 
     return (dispatch) => {
         if (statisticsState.selecting) {

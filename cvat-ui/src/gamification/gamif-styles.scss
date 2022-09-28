@@ -192,8 +192,29 @@
     border-radius: 10px 0px 0px 0px;
   }
 
-
 // energizer
+
+.gamif-energizer-button-wrapper {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  overflow: hidden;
+  // border: 3px solid blue;
+}
+
+.gamif-energizer-button {
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+  padding: inherit;
+}
+
+.gamif-energizer-button-overlay {
+  position: relative;
+  background: grey;
+  bottom: 100%;
+  opacity: 0.8;
+}
 
 .gamif-energizer-popup {
   width: 250px;
@@ -261,6 +282,7 @@
 
 .gamif-energizer-modal {
   background: #b5beca;
+  min-width: 600px;
 }
 
 .gamif-energizer-modal-content-wrapper {
@@ -466,6 +488,7 @@
 
 .gamif-shop-window-items-wrapper {
   margin: 0 10px 6px 10px;
+  padding: 5px;
   overflow-y: scroll;
   height: 85%;
 }
@@ -503,12 +526,12 @@
   border-radius: 5px;
 
   &:hover {
-    box-shadow: 0 0 5px 5px blue;
+    box-shadow: 0 0 4px 4px blue;
   }
 }
 
 .gamif-shop-item-card-selected {
-  box-shadow: 0 0 5px 5px red !important ;
+  box-shadow: 0 0 4px 4px red !important ;
 }
 
 .gamif-shop-item-card-top {

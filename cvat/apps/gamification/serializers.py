@@ -67,7 +67,6 @@ class ChallengeStatusSerializer(serializers.ModelSerializer):
         model = models.ChallengeStatus
         fields = '__all__'
 
-
 class SaveChallengesSerializer(serializers.ModelSerializer):
     # userId = serializers.PrimaryKeyRelatedField(queryset = models.UserProfile.objects.all())
     userId = serializers.SlugRelatedField(
