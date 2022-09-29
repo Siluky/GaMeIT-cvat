@@ -5,7 +5,7 @@
 import { AnyAction } from 'redux';
 import { badges } from 'gamification/gamif-items';
 import { BadgeActionTypes } from '../actions/badge-actions';
-import { BadgeState } from '../gamif-interfaces';
+import { BadgeState, BadgeTier } from '../gamif-interfaces';
 
 const defaultState: BadgeState = {
     availableBadges: badges,
@@ -47,7 +47,6 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
         }
 
         case BadgeActionTypes.INCREMENT_BADGE_SUCCESS: {
-            // TODO: Establish better structure in action.payload, super unelegant rn
             const updatedBadges = state.availableBadges.map(
                 (_badge) => {
                     if (_badge.id === action.payload.badge.id) {
@@ -78,13 +77,23 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             };
         }
 
+        case BadgeActionTypes.SAVE_SELECTED_BADGES_FAILED: {
+            return state;
+        }
+        case BadgeActionTypes.SAVE_SELECTED_BADGES_SUCCESS: {
+            return state;
+        }
+        case BadgeActionTypes.SAVE_BADGE_STATUS_FAILED: {
+            return state;
+        }
+        case BadgeActionTypes.SAVE_BADGE_STATUS_SUCCESS: {
+            return state;
+        }
+
         case BadgeActionTypes.REMOVE_BADGE_FROM_PROFILE: {
             const index = state.badgesinProfile.indexOf(action.payload);
-            console.log('🚀 ~ file: badge-reducer.ts ~ line 107 ~ state.badgesinProfile', state.badgesinProfile);
-            console.log('🚀 ~ file: badge-reducer.ts ~ line 109 ~ index', index);
             const newArray = state.badgesinProfile;
             newArray.splice(index, 1);
-            console.log('🚀 ~ file: badge-reducer.ts ~ line 107 ~ newArray', newArray);
             return {
                 ...state,
                 badgesinProfile: newArray,
@@ -95,6 +104,27 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             return {
                 ...state,
                 availableBadges: action.payload,
+            };
+        }
+
+        case BadgeActionTypes.UPGRADE_BADGE_TIER: {
+            const updatedBadges = state.availableBadges.map((badge) => {
+                if (badge.id === action.payload) {
+                    let newTier = BadgeTier.NOT_OBTAINED;
+                    switch (badge.tier) {
+                        case BadgeTier.NOT_OBTAINED: newTier = BadgeTier.BRONZE; break;
+                        case BadgeTier.BRONZE: newTier = BadgeTier.SILVER; break;
+                        case BadgeTier.SILVER: newTier = BadgeTier.GOLD; break;
+                        case BadgeTier.GOLD: newTier = BadgeTier.GOLD; break;
+                        default: break;
+                    }
+                    return { ...badge, tier: newTier };
+                }
+                return badge;
+            });
+            return {
+                ...state,
+                availableBadges: updatedBadges,
             };
         }
 

@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, UpOutlined } from '@ant-design/icons';
 import { getBadgeIcon } from 'gamification/gamif-items';
 import { Badge, BadgeTier } from '../../gamif-interfaces';
 import {
@@ -21,6 +21,7 @@ import {
     incrementBadge,
     toggleBadgeInProfile,
     updateBadges,
+    upgradeBadgeTier,
 } from '../../actions/badge-actions';
 
 interface BadgeOverviewProps {
@@ -71,21 +72,27 @@ function showSelectedBadge(badge: Badge): JSX.Element {
         } if (badge.tier === BadgeTier.BRONZE && badge.goal_silver) { return badge.goal_silver; }
         return badge.goal;
     };
-    console.log('🚀 ~ file: badge-overview.tsx ~ line 87 ~ relevantGoal ~ relevantGoal', relevantGoal);
-    const progress = `Current Progress: ${badge.progress} / ${relevantGoal()} ${badge.goalunit}`;
-    const receivedOn = `Achieved on ${badge.receivedOn}`;
+    const goal = relevantGoal();
+    console.log('🚀 ~ file: badge-overview.tsx ~ line 76 ~ showSelectedBadge ~ goal', goal);
+    const progress = `Current Progress: ${Math.min(badge.progress, goal)} / ${goal} ${badge.goalunit}`;
+    // const receivedOn = `Achieved on ${badge.receivedOn}`;
+    const receivedOn = `Achieved on ${Date.now()}`;
     const dispatch = useDispatch();
 
     return (
         <>
-            <div className='gamif-badge-icon'>
+            <div
+                className='gamif-badge-icon'
+                style={{ opacity: badge.tier === BadgeTier.NOT_OBTAINED ? 0.5 : 1 }}
+            >
                 {getBadgeIcon(badge.id, badge.tier)}
             </div>
             <div className='gamif-badge-details'>
                 <p><strong>{badge.title}</strong></p>
                 <p>{badge.instruction}</p>
-                <Progress percent={(badge.progress / badge.goal) * 100} />
-                {badge.tier !== BadgeTier.GOLD && progress}
+                <Progress percent={Math.floor((badge.progress / goal) * 100)} />
+                {/* {badge.tier !== BadgeTier.GOLD && progress} */}
+                {progress}
                 {badge.tier !== BadgeTier.NOT_OBTAINED && (
                     <>
                         <span>{receivedOn}</span>
@@ -95,12 +102,14 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                                 onClick={() => dispatch(toggleBadgeInProfile(badge.id))}
                                 size='small'
                             />
-
                         </div>
-
                     </>
                 )}
-
+                <Button
+                    icon={<UpOutlined />}
+                    onClick={() => dispatch(upgradeBadgeTier(badge.id))}
+                    size='small'
+                />
             </div>
         </>
     );
@@ -140,7 +149,10 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                             {Object.values(badges.availableBadges).map((badge: Badge, index: number) => {
                                 if (badge.visible) {
                                     return (
-                                        <Col span={4}>
+                                        <Col
+                                            span={4}
+                                            style={{ opacity: badge.tier === BadgeTier.NOT_OBTAINED ? 0.4 : 1 }}
+                                        >
                                             <Button
                                                 key={index}
                                                 className='gamif-badge-overview-individual-badge'
@@ -157,7 +169,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                             <Button
                                 type='text'
                                 onClick={(): void => {
-                                    dispatch(updateBadges(availableBadges));
+                                    dispatch(updateBadges(availableBadges, true));
                                 }}
                             >
                                 Update

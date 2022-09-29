@@ -20,10 +20,16 @@ export enum BadgeActionTypes {
     INCREMENT_BADGE_SUCCESS = 'INCREMENT_BADGE_SUCCESS',
     INCREMENT_BADGE_FAILED = 'INCREMENT_BADGE_FAILED',
     SAVE_BADGES = 'SAVE_BADGES',
+    SAVE_BADGE_STATUS_SUCCESS = 'SAVE_BADGE_STATUS_SUCCESS',
+    SAVE_BADGE_STATUS_FAILED = 'SAVE_BADGE_STATUS_FAILED',
     ADD_BADGE_TO_PROFILE_SUCCESS = 'ADD_BADGE_TO_PROFILE_SUCCESS',
     ADD_BADGE_TO_PROFILE_FAILED = 'ADD_BADGE_TO_PROFILE_FAILED',
+    SAVE_SELECTED_BADGES_FAILED = 'SAVE_SELECTED_BADGES_FAILED',
+    SAVE_SELECTED_BADGES_SUCCESS = 'SAVE_SELECTED_BADGES_SUCCESS',
+
     REMOVE_BADGE_FROM_PROFILE = 'REMOVE_BADGE_FROM_PROFILE',
     UPDATE_BADGE_TIERS = 'UPDATE_BADGE_TIERS',
+    UPGRADE_BADGE_TIER = 'UPGRADE_BADGE_TIER',
 }
 
 function setCurrentUserProfileId(id: number): AnyAction {
@@ -183,17 +189,84 @@ export function toggleBadgeInProfile(badgeId: number): ThunkAction<void, {}, {},
     };
 }
 
-export function updateBadges(badges: Badge[]): AnyAction {
+export function upgradeBadgeTier(id: number): AnyAction {
+    return {
+        type: BadgeActionTypes.UPGRADE_BADGE_TIER,
+        payload: id,
+    };
+}
+
+function saveBadgeStatusSuccess(): AnyAction {
+    return {
+        type: BadgeActionTypes.SAVE_BADGE_STATUS_SUCCESS,
+    };
+}
+
+function saveBadgeStatusFailed(error: any): AnyAction {
+    return {
+        type: BadgeActionTypes.SAVE_BADGE_STATUS_FAILED,
+        payload: error,
+    };
+}
+
+export function saveBadgeStatus(uId: number, badgeId: number, tier: BadgeTier): ThunkAction<void, {}, {}, AnyAction> {
+    return async (dispatch) => {
+        try {
+            const newBadgeStatus = await cvat.badges.saveBadgeStatus(uId, badgeId, tier);
+            console.log('🚀 ~ file: badge-actions.ts ~ line 216 ~ return ~ newBadgeStatus', newBadgeStatus);
+            dispatch(saveBadgeStatusSuccess());
+        } catch (error: any) {
+            dispatch(saveBadgeStatusFailed(error));
+        }
+    };
+}
+
+function saveSelectedBadgesSuccess(): AnyAction {
+    return {
+        type: BadgeActionTypes.SAVE_SELECTED_BADGES_SUCCESS,
+    };
+}
+
+function saveSelectedBadgesFailed(error: any): AnyAction {
+    return {
+        type: BadgeActionTypes.SAVE_SELECTED_BADGES_FAILED,
+        payload: error,
+    };
+}
+
+export function saveSelectedBadges(selectedBadgeIds: number[]): ThunkAction<void, {}, {}, AnyAction> {
+    return async (dispatch) => {
+        try {
+            let badgeIds = '';
+            for (const id of selectedBadgeIds) {
+                badgeIds += id.toString();
+                badgeIds += ',';
+            }
+            badgeIds = badgeIds.slice(0, -1); // remove trailing comma
+            const newBadgeStatus = await cvat.badges.saveSelectedBadges(badgeIds);
+            console.log('🚀 ~ file: badge-actions.ts ~ line 216 ~ return ~ newBadgeStatus', newBadgeStatus);
+            dispatch(saveSelectedBadgesSuccess());
+        } catch (error: any) {
+            dispatch(saveSelectedBadgesFailed(error));
+        }
+    };
+}
+
+export function updateBadges(badges: Badge[], init: boolean): AnyAction {
     const userDataState = getCVATStore().getState().gamifuserdata.userdata_total;
 
     const updatedBadges = badges.map((badge: Badge) => {
         let updatedTier = BadgeTier.NOT_OBTAINED;
-        const updatedProgress = userDataState[mapBadgeIdtoField(badge.id)];
+        const updatedProgress = userDataState[mapBadgeIdtoField(badge.id)]; // TODO: map appropriate
         if (updatedProgress >= badge.goal) {
             updatedTier = BadgeTier.GOLD;
         } else if (badge.goal_silver && updatedProgress >= badge.goal_silver) {
             updatedTier = BadgeTier.SILVER;
         } else if (badge.goal_bronze && updatedProgress >= badge.goal_bronze) { updatedTier = BadgeTier.BRONZE; }
+
+        if (updatedTier !== badge.tier && !init) {
+            console.log(`Should save badge ${badge.title}: ${updatedTier} now`);
+        }
 
         // switch visibility to true if badge is obtained,
         // otherwise preserve its inert visibility (i.e., don't reveal hidden badges)
@@ -203,6 +276,10 @@ export function updateBadges(badges: Badge[]): AnyAction {
         };
         return updatedBadge;
     });
+
+    const order = Object.values(BadgeTier);
+    const orderedBadges = updatedBadges.sort((a, b) => order.indexOf(b.tier) - order.indexOf(a.tier));
+    console.log('🚀 ~ file: badge-actions.ts ~ line 217 ~ updateBadges ~ orderedBadges', orderedBadges);
 
     return {
         type: BadgeActionTypes.UPDATE_BADGE_TIERS,

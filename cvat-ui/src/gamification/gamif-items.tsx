@@ -7,20 +7,32 @@ import {
     ThunderboltFilled, GiftFilled, AndroidFilled,
 } from '@ant-design/icons';
 import {
-    AnnotationMachineBronze, AnnotationMachineGold, AnnotationMachineSilver,
-    AnnotatorBronze, AnnotatorGold, AnnotatorSilver,
+    AnnotationMachineBronze, AnnotationMachineGold, AnnotationMachineGrey, AnnotationMachineSilver,
+    AnnotatorBronze, AnnotatorGold, AnnotatorGrey, AnnotatorSilver,
     BadgeGreyIcon,
-    BalancedEnergyBronze, BalancedEnergyGold, BalancedEnergySilver,
-    ChallengerBronze, ChallengerGold, ChallengerSilver,
-    EnergizedBronze, EnergizedGold, EnergizedSilver,
-    EnergyCollectorBronze, EnergyCollectorGold, EnergyCollectorSilver,
-    HoarderBronze, HoarderGold, HoarderSilver,
-    MillionaireBronze, MillionaireGold, MillionaireSilver,
-    MoneyManBronze, MoneyManGold, MoneyManSilver,
-    SerialAnnotatorBronze, SerialAnnotatorGold, SerialAnnotatorSilver,
-    TaggerBronze, TaggerGold, TaggerSilver,
-    TimeFliesBronze, TimeFliesGold, TimeFliesSilver,
-    UnlockerBronze, UnlockerGold, UnlockerSilver,
+    BalancedEnergyBronze, BalancedEnergyGold, BalancedEnergyGrey, BalancedEnergySilver,
+    ChallengerBronze, ChallengerGold, ChallengerGrey, ChallengerSilver,
+    ChatMenaceGold,
+    ChatMenaceGrey,
+    CobraGold,
+    CobraGrey,
+    EforEffortGold,
+    EforEffortGrey,
+    EnergizedBronze, EnergizedGold, EnergizedGrey, EnergizedSilver,
+    EnergyCollectorBronze, EnergyCollectorGold, EnergyCollectorGrey, EnergyCollectorSilver,
+    FunHaterGold,
+    FunHaterGrey,
+    HoarderBronze, HoarderGold, HoarderGrey, HoarderSilver,
+    MillionaireBronze, MillionaireGold, MillionaireGrey, MillionaireSilver,
+    MoneyManBronze, MoneyManGold, MoneyManGrey, MoneyManSilver,
+    NightOwlGold,
+    NightOwlGrey,
+    SerialAnnotatorBronze, SerialAnnotatorGold, SerialAnnotatorGrey, SerialAnnotatorSilver,
+    TaggerBronze, TaggerGold, TaggerGrey, TaggerSilver,
+    TetrisGold,
+    TetrisGrey,
+    TimeFliesBronze, TimeFliesGold, TimeFliesGrey, TimeFliesSilver,
+    UnlockerBronze, UnlockerGold, UnlockerGrey, UnlockerSilver,
 } from 'icons';
 import {
     Badge, BadgeTier, Challenge, ChallengeType, ShopItem, Statistic, UserData,
@@ -32,7 +44,7 @@ export const badges: Badge[] = [
     {
         id: 1,
         title: 'Annotator',
-        instruction: 'Annotate images',
+        instruction: 'Annotate GOAL Images',
         progress: 0,
         goal_bronze: 1,
         goal_silver: 5,
@@ -45,7 +57,7 @@ export const badges: Badge[] = [
     {
         id: 2,
         title: 'The Annotation Machine',
-        instruction: 'Annotate images in one session',
+        instruction: 'Annotate GOAL Images in one session',
         progress: 0,
         goal_bronze: 13,
         goal_silver: 25,
@@ -58,7 +70,7 @@ export const badges: Badge[] = [
     {
         id: 3,
         title: 'Tagger',
-        instruction: 'Set tags',
+        instruction: 'Set GOAL Tags',
         progress: 0,
         goal_bronze: 5,
         goal_silver: 10,
@@ -71,7 +83,7 @@ export const badges: Badge[] = [
     {
         id: 4,
         title: 'Time Flies When...',
-        instruction: 'Spend hours annotating',
+        instruction: 'Spend GOAL hours annotating',
         progress: 0,
         goal_bronze: 1,
         goal_silver: 5,
@@ -84,7 +96,7 @@ export const badges: Badge[] = [
     {
         id: 5,
         title: 'Serial Annotator',
-        instruction: 'Annotate at least on image for days in a row',
+        instruction: 'Annotate at least one image for GOAL days in a row',
         progress: 0,
         goal_bronze: 3,
         goal_silver: 14,
@@ -97,7 +109,7 @@ export const badges: Badge[] = [
     {
         id: 6,
         title: 'Energized',
-        instruction: 'Start Energizers',
+        instruction: 'Start GOAL Energizers',
         progress: 0,
         goal_bronze: 10,
         goal_silver: 50,
@@ -110,7 +122,7 @@ export const badges: Badge[] = [
     {
         id: 7,
         title: 'Energy Collector',
-        instruction: 'Collect Energy',
+        instruction: 'Collect GOAL Energy',
         progress: 0,
         goal_bronze: 100,
         goal_silver: 500,
@@ -123,7 +135,7 @@ export const badges: Badge[] = [
     {
         id: 8,
         title: 'Balanced Energy',
-        instruction: 'Start each Energizer', // TODO: meh.
+        instruction: 'Start each Energizer GOAL times',
         progress: 0,
         goal_bronze: 1,
         goal_silver: 5,
@@ -136,7 +148,7 @@ export const badges: Badge[] = [
     {
         id: 9,
         title: 'Challenger',
-        instruction: 'Complete Challenges',
+        instruction: 'Complete GOAL Challenges',
         progress: 0,
         goal_bronze: 5,
         goal_silver: 20,
@@ -149,7 +161,7 @@ export const badges: Badge[] = [
     {
         id: 10,
         title: 'Millionaire',
-        instruction: 'Earn annotation coins',
+        instruction: 'Earn GOAL Annotation Coins',
         progress: 0,
         goal_bronze: 1000,
         goal_silver: 5000,
@@ -162,7 +174,7 @@ export const badges: Badge[] = [
     {
         id: 11,
         title: 'Hoarder',
-        instruction: 'Possess total annotation coins at one point', // TODO: meh.
+        instruction: 'Possess GOAL total annotation coins at one point',
         progress: 0,
         goal_bronze: 100,
         goal_silver: 500,
@@ -175,7 +187,7 @@ export const badges: Badge[] = [
     {
         id: 12,
         title: 'Money Man',
-        instruction: 'Buy in shop',
+        instruction: 'Buy this badge in the shop',
         progress: 0,
         goal_bronze: 1,
         goal_silver: 2,
@@ -188,7 +200,7 @@ export const badges: Badge[] = [
     {
         id: 13,
         title: 'Unlocker',
-        instruction: 'Buy items from shop',
+        instruction: 'Buy GOAL Items from shop',
         progress: 0,
         goal_bronze: 10,
         goal_silver: 20,
@@ -201,7 +213,7 @@ export const badges: Badge[] = [
     {
         id: 14,
         title: 'Secretive',
-        instruction: 'Buy mystery gifts in shop',
+        instruction: 'Buy GOAL mystery gifts in shop',
         progress: 0,
         goal_bronze: 5,
         goal_silver: 10,
@@ -282,6 +294,260 @@ export const badges: Badge[] = [
         visible: false,
     },
 ];
+// export const badges: Badge[] = [
+//     {
+//         id: 1,
+//         title: 'Annotator',
+//         instruction: 'Annotate images',
+//         progress: 0,
+//         goal_bronze: 1,
+//         goal_silver: 5,
+//         goal: 10,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: 'Images',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 2,
+//         title: 'The Annotation Machine',
+//         instruction: 'Annotate images in one session',
+//         progress: 0,
+//         goal_bronze: 13,
+//         goal_silver: 25,
+//         goal: 40,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: 'Images',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 3,
+//         title: 'Tagger',
+//         instruction: 'Set tags',
+//         progress: 0,
+//         goal_bronze: 5,
+//         goal_silver: 10,
+//         goal: 20,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: 'Tags',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 4,
+//         title: 'Time Flies When...',
+//         instruction: 'Spend hours annotating',
+//         progress: 0,
+//         goal_bronze: 1,
+//         goal_silver: 5,
+//         goal: 10,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: 'Hours',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 5,
+//         title: 'Serial Annotator',
+//         instruction: 'Annotate at least on image for days in a row',
+//         progress: 0,
+//         goal_bronze: 3,
+//         goal_silver: 14,
+//         goal: 21,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 6,
+//         title: 'Energized',
+//         instruction: 'Start Energizers',
+//         progress: 0,
+//         goal_bronze: 10,
+//         goal_silver: 50,
+//         goal: 100,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 7,
+//         title: 'Energy Collector',
+//         instruction: 'Collect Energy',
+//         progress: 0,
+//         goal_bronze: 100,
+//         goal_silver: 500,
+//         goal: 1000,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 8,
+//         title: 'Balanced Energy',
+//         instruction: 'Start each Energizer', // TODO: meh.
+//         progress: 0,
+//         goal_bronze: 1,
+//         goal_silver: 5,
+//         goal: 10,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 9,
+//         title: 'Challenger',
+//         instruction: 'Complete Challenges',
+//         progress: 0,
+//         goal_bronze: 5,
+//         goal_silver: 20,
+//         goal: 50,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 10,
+//         title: 'Millionaire',
+//         instruction: 'Earn annotation coins',
+//         progress: 0,
+//         goal_bronze: 1000,
+//         goal_silver: 5000,
+//         goal: 10000,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 11,
+//         title: 'Hoarder',
+//         instruction: 'Possess total annotation coins at one point', // TODO: meh.
+//         progress: 0,
+//         goal_bronze: 100,
+//         goal_silver: 500,
+//         goal: 1000,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 12,
+//         title: 'Money Man',
+//         instruction: 'Buy in shop',
+//         progress: 0,
+//         goal_bronze: 1,
+//         goal_silver: 2,
+//         goal: 3,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 13,
+//         title: 'Unlocker',
+//         instruction: 'Buy items from shop',
+//         progress: 0,
+//         goal_bronze: 10,
+//         goal_silver: 20,
+//         goal: 50,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+//     {
+//         id: 14,
+//         title: 'Secretive',
+//         instruction: 'Buy mystery gifts in shop',
+//         progress: 0,
+//         goal_bronze: 5,
+//         goal_silver: 10,
+//         goal: 50,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: true,
+//     },
+
+//     // Start hidden badges
+
+//     {
+//         id: 101,
+//         title: 'Fun Hater',
+//         instruction: 'Let Energy expire',
+//         progress: 0,
+//         goal: 10,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: false,
+//     },
+//     {
+//         id: 102,
+//         title: 'Night Owl',
+//         instruction: 'Annotate images at night',
+//         progress: 0,
+//         goal: 50,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: false,
+//     },
+//     {
+//         id: 103,
+//         title: 'Chat Menace',
+//         instruction: 'Write chat messages',
+//         progress: 0,
+//         goal: 1000,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: false,
+//     },
+//     {
+//         id: 104,
+//         title: 'E for Effort',
+//         instruction: 'Answer every quiz question wrong',
+//         progress: 0,
+//         goal: 1,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: false,
+//     },
+//     {
+//         id: 105,
+//         title: 'Cobra',
+//         instruction: 'Achieve a 50-foot long snake',
+//         progress: 0,
+//         goal: 1,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: false,
+//     },
+
+//     {
+//         id: 106,
+//         title: 'Tetris',
+//         instruction: 'Score 2 Tetrises in a row',
+//         progress: 0,
+//         goal: 1,
+//         tier: BadgeTier.NOT_OBTAINED,
+//         goalunit: '',
+//         receivedOn: null,
+//         visible: false,
+//     },
+// ];
 
 export function getBadgeIcon(id: number, tier: BadgeTier): React.ReactNode {
     let tierCode = 0;
@@ -296,58 +562,71 @@ export function getBadgeIcon(id: number, tier: BadgeTier): React.ReactNode {
     const iconCode = `${id.toString()}-${tierCode.toString()}`;
 
     switch (iconCode) {
-        case '1-0': return <BadgeGreyIcon />;
+        case '1-0': return <AnnotatorGrey />;
         case '1-1': return <AnnotatorBronze />;
         case '1-2': return <AnnotatorSilver />;
         case '1-3': return <AnnotatorGold />;
-        case '2-0': return <BadgeGreyIcon />;
+        case '2-0': return <AnnotationMachineGrey />;
         case '2-1': return <AnnotationMachineBronze />;
         case '2-2': return <AnnotationMachineSilver />;
         case '2-3': return <AnnotationMachineGold />;
-        case '3-0': return <BadgeGreyIcon />;
+        case '3-0': return <TaggerGrey />;
         case '3-1': return <TaggerBronze />;
         case '3-2': return <TaggerSilver />;
         case '3-3': return <TaggerGold />;
-        case '4-0': return <BadgeGreyIcon />;
+        case '4-0': return <TimeFliesGrey />;
         case '4-1': return <TimeFliesBronze />;
         case '4-2': return <TimeFliesSilver />;
         case '4-3': return <TimeFliesGold />;
-        case '5-0': return <BadgeGreyIcon />;
+        case '5-0': return <SerialAnnotatorGrey />;
         case '5-1': return <SerialAnnotatorBronze />;
         case '5-2': return <SerialAnnotatorSilver />;
         case '5-3': return <SerialAnnotatorGold />;
-        case '6-0': return <BadgeGreyIcon />;
+        case '6-0': return <EnergizedGrey />;
         case '6-1': return <EnergizedBronze />;
         case '6-2': return <EnergizedSilver />;
         case '6-3': return <EnergizedGold />;
-        case '7-0': return <BadgeGreyIcon />;
+        case '7-0': return <EnergyCollectorGrey />;
         case '7-1': return <EnergyCollectorBronze />;
         case '7-2': return <EnergyCollectorSilver />;
         case '7-3': return <EnergyCollectorGold />;
-        case '8-0': return <BadgeGreyIcon />;
+        case '8-0': return <BalancedEnergyGrey />;
         case '8-1': return <BalancedEnergyBronze />;
         case '8-2': return <BalancedEnergySilver />;
         case '8-3': return <BalancedEnergyGold />;
-        case '9-0': return <BadgeGreyIcon />;
+        case '9-0': return <ChallengerGrey />;
         case '9-1': return <ChallengerBronze />;
         case '9-2': return <ChallengerSilver />;
         case '9-3': return <ChallengerGold />;
-        case '10-0': return <BadgeGreyIcon />;
+        case '10-0': return <MillionaireGrey />;
         case '10-1': return <MillionaireBronze />;
         case '10-2': return <MillionaireSilver />;
         case '10-3': return <MillionaireGold />;
-        case '11-0': return <BadgeGreyIcon />;
+        case '11-0': return <HoarderGrey />;
         case '11-1': return <HoarderBronze />;
         case '11-2': return <HoarderSilver />;
         case '11-3': return <HoarderGold />;
-        case '12-0': return <BadgeGreyIcon />;
+        case '12-0': return <MoneyManGrey />;
         case '12-1': return <MoneyManBronze />;
         case '12-2': return <MoneyManSilver />;
         case '12-3': return <MoneyManGold />;
-        case '13-0': return <BadgeGreyIcon />;
+        case '13-0': return <UnlockerGrey />;
         case '13-1': return <UnlockerBronze />;
         case '13-2': return <UnlockerSilver />;
         case '13-3': return <UnlockerGold />;
+
+        case '101-0': return <FunHaterGrey />;
+        case '101-3': return <FunHaterGold />;
+        case '102-0': return <NightOwlGrey />;
+        case '102-3': return <NightOwlGold />;
+        case '103-0': return <ChatMenaceGrey />;
+        case '103-3': return <ChatMenaceGold />;
+        case '104-0': return <EforEffortGrey />;
+        case '104-3': return <EforEffortGold />;
+        case '105-0': return <CobraGrey />;
+        case '105-3': return <CobraGold />;
+        case '106-0': return <TetrisGrey />;
+        case '106-3': return <TetrisGold />;
 
         default: return <BadgeGreyIcon />;
     }
