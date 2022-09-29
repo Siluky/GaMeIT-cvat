@@ -12,11 +12,8 @@ import {
 } from 'antd';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
-
-import {
-    BadgeGoldIcon, BadgeSilverIcon, BadgeNotIcon, BadgeTestIcon,
-} from 'icons';
 import { CloseOutlined } from '@ant-design/icons';
+import { getBadgeIcon } from 'gamification/gamif-items';
 import { Badge, BadgeTier } from '../../gamif-interfaces';
 import {
     setCurrentBadge,
@@ -67,16 +64,6 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
     };
 }
 
-const mapTiertoIcon = (tier: BadgeTier): React.ReactNode => {
-    switch (tier) {
-        case BadgeTier.NOT_OBTAINED: return <BadgeNotIcon />;
-        case BadgeTier.GOLD: return <BadgeGoldIcon />;
-        case BadgeTier.SILVER: return <BadgeSilverIcon />;
-        case BadgeTier.BRONZE: return <BadgeTestIcon />;
-        default: return <BadgeNotIcon />;
-    }
-};
-
 function showSelectedBadge(badge: Badge): JSX.Element {
     const relevantGoal = (): number => {
         if (badge.tier === BadgeTier.NOT_OBTAINED && badge.goal_bronze) {
@@ -92,7 +79,7 @@ function showSelectedBadge(badge: Badge): JSX.Element {
     return (
         <>
             <div className='gamif-badge-icon'>
-                {mapTiertoIcon(badge.tier)}
+                {getBadgeIcon(badge.id, badge.tier)}
             </div>
             <div className='gamif-badge-details'>
                 <p><strong>{badge.title}</strong></p>
@@ -158,7 +145,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                                 key={index}
                                                 className='gamif-badge-overview-individual-badge'
                                                 type='text'
-                                                icon={mapTiertoIcon(badge.tier)}
+                                                icon={getBadgeIcon(badge.id, badge.tier)}
                                                 onClick={(): void => { dispatch(setCurrentBadge(badge.id)); }}
                                             />
                                         </Col>
@@ -199,7 +186,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                 <Col span={4}>
                                     <Button
                                         type='text'
-                                        icon={mapTiertoIcon(badge.tier)}
+                                        icon={getBadgeIcon(badge.id, badge.tier)}
                                         onClick={(): void => { dispatch(setCurrentBadge(badge.id)); }}
                                     />
                                     {badge.id}

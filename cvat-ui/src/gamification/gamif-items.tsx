@@ -7,10 +7,26 @@ import {
     ThunderboltFilled, GiftFilled, AndroidFilled,
 } from '@ant-design/icons';
 import {
+    AnnotationMachineBronze, AnnotationMachineGold, AnnotationMachineSilver,
+    AnnotatorBronze, AnnotatorGold, AnnotatorSilver,
+    BadgeGreyIcon,
+    BalancedEnergyBronze, BalancedEnergyGold, BalancedEnergySilver,
+    ChallengerBronze, ChallengerGold, ChallengerSilver,
+    EnergizedBronze, EnergizedGold, EnergizedSilver,
+    EnergyCollectorBronze, EnergyCollectorGold, EnergyCollectorSilver,
+    HoarderBronze, HoarderGold, HoarderSilver,
+    MillionaireBronze, MillionaireGold, MillionaireSilver,
+    MoneyManBronze, MoneyManGold, MoneyManSilver,
+    SerialAnnotatorBronze, SerialAnnotatorGold, SerialAnnotatorSilver,
+    TaggerBronze, TaggerGold, TaggerSilver,
+    TimeFliesBronze, TimeFliesGold, TimeFliesSilver,
+    UnlockerBronze, UnlockerGold, UnlockerSilver,
+} from 'icons';
+import {
     Badge, BadgeTier, Challenge, ChallengeType, ShopItem, Statistic, UserData,
 } from './gamif-interfaces';
 
-// TODO: File for individual challenges / badges, mapping them to their IDs etc
+// File for individual challenges / badges, mapping them to their IDs etc
 
 export const badges: Badge[] = [
     {
@@ -266,6 +282,76 @@ export const badges: Badge[] = [
         visible: false,
     },
 ];
+
+export function getBadgeIcon(id: number, tier: BadgeTier): React.ReactNode {
+    let tierCode = 0;
+    switch (tier) {
+        case BadgeTier.NOT_OBTAINED: tierCode = 0; break;
+        case BadgeTier.BRONZE: tierCode = 1; break;
+        case BadgeTier.SILVER: tierCode = 2; break;
+        case BadgeTier.GOLD: tierCode = 3; break;
+        default: tierCode = 0; break;
+    }
+
+    const iconCode = `${id.toString()}-${tierCode.toString()}`;
+
+    switch (iconCode) {
+        case '1-0': return <BadgeGreyIcon />;
+        case '1-1': return <AnnotatorBronze />;
+        case '1-2': return <AnnotatorSilver />;
+        case '1-3': return <AnnotatorGold />;
+        case '2-0': return <BadgeGreyIcon />;
+        case '2-1': return <AnnotationMachineBronze />;
+        case '2-2': return <AnnotationMachineSilver />;
+        case '2-3': return <AnnotationMachineGold />;
+        case '3-0': return <BadgeGreyIcon />;
+        case '3-1': return <TaggerBronze />;
+        case '3-2': return <TaggerSilver />;
+        case '3-3': return <TaggerGold />;
+        case '4-0': return <BadgeGreyIcon />;
+        case '4-1': return <TimeFliesBronze />;
+        case '4-2': return <TimeFliesSilver />;
+        case '4-3': return <TimeFliesGold />;
+        case '5-0': return <BadgeGreyIcon />;
+        case '5-1': return <SerialAnnotatorBronze />;
+        case '5-2': return <SerialAnnotatorSilver />;
+        case '5-3': return <SerialAnnotatorGold />;
+        case '6-0': return <BadgeGreyIcon />;
+        case '6-1': return <EnergizedBronze />;
+        case '6-2': return <EnergizedSilver />;
+        case '6-3': return <EnergizedGold />;
+        case '7-0': return <BadgeGreyIcon />;
+        case '7-1': return <EnergyCollectorBronze />;
+        case '7-2': return <EnergyCollectorSilver />;
+        case '7-3': return <EnergyCollectorGold />;
+        case '8-0': return <BadgeGreyIcon />;
+        case '8-1': return <BalancedEnergyBronze />;
+        case '8-2': return <BalancedEnergySilver />;
+        case '8-3': return <BalancedEnergyGold />;
+        case '9-0': return <BadgeGreyIcon />;
+        case '9-1': return <ChallengerBronze />;
+        case '9-2': return <ChallengerSilver />;
+        case '9-3': return <ChallengerGold />;
+        case '10-0': return <BadgeGreyIcon />;
+        case '10-1': return <MillionaireBronze />;
+        case '10-2': return <MillionaireSilver />;
+        case '10-3': return <MillionaireGold />;
+        case '11-0': return <BadgeGreyIcon />;
+        case '11-1': return <HoarderBronze />;
+        case '11-2': return <HoarderSilver />;
+        case '11-3': return <HoarderGold />;
+        case '12-0': return <BadgeGreyIcon />;
+        case '12-1': return <MoneyManBronze />;
+        case '12-2': return <MoneyManSilver />;
+        case '12-3': return <MoneyManGold />;
+        case '13-0': return <BadgeGreyIcon />;
+        case '13-1': return <UnlockerBronze />;
+        case '13-2': return <UnlockerSilver />;
+        case '13-3': return <UnlockerGold />;
+
+        default: return <BadgeGreyIcon />;
+    }
+}
 
 export function mapBadgeIdtoField(id: number): keyof UserData {
     switch (id) {
