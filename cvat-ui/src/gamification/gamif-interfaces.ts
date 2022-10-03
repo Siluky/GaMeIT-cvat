@@ -152,16 +152,22 @@ export enum OnlineStatus {
     OFFLINE = 'OFFLINE',
 }
 
+interface ProfileStyle {
+    additionalClassNames: string,
+    background: string,
+    color: string,
+    border: string,
+    backgroundElements: number,
+    avatar: number,
+    avatarBorder: string,
+}
+
 export interface Profile {
     username: string,
     userId: number,
     status: OnlineStatus,
-    avatar: string,
-    avatar_border: string,
-    profile_background: string,
-    profile_border: string,
     selectedBadges: number[],
-
+    profileStyle: ProfileStyle,
     chatActive: boolean,
 }
 

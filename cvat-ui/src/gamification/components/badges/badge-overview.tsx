@@ -79,6 +79,8 @@ function showSelectedBadge(badge: Badge): JSX.Element {
     const receivedOn = `Achieved on ${Date.now()}`;
     const dispatch = useDispatch();
 
+    const formattedInstruction = badge.instruction.replace('GOAL', goal.toString());
+
     return (
         <>
             <div
@@ -89,10 +91,10 @@ function showSelectedBadge(badge: Badge): JSX.Element {
             </div>
             <div className='gamif-badge-details'>
                 <p><strong>{badge.title}</strong></p>
-                <p>{badge.instruction}</p>
+                <p className='gamif-badges-instruction'>{formattedInstruction}</p>
                 <Progress percent={Math.floor((badge.progress / goal) * 100)} />
                 {/* {badge.tier !== BadgeTier.GOLD && progress} */}
-                {progress}
+                <span>{progress}</span>
                 {badge.tier !== BadgeTier.NOT_OBTAINED && (
                     <>
                         <span>{receivedOn}</span>
@@ -101,11 +103,14 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                                 icon={<CloseOutlined />}
                                 onClick={() => dispatch(toggleBadgeInProfile(badge.id))}
                                 size='small'
-                            />
+                            >
+                                Add to Profile
+                            </Button>
                         </div>
                     </>
                 )}
                 <Button
+                    className='gamif-debug-button'
                     icon={<UpOutlined />}
                     onClick={() => dispatch(upgradeBadgeTier(badge.id))}
                     size='small'
@@ -152,6 +157,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                         <Col
                                             span={4}
                                             style={{ opacity: badge.tier === BadgeTier.NOT_OBTAINED ? 0.4 : 1 }}
+                                            key={index}
                                         >
                                             <Button
                                                 key={index}
@@ -168,6 +174,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
 
                             <Button
                                 type='text'
+                                className='gamif-debug-button'
                                 onClick={(): void => {
                                     dispatch(updateBadges(availableBadges, true));
                                 }}
@@ -176,6 +183,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                             </Button>
                             <Button
                                 type='text'
+                                className='gamif-debug-button'
                                 onClick={(): void => {
                                     dispatch(loadBadges());
                                 }}

@@ -31,6 +31,7 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
     const { profiles } = props;
     const dispatch = useDispatch();
     const social = useSelector((state: CombinedState) => state.social);
+    const badges = useSelector((state: CombinedState) => state.badges);
     return (
         <>
             <List
@@ -52,21 +53,22 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                             />
                             <span>
                                 { _profile.status }
+                                &nbsp;
                             </span>
                             <div className='gamif-quick-profile-status-icon'> &nbsp; </div>
                         </List.Item>
                     </Popover>
                 )}
             />
-            <Button type='text' onClick={() => dispatch(getFriendsListAsync())}>Load</Button>
             <Popover
                 placement='left'
                 trigger='hover'
-                mouseLeaveDelay={5}
-                content={<QuickProfile profile={social.ownProfile} />}
+                mouseLeaveDelay={60}
+                content={<QuickProfile profile={{ ...social.ownProfile, selectedBadges: badges.badgesinProfile }} />}
             >
                 Own Profile
             </Popover>
+            <Button type='text' onClick={() => dispatch(getFriendsListAsync())}>Load</Button>
         </>
     );
 }

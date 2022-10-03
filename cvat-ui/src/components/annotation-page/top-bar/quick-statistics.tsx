@@ -7,8 +7,7 @@ import QuickStatistic from 'gamification/components/statistics/quick-statistics-
 import ProgressBar from 'gamification/components/progressbar-component';
 import { CombinedState } from 'reducers/interfaces';
 import { connect, useSelector } from 'react-redux';
-import { mapStatisticIdtoFieldName } from 'gamification/gamif-items';
-import { mapStatisticIdtoIcon } from 'gamification/gamif-setup';
+import { mapStatisticIdtoFieldName, mapStatisticIdtoIcon } from 'gamification/gamif-items';
 
 interface StateToProps {
     ids: number[];

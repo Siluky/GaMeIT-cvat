@@ -175,6 +175,7 @@ function saveUserDataFailed(error: any): AnyAction {
 export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
     const state = getCVATStore().getState();
     const userDataState = state.gamifuserdata;
+    const shopState = state.shop;
 
     const totalData = userDataState.userdata_total;
     const sessionData = userDataState.userdata_session;
@@ -207,7 +208,7 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         tetris_played: totalData.tetris_played,
         quiz_played: totalData.quiz_played,
         snake_played: totalData.snake_played,
-        currentBalance: sessionData.currentBalance,
+        currentBalance: shopState.currentBalance,
         annotation_coins_total: totalData.annotation_coins_obtained,
         annotation_coins_max: totalData.annotation_coins_max,
         items_bought_total: totalData.items_bought,

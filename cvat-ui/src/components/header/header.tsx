@@ -550,23 +550,22 @@ function HeaderContainer(props: Props): JSX.Element {
                 </CVATTooltip>
                 <Button
                     type='text'
+                    className='gamif-debug-button'
                     icon={<PlusOutlined />}
                     onClick={(): void => {
                         incrementEnergy(1);
-                        console.log('Test button pressed');
                     }}
                 />
                 <Button
                     type='text'
+                    className='gamif-debug-button'
                     onClick={(): void => {
-                        console.log('Save Energy to DB');
                         saveCurrentEnergy(currentEnergy);
-                        console.log('🚀 ~ file: header.tsx ~ line 550 ~ HeaderContainer ~ currentEnergy', currentEnergy);
                     }}
                 >
                     Save
                 </Button>
-                <Popover content={<ShopWindow />} mouseLeaveDelay={3}>
+                <Popover content={<ShopWindow />} mouseLeaveDelay={300}>
                     <Button type='text'> Shop </Button>
                 </Popover>
             </div>

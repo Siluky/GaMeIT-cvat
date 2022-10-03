@@ -20,8 +20,7 @@ import { CombinedState } from 'reducers/interfaces';
 import CvatTooltip from 'components/common/cvat-tooltip';
 import { Statistic, UserData } from 'gamification/gamif-interfaces';
 import { saveUserData, updateUserData } from 'gamification/actions/user-data-actions';
-import { mapStatisticIdtoIcon } from 'gamification/gamif-setup';
-import { mapStatisticIdtoFieldName } from 'gamification/gamif-items';
+import { mapStatisticIdtoFieldName, mapStatisticIdtoIcon } from 'gamification/gamif-items';
 
 interface StateToProps {
     userdataAllTime: UserData;
@@ -77,7 +76,7 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                         }}
                     />
                     <Button
-                        className='statistics-selecting-button-inactive'
+                        className='statistics-selecting-button-inactive gamif-debug-button'
                         size='large'
                         // icon={<EditFilled />}
                         onClick={(e) => {
@@ -121,7 +120,12 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                         ))}
                     </Row>
                 </div>
-                <Button onClick={() => dispatch(saveUserData())}> Save User Data</Button>
+                <Button
+                    className='gamif-debug-button'
+                    onClick={() => dispatch(saveUserData())}
+                >
+                    Save User Data
+                </Button>
             </div>
         </>
     );

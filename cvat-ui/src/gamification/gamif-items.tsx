@@ -3,15 +3,27 @@
 // SPDX-License-Identifier: MIT
 
 import React from 'react';
+import 'gamification/gamif-styles.scss';
+import 'gamification/gamif-profile-styles.scss';
+
 import {
     ThunderboltFilled, GiftFilled, AndroidFilled,
+    UserOutlined, UserAddOutlined, UserDeleteOutlined,
+    UserSwitchOutlined, UsergroupAddOutlined, QuestionCircleOutlined,
 } from '@ant-design/icons';
 import {
+    AnnotationCoinsMaxIcon,
+    AnnotationCoinsObtainedIcon,
     AnnotationMachineBronze, AnnotationMachineGold, AnnotationMachineGrey, AnnotationMachineSilver,
+    AnnotationStreakIcon,
+    AnnotationTimeIcon,
     AnnotatorBronze, AnnotatorGold, AnnotatorGrey, AnnotatorSilver,
+    AvgTimeIcon,
     BadgeGreyIcon,
+    BadgesObtainedIcon,
     BalancedEnergyBronze, BalancedEnergyGold, BalancedEnergyGrey, BalancedEnergySilver,
     ChallengerBronze, ChallengerGold, ChallengerGrey, ChallengerSilver,
+    ChallengesIcon,
     ChatMenaceGold,
     ChatMenaceGrey,
     CobraGold,
@@ -20,17 +32,24 @@ import {
     EforEffortGrey,
     EnergizedBronze, EnergizedGold, EnergizedGrey, EnergizedSilver,
     EnergyCollectorBronze, EnergyCollectorGold, EnergyCollectorGrey, EnergyCollectorSilver,
+    EnergyGainedIcon,
     FunHaterGold,
     FunHaterGrey,
     HoarderBronze, HoarderGold, HoarderGrey, HoarderSilver,
+    ImagesAnnotatedIcon,
+    ItemsBoughtIcon,
     MillionaireBronze, MillionaireGold, MillionaireGrey, MillionaireSilver,
     MoneyManBronze, MoneyManGold, MoneyManGrey, MoneyManSilver,
     NightOwlGold,
     NightOwlGrey,
+    QuizIcon,
     SerialAnnotatorBronze, SerialAnnotatorGold, SerialAnnotatorGrey, SerialAnnotatorSilver,
+    SnakeIcon,
     TaggerBronze, TaggerGold, TaggerGrey, TaggerSilver,
+    TagsSetIcon,
     TetrisGold,
     TetrisGrey,
+    TetrisIcon,
     TimeFliesBronze, TimeFliesGold, TimeFliesGrey, TimeFliesSilver,
     UnlockerBronze, UnlockerGold, UnlockerGrey, UnlockerSilver,
 } from 'icons';
@@ -657,6 +676,25 @@ export function mapBadgeIdtoField(id: number): keyof UserData {
     }
 }
 
+export const mapStatisticIdtoIcon = (id: number): JSX.Element => {
+    switch (id) {
+        case 1: return <ImagesAnnotatedIcon />;
+        case 2: return <TagsSetIcon />;
+        case 3: return <AvgTimeIcon />;
+        case 4: return <AnnotationStreakIcon />;
+        case 5: return <AnnotationTimeIcon />;
+        case 6: return <EnergyGainedIcon />;
+        case 7: return <TetrisIcon />;
+        case 8: return <QuizIcon />;
+        case 9: return <SnakeIcon />;
+        case 10: return <ChallengesIcon />;
+        case 11: return <ItemsBoughtIcon />;
+        case 12: return <AnnotationCoinsObtainedIcon />;
+        case 13: return <AnnotationCoinsMaxIcon />;
+        default: return <BadgesObtainedIcon />;
+    }
+};
+
 export const stats: Statistic[] = [
     {
         id: 1,
@@ -778,287 +816,378 @@ export function mapStatisticIdtoFieldName(id: number): keyof UserData {
     }
 }
 
-export const items: ShopItem[] = [{
-    id: 1,
-    title: 'Charge Pack',
-    price: 100,
-    repeatable: true,
-    bought: false,
-    visible: true,
-    icon: <ThunderboltFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 2,
-    title: 'Mystery Gift',
-    price: 80,
-    repeatable: true,
-    bought: false,
-    visible: true,
-    icon: <GiftFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 3,
-    title: 'Extra Challenge',
-    price: 100,
-    repeatable: true,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 4,
-    title: 'Streak Saver',
-    price: 100,
-    repeatable: true,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 5,
-    title: 'Avatar 1',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 6,
-    title: 'Avatar 2',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 7,
-    title: 'Avatar 3',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 8,
-    title: 'Avatar 4',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 9,
-    title: 'Avatar 5',
-    price: 0,
-    repeatable: false,
-    bought: false,
-    visible: false,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 10,
-    title: 'Green Profile Background',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 11,
-    title: 'Red Profile Background',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 12,
-    title: 'Profile Background 3',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 13,
-    title: 'Profile Background 4',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 14,
-    title: 'Profile Background 5',
-    price: 0,
-    repeatable: false,
-    bought: false,
-    visible: false,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 15,
-    title: 'Avatar Border 1',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 16,
-    title: 'Avatar Border 2',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 17,
-    title: 'Avatar Border 3',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 18,
-    title: 'Avatar Border 4',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 19,
-    title: 'Avatar Border 5',
-    price: 0,
-    repeatable: false,
-    bought: false,
-    visible: false,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 20,
-    title: 'Red Profile Border',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 21,
-    title: 'Blue Profile Border',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 22,
-    title: 'Dotted Profile Border',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 23,
-    title: 'Profile Border 4',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 24,
-    title: 'Profile Border 5',
-    price: 0,
-    repeatable: false,
-    bought: false,
-    visible: false,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 25,
-    title: 'Energizer Pop-Up Color 1',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 26,
-    title: 'Energizer Pop-Up Color 2',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 27,
-    title: 'Energizer Pop-Up Color 3',
-    price: 100,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
-{
-    id: 28,
-    title: 'Money Badge',
-    price: 500,
-    repeatable: false,
-    bought: false,
-    visible: true,
-    icon: <AndroidFilled />,
-    onPurchase: () => {},
-},
+// eslint-disable-next-line max-len
+const itemPortrait = (backgroundStyle: React.CSSProperties | undefined, outlineStyle: React.CSSProperties | undefined): JSX.Element => (
+    <div
+        className='gamif-shop-item-portrait'
+        style={{ ...backgroundStyle, ...outlineStyle }}
+    />
+);
+
+export const items: ShopItem[] = [
+    {
+        id: 1,
+        title: 'Charge Pack',
+        price: 100,
+        repeatable: true,
+        bought: false,
+        visible: true,
+        icon: <ThunderboltFilled />,
+        onPurchase: () => {},
+    },
+    {
+        id: 2,
+        title: 'Mystery Gift',
+        price: 80,
+        repeatable: true,
+        bought: false,
+        visible: true,
+        icon: <GiftFilled />,
+        onPurchase: () => {},
+    },
+    {
+        id: 3,
+        title: 'Extra Challenge',
+        price: 100,
+        repeatable: true,
+        bought: false,
+        visible: true,
+        icon: <AndroidFilled />,
+        onPurchase: () => {},
+    },
+    {
+        id: 4,
+        title: 'Streak Saver',
+        price: 100,
+        repeatable: true,
+        bought: false,
+        visible: true,
+        icon: <AndroidFilled />,
+        onPurchase: () => {},
+    },
+    {
+        id: 5,
+        title: 'Money Badge',
+        price: 500,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <MoneyManGold />,
+        onPurchase: () => {},
+    },
+    {
+        id: 6,
+        title: 'Default Profile Background',
+        price: 100,
+        repeatable: false,
+        bought: true,
+        visible: true,
+        icon: itemPortrait(
+            { background: '#e6e6e6' },
+            { outline: '1px solid black' },
+        ),
+        onPurchase: () => {},
+    },
+    {
+        id: 7,
+        title: 'Green Profile Background',
+        price: 200,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: itemPortrait(
+            { background: '#bbf1c4' },
+            { outline: '1px solid black' },
+        ),
+        onPurchase: () => {},
+    },
+    {
+        id: 8,
+        title: 'Blue Profile Background',
+        price: 200,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: itemPortrait(
+            { background: '#aec6cf' },
+            { outline: '1px solid black' },
+        ),
+        onPurchase: () => {},
+    },
+    {
+        id: 9,
+        title: 'Red Profile Background',
+        price: 200,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: itemPortrait(
+            { background: '#ff6961' },
+            { outline: '1px solid black' },
+        ),
+        onPurchase: () => {},
+    },
+    {
+        id: 10,
+        title: 'Tri-Color Profile Background 1',
+        price: 1000,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-tri-color-background-1'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+                position: 'absolute',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 11,
+        title: 'Tri-Color Profile Background 2',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-tri-color-background-2'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+                position: 'absolute',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 12,
+        title: 'Tri-Color Profile Background 3',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-tri-color-background-3'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+                position: 'absolute',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 13,
+        title: 'Blue-Purple Profile Background',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-blue-blackground'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+                position: 'absolute',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 14,
+        title: 'Star Shower Background',
+        price: 500,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: (
+            <div
+                className='gamif-quick-profile-shooting-stars-background'
+                style={{
+                    width: '45px',
+                    height: '35px',
+                    borderRadius: '20%',
+                    position: 'absolute',
+                }}
+            >
+                <div style={{ position: 'relative', transform: 'rotateZ(45deg)' }}>
+                    <div style={{ position: 'relative' }} className='shooting_star' />
+                    <div style={{ position: 'relative' }} className='shooting_star' />
+                    <div style={{ position: 'relative' }} className='shooting_star' />
+                    <div style={{ position: 'relative' }} className='shooting_star' />
+                </div>
+            </div>
+        ),
+        onPurchase: () => {},
+    },
+    {
+        id: 15,
+        title: 'Mystery Background',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <QuestionCircleOutlined />,
+        onPurchase: () => {},
+    },
+    {
+        id: 16,
+        title: 'No Profile Border',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <AndroidFilled />,
+        onPurchase: () => {},
+    },
+    {
+        id: 17,
+        title: 'Green Profile Border',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: itemPortrait({ background: '#e6e6e6' }, { outline: '3px solid #bbf1c4' }),
+        onPurchase: () => {},
+    },
+    {
+        id: 18,
+        title: 'Blue Profile Border',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: itemPortrait({ background: '#e6e6e6' }, { outline: '3px solid #aec6cf' }),
+        onPurchase: () => {},
+    },
+    {
+        id: 19,
+        title: 'Red Profile Border',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: itemPortrait({ background: '#e6e6e6' }, { outline: '3px solid #ff6961' }),
+        onPurchase: () => {},
+    },
+
+    {
+        id: 20,
+        title: 'Blue Animated Border',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-anim-border-blue'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 21,
+        title: 'Red Animated Border',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-anim-border-red'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 22,
+        title: 'Rainbow Profile Effect',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-rainbow-effect'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 23,
+        title: 'Christmas Profile Border',
+        price: 200,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-christmas-box'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 24,
+        title: 'Rainbow Profile Border',
+        price: 100,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: <div
+            className='gamif-profile-rainbow-box'
+            style={{
+                width: '45px',
+                height: '35px',
+                borderRadius: '20%',
+            }}
+        />,
+        onPurchase: () => {},
+    },
+    {
+        id: 25,
+        title: 'Hidden Profile Border',
+        price: 0,
+        repeatable: false,
+        bought: false,
+        visible: true,
+        icon: (
+            <div>
+                <QuestionCircleOutlined />
+            </div>
+        ),
+        onPurchase: () => {},
+    },
 ];
+
+export function getAvatar(id: number): React.ReactNode {
+    switch (id) {
+        case 1: return <UserOutlined />;
+        case 2: return <UserAddOutlined />;
+        case 3: return <UserDeleteOutlined />;
+        case 4: return <UserSwitchOutlined />;
+        case 5: return <UsergroupAddOutlined />;
+        default: return <UserOutlined />;
+    }
+}
 
 export const availableChallenges: Challenge[] = [
     {

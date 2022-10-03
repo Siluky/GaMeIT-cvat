@@ -4,7 +4,7 @@
 import React, { useEffect } from 'react';
 import '../../gamif-styles.scss';
 import { Menu, Popover, Button } from 'antd';
-import { RadarChartOutlined, CloseOutlined } from '@ant-design/icons';
+import { RadarChartOutlined, CloseOutlined, InfoCircleFilled } from '@ant-design/icons';
 import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
 import { Profile } from 'gamification/gamif-interfaces';
 import { connect, useDispatch } from 'react-redux';
@@ -73,7 +73,7 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                         content={<StatusMenu />}
                         mouseLeaveDelay={10}
                     >
-                        <RadarChartOutlined />
+                        <InfoCircleFilled />
                     </Popover>
                 )}
                 key='friends_list'

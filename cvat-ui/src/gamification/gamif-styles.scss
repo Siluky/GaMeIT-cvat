@@ -4,6 +4,12 @@
 
 // File for all gamification elements scss stuff
 
+.gamif-debug-button {
+  background: red;
+  color: white;
+  font-weight: bold;
+}
+
 // Badges
 
 .gamif-badge-popover {
@@ -91,12 +97,22 @@
 .gamif-badge-icon {
     width: 30%;
     font-size: 200%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-right: 10px;
 }
 
 .gamif-badge-details {
     width: 70%;
     overflow-y: scroll;
+}
+
+.gamif-badges-instruction {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gamif-badge-load-fail {
@@ -444,8 +460,8 @@
 // shop
 
 .gamif-shop-window {
-  width: 450px;
-  height: 300px;
+  width: 500px;
+  height: 360px;
   border-radius: 10px;
   border: 2px solid #1d3c62;
   background: #d2d8df;
@@ -485,6 +501,7 @@
   color: white;
   font-size: 14px;
   text-align: center;
+  margin: auto;
 }
 
 .gamif-shop-window-items-wrapper {
@@ -524,6 +541,7 @@
   background: #9fbecc;
   border: 1px solid #1d3c62;
   margin-bottom: 5px;
+  margin: 2px;
   border-radius: 5px;
 
   &:hover {
@@ -545,9 +563,11 @@
 .gamif-shop-item-icon {
   display: flex;
   justify-content: center;
-  font-size: 200%;
+  font-size: 250%;
   align-items: center;
   margin-top: auto;
+  height: 50px;
+  width: 45px;
 }
 
 .gamif-shop-item-title {
@@ -567,6 +587,13 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.gamif-shop-item-portrait {
+  background: #e6e6e6;
+  outline: green;
+  border-radius: 20%;;
+  width: 50px;
+  height: 30px;
+}
 
 // social
 .gamif-social-bar {
@@ -594,19 +621,25 @@
 
 
 .gamif-quick-profile-container {
-  outline: 1px solid #1e3d59;
+  // outline: 1px solid #1e3d59;
+  position: relative;
   width: 240px;
   height: 160px;
   border-radius: 5px;
   background: #e6e6e6;
+  z-index: 3;
 }
 
-.gamif-quick-profile {
-  display: flex;
-  width: 100%;
+.gamif-quick-profile-background-effects-wrapper {
+  position: absolute;
+}
 
+.gamif-quick-profile-content {
+  width: 100%;
+  display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 999;
 }
 
 .gamif-quick-profile.status {
@@ -656,11 +689,18 @@
 }
 
 .gamif-quick-profile.badges {
+  display: flex;
   flex-direction: row;
   justify-content: space-around;
   height: 50px;
-  width: 50%;
+  width: 80%;
   font-size: 200%;
+}
+
+.gamif-quick-profile-single-badge {
+  height: 40px;
+  margin: 5px 5px 0 5px;
+  background: transparent;
 }
 
 .gamif-quick-profile.message-button {
@@ -801,6 +841,10 @@
 
 .statistic-button-left {
   width: 30%;
+  max-width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .statistic-button-right {
@@ -853,7 +897,8 @@
 }
 
 .single-quick-statistic-component {
-    height: 24px;
-    margin-left: 5px;
-    margin-right: 5px;
+    // height: 24px;
+    padding: 0 10px 0 10px;
+    margin-left: 3px;
+    margin-right: 3px;
 }
