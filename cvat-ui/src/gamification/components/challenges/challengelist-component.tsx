@@ -35,9 +35,9 @@ export default function ChallengeList(): JSX.Element {
                     ))}
                 </div>
             </div>
-            <Button onClick={() => dispatch(getChallengesAsync())}> Get Challenges </Button>
-            <Button onClick={() => dispatch(addChallenge())}> Add Challenge </Button>
-            <Button onClick={() => dispatch(saveChallenges(challenges.availableChallenges))}> Save Challenges </Button>
+            <Button className='gamif-debug-button' onClick={() => dispatch(getChallengesAsync())}> Get Challenges </Button>
+            <Button className='gamif-debug-button' onClick={() => dispatch(addChallenge())}> Add Challenge </Button>
+            <Button className='gamif-debug-button' onClick={() => dispatch(saveChallenges(challenges.availableChallenges))}> Save Challenges </Button>
         </>
     );
 }

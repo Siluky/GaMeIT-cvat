@@ -174,16 +174,17 @@ export function removeBadgefromProfile(badgeId: number): AnyAction {
 export function toggleBadgeInProfile(badgeId: number): ThunkAction<void, {}, {}, AnyAction> {
     const badgeState = getCVATStore().getState().badges;
     const found = badgeState.badgesinProfile.find((el: number) => el === badgeId);
+    console.log('🚀 ~ file: badge-actions.ts ~ line 177 ~ toggleBadgeInProfile ~ badgeId', badgeId);
 
     return (dispatch) => {
         if (found) {
-            console.log('Badge found in Profile!');
+            // console.log('Badge found in Profile!');
             dispatch(removeBadgefromProfile(badgeId));
         } else if (badgeState.badgesinProfile.length >= 3) {
-            console.log('Badge Profile already contains 3 badges!');
+            // console.log('Badge Profile already contains 3 badges!');
             dispatch(addBadgetoProfileFailed());
         } else {
-            console.log('Adding badge to Profile');
+            // console.log('Adding badge to Profile');
             dispatch(addBadgetoProfileSuccess(badgeId));
         }
     };

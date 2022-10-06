@@ -2,13 +2,12 @@
 //
 // SPDX-License-Identifier: MIT
 
-// SPDX-License-Identifier: MIT
-
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
+// eslint-disable-next-line import/no-cycle
 import { updateUserData } from './user-data-actions';
 
 const cvat = getCore();

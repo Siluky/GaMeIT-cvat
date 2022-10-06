@@ -157,8 +157,8 @@ interface ProfileStyle {
     background: string,
     color: string,
     border: string,
-    backgroundElements: number,
     avatar: number,
+    backgroundElements: number,
     avatarBorder: string,
 }
 

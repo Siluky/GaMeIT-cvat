@@ -8,7 +8,9 @@ import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { UserData } from '../gamif-interfaces';
 import { addQuickStatistic } from './statistics-actions';
-import { updateBalance } from './shop-actions';
+// eslint-disable-next-line import/no-cycle
+import { initShop, updateBalance } from './shop-actions';
+import { toggleBadgeInProfile } from './badge-actions';
 
 const cvat = getCore();
 
@@ -98,7 +100,8 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 tags_set: userDataImport.tags_set_total,
                 images_annotated_night: userDataImport.images_annotated_night,
                 annotation_time: userDataImport.annotation_time_total,
-                annotation_time_avg: userDataImport.annotation_time_total / userDataImport.images_annotated_total,
+                // eslint-disable-next-line max-len
+                annotation_time_avg: Math.floor(userDataImport.annotation_time_total / userDataImport.images_annotated_total),
                 annotation_streak_current: userDataImport.annotation_streak_current,
                 annotation_streak_max: userDataImport.annotation_streak_max,
                 badges_obtained: userDataImport.badges_obtained_total,
@@ -122,11 +125,24 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             const username = userDataImport.user;
             dispatch(updateUserName(username));
 
-            const selectedStatsImport = userDataImport.selectedStatistics.split(',') ?? '1,2,3';
+            // Selected Badges / Statistics + Bought Items are stored as a string with the ids
+            // separated by commas, e.g., "1,2,3" --> split them and parse to int
+
+            const selectedStatsImport = userDataImport.selectedStatistics.split(',');
             const selectedStatIds = selectedStatsImport.map((id: string) => parseInt(id, 10));
             dispatch(addQuickStatistic(selectedStatIds));
 
             dispatch(updateBalance(userDataAllTime.currentBalance));
+
+            const boughtItemsImport = userDataImport.items_bought.split(',');
+            const boughtItems = boughtItemsImport.map((id: string) => parseInt(id, 10));
+            dispatch(initShop(boughtItems));
+
+            const selectedBadgesImport = userDataImport.items_bought.split(',');
+            console.log('🚀 ~ file: user-data-actions.ts ~ line 142 ~ loadUserDataThunk ~ selectedBadgesImport', selectedBadgesImport);
+            // eslint-disable-next-line max-len
+            // FIXME: Probably do one dispatch with an array --> initBadges action
+            selectedBadgesImport.map((id: string) => dispatch(toggleBadgeInProfile(parseInt(id, 10))));
 
             const userDataSession: UserData = {
                 last_login: Date.now(),
@@ -188,6 +204,24 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
     }
     stats = stats.slice(0, -1); // remove trailing comma
 
+    const { badgesinProfile } = state.badges;
+    let badgeIds = '';
+    for (const id of badgesinProfile) {
+        badgeIds += id.toString();
+        badgeIds += ',';
+    }
+    badgeIds = badgeIds.slice(0, -1); // remove trailing comma
+
+    let itemsBought = '';
+    const items = shopState.availableItems;
+    for (const item of items) {
+        if (item.bought) {
+            itemsBought += item.id.toString();
+            itemsBought += ',';
+        }
+    }
+    itemsBought = itemsBought.slice(0, -1); // remove trailing comma
+
     console.log('🚀 ~ file: user-data-actions.ts ~ line 184 ~ saveUserData ~ stats', stats);
 
     const userDataPrepared = {
@@ -214,7 +248,9 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         items_bought_total: totalData.items_bought,
         chat_messages_total: totalData.chat_messages,
 
+        items_bought: itemsBought,
         selectedStatistics: stats,
+        selectedBadges: badgeIds,
     };
 
     return async (dispatch) => {

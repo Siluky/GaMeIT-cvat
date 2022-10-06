@@ -10,7 +10,7 @@ import { BadgeState, BadgeTier } from '../gamif-interfaces';
 const defaultState: BadgeState = {
     availableBadges: badges,
     selectedBadgeId: 0,
-    badgesinProfile: [1],
+    badgesinProfile: [],
     currentUserId: 0,
     loading: false,
 };

@@ -59,6 +59,7 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
     useEffect(() => {
         getFriendsListAsync();
     });
+    const dispatch = useDispatch();
 
     const { friends } = props;
 
@@ -76,6 +77,8 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                         <InfoCircleFilled />
                     </Popover>
                 )}
+                // TODO: Check if Works
+                onClick={() => dispatch(getFriendsListAsync())}
                 key='friends_list'
             >
                 <Popover

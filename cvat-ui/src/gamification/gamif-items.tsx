@@ -858,7 +858,7 @@ export const items: ShopItem[] = [
     {
         id: 4,
         title: 'Streak Saver',
-        price: 100,
+        price: 200,
         repeatable: true,
         bought: false,
         visible: true,
@@ -877,7 +877,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 6,
-        title: 'Default Profile Background',
+        title: 'Default Background',
         price: 100,
         repeatable: false,
         bought: true,
@@ -890,7 +890,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 7,
-        title: 'Green Profile Background',
+        title: 'Green Background',
         price: 200,
         repeatable: false,
         bought: false,
@@ -903,7 +903,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 8,
-        title: 'Blue Profile Background',
+        title: 'Blue Background',
         price: 200,
         repeatable: false,
         bought: false,
@@ -916,7 +916,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 9,
-        title: 'Red Profile Background',
+        title: 'Red Background',
         price: 200,
         repeatable: false,
         bought: false,
@@ -929,7 +929,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 10,
-        title: 'Tri-Color Profile Background 1',
+        title: 'Tri-Color Background 1',
         price: 1000,
         repeatable: false,
         bought: false,
@@ -947,7 +947,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 11,
-        title: 'Tri-Color Profile Background 2',
+        title: 'Tri-Color Background 2',
         price: 100,
         repeatable: false,
         bought: false,
@@ -965,7 +965,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 12,
-        title: 'Tri-Color Profile Background 3',
+        title: 'Tri-Color Background 3',
         price: 100,
         repeatable: false,
         bought: false,
@@ -983,7 +983,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 13,
-        title: 'Blue-Purple Profile Background',
+        title: 'Blue-Purple Background',
         price: 100,
         repeatable: false,
         bought: false,
@@ -1038,7 +1038,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 16,
-        title: 'No Profile Border',
+        title: 'No Border',
         price: 100,
         repeatable: false,
         bought: false,
@@ -1048,7 +1048,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 17,
-        title: 'Green Profile Border',
+        title: 'Green Border',
         price: 100,
         repeatable: false,
         bought: false,
@@ -1058,7 +1058,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 18,
-        title: 'Blue Profile Border',
+        title: 'Blue Border',
         price: 100,
         repeatable: false,
         bought: false,
@@ -1068,7 +1068,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 19,
-        title: 'Red Profile Border',
+        title: 'Red Border',
         price: 100,
         repeatable: false,
         bought: false,

@@ -13,9 +13,9 @@ import {
     setAdditionalClassNames,
     setColor, setProfileBackground, setProfileBackgroundEffects, setProfileBorder,
 } from 'gamification/actions/social-actions';
-import { upgradeBadgeTier } from 'gamification/actions/badge-actions';
-import { incrementEnergy } from 'gamification/actions/energizer-actions';
-import { addChallenge } from 'gamification/actions/challenge-actions';
+// import { upgradeBadgeTier } from 'gamification/actions/badge-actions';
+// import { incrementEnergy } from 'gamification/actions/energizer-actions';
+// import { addChallenge } from 'gamification/actions/challenge-actions';
 import { SketchOutlined } from '@ant-design/icons';
 import ShopItemComponent from './shop-item';
 
@@ -45,34 +45,34 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const { items, currentBalance, selectedItemId } = props;
     const dispatch = useDispatch();
 
-    const mysteryGift = (): void => {
-        const random = Math.random() * 100;
-        console.log('🚀 ~ file: shop-window.tsx ~ line 50 ~ mysteryGift ~ random', random);
+    // const mysteryGift = (): void => {
+    //     const random = Math.random() * 100;
+    //     console.log('🚀 ~ file: shop-window.tsx ~ line 50 ~ mysteryGift ~ random', random);
 
-        if (random > 95) {
-            // buy secret item
-        } else if (random > 90) {
-            // buy secret item
-        } else if (random > 50) {
-            dispatch(incrementEnergy(10));
-        } else if (random > 35) {
-            dispatch(addChallenge());
-        } else if (random > 20) {
-            // add streak saver
-        } else {
-            // get nothing
-        }
-    };
+    //     if (random > 95) {
+    //         // buy secret item
+    //     } else if (random > 90) {
+    //         // buy secret item
+    //     } else if (random > 50) {
+    //         dispatch(incrementEnergy(10));
+    //     } else if (random > 35) {
+    //         dispatch(addChallenge());
+    //     } else if (random > 20) {
+    //         // add streak saver
+    //     } else {
+    //         // get nothing
+    //     }
+    // };
 
     const useItem = (id: number): void => {
         dispatch(setProfileBackgroundEffects(0));
 
         switch (id) {
-            case 1: dispatch(incrementEnergy(10)); break;
-            case 2: mysteryGift(); break;
-            case 3: dispatch(addChallenge()); break;
-            case 4: // TODO: Streak saver; break;
-            case 5: dispatch(upgradeBadgeTier(12)); break; // Money Badge
+            // case 1: dispatch(incrementEnergy(10)); break;
+            // case 2: mysteryGift(); break;
+            // case 3: dispatch(addChallenge()); break;
+            // case 4: // TODO: Streak saver; break;
+            // case 5: dispatch(upgradeBadgeTier(12)); break; // Money Badge
             case 6: {
                 dispatch(setProfileBackground('#e6e6e6'));
                 dispatch(setAdditionalClassNames(''));
@@ -139,7 +139,9 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             <div className='gamif-shop-window-header'>
                 <Button
                     className='gamif-shop-window-button'
-                    onClick={() => { dispatch(purchaseItem(selectedItemId)); }}
+                    onClick={() => {
+                        dispatch(purchaseItem(selectedItemId));
+                    }}
                 >
                     Buy
                 </Button>
@@ -161,7 +163,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             <div className='gamif-shop-window-items-wrapper'>
                 <Row className='gamif-shop-window-items-row'>
                     {items.map((_item, index) => (_item.bought || _item.visible) && (
-                        <Col flex={1}>
+                        <Col flex={1} key={index}>
                             <ShopItemComponent key={index} item={_item} selected={selectedItemId === _item.id} />
                         </Col>
                     ))}

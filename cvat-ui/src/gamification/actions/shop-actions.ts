@@ -1,13 +1,16 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
+/* eslint-disable import/no-cycle */
 
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
-import { setProfileBackground } from './social-actions';
+import { incrementEnergy } from './energizer-actions';
+import { addChallenge } from './challenge-actions';
+import { upgradeBadgeTier } from './badge-actions';
 
 const cvat = getCore();
 
@@ -15,6 +18,8 @@ export enum ShopActionTypes {
     GET_SHOP_DATA_ASYNC = 'GET_SHOP_DATA_ASYNC',
     GET_SHOP_DATA_FAILED = 'GET_SHOP_DATA_FAILED',
     GET_SHOP_DATA_SUCCESS = 'GET_SHOP_DATA_SUCCESS',
+
+    INIT_SHOP = 'INIT_SHOP',
 
     UPDATE_BALANCE = 'UPDATE_BALANCE',
 
@@ -30,6 +35,13 @@ export function getShopDataFailed(error: any): AnyAction {
     return {
         type: ShopActionTypes.GET_SHOP_DATA_FAILED,
         payload: { error },
+    };
+}
+
+export function initShop(ids: number[]): AnyAction {
+    return {
+        type: ShopActionTypes.INIT_SHOP,
+        payload: ids,
     };
 }
 
@@ -80,10 +92,32 @@ export function useItemFailed(itemId: number): AnyAction {
     };
 }
 
-export function useItem(itemId: number): ThunkAction<void, {}, {}, AnyAction> {
+export function useRepeatableItem(itemId: number): ThunkAction<void, {}, {}, AnyAction> {
     return (dispatch) => {
+        const state = getCVATStore().getState();
         switch (itemId) {
-            case 1: dispatch(setProfileBackground('green')); break;
+            case 1: dispatch(incrementEnergy(10)); break;
+            case 2: {
+                const random = Math.random() * 100;
+                console.log('🚀 ~ file: shop-window.tsx ~ line 50 ~ mysteryGift ~ random', random);
+
+                if (random > 95) {
+                    // buy secret item
+                } else if (random > 90) {
+                    // buy secret item
+                } else if (random > 50) {
+                    dispatch(incrementEnergy(10));
+                } else if (random > 35 && state.challenges.availableChallenges.length < 3) {
+                    dispatch(addChallenge());
+                } else if (random > 20) {
+                    // TODO: add streak saver
+                } else {
+                    // get nothing
+                }
+            } break;
+            case 3: dispatch(addChallenge()); break;
+            case 4: // TODO: Streak saver; break;
+            case 5: dispatch(upgradeBadgeTier(12)); break; // TODO: Money Badge
             default: break;
         }
     };
@@ -105,15 +139,12 @@ export function purchaseItemSuccess(itemId: number): AnyAction {
 export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyAction> {
     const shopState = getCVATStore().getState().shop;
     const item = shopState.availableItems.find((_item: ShopItem) => _item.id === itemId);
-    // console.log('🚀 ~ file: shop-actions.ts ~ line 83 ~ purchaseItem ~ state.currentBalance',
-    // shopState.currentBalance);
-    // console.log('🚀 ~ file: shop-actions.ts ~ line 84 ~ purchaseItem ~ item.price', item.price);
     return (dispatch) => {
         if (shopState.currentBalance <= item.price || item.bought) {
             dispatch(purchaseItemFailed());
         } else {
             dispatch(purchaseItemSuccess(itemId));
-            if (item.repeatable) { dispatch(useItem(itemId)); }
+            if (item.repeatable) { dispatch(useRepeatableItem(itemId)); }
             dispatch(updateBalance(-item.price));
         }
     };
