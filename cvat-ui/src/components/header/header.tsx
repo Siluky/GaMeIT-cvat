@@ -21,7 +21,8 @@ import Icon, {
     UserOutlined,
     TeamOutlined,
     PlusOutlined,
-    RadarChartOutlined,
+    BugFilled,
+    FormOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -39,7 +40,7 @@ import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
 import gamifconsts from 'gamification/gamifconsts';
 
-import { CVATLogo, EnergizerIcon } from 'icons';
+import { BadgeGreyIcon, CVATLogo, EnergizerIcon } from 'icons';
 import ChangePasswordDialog from 'components/change-password-modal/change-password-modal';
 import CVATTooltip from 'components/common/cvat-tooltip';
 import { switchSettingsDialog as switchSettingsDialogAction } from 'actions/settings-actions';
@@ -52,12 +53,16 @@ import {
     saveCurrentEnergyAsync,
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
+import { saveProfileDataAsync } from 'gamification/actions/social-actions';
 import { initializeUserData } from 'gamification/actions/user-data-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
+import { Input } from 'antd';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
+
+const { TextArea } = Input;
 
 interface Tool {
     name: string;
@@ -302,9 +307,6 @@ function HeaderContainer(props: Props): JSX.Element {
 
     const userMenu = (
         <Menu className='cvat-header-menu'>
-            {/* gamificationEnabled && [...]
-            --> Possibility to implement the gamification on-off switch TODO:
-            */}
             <Popover
                 placement='leftTop'
                 className='gamif-badge-popover'
@@ -313,8 +315,8 @@ function HeaderContainer(props: Props): JSX.Element {
                 mouseLeaveDelay={10}
             >
                 <Menu.Item
-                    // TODO: Insert custom badge icon
-                    icon={<RadarChartOutlined />}
+                    // FIXME:
+                    icon={<BadgeGreyIcon />}
                     key='badge_profile'
                 >
                     Badges
@@ -565,8 +567,33 @@ function HeaderContainer(props: Props): JSX.Element {
                 >
                     Save
                 </Button>
-                <Popover content={<ShopWindow />} mouseLeaveDelay={300}>
+                <Popover
+                    content={<ShopWindow />}
+                    mouseLeaveDelay={300}
+                    // TODO: Test
+                    onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
+                >
                     <Button type='text'> Shop </Button>
+                </Popover>
+                <Popover
+                    content={(
+                        <div style={{ width: '300px', height: '200px' }}>
+                            <TextArea rows={4} />
+                        </div>
+                    )}
+                    mouseLeaveDelay={300}
+                >
+                    <Button type='text' icon={<BugFilled />} />
+                </Popover>
+                <Popover
+                    content={(
+                        <div style={{ width: '300px', height: '200px' }}>
+                            <TextArea rows={4} />
+                        </div>
+                    )}
+                    mouseLeaveDelay={300}
+                >
+                    <Button type='text' icon={<FormOutlined />} />
                 </Popover>
             </div>
             <div className='cvat-right-header'>

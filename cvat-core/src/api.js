@@ -1020,6 +1020,11 @@ function build() {
                 return result;
             },
 
+            async saveProfileData(userId, data) {
+                const result = await PluginRegistry.apiWrapper(cvat.social.saveProfileData, userId, data);
+                return result;
+            },
+
             async chatHistory(userId) {
                 const result = await PluginRegistry.apiWrapper(cvat.social.chatHistory, userId);
                 return result;

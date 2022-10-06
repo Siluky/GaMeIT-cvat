@@ -113,14 +113,17 @@ class UserProfile(models.Model):
 
     # social-related data
     chat_messages_total = models.IntegerField(default=0)
+
+    # profile data
     profile_style = models.CharField(max_length=255, default='')
-    avatar = models.CharField(max_length=64, default='')
-    avatar_border = models.CharField(max_length=64, default='')
     profile_border = models.CharField(max_length=64, default='')
     profile_background = models.CharField(max_length=64, default='')
+    profile_color = models.CharField(max_length=64, default='')
     online_status = models.CharField(max_length=32, choices=OnlineStatusChoice.choices(),
                     default=OnlineStatusChoice.ONLINE)
 
+    avatar = models.CharField(max_length=64, default='')
+    avatar_border = models.CharField(max_length=64, default='')
     # statistics-related data
     selectedStatistics = models.CharField(max_length=255, default='')
 

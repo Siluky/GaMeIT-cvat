@@ -426,6 +426,11 @@ const config = require('./config');
             return friends;
         };
 
+        cvat.social.saveProfileData.implementation = async (userId, data) => {
+            const friends = await serverProxy.social.saveProfileData(userId, data);
+            return friends;
+        };
+
         cvat.social.chatHistory.implementation = async (userId) => {
             const items = await serverProxy.social.chatHistory(userId);
             return items;

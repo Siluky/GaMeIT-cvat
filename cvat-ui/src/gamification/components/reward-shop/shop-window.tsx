@@ -82,22 +82,22 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             case 7: dispatch(setProfileBackground('#bbf1c4')); break;
             case 8: dispatch(setProfileBackground('#aec6cf')); break;
             case 9: dispatch(setProfileBackground('#ff6961')); break;
-            case 10:
-                dispatch(setProfileBackground(''));
-                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-1'));
-                break;
-            case 11:
-                dispatch(setProfileBackground(''));
-                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-2'));
-                break;
-            case 12:
-                dispatch(setProfileBackground(''));
-                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-3'));
-                break;
-            case 13: {
+            case 10: {
                 dispatch(setAdditionalClassNames('gamif-profile-blue-blackground'));
                 break;
             }
+            case 11:
+                dispatch(setProfileBackground(''));
+                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-1'));
+                break;
+            case 12:
+                dispatch(setProfileBackground(''));
+                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-2'));
+                break;
+            case 13:
+                dispatch(setProfileBackground(''));
+                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-3'));
+                break;
             case 14: {
                 dispatch(setProfileBackground(''));
                 dispatch(setAdditionalClassNames('gamif-quick-profile-shooting-stars-background'));
@@ -117,18 +117,18 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 dispatch(setProfileBorder(''));
                 dispatch(setAdditionalClassNames('gamif-profile-anim-border-red'));
                 break;
-            case 22:
-                dispatch(setAdditionalClassNames('gamif-profile-rainbow-effect'));
-                dispatch(setProfileBorder('#ff6961'));
-                break;
-            case 23: {
+            case 22: {
                 dispatch(setAdditionalClassNames('gamif-profile-christmas-box'));
                 break;
             }
-            case 24: {
+            case 23: {
                 dispatch(setAdditionalClassNames('gamif-profile-rainbow-box'));
                 break;
             }
+            case 24:
+                dispatch(setAdditionalClassNames('gamif-profile-rainbow-effect'));
+                dispatch(setProfileBorder('#ff6961'));
+                break;
             case 25: /* TODO: hidden */ break;
             default: break;
         }

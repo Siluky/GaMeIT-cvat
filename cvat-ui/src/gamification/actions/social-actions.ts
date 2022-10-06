@@ -6,6 +6,7 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
+import { getCVATStore } from 'cvat-store';
 
 const cvat = getCore();
 
@@ -54,7 +55,7 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
                 username: profile.user,
                 userId: profile.id,
                 status: profile.online_status,
-                selectedBadges: profile.selectedBadges.split(',').map((id: string) => parseInt(id, 10)) ?? [1, 2, 3],
+                selectedBadges: profile.selectedBadges.split(',').map((id: string) => parseInt(id, 10)),
                 profileStyle: {
                     additionalClassNames: '',
                     background: profile.profile_background,
@@ -154,8 +155,14 @@ function saveProfileDataFailed(error: any): AnyAction {
 export function saveProfileDataAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function saveProfileDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
-            // TODO: Not implemented yet!
-            const profiles = await cvat.social.getProfiles();
+            const state = getCVATStore().getState();
+            const { userId } = state.gamifuserdata;
+            const style = state.social.ownProfile.profileStyle;
+
+            const data = style;
+            // FIXME:
+
+            const profiles = await cvat.social.saveProfileData(userId, data);
 
             dispatch(saveProfileDataSuccess(profiles));
         } catch (error) {
@@ -164,7 +171,7 @@ export function saveProfileDataAsync(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
-// TODO: M;ind the any type in params
+// TODO: Mind the any type in params
 function getChatHistorySuccess(messages: any): AnyAction {
     return {
         type: SocialActionTypes.GET_CHAT_HISTORY_SUCCESS,

@@ -1981,6 +1981,20 @@
                 return response.data.results;
             }
 
+            async function profileDataSave(userId, data) {
+                console.log('🚀 ~ file: server-proxy.js ~ line 1985 ~ ServerProxy ~ profileDataSave ~ data', data);
+                const { backendAPI } = config;
+                let response = null;
+
+                response = await Axios.patch(`${backendAPI}/${userId}`, data, {
+                    proxy: config.proxy,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                return response.data; // TODO: double-check, maybe response.data.results
+            }
+
             async function getChatHistory(userId) {
                 const { backendAPI } = config;
                 let response = null;
@@ -2249,6 +2263,7 @@
                     social: {
                         value: Object.freeze({
                             friends: getFriendsList,
+                            saveProfileData: profileDataSave,
                             chatHistory: getChatHistory,
                             sendMessage: sendMessageToUser,
                             getStatus: getOnlineStatus,
