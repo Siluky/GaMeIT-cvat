@@ -892,8 +892,13 @@ function build() {
                 return result;
             },
 
-            async save(userId, badgeId, progress) {
-                const result = await PluginRegistry.apiWrapper(cvat.badges.save, userId, badgeId, progress);
+            async save(userId, badgeId, tier) {
+                const result = await PluginRegistry.apiWrapper(cvat.badges.save, userId, badgeId, tier);
+                return result;
+            },
+
+            async saveSelected(userId, ids) {
+                const result = await PluginRegistry.apiWrapper(cvat.badges.saveSelected, userId, ids);
                 return result;
             },
         },

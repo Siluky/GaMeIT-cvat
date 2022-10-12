@@ -100,7 +100,7 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             };
         }
 
-        case BadgeActionTypes.UPDATE_BADGE_TIERS: {
+        case BadgeActionTypes.UPDATE_BADGE_TIERS_SUCCESS: {
             return {
                 ...state,
                 availableBadges: action.payload,

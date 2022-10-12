@@ -15,6 +15,7 @@ const userdataInit: UserData = {
     annotation_time_avg: 0,
     annotation_streak_current: 0,
     annotation_streak_max: 0,
+    streak_saver_active: false,
     badges_obtained: 0,
     challenges_completed: 0,
     energy_gained: 0,
@@ -51,16 +52,17 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
             const sessionData = state.userdata_session;
             const totalData = state.userdata_total;
 
-            console.log('🚀 ~ file: user-data-reducer.ts ~ line 56 ~ action.payload.field_name', action.payload.field_name);
+            // console.log('🚀 ~ file: user-data-reducer.ts ~ line 56 ~
+            // action.payload.field_name', action.payload.field_name);
 
             switch (action.payload.field_name) {
                 case 'images_annotated': {
                     sessionData.images_annotated += action.payload.increment;
                     totalData.images_annotated += action.payload.increment;
                     // eslint-disable-next-line max-len
-                    sessionData.annotation_time_avg = Math.round((sessionData.images_annotated / sessionData.annotation_time) * 10) / 10;
+                    sessionData.annotation_time_avg = Math.round((sessionData.annotation_time / sessionData.images_annotated) * 10) / 10;
                     // eslint-disable-next-line max-len
-                    totalData.annotation_time_avg = Math.round((totalData.images_annotated / totalData.annotation_time) * 10) / 10;
+                    totalData.annotation_time_avg = Math.round((totalData.annotation_time / totalData.images_annotated) * 10) / 10;
                     break;
                 }
                 case 'tags_set': {
@@ -100,29 +102,35 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                     totalData.energy_gained += action.payload.increment;
                     break;
                 }
-                case 'energizers_completed': {
-                    sessionData.energizers_completed += action.payload.increment;
-                    totalData.energizers_completed += action.payload.increment;
-                    break;
-                }
                 case 'energy_expired': {
                     sessionData.energy_expired += action.payload.increment;
                     totalData.energy_expired += action.payload.increment;
                     break;
                 }
+                case 'energizers_completed': {
+                    sessionData.energizers_completed += action.payload.increment;
+                    totalData.energizers_completed += action.payload.increment;
+                    break;
+                }
                 case 'tetris_played': {
                     sessionData.tetris_played += action.payload.increment;
                     totalData.tetris_played += action.payload.increment;
+                    sessionData.energizers_completed += action.payload.increment;
+                    totalData.energizers_completed += action.payload.increment;
                     break;
                 }
                 case 'quiz_played': {
                     sessionData.quiz_played += action.payload.increment;
                     totalData.quiz_played += action.payload.increment;
+                    sessionData.energizers_completed += action.payload.increment;
+                    totalData.energizers_completed += action.payload.increment;
                     break;
                 }
                 case 'snake_played': {
                     sessionData.snake_played += action.payload.increment;
                     totalData.snake_played += action.payload.increment;
+                    sessionData.energizers_completed += action.payload.increment;
+                    totalData.energizers_completed += action.payload.increment;
                     break;
                 }
                 case 'annotation_coins_obtained': {

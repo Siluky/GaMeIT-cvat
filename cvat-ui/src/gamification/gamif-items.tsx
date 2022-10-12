@@ -7,11 +7,12 @@ import 'gamification/gamif-styles.scss';
 import 'gamification/gamif-profile-styles.scss';
 
 import {
-    ThunderboltFilled, GiftFilled, AndroidFilled,
+    ThunderboltFilled,
     UserOutlined, UserAddOutlined, UserDeleteOutlined,
     UserSwitchOutlined, UsergroupAddOutlined, QuestionCircleOutlined,
 } from '@ant-design/icons';
 import {
+    AddChallengeIcon,
     AnnotationCoinsMaxIcon,
     AnnotationCoinsObtainedIcon,
     AnnotationMachineBronze, AnnotationMachineGold, AnnotationMachineGrey, AnnotationMachineSilver,
@@ -40,11 +41,17 @@ import {
     ItemsBoughtIcon,
     MillionaireBronze, MillionaireGold, MillionaireGrey, MillionaireSilver,
     MoneyManBronze, MoneyManGold, MoneyManGrey, MoneyManSilver,
+    MysteryGiftBadgeBronze,
+    MysteryGiftBadgeGold,
+    MysteryGiftBadgeGrey,
+    MysteryGiftBadgeSilver,
+    MysteryGiftIcon,
     NightOwlGold,
     NightOwlGrey,
     QuizIcon,
     SerialAnnotatorBronze, SerialAnnotatorGold, SerialAnnotatorGrey, SerialAnnotatorSilver,
     SnakeIcon,
+    StreakSaverIcon,
     TaggerBronze, TaggerGold, TaggerGrey, TaggerSilver,
     TagsSetIcon,
     TetrisGold,
@@ -54,7 +61,7 @@ import {
     UnlockerBronze, UnlockerGold, UnlockerGrey, UnlockerSilver,
 } from 'icons';
 import {
-    Badge, BadgeTier, Challenge, ChallengeType, ShopItem, Statistic, UserData,
+    Badge, BadgeTier, Challenge, ChallengeType, OnlineStatus, ShopItem, Statistic, UserData,
 } from './gamif-interfaces';
 
 // File for individual challenges / badges, mapping them to their IDs etc
@@ -104,9 +111,9 @@ export const badges: Badge[] = [
         title: 'Time Flies When...',
         instruction: 'Spend GOAL hours annotating',
         progress: 0,
-        goal_bronze: 10,
-        goal_silver: 50,
-        goal: 100,
+        goal_bronze: 10 * 60 * 60,
+        goal_silver: 50 * 60 * 60,
+        goal: 100 * 60 * 60,
         tier: BadgeTier.NOT_OBTAINED,
         goalunit: 'Hours',
         receivedOn: null,
@@ -568,6 +575,26 @@ export const badges: Badge[] = [
 //     },
 // ];
 
+export const encodeBadgeTier = (tier: BadgeTier): number => {
+    switch (tier) {
+        case BadgeTier.NOT_OBTAINED: return 0;
+        case BadgeTier.BRONZE: return 1;
+        case BadgeTier.SILVER: return 2;
+        case BadgeTier.GOLD: return 3;
+        default: return 0;
+    }
+};
+
+export const decodeBadgeTier = (tier: number): BadgeTier => {
+    switch (tier) {
+        case 0: return BadgeTier.NOT_OBTAINED;
+        case 1: return BadgeTier.BRONZE;
+        case 2: return BadgeTier.SILVER;
+        case 3: return BadgeTier.GOLD;
+        default: return BadgeTier.NOT_OBTAINED;
+    }
+};
+
 export function getBadgeIcon(id: number, tier: BadgeTier): React.ReactNode {
     let tierCode = 0;
     switch (tier) {
@@ -633,6 +660,10 @@ export function getBadgeIcon(id: number, tier: BadgeTier): React.ReactNode {
         case '13-1': return <UnlockerBronze />;
         case '13-2': return <UnlockerSilver />;
         case '13-3': return <UnlockerGold />;
+        case '14-0': return <MysteryGiftBadgeGrey />;
+        case '14-1': return <MysteryGiftBadgeBronze />;
+        case '14-2': return <MysteryGiftBadgeSilver />;
+        case '14-3': return <MysteryGiftBadgeGold />;
 
         case '101-0': return <FunHaterGrey />;
         case '101-3': return <FunHaterGold />;
@@ -720,14 +751,14 @@ export const stats: Statistic[] = [
     {
         id: 4,
         value: 0,
-        unit: 'days',
+        unit: 'Days',
         tooltip_total: 'Longest annotation streak',
         tooltip_session: 'Current annotation streak',
     },
     {
         id: 5,
         value: 0,
-        unit: 'hrs',
+        unit: 'sec',
         tooltip_total: 'Time spent annotating',
         tooltip_session: 'Time spent annotating this session',
     },
@@ -842,7 +873,7 @@ export const items: ShopItem[] = [
         repeatable: true,
         bought: false,
         visible: true,
-        icon: <GiftFilled />,
+        icon: <MysteryGiftIcon />,
         onPurchase: () => {},
     },
     {
@@ -852,7 +883,7 @@ export const items: ShopItem[] = [
         repeatable: true,
         bought: false,
         visible: true,
-        icon: <AndroidFilled />,
+        icon: <AddChallengeIcon />,
         onPurchase: () => {},
     },
     {
@@ -862,7 +893,7 @@ export const items: ShopItem[] = [
         repeatable: true,
         bought: false,
         visible: true,
-        icon: <AndroidFilled />,
+        icon: <StreakSaverIcon />,
         onPurchase: () => {},
     },
     {
@@ -1043,7 +1074,7 @@ export const items: ShopItem[] = [
         repeatable: false,
         bought: false,
         visible: true,
-        icon: <AndroidFilled />,
+        icon: itemPortrait({ background: 'transparent' }, { outline: '3px solid #bbf1c4' }),
         onPurchase: () => {},
     },
     {
@@ -1193,6 +1224,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 1,
         instruction: 'Annotate GOAL Images',
+        initProgress: 0,
         progress: 0,
         goal: 40,
         goal_variance: 20,
@@ -1203,6 +1235,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 2,
         instruction: 'Annotate GOAL Minutes',
+        initProgress: 0,
         progress: 0,
         goal: 45,
         goal_variance: 15,
@@ -1213,6 +1246,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 3,
         instruction: 'Annotate GOAL Minutes in one Session',
+        initProgress: 0,
         progress: 0,
         goal: 30,
         goal_variance: 10,
@@ -1223,6 +1257,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 4,
         instruction: 'Complete GOAL Energizers',
+        initProgress: 0,
         progress: 0,
         goal: 3,
         goal_variance: 1,
@@ -1233,6 +1268,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 5,
         instruction: 'Play Tetris GOAL times',
+        initProgress: 0,
         progress: 0,
         goal: 1,
         goal_variance: 2,
@@ -1243,6 +1279,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 6,
         instruction: 'Play Snake GOAL times',
+        initProgress: 0,
         progress: 0,
         goal: 1,
         goal_variance: 2,
@@ -1253,6 +1290,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 7,
         instruction: 'Play Quiz GOAL times',
+        initProgress: 0,
         progress: 0,
         goal: 2,
         goal_variance: 1,
@@ -1263,6 +1301,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 8,
         instruction: 'Obtain or upgrade GOAL badge',
+        initProgress: 0,
         progress: 0,
         goal: 1,
         goal_variance: 0,
@@ -1273,6 +1312,7 @@ export const availableChallenges: Challenge[] = [
     {
         id: 9,
         instruction: 'Collect GOAL Energy',
+        initProgress: 0,
         progress: 0,
         goal: 20,
         goal_variance: 10,
@@ -1296,3 +1336,92 @@ export function mapChallengeIdtoFieldName(id: number): keyof UserData {
         default: return 'images_annotated';
     }
 }
+
+export const encodeStatus = (status: OnlineStatus): number => {
+    switch (status) {
+        case OnlineStatus.OFFLINE: return 1;
+        case OnlineStatus.DO_NOT_DISTURB: return 2;
+        case OnlineStatus.ONLINE: return 3;
+        default: return 1;
+    }
+};
+
+export const decodeStatus = (status: number): OnlineStatus => {
+    switch (status) {
+        case 1: return OnlineStatus.OFFLINE;
+        case 2: return OnlineStatus.DO_NOT_DISTURB;
+        case 3: return OnlineStatus.ONLINE;
+        default: return OnlineStatus.OFFLINE;
+    }
+};
+
+export const getstatusStyle = (status: OnlineStatus): any => {
+    switch (status) {
+        case OnlineStatus.ONLINE: return { background: 'green' };
+        case OnlineStatus.DO_NOT_DISTURB: return { background: 'red' };
+        case OnlineStatus.OFFLINE: return { background: 'grey' };
+        default: return { background: 'grey' };
+    }
+};
+
+export const getProfileClassNames = (id: number): string => {
+    switch (id) {
+        case 0: return '';
+        case 1: return 'gamif-profile-blue-blackground';
+        case 2: return 'gamif-profile-tri-color-background-1';
+        case 3: return 'gamif-profile-tri-color-background-2';
+        case 4: return 'gamif-profile-tri-color-background-3';
+        case 5: return 'gamif-quick-profile-shooting-stars-background';
+        case 6: return 'gamif-profile-anim-border-blue';
+        case 7: return 'gamif-profile-anim-border-red';
+        case 8: return 'gamif-profile-christmas-box';
+        case 9: return 'gamif-profile-rainbow-box';
+        case 10: return 'gamif-profile-rainbow-effect';
+        default: return '';
+    }
+};
+
+export const getProfileBackground = (id: number): string => {
+    switch (id) {
+        case 0: return '';
+        case 1: return '#e6e6e6';
+        case 2: return '#bbf1c4';
+        case 3: return '#aec6cf';
+        case 4: return '#ff6961';
+        default: return '';
+    }
+};
+
+export const getProfileBorder = (id: number): string => {
+    switch (id) {
+        case 0: return '';
+        case 1: return '4px solid #bbf1c4';
+        case 2: return '4px solid #aec6cf';
+        case 3: return '4px solid #ff6961';
+        default: return '';
+    }
+};
+
+export const getProfileBackgroundElements = (id: number): JSX.Element => {
+    switch (id) {
+        case 1: return (
+            <>
+                <div className='night'>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                    <div className='shooting_star'> </div>
+                </div>
+            </>
+        );
+        default: return <></>;
+    }
+};

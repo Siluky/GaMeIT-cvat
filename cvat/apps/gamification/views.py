@@ -52,6 +52,11 @@ class FriendslistViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileDataSerializer
 
+    def get_queryset(self):
+        # currentUser = self.request.user
+        return UserProfile.objects.all()
+        # return UserProfile.objects.all().exclude(user = currentUser)
+
 class BadgeViewSet(viewsets.ModelViewSet):
     queryset = Badge.objects.all()
     serializer_class = BadgeSerializer
@@ -60,15 +65,35 @@ class BadgeStatusViewSet(viewsets.ModelViewSet):
     queryset = BadgeStatus.objects.all()
     serializer_class = BadgeStatusSerializer
 
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+        except Http404:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True) # will throw ValidationError
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except ValidationError:  # typically serializer is not valid
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class UserBadgeList(viewsets.GenericViewSet, mixins.ListModelMixin,
     mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     queryset = BadgeStatus.objects.all().order_by('id')
     serializer_class = BadgeStatusSerializer
 
     def get_queryset(self):
+        userId = self.request.query_params.get('id')
+        if userId:
+            pass
         currentUser = self.request.user
         currentUserProfile = UserProfile.objects.get(user = currentUser)
-        queryset = BadgeStatus.objects.filter(userProfile = currentUserProfile)
+        queryset = BadgeStatus.objects.filter(userId = currentUserProfile)
         return queryset
 
     # @action(detail=False, methods=['GET'])
@@ -96,11 +121,8 @@ class ChallengeStatusViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET','PUT'], serializer_class=SaveChallengesSerializer)
     def save(self, request):
         serializer = SaveChallengesSerializer(data=request.data)
-        print('Trying to save challenge')
-        print(serializer)
-        print(request.data)
         if serializer.is_valid(raise_exception=True):
-            print('SaveChallengeSerializer is valid')
+            # print('SaveChallengeSerializer is valid')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -135,7 +157,6 @@ class UserChallengeList(viewsets.GenericViewSet, mixins.ListModelMixin,
 class ShopItemViewSet(viewsets.ModelViewSet):
     queryset = ShopItem.objects.all()
     serializer_class = ShopItemSerializer
-
 
 class StatisticViewSet(viewsets.ModelViewSet):
     queryset = Statistic.objects.all()

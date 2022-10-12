@@ -5,8 +5,9 @@
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
-import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
+import { BadgeStatus, OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
+import { decodeBadgeTier, decodeStatus, encodeStatus } from 'gamification/gamif-items';
 
 const cvat = getCore();
 
@@ -54,16 +55,19 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
             const profiles: Profile[] = profilesImport.map((profile: any): Profile => ({
                 username: profile.user,
                 userId: profile.id,
-                status: profile.online_status,
-                selectedBadges: profile.selectedBadges.split(',').map((id: string) => parseInt(id, 10)),
+                status: decodeStatus(profile.online_status),
+                selectedBadges: [],
+                selectedBadgeStatuses: profile.selectedBadges.map((status: any): BadgeStatus => ({
+                    id: status.badgeId,
+                    tier: decodeBadgeTier(status.tier),
+                    receivedOn: status.receivedOn,
+                })) ?? [],
                 profileStyle: {
-                    additionalClassNames: '',
+                    additionalClassNames: profile.profile_class,
                     background: profile.profile_background,
                     border: profile.profile_border,
-                    backgroundElements: 0,
-                    avatar: profile.avatar,
-                    avatarBorder: profile.avatar_border,
-                    color: 'white',
+                    backgroundElements: profile.profile_background_elements,
+                    color: 0, // TODO:
                 },
                 chatActive: false,
             }));
@@ -89,14 +93,14 @@ export function setStatus(status: OnlineStatus): AnyAction {
     };
 }
 
-export function setAdditionalClassNames(names: string): AnyAction {
+export function setAdditionalClassNames(name: number): AnyAction {
     return {
         type: SocialActionTypes.SET_ADDITIONAL_CLASSNAMES,
-        payload: names,
+        payload: name,
     };
 }
 
-export function setProfileBackground(background: string): AnyAction {
+export function setProfileBackground(background: number): AnyAction {
     return {
         type: SocialActionTypes.SET_PROFILE_BACKGROUND,
         payload: background,
@@ -110,14 +114,14 @@ export function setColor(color: string): AnyAction {
     };
 }
 
-export function setProfileBorder(border: string): AnyAction {
+export function setProfileBorder(border: number): AnyAction {
     return {
         type: SocialActionTypes.SET_PROFILE_BORDER,
         payload: border,
     };
 }
 
-export function setProfileBackgroundEffects(backgroundElements: any): AnyAction {
+export function setProfileBackgroundEffects(backgroundElements: number): AnyAction {
     return {
         type: SocialActionTypes.SET_BACKGROUND_ELEMENTS,
         payload: backgroundElements,
@@ -147,7 +151,7 @@ function saveProfileDataSuccess(profile: Profile): AnyAction {
 
 function saveProfileDataFailed(error: any): AnyAction {
     return {
-        type: SocialActionTypes.SET_PROFILE_BORDER,
+        type: SocialActionTypes.SAVE_PROFILE_DATA_FAILED,
         payload: error,
     };
 }
@@ -155,14 +159,19 @@ function saveProfileDataFailed(error: any): AnyAction {
 export function saveProfileDataAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function saveProfileDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
-            const state = getCVATStore().getState();
-            const { userId } = state.gamifuserdata;
-            const style = state.social.ownProfile.profileStyle;
+            const { gamifuserdata, social } = getCVATStore().getState();
+            const style = social.ownProfile.profileStyle;
 
-            const data = style;
-            // FIXME:
+            const data = {
+                // selectedBadges: '',
+                online_status: encodeStatus(social.status),
+                profile_class: style.additionalClassNames,
+                profile_border: style.border,
+                profile_background: style.background,
+                profile_background_elements: style.backgroundElements,
+            };
 
-            const profiles = await cvat.social.saveProfileData(userId, data);
+            const profiles = await cvat.social.saveProfileData(gamifuserdata.userId, data);
 
             dispatch(saveProfileDataSuccess(profiles));
         } catch (error) {

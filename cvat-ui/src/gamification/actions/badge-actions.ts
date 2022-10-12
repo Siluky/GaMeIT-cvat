@@ -6,12 +6,15 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { getCVATStore } from 'cvat-store';
 import { ThunkAction } from 'redux-thunk';
-import { mapBadgeIdtoField } from 'gamification/gamif-items';
+import { decodeBadgeTier, encodeBadgeTier, mapBadgeIdtoField } from 'gamification/gamif-items';
 import { Badge, BadgeTier } from '../gamif-interfaces';
+// eslint-disable-next-line import/no-cycle
+import { updateUserData } from './user-data-actions';
 
 const cvat = getCore();
 
 export enum BadgeActionTypes {
+    INIT_PROFILE_BADGES = 'INIT_BADGES',
     LOAD_BADGES = 'LOAD_BADGES',
     SET_USER_PROFILE = 'SET_USER_PROFILE',
     LOAD_BADGES_FAILED = 'LOAD_BADGES_FAILED',
@@ -28,29 +31,28 @@ export enum BadgeActionTypes {
     SAVE_SELECTED_BADGES_SUCCESS = 'SAVE_SELECTED_BADGES_SUCCESS',
 
     REMOVE_BADGE_FROM_PROFILE = 'REMOVE_BADGE_FROM_PROFILE',
-    UPDATE_BADGE_TIERS = 'UPDATE_BADGE_TIERS',
+    UPDATE_BADGE_TIERS_FAILED = 'UPDATE_BADGE_TIERS_FAILED',
+    UPDATE_BADGE_TIERS_SUCCESS = 'UPDATE_BADGE_TIERS_SUCCESS',
     UPGRADE_BADGE_TIER = 'UPGRADE_BADGE_TIER',
 }
-
-function setCurrentUserProfileId(id: number): AnyAction {
-    const action = {
-        type: BadgeActionTypes.SET_USER_PROFILE,
-        payload: id,
+export function initProfileBadges(badgeIds: number[]): AnyAction {
+    return {
+        type: BadgeActionTypes.INIT_PROFILE_BADGES,
+        payload: badgeIds,
     };
-    return action;
 }
 
 /** Dispatched when loading of badges failed */
 function loadBadgesFailed(error: any): AnyAction {
     const action = {
         type: BadgeActionTypes.LOAD_BADGES_FAILED,
-        payload: { error },
+        payload: error,
     };
     return action;
 }
 
 /** Dispatched when loading of badges succeeded */
-function loadBadgesSuccess(badges: any[]): AnyAction {
+function loadBadgesSuccess(badges: Badge[]): AnyAction {
     const action = {
         type: BadgeActionTypes.LOAD_BADGES_SUCCESS,
         payload: badges,
@@ -64,29 +66,29 @@ function loadBadgesSuccess(badges: any[]): AnyAction {
 */
 export function loadBadgesAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function loadBadgesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-        let allBadgesImport = null;
-        let allBadges = null;
+        const { availableBadges } = getCVATStore().getState().badges;
 
         try {
-            allBadgesImport = await cvat.badges.getStatus();
-            console.log('🚀 ~ file: badge-actions.ts ~ line 51 ~ loadBadgesThunk ~ allBadgesImport', allBadgesImport);
+            const badgeStatusImport = await cvat.badges.getStatus();
+            console.log('🚀 ~ file: badge-actions.ts ~ line 75 ~ loadBadgesThunk ~ badgeStatusImport', badgeStatusImport);
+            const badgeswithtiers = availableBadges.map((badge: Badge) => {
+                const entry = badgeStatusImport.find((el: any) => el.badgeId === badge.id);
+                if (entry) {
+                    return {
+                        ...badge,
+                        tier: decodeBadgeTier(entry.tier),
+                        receivedOn: entry.receivedOn ?? null,
+                    };
+                }
+                return badge;
+            });
+            console.log('🚀 ~ file: badge-actions.ts ~ line 80 ~ badgeswithtiers ~ badgeswithtiers', badgeswithtiers);
+            const order = Object.values(BadgeTier);
+            // eslint-disable-next-line max-len
+            const orderedBadges = badgeswithtiers.sort((a: Badge, b: Badge) => order.indexOf(b.tier) - order.indexOf(a.tier));
+            console.log('🚀 ~ file: badge-actions.ts ~ line 217 ~ updateBadges ~ orderedBadges', orderedBadges);
 
-            const currentUserProfileId = allBadgesImport[0].userProfile;
-
-            allBadges = allBadgesImport.map((_badge: any): Badge => ({
-                id: _badge.badge.id,
-                title: _badge.badge.title,
-                instruction: _badge.badge.instruction,
-                goal: _badge.badge.goal,
-                visible: _badge.badge.visible,
-                tier: BadgeTier.NOT_OBTAINED,
-                goalunit: _badge.badge.goalunit,
-                // extra attributes of BadgeStatus relationship
-                progress: _badge.progress,
-                receivedOn: _badge.receivedOn,
-            }));
-            dispatch(setCurrentUserProfileId(currentUserProfileId));
-            dispatch(loadBadgesSuccess(allBadges));
+            dispatch(loadBadgesSuccess(badgeswithtiers));
         } catch (error) {
             dispatch(loadBadgesFailed(error));
         }
@@ -213,7 +215,7 @@ function saveBadgeStatusFailed(error: any): AnyAction {
 export function saveBadgeStatus(uId: number, badgeId: number, tier: BadgeTier): ThunkAction<void, {}, {}, AnyAction> {
     return async (dispatch) => {
         try {
-            const newBadgeStatus = await cvat.badges.saveBadgeStatus(uId, badgeId, tier);
+            const newBadgeStatus = await cvat.badges.saveBadgeStatus(uId, badgeId, encodeBadgeTier(tier));
             console.log('🚀 ~ file: badge-actions.ts ~ line 216 ~ return ~ newBadgeStatus', newBadgeStatus);
             dispatch(saveBadgeStatusSuccess());
         } catch (error: any) {
@@ -236,6 +238,7 @@ function saveSelectedBadgesFailed(error: any): AnyAction {
 }
 
 export function saveSelectedBadges(selectedBadgeIds: number[]): ThunkAction<void, {}, {}, AnyAction> {
+    const { userId } = getCVATStore().getState().gamifuserdata;
     return async (dispatch) => {
         try {
             let badgeIds = '';
@@ -244,7 +247,7 @@ export function saveSelectedBadges(selectedBadgeIds: number[]): ThunkAction<void
                 badgeIds += ',';
             }
             badgeIds = badgeIds.slice(0, -1); // remove trailing comma
-            const newBadgeStatus = await cvat.badges.saveSelectedBadges(badgeIds);
+            const newBadgeStatus = await cvat.badges.saveSelected(userId, badgeIds);
             console.log('🚀 ~ file: badge-actions.ts ~ line 216 ~ return ~ newBadgeStatus', newBadgeStatus);
             dispatch(saveSelectedBadgesSuccess());
         } catch (error: any) {
@@ -253,37 +256,59 @@ export function saveSelectedBadges(selectedBadgeIds: number[]): ThunkAction<void
     };
 }
 
-export function updateBadges(badges: Badge[], init: boolean): AnyAction {
-    const userDataState = getCVATStore().getState().gamifuserdata.userdata_total;
-
-    const updatedBadges = badges.map((badge: Badge) => {
-        let updatedTier = BadgeTier.NOT_OBTAINED;
-        const updatedProgress = userDataState[mapBadgeIdtoField(badge.id)]; // TODO: map appropriate
-        if (updatedProgress >= badge.goal) {
-            updatedTier = BadgeTier.GOLD;
-        } else if (badge.goal_silver && updatedProgress >= badge.goal_silver) {
-            updatedTier = BadgeTier.SILVER;
-        } else if (badge.goal_bronze && updatedProgress >= badge.goal_bronze) { updatedTier = BadgeTier.BRONZE; }
-
-        if (updatedTier !== badge.tier && !init) {
-            console.log(`Should save badge ${badge.title}: ${updatedTier} now`);
-        }
-
-        // switch visibility to true if badge is obtained,
-        // otherwise preserve its inert visibility (i.e., don't reveal hidden badges)
-        const updatedVisible = updatedTier === BadgeTier.NOT_OBTAINED ? badge.visible : true;
-        const updatedBadge = {
-            ...badge, tier: updatedTier, progress: updatedProgress, visible: updatedVisible,
-        };
-        return updatedBadge;
-    });
-
-    const order = Object.values(BadgeTier);
-    const orderedBadges = updatedBadges.sort((a, b) => order.indexOf(b.tier) - order.indexOf(a.tier));
-    console.log('🚀 ~ file: badge-actions.ts ~ line 217 ~ updateBadges ~ orderedBadges', orderedBadges);
-
+function updateBadgesSuccess(badges: Badge[]): AnyAction {
     return {
-        type: BadgeActionTypes.UPDATE_BADGE_TIERS,
-        payload: updatedBadges,
+        type: BadgeActionTypes.UPDATE_BADGE_TIERS_SUCCESS,
+        payload: badges,
+    };
+}
+
+function updateBadgesFailed(error: any): AnyAction {
+    return {
+        type: BadgeActionTypes.UPDATE_BADGE_TIERS_FAILED,
+        payload: error,
+    };
+}
+
+export function updateBadges(badges: Badge[], init: boolean): ThunkAction<void, {}, {}, AnyAction> {
+    return async (dispatch) => {
+        const userDataState = getCVATStore().getState().gamifuserdata;
+        const userdata = userDataState.userdata_total;
+
+        try {
+            const updatedBadges = badges.map((badge: Badge) => {
+                let updatedTier = BadgeTier.NOT_OBTAINED;
+                const updatedProgress = userdata[mapBadgeIdtoField(badge.id)]; // TODO: map appropriate
+                if (updatedProgress >= badge.goal) {
+                    updatedTier = BadgeTier.GOLD;
+                } else if (badge.goal_silver && updatedProgress >= badge.goal_silver) {
+                    updatedTier = BadgeTier.SILVER;
+                } else if (badge.goal_bronze && updatedProgress >= badge.goal_bronze) {
+                    updatedTier = BadgeTier.BRONZE;
+                }
+
+                if (encodeBadgeTier(updatedTier) > encodeBadgeTier(badge.tier) && !init) {
+                    console.log(`Upgrading tier of badge ${badge.title} to ${updatedTier}`);
+                    dispatch(updateUserData('badges_obtained', 1));
+                    cvat.badges.save(userDataState.userId, badge.id, encodeBadgeTier(updatedTier));
+                }
+
+                // switch visibility to true if badge is obtained,
+                // otherwise preserve its inert visibility (i.e., don't reveal hidden badges)
+                const updatedVisible = updatedTier === BadgeTier.NOT_OBTAINED ? badge.visible : true;
+                const updatedBadge = {
+                    ...badge, tier: updatedTier, progress: updatedProgress, visible: updatedVisible,
+                };
+                return updatedBadge;
+            });
+
+            const order = Object.values(BadgeTier);
+            const orderedBadges = updatedBadges.sort((a, b) => order.indexOf(b.tier) - order.indexOf(a.tier));
+            console.log('🚀 ~ file: badge-actions.ts ~ line 217 ~ updateBadges ~ orderedBadges', orderedBadges);
+
+            dispatch(updateBadgesSuccess(updatedBadges));
+        } catch (error) {
+            dispatch(updateBadgesFailed(error));
+        }
     };
 }

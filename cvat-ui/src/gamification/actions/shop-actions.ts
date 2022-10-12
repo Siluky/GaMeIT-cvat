@@ -11,6 +11,7 @@ import { getCVATStore } from 'cvat-store';
 import { incrementEnergy } from './energizer-actions';
 import { addChallenge } from './challenge-actions';
 import { upgradeBadgeTier } from './badge-actions';
+import { updateUserData } from './user-data-actions';
 
 const cvat = getCore();
 
@@ -64,10 +65,22 @@ export function getShopDataAsync(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
-export function updateBalance(increment: number): AnyAction {
+function updateBalanceSuccess(newBalance: number): AnyAction {
     return {
         type: ShopActionTypes.UPDATE_BALANCE,
-        payload: increment,
+        payload: newBalance,
+    };
+}
+
+export function updateBalance(increment: number): ThunkAction<void, {}, {}, AnyAction> {
+    return (dispatch) => {
+        const state = getCVATStore().getState();
+
+        const maxCoins = state.gamifuserdata.userdata_total.annotation_coins_max;
+        const newBalance = state.shop.currentBalance + increment;
+
+        if (newBalance > maxCoins) { dispatch(updateUserData('annotation_coins_max', newBalance)); }
+        dispatch(updateBalanceSuccess(newBalance));
     };
 }
 
@@ -143,9 +156,10 @@ export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyActio
         if (shopState.currentBalance <= item.price || item.bought) {
             dispatch(purchaseItemFailed());
         } else {
-            dispatch(purchaseItemSuccess(itemId));
-            if (item.repeatable) { dispatch(useRepeatableItem(itemId)); }
             dispatch(updateBalance(-item.price));
+            dispatch(purchaseItemSuccess(itemId));
+            dispatch(updateUserData('items_bought', 1));
+            if (item.repeatable) { dispatch(useRepeatableItem(itemId)); }
         }
     };
 }

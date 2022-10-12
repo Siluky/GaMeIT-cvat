@@ -58,6 +58,7 @@ import SVGEnergizerIcon from './assets/energizer-button-icon.svg';
 import SVGBadge from './assets/badge-icon.svg';
 import SVGBadgeGrey from './assets/badge-grey-icon.svg';
 import SVGAnnotationCoin from './assets/annotation-coin-icon.svg';
+import SVGAnnotationCoinNoBorder from './assets/annotation-coin-icon-no-border.svg';
 import SVGGreenAvatarBorder from './assets/green-avatar-border.svg';
 import SVGRedAvatarBorder from './assets/red-avatar-border.svg';
 import SVGLoadingItem from './assets/loading-item.svg';
@@ -123,6 +124,10 @@ import SVGBadgeUnlockerGrey from './assets/gamification/badges/GreyV-13.svg';
 import SVGBadgeUnlockerBronze from './assets/gamification/badges/BronzeV-13.svg';
 import SVGBadgeUnlockerSilver from './assets/gamification/badges/SilverV-13.svg';
 import SVGBadgeUnlockerGold from './assets/gamification/badges/GoldV-13.svg';
+import SVGMysteryGiftGrey from './assets/gamification/badges/GreyV-14.svg';
+import SVGMysteryGiftBronze from './assets/gamification/badges/BronzeV-14.svg';
+import SVGMysteryGiftSilver from './assets/gamification/badges/SilverV-14.svg';
+import SVGMysteryGiftGold from './assets/gamification/badges/GoldV-14.svg';
 // hidden badges
 import SVGFunHaterGrey from './assets/gamification/badges/GreyH-1.svg';
 import SVGFunHaterGold from './assets/gamification/badges/GoldH-1.svg';
@@ -152,6 +157,12 @@ import SVGStatItemsBought from './assets/gamification/statistics/S-11.svg';
 import SVGStatAnnotationCoins from './assets/gamification/statistics/S-12.svg';
 import SVGStatAnnotationCoinMax from './assets/gamification/statistics/S-13.svg';
 import SVGStatBadges from './assets/gamification/statistics/S-14.svg';
+
+// Shop Icons
+import SVGAddChallenge from './assets/gamification/shop/add-challenge-icon.svg';
+import SVGMysteryGift from './assets/gamification/shop/mystery-gift-icon.svg';
+import SVGStreakSaver from './assets/gamification/shop/streak-saver-icon.svg';
+import SVGShopButton from './assets/gamification/shop/shop-icon.svg';
 
 export const CVATLogo = React.memo((): JSX.Element => <SVGCVATLogo />);
 export const EmptyTasksIcon = React.memo((): JSX.Element => <SVGEmptyTasksIcon />);
@@ -266,6 +277,10 @@ export const UnlockerGrey = React.memo((): JSX.Element => <SVGBadgeUnlockerGrey 
 export const UnlockerBronze = React.memo((): JSX.Element => <SVGBadgeUnlockerBronze />);
 export const UnlockerSilver = React.memo((): JSX.Element => <SVGBadgeUnlockerSilver />);
 export const UnlockerGold = React.memo((): JSX.Element => <SVGBadgeUnlockerGold />);
+export const MysteryGiftBadgeGrey = React.memo((): JSX.Element => <SVGMysteryGiftGrey />);
+export const MysteryGiftBadgeBronze = React.memo((): JSX.Element => <SVGMysteryGiftBronze />);
+export const MysteryGiftBadgeSilver = React.memo((): JSX.Element => <SVGMysteryGiftSilver />);
+export const MysteryGiftBadgeGold = React.memo((): JSX.Element => <SVGMysteryGiftGold />);
 // hidden badges
 export const FunHaterGrey = React.memo((): JSX.Element => <SVGFunHaterGrey />);
 export const FunHaterGold = React.memo((): JSX.Element => <SVGFunHaterGold />);
@@ -297,9 +312,16 @@ export const AnnotationCoinsMaxIcon = React.memo((): JSX.Element => <SVGStatAnno
 export const BadgesObtainedIcon = React.memo((): JSX.Element => <SVGStatBadges />);
 
 export const AnnotationCoinIcon = React.memo((): JSX.Element => <SVGAnnotationCoin />);
+export const AnnotationCoinNoBorderIcon = React.memo((): JSX.Element => <SVGAnnotationCoinNoBorder />);
 export const GreenAvatarBorderIcon = React.memo((): JSX.Element => <SVGGreenAvatarBorder />);
 export const RedAvatarBorderIcon = React.memo((): JSX.Element => <SVGRedAvatarBorder />);
 export const LoadingItemIcon = React.memo((): JSX.Element => <SVGLoadingItem />);
 export const MoneyHoarderBadgeIcon = React.memo((): JSX.Element => <SVGMoneyHoarderBadge />);
 export const ImageIcon = React.memo((): JSX.Element => <SVGImageIcon />);
 export const TimeIcon = React.memo((): JSX.Element => <SVGTimeIcon />);
+
+// Shop
+export const AddChallengeIcon = React.memo((): JSX.Element => <SVGAddChallenge />);
+export const MysteryGiftIcon = React.memo((): JSX.Element => <SVGMysteryGift />);
+export const StreakSaverIcon = React.memo((): JSX.Element => <SVGStreakSaver />);
+export const ShopIcon = React.memo((): JSX.Element => <SVGShopButton />);

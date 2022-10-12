@@ -16,8 +16,9 @@ class UserDataSerializer(serializers.ModelSerializer):
         model = models.UserProfile
         fields = (
         'id', 'user',
-        'last_login','annotation_time_total','images_annotated_total', 'tags_set_total', 'images_annotated_night',
-        'annotation_time_total', 'annotation_streak_current','annotation_streak_max',
+        'last_login_date', 'last_login_ms',
+        'annotation_time_total','images_annotated_total', 'tags_set_total', 'images_annotated_night',
+        'annotation_time_total', 'annotation_streak_current','annotation_streak_max','annotation_streak_saver',
         'badges_obtained_total', 'selectedBadges',
         'challenges_completed',
         'energy_current', 'energy_total','energizers_completed','energy_expired','tetris_played','quiz_played','snake_played',
@@ -34,8 +35,9 @@ class UserDataSerializer(serializers.ModelSerializer):
 class ProfileDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
-        fields = ('id', 'user','online_status', 'profile_style', 'selectedBadges',
-        'avatar','avatar_border','profile_border','profile_background',)
+        fields = ('id', 'user','online_status',
+        'profile_class','profile_border','profile_background','profile_background_elements',
+        'selectedBadges',)
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
@@ -48,14 +50,23 @@ class BadgeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BadgeStatusSerializer(serializers.ModelSerializer):
-    badge = BadgeSerializer()
-
     class Meta:
         model = models.BadgeStatus
         fields = '__all__'
 
     def create(self, validated_data):
         return super().create(validated_data)
+
+class SaveBadgeStatusSerializer(serializers.ModelSerializer):
+    userId = serializers.SlugRelatedField(
+        slug_field='id',
+        queryset = models.UserProfile.objects.all(),
+    )
+
+    class Meta:
+        model = models.ChallengeStatus
+        # fields = '__all__'
+        fields = ('badgeId','userId','tier','receivedOn',)
 
 class ChallengeSerializer(serializers.ModelSerializer):
     class Meta:

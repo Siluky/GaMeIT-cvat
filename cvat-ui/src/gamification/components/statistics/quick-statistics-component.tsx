@@ -16,14 +16,15 @@ export default function QuickStatistic(props: QuickStatisticProps): JSX.Element 
     const { icon, value, tooltip } = props;
     return (
         <CvatTooltip overlay={tooltip}>
-            <Button
-                className='single-quick-statistic-component'
-                type='text'
-                icon={icon}
-            >
-                &nbsp;
-                {value}
-            </Button>
+            <div className='single-quick-statistic-component'>
+                <Button
+                    type='text'
+                    icon={icon}
+                >
+                    &nbsp;
+                    {value}
+                </Button>
+            </div>
         </CvatTooltip>
     );
     // return (

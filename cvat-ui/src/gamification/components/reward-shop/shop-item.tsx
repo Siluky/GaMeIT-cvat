@@ -4,10 +4,11 @@
 import React from 'react';
 import 'gamification/gamif-styles.scss';
 import { connect, useDispatch } from 'react-redux';
-import { SketchOutlined } from '@ant-design/icons';
+// import { SketchOutlined } from '@ant-design/icons';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { setSelectedItem } from 'gamification/actions/shop-actions';
 import { CombinedState } from 'reducers/interfaces';
+import { AnnotationCoinNoBorderIcon } from 'icons';
 
 interface ShopItemProps {
     item: ShopItem;
@@ -23,6 +24,20 @@ function mapStateToProps(state: CombinedState): StateToProps {
     const { shop } = state;
     return { selectedId: shop.selectedItemId };
 }
+
+const itemPrice = (item: ShopItem): JSX.Element => {
+    if (item.bought) { return <>PURCHASED</>; }
+    if (item.id === 15 || item.id === 25) { return <>???</>; }
+    return (
+        <>
+            {item.price}
+            <div>
+                {/* <SketchOutlined /> */}
+                <AnnotationCoinNoBorderIcon />
+            </div>
+        </>
+    );
+};
 
 function ShopItemComponent(props: ShopItemProps): JSX.Element {
     const { item, selected } = props;
@@ -44,12 +59,7 @@ function ShopItemComponent(props: ShopItemProps): JSX.Element {
                 <div className='gamif-shop-item-title'>{item.title}</div>
             </div>
             <div className='gamif-shop-item-footer'>
-                {item.bought ? 'PURCHASED' : (
-                    <>
-                        {item.price}
-                        <SketchOutlined />
-                    </>
-                )}
+                {itemPrice(item)}
             </div>
         </div>
     );

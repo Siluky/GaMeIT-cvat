@@ -345,8 +345,13 @@ const config = require('./config');
             return badges;
         };
 
-        cvat.badges.save.implementation = async (userId, badgeId, progress) => {
-            const badges = await serverProxy.badges.save(userId, badgeId, progress);
+        cvat.badges.save.implementation = async (userId, badgeId, tier) => {
+            const badges = await serverProxy.badges.save(userId, badgeId, tier);
+            return badges;
+        };
+
+        cvat.badges.saveSelected.implementation = async (userId, ids) => {
+            const badges = await serverProxy.badges.saveSelected(userId, ids);
             return badges;
         };
 

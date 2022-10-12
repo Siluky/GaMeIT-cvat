@@ -16,7 +16,8 @@ import {
 // import { upgradeBadgeTier } from 'gamification/actions/badge-actions';
 // import { incrementEnergy } from 'gamification/actions/energizer-actions';
 // import { addChallenge } from 'gamification/actions/challenge-actions';
-import { SketchOutlined } from '@ant-design/icons';
+// import { SketchOutlined } from '@ant-design/icons';
+import { AnnotationCoinNoBorderIcon } from 'icons';
 import ShopItemComponent from './shop-item';
 
 interface ShopWindowProps {
@@ -45,27 +46,9 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const { items, currentBalance, selectedItemId } = props;
     const dispatch = useDispatch();
 
-    // const mysteryGift = (): void => {
-    //     const random = Math.random() * 100;
-    //     console.log('🚀 ~ file: shop-window.tsx ~ line 50 ~ mysteryGift ~ random', random);
-
-    //     if (random > 95) {
-    //         // buy secret item
-    //     } else if (random > 90) {
-    //         // buy secret item
-    //     } else if (random > 50) {
-    //         dispatch(incrementEnergy(10));
-    //     } else if (random > 35) {
-    //         dispatch(addChallenge());
-    //     } else if (random > 20) {
-    //         // add streak saver
-    //     } else {
-    //         // get nothing
-    //     }
-    // };
-
     const useItem = (id: number): void => {
         dispatch(setProfileBackgroundEffects(0));
+        dispatch(setProfileBackground(0));
 
         switch (id) {
             // case 1: dispatch(incrementEnergy(10)); break;
@@ -74,60 +57,60 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             // case 4: // TODO: Streak saver; break;
             // case 5: dispatch(upgradeBadgeTier(12)); break; // Money Badge
             case 6: {
-                dispatch(setProfileBackground('#e6e6e6'));
-                dispatch(setAdditionalClassNames(''));
+                dispatch(setProfileBackground(1));
+                dispatch(setAdditionalClassNames(0));
                 dispatch(setColor('#1e3d59'));
                 break;
             }
-            case 7: dispatch(setProfileBackground('#bbf1c4')); break;
-            case 8: dispatch(setProfileBackground('#aec6cf')); break;
-            case 9: dispatch(setProfileBackground('#ff6961')); break;
+            case 7: dispatch(setProfileBackground(2)); break;
+            case 8: dispatch(setProfileBackground(3)); break;
+            case 9: dispatch(setProfileBackground(4)); break;
             case 10: {
-                dispatch(setAdditionalClassNames('gamif-profile-blue-blackground'));
+                dispatch(setProfileBackground(0));
+                dispatch(setAdditionalClassNames(1));
                 break;
             }
             case 11:
-                dispatch(setProfileBackground(''));
-                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-1'));
+                dispatch(setProfileBackground(0));
+                dispatch(setAdditionalClassNames(2));
                 break;
             case 12:
-                dispatch(setProfileBackground(''));
-                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-2'));
+                dispatch(setProfileBackground(0));
+                dispatch(setAdditionalClassNames(3));
                 break;
             case 13:
-                dispatch(setProfileBackground(''));
-                dispatch(setAdditionalClassNames('gamif-profile-tri-color-background-3'));
+                dispatch(setProfileBackground(0));
+                dispatch(setAdditionalClassNames(4));
                 break;
             case 14: {
-                dispatch(setProfileBackground(''));
-                dispatch(setAdditionalClassNames('gamif-quick-profile-shooting-stars-background'));
+                dispatch(setProfileBackground(0));
+                dispatch(setAdditionalClassNames(5));
                 dispatch(setProfileBackgroundEffects(1));
                 break;
             }
             case 15: // TODO: Hidden profile background
-            case 16: dispatch(setProfileBorder('')); break;
-            case 17: dispatch(setProfileBorder('4px solid #bbf1c4')); break;
-            case 18: dispatch(setProfileBorder('4px solid #aec6cf')); break;
-            case 19: dispatch(setProfileBorder('4px solid #ff6961')); break;
+            case 16: dispatch(setProfileBorder(0)); break;
+            case 17: dispatch(setProfileBorder(1)); break;
+            case 18: dispatch(setProfileBorder(2)); break;
+            case 19: dispatch(setProfileBorder(3)); break;
             case 20:
-                dispatch(setProfileBorder(''));
-                dispatch(setAdditionalClassNames('gamif-profile-anim-border-blue'));
+                dispatch(setProfileBorder(0));
+                dispatch(setAdditionalClassNames(6));
                 break;
             case 21:
-                dispatch(setProfileBorder(''));
-                dispatch(setAdditionalClassNames('gamif-profile-anim-border-red'));
+                dispatch(setProfileBorder(0));
+                dispatch(setAdditionalClassNames(7));
                 break;
             case 22: {
-                dispatch(setAdditionalClassNames('gamif-profile-christmas-box'));
+                dispatch(setAdditionalClassNames(8));
                 break;
             }
             case 23: {
-                dispatch(setAdditionalClassNames('gamif-profile-rainbow-box'));
+                dispatch(setAdditionalClassNames(9));
                 break;
             }
             case 24:
-                dispatch(setAdditionalClassNames('gamif-profile-rainbow-effect'));
-                dispatch(setProfileBorder('#ff6961'));
+                dispatch(setAdditionalClassNames(10));
                 break;
             case 25: /* TODO: hidden */ break;
             default: break;
@@ -156,7 +139,11 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                         <span>Current Balance: </span>
                         &nbsp;
                         {currentBalance}
-                        <SketchOutlined />
+                        {/* <SketchOutlined /> */}
+                        <Button
+                            icon={<AnnotationCoinNoBorderIcon />}
+                            type='text'
+                        />
                     </h3>
                 </div>
             </div>

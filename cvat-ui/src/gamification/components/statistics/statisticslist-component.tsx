@@ -15,42 +15,36 @@ import { EditFilled, SettingFilled } from '@ant-design/icons';
 // import { TimeIcon } from 'icons';
 import { useDispatch, useSelector, connect } from 'react-redux';
 
-import { selectStatistic, toggleSelecting } from 'gamification/actions/statistics-actions';
+import { toggleSelecting } from 'gamification/actions/statistics-actions';
 import { CombinedState } from 'reducers/interfaces';
-import CvatTooltip from 'components/common/cvat-tooltip';
-import { Statistic, UserData } from 'gamification/gamif-interfaces';
-import { saveUserData, updateUserData } from 'gamification/actions/user-data-actions';
-import { mapStatisticIdtoFieldName, mapStatisticIdtoIcon } from 'gamification/gamif-items';
+import { Statistic } from 'gamification/gamif-interfaces';
+import { saveUserData } from 'gamification/actions/user-data-actions';
+import StatisticsComponent from './statistics-component';
 
 interface StateToProps {
-    userdataAllTime: UserData;
-    userdataSession: UserData;
     selecting: boolean;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
-    const { gamifuserdata, statistics } = state;
+    const { statistics } = state;
 
     return {
-        userdataAllTime: gamifuserdata.userdata_total,
-        userdataSession: gamifuserdata.userdata_session,
         selecting: statistics.selecting,
     };
 }
 
 interface StatisticsListProps {
-    userdataAllTime: UserData;
-    userdataSession: UserData;
     selecting: boolean;
 }
 
 export function StatisticsList(props: StatisticsListProps): JSX.Element {
     const dispatch = useDispatch();
 
-    const { userdataAllTime, userdataSession, selecting } = props;
+    const { selecting } = props;
     const [allTime, showAllTimeStats] = useState(true);
     const [inc, setInc] = useState(false);
     const stats = useSelector((state: CombinedState) => state.statistics);
+    const udata = useSelector((state: CombinedState) => state.gamifuserdata);
 
     useEffect(() => {
         //
@@ -91,7 +85,8 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                     <Row>
                         {stats.statistics.map((_stat: Statistic, index: number) => (
                             <Col span={12} key={index}>
-                                <CvatTooltip
+                                <StatisticsComponent statistic={_stat} inc={inc} allTime={allTime} />
+                                {/* <CvatTooltip
                                     overlay={allTime ? _stat.tooltip_total : _stat.tooltip_session}
                                 >
                                     <Button
@@ -115,7 +110,7 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                                             {_stat.unit}
                                         </div>
                                     </Button>
-                                </CvatTooltip>
+                                </CvatTooltip> */}
                             </Col>
                         ))}
                     </Row>
@@ -125,6 +120,20 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                     onClick={() => dispatch(saveUserData())}
                 >
                     Save User Data
+                </Button>
+                &nbsp;
+                <Button
+                    className='gamif-debug-button'
+                    onClick={() => {
+                        console.log((udata.userdata_total.last_login) / 1000);
+                        console.log((udata.userdata_session.last_login) / 1000);
+                        // eslint-disable-next-line max-len
+                        console.log(`Time since login: ${(udata.userdata_session.last_login - udata.userdata_total.last_login) / 1000 / 60}`);
+                        // eslint-disable-next-line max-len
+                        console.log(`Time this session: ${(Date.now() - udata.userdata_session.last_login) / 1000 / 60}`);
+                    }}
+                >
+                    Time
                 </Button>
             </div>
         </>

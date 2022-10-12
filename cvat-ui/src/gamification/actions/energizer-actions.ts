@@ -6,6 +6,7 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
+import gamifconsts from 'gamification/gamifconsts';
 import { getCVATStore } from 'cvat-store';
 // eslint-disable-next-line import/no-cycle
 import { updateUserData } from './user-data-actions';
@@ -125,9 +126,24 @@ export function incrementEnergyAction(increment: number): AnyAction {
 }
 
 export function incrementEnergy(increment: number): ThunkAction<void, {}, {}, AnyAction> {
+    const { energyLevel } = getCVATStore().getState().energizer;
+
     return (dispatch) => {
+        const newEnergy = energyLevel + increment;
+        if (increment > 0) {
+            if (newEnergy <= gamifconsts.MAXIMUM_ENERGY) {
+                dispatch(updateUserData('energy_gained', increment));
+            }
+            if (newEnergy > gamifconsts.MAXIMUM_ENERGY) {
+                const expired = newEnergy - gamifconsts.MAXIMUM_ENERGY;
+                dispatch(updateUserData('energy_expired', expired));
+
+                const gained = gamifconsts.MAXIMUM_ENERGY - energyLevel;
+                dispatch(updateUserData('energy_gained', gained));
+            }
+        }
+
         dispatch(incrementEnergyAction(increment));
-        dispatch(updateUserData('energy_gained', increment));
     };
 }
 

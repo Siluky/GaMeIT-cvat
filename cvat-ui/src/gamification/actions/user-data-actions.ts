@@ -10,7 +10,8 @@ import { UserData } from '../gamif-interfaces';
 import { addQuickStatistic } from './statistics-actions';
 // eslint-disable-next-line import/no-cycle
 import { initShop, updateBalance } from './shop-actions';
-import { toggleBadgeInProfile } from './badge-actions';
+// eslint-disable-next-line import/no-cycle
+import { initProfileBadges } from './badge-actions';
 
 const cvat = getCore();
 
@@ -95,7 +96,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             console.log('🚀 ~ file: user-data-actions.ts ~ line 73 ~ loadUserDataThunk ~ userDataImport', userDataImport);
 
             const userDataAllTime: UserData = {
-                last_login: userDataImport.last_login,
+                last_login: userDataImport.last_login_ms,
                 images_annotated: userDataImport.images_annotated_total,
                 tags_set: userDataImport.tags_set_total,
                 images_annotated_night: userDataImport.images_annotated_night,
@@ -104,6 +105,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 annotation_time_avg: Math.floor(userDataImport.annotation_time_total / userDataImport.images_annotated_total),
                 annotation_streak_current: userDataImport.annotation_streak_current,
                 annotation_streak_max: userDataImport.annotation_streak_max,
+                streak_saver_active: userDataImport.annotation_streak_saver,
                 badges_obtained: userDataImport.badges_obtained_total,
                 challenges_completed: userDataImport.challenges_completed,
                 energy_gained: userDataImport.energy_total,
@@ -141,8 +143,8 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             const selectedBadgesImport = userDataImport.items_bought.split(',');
             console.log('🚀 ~ file: user-data-actions.ts ~ line 142 ~ loadUserDataThunk ~ selectedBadgesImport', selectedBadgesImport);
             // eslint-disable-next-line max-len
-            // FIXME: Probably do one dispatch with an array --> initBadges action
-            selectedBadgesImport.map((id: string) => dispatch(toggleBadgeInProfile(parseInt(id, 10))));
+            const badgeIdsPrepared = selectedBadgesImport.map((id: string) => parseInt(id, 10));
+            dispatch(initProfileBadges(badgeIdsPrepared));
 
             const userDataSession: UserData = {
                 last_login: Date.now(),
@@ -153,6 +155,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 annotation_time_avg: 0,
                 annotation_streak_current: userDataAllTime.annotation_streak_current,
                 annotation_streak_max: 0,
+                streak_saver_active: false,
                 badges_obtained: 0,
                 challenges_completed: 0,
                 energy_gained: 0,
@@ -211,6 +214,7 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         badgeIds += ',';
     }
     badgeIds = badgeIds.slice(0, -1); // remove trailing comma
+    if (badgeIds === '') { badgeIds = '0'; }
 
     let itemsBought = '';
     const items = shopState.availableItems;
@@ -227,7 +231,7 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
     const userDataPrepared = {
         id: userDataState.userId,
         user: userDataState.userId,
-        last_login: sessionData.last_login,
+        last_login_ms: sessionData.last_login,
         image_annotated_total: totalData.images_annotated,
         tags_set_total: totalData.tags_set,
         images_annotated_night: totalData.images_annotated_night,

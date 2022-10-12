@@ -10,6 +10,7 @@ import { availableChallenges } from 'gamification/gamif-items';
 import { Challenge } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
 import { updateBalance } from './shop-actions';
+import { updateUserData } from './user-data-actions';
 
 const cvat = getCore();
 
@@ -49,19 +50,17 @@ export function getChallengesAsync(): ThunkAction<void, {}, {}, AnyAction> {
         let challengesImport = null;
         try {
             challengesImport = await cvat.challenges.get();
-            console.log('🚀 ~ file: challenge-actions.ts ~ line 42 ~ getChallengesThunk ~ challengesImport', challengesImport);
-
             const challenges = challengesImport.map((chal: any): Challenge => {
                 const challenge = availableChallenges.find((c) => c.id === chal.challengeId) ?? availableChallenges[0];
 
                 return {
                     ...challenge,
-                    progress: chal.progress,
+                    initProgress: chal.progress,
+                    progress: 0,
                     goal: chal.goal,
                     instruction: challenge.instruction.replace('GOAL', chal.goal.toString()),
                 };
             });
-            console.log('🚀 ~ file: challenge-actions.ts ~ line 52 ~ challenges ~ challenges', challenges);
             dispatch(getChallengesSuccess(challenges));
         } catch (error) {
             dispatch(getChallengesFailed(error));
@@ -151,8 +150,9 @@ export function completeChallenge(challenge: Challenge): ThunkAction<void, {}, {
         const { userId } = getCVATStore().getState().gamifuserdata;
         console.log('🚀 ~ file: challenge-actions.ts ~ line 164 ~ addChallengeThunk ~ userId', userId);
         try {
-            dispatch(updateBalance(challenge.reward));
             await cvat.challenges.remove(userId, challenge.id);
+            dispatch(updateBalance(challenge.reward));
+            dispatch(updateUserData('annotation_coins_obtained', challenge.reward));
             dispatch(removeChallengeSuccess(challenge.id));
         } catch (error) {
             dispatch(removeChallengeFailed(error));

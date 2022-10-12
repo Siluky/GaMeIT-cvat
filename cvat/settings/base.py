@@ -162,7 +162,7 @@ REST_FRAMEWORK = {
     'VERSION_PARAM': 'version',
     'DEFAULT_PAGINATION_CLASS':
         'cvat.apps.engine.pagination.CustomPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 25,
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.SearchFilter',
         'django_filters.rest_framework.DjangoFilterBackend',

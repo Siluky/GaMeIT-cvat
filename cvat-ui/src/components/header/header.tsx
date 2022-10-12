@@ -22,7 +22,7 @@ import Icon, {
     TeamOutlined,
     PlusOutlined,
     BugFilled,
-    FormOutlined,
+    RadarChartOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -40,7 +40,7 @@ import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
 import gamifconsts from 'gamification/gamifconsts';
 
-import { BadgeGreyIcon, CVATLogo, EnergizerIcon } from 'icons';
+import { CVATLogo, EnergizerIcon, ShopIcon } from 'icons';
 import ChangePasswordDialog from 'components/change-password-modal/change-password-modal';
 import CVATTooltip from 'components/common/cvat-tooltip';
 import { switchSettingsDialog as switchSettingsDialogAction } from 'actions/settings-actions';
@@ -315,8 +315,8 @@ function HeaderContainer(props: Props): JSX.Element {
                 mouseLeaveDelay={10}
             >
                 <Menu.Item
-                    // FIXME:
-                    icon={<BadgeGreyIcon />}
+                    // TODO: Custom Badge Icon
+                    icon={<RadarChartOutlined />}
                     key='badge_profile'
                 >
                     Badges
@@ -570,10 +570,15 @@ function HeaderContainer(props: Props): JSX.Element {
                 <Popover
                     content={<ShopWindow />}
                     mouseLeaveDelay={300}
-                    // TODO: Test
                     onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
                 >
-                    <Button type='text'> Shop </Button>
+                    <div className='gamif-shop-button-wrapper'>
+                        <Button
+                            type='default'
+                            className='gamif-shop-button'
+                            icon={<ShopIcon />}
+                        />
+                    </div>
                 </Popover>
                 <Popover
                     content={(
@@ -583,17 +588,7 @@ function HeaderContainer(props: Props): JSX.Element {
                     )}
                     mouseLeaveDelay={300}
                 >
-                    <Button type='text' icon={<BugFilled />} />
-                </Popover>
-                <Popover
-                    content={(
-                        <div style={{ width: '300px', height: '200px' }}>
-                            <TextArea rows={4} />
-                        </div>
-                    )}
-                    mouseLeaveDelay={300}
-                >
-                    <Button type='text' icon={<FormOutlined />} />
+                    <Button className='gamif-debug-button' type='text' icon={<BugFilled />} />
                 </Popover>
             </div>
             <div className='cvat-right-header'>

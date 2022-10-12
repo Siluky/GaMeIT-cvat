@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: MIT
 
 import { AnyAction } from 'redux';
-
 import { items } from 'gamification/gamif-items';
 import { ShopActionTypes } from '../actions/shop-actions';
 import { ShopItem, ShopState } from '../gamif-interfaces';
@@ -48,7 +47,7 @@ export default (state = defaultState, action: AnyAction): ShopState => {
         case ShopActionTypes.UPDATE_BALANCE: {
             return {
                 ...state,
-                currentBalance: state.currentBalance + action.payload,
+                currentBalance: action.payload,
             };
         }
 

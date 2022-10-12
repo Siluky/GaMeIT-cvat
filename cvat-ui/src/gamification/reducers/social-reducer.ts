@@ -46,14 +46,15 @@ const profile: Profile = {
     userId: 0,
     status: OnlineStatus.ONLINE,
     selectedBadges: [],
+    selectedBadgeStatuses: [],
     profileStyle: {
-        additionalClassNames: '',
-        background: '#e6e6e6',
-        color: '#1e3d59',
-        border: '',
+        additionalClassNames: 0,
+        background: 0,
+        color: 0,
+        border: 0,
         backgroundElements: 0,
-        avatar: 1,
-        avatarBorder: '1px solid cyan',
+        // avatar: 1,
+        // avatarBorder: '1px solid cyan',
     },
     chatActive: false,
 };
@@ -149,25 +150,25 @@ export default (state = defaultState, action: AnyAction): SocialState => {
             };
         }
 
-        case SocialActionTypes.SET_AVATAR: {
-            return {
-                ...state,
-                ownProfile: {
-                    ...state.ownProfile,
-                    profileStyle: { ...state.ownProfile.profileStyle, avatar: action.payload },
-                },
-            };
-        }
+        // case SocialActionTypes.SET_AVATAR: {
+        //     return {
+        //         ...state,
+        //         ownProfile: {
+        //             ...state.ownProfile,
+        //             profileStyle: { ...state.ownProfile.profileStyle, avatar: action.payload },
+        //         },
+        //     };
+        // }
 
-        case SocialActionTypes.SET_AVATAR_BORDER: {
-            return {
-                ...state,
-                ownProfile: {
-                    ...state.ownProfile,
-                    profileStyle: { ...state.ownProfile.profileStyle, avatarBorder: action.payload },
-                },
-            };
-        }
+        // case SocialActionTypes.SET_AVATAR_BORDER: {
+        //     return {
+        //         ...state,
+        //         ownProfile: {
+        //             ...state.ownProfile,
+        //             profileStyle: { ...state.ownProfile.profileStyle, avatarBorder: action.payload },
+        //         },
+        //     };
+        // }
 
         case SocialActionTypes.GET_CHAT_HISTORY_FAILED: {
             return {

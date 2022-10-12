@@ -12,6 +12,7 @@ export interface UserData {
     annotation_time_avg: number,
     annotation_streak_current: number,
     annotation_streak_max: number,
+    streak_saver_active: boolean,
 
     badges_obtained: number,
     challenges_completed: number,
@@ -57,7 +58,7 @@ export interface Badge {
     progress: number;
     goalunit: string;
 
-    receivedOn: Date | null;
+    receivedOn: Date | string | null;
     visible: boolean;
 }
 
@@ -78,6 +79,7 @@ export enum ChallengeType {
 export interface Challenge {
     id: number;
     instruction: string;
+    initProgress: number;
     progress: number;
     goal: number;
     goal_variance: number;
@@ -153,13 +155,19 @@ export enum OnlineStatus {
 }
 
 interface ProfileStyle {
-    additionalClassNames: string,
-    background: string,
-    color: string,
-    border: string,
-    avatar: number,
+    additionalClassNames: number,
+    background: number,
+    color: number,
+    border: number,
     backgroundElements: number,
-    avatarBorder: string,
+    // avatar: number,
+    // avatarBorder: string,
+}
+
+export interface BadgeStatus {
+    id: number,
+    tier: BadgeTier,
+    receivedOn: string,
 }
 
 export interface Profile {
@@ -167,6 +175,7 @@ export interface Profile {
     userId: number,
     status: OnlineStatus,
     selectedBadges: number[],
+    selectedBadgeStatuses: BadgeStatus[],
     profileStyle: ProfileStyle,
     chatActive: boolean,
 }

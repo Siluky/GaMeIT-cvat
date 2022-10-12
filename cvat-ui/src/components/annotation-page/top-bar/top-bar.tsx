@@ -14,6 +14,7 @@ import PlayerButtons from './player-buttons';
 import PlayerNavigation from './player-navigation';
 import RightGroup from './right-group';
 import QuickStats from './quick-statistics';
+import { GamificationDummy } from './gamification-dummy-component';
 
 interface Props {
     playing: boolean;
@@ -176,6 +177,7 @@ export default function AnnotationTopBarComponent(props: Props): JSX.Element {
                     />
                 </Row>
             </Col>
+            <GamificationDummy />
             <QuickStats />
             <RightGroup
                 predictor={predictor}

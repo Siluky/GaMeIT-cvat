@@ -48,7 +48,7 @@ export default (state = defaultState, action: AnyAction): ChallengeState => {
             let idExists = true;
             let newId = 0;
             while (idExists) {
-                newId = Math.floor(Math.random() * availableChallenges.length);
+                newId = Math.floor(Math.random() * (availableChallenges.length + 1));
                 idExists = existingIds.includes(newId);
             }
 

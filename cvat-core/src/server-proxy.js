@@ -1773,14 +1773,19 @@
                 const { backendAPI } = config;
                 let response = null;
                 console.log('🚀 ~ file: server-proxy.js ~ line 1798 ~ ServerProxy ~ saveGamifUserData ~ data', data);
-                response = await Axios.put(`${backendAPI}/userProfiles/${data.id}`, data,
-                    {
-                        proxy: config.proxy,
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                console.log('🚀 ~ file: server-proxy.js ~ line 1783 ~ ServerProxy ~ saveGamifUserData ~ response.data.results', response.data.results);
+                try {
+                    response = await Axios.put(`${backendAPI}/userProfiles/${data.id}`, data,
+                        {
+                            proxy: config.proxy,
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                    console.log('🚀 ~ file: server-proxy.js ~ line 1783 ~ ServerProxy ~ saveGamifUserData ~ response.data.results', response.data.results);
+                } catch (errorData) {
+                    throw generateError(errorData);
+                }
+
                 return response.data.results;
             }
 
@@ -1800,13 +1805,45 @@
                 return response.data.results;
             }
 
-            async function saveBadge(userId, badgeId, newProgress) {
+            async function saveSelectedBadges(userId, ids) {
+                const { backendAPI } = config;
+                const data = { selectedBadges: ids };
+                let response = null;
+                console.log('🚀 ~ file: server-proxy.js ~ line 1807 ~ ServerProxy ~ saveSelectedBadges ~ data', data);
+                try {
+                    response = await Axios.patch(`${backendAPI}/userProfiles/${userId}`,
+                        data,
+                        {
+                            proxy: config.proxy,
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                } catch (errorData) {
+                    throw generateError(errorData);
+                }
+                return response.data.results;
+            }
+
+            async function saveBadge(uId, badgId, newTier) {
                 const { backendAPI } = config;
                 let response = null;
+                const today = new Date();
+                const dd = String(today.getDate()).padStart(2, '0');
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const yyyy = today.getFullYear();
+                const todayFormatted = `${mm}/${dd}/${yyyy}`;
 
+                const data = {
+                    userId: uId,
+                    badgeId: badgId,
+                    tier: newTier,
+                    receivedOn: todayFormatted,
+                };
+                console.log('🚀 ~ file: server-proxy.js ~ line 1813 ~ ServerProxy ~ saveBadge ~ data', data);
                 try {
-                    response = await Axios.patch(`${backendAPI}/badge-status/${userId}-${badgeId}`,
-                        { progress: newProgress }, {
+                    response = await Axios.put(`${backendAPI}/badge-status/${uId}-${badgId}`,
+                        data, {
                             proxy: config.proxy,
                         });
                 } catch (error) {
@@ -1821,8 +1858,8 @@
             async function getChallenges() {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/user-challenges`); // TODO:
-                return response.data.results; // TODO: double-check, maybe response.data.results
+                response = await Axios.get(`${backendAPI}/user-challenges`);
+                return response.data.results;
             }
 
             async function saveChallenges(challenges) {
@@ -1839,7 +1876,6 @@
                                 'Content-Type': 'application/json',
                             },
                         }));
-                    console.log('🚀 ~ file: server-proxy.js ~ line 1812 ~ ServerProxy ~ saveChallenges ~ response', response);
                 } catch (error) {
                     throw generateError(error);
                 }
@@ -1970,15 +2006,32 @@
             async function getFriendsList() {
                 const { backendAPI } = config;
                 let response = null;
-                console.log('getting friends list');
 
                 try {
                     response = await Axios.get(`${backendAPI}/friends`);
-                    console.log('🚀 ~ file: server-proxy.js ~ line 1977 ~ ServerProxy ~ getFriendsList ~ response', response);
                 } catch (error) {
                     throw (generateError(error));
                 }
-                return response.data.results;
+
+                const profiles = response.data.results;
+                const profileswithBadges = await Promise.all(profiles.map(async (_profile) => {
+                    if (_profile.selectedBadges === '0') { return _profile; }
+
+                    const badgeIds = _profile.selectedBadges.split(',').map((id) => parseInt(id, 10));
+
+                    const badgestatusResponse = await Promise.all(badgeIds.map(async (badgeId) => {
+                        const tempResponse = await Axios.get(`${backendAPI}/badge-status/${_profile.id}-${badgeId}`);
+                        console.log('🚀 ~ file: server-proxy.js ~ line 1999 ~ ServerProxy ~ badgestatusResponse ~ tempResponse', tempResponse);
+                        return tempResponse.data;
+                    }));
+                    console.log('🚀 ~ file: server-proxy.js ~ line 1991 ~ ServerProxy ~ profileswithBadges ~ badgestatusResponse', badgestatusResponse);
+                    return {
+                        ..._profile,
+                        selectedBadges: badgestatusResponse,
+                    };
+                }));
+                console.log('🚀 ~ file: server-proxy.js ~ line 1996 ~ ServerProxy ~ profileswithBadges ~ profileswithBadges', profileswithBadges);
+                return profileswithBadges;
             }
 
             async function profileDataSave(userId, data) {
@@ -1986,13 +2039,13 @@
                 const { backendAPI } = config;
                 let response = null;
 
-                response = await Axios.patch(`${backendAPI}/${userId}`, data, {
+                response = await Axios.patch(`${backendAPI}/userProfiles/${userId}`, data, {
                     proxy: config.proxy,
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
-                return response.data; // TODO: double-check, maybe response.data.results
+                return response.data;
             }
 
             async function getChatHistory(userId) {
@@ -2225,6 +2278,7 @@
                             get: getBadges,
                             getStatus: getBadgeStatus,
                             save: saveBadge,
+                            saveSelected: saveSelectedBadges,
                         }),
                         writable: false,
                     },

@@ -9,7 +9,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils.timezone import now
 
 class Badge(models.Model):
     title = models.CharField(max_length=40, default='Cool Badge 123')
@@ -77,7 +76,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # meta-level data
-    last_login = models.DateTimeField(auto_now=True)
+    last_login_date = models.DateTimeField(auto_now=True)
+    last_login_ms = models.IntegerField(default=0)
     images_annotated_total = models.IntegerField(default=0)
     tags_set_total = models.IntegerField(default=0)
     images_annotated_night = models.IntegerField(default=0)
@@ -115,12 +115,13 @@ class UserProfile(models.Model):
     chat_messages_total = models.IntegerField(default=0)
 
     # profile data
-    profile_style = models.CharField(max_length=255, default='')
-    profile_border = models.CharField(max_length=64, default='')
-    profile_background = models.CharField(max_length=64, default='')
-    profile_color = models.CharField(max_length=64, default='')
-    online_status = models.CharField(max_length=32, choices=OnlineStatusChoice.choices(),
-                    default=OnlineStatusChoice.ONLINE)
+    profile_class = models.IntegerField(default=0)
+    profile_background = models.IntegerField(default=0)
+    profile_border = models.IntegerField(default=0)
+    profile_background_elements = models.IntegerField(default=0)
+    # online_status = models.CharField(max_length=32, choices=OnlineStatusChoice.choices(),
+    #                 default=OnlineStatusChoice.ONLINE)
+    online_status = models.IntegerField(default=0)
 
     avatar = models.CharField(max_length=64, default='')
     avatar_border = models.CharField(max_length=64, default='')
@@ -156,13 +157,13 @@ class BadgeStatus(models.Model):
     id = models.CharField(default='0-0', primary_key=True, max_length=8)
     userId = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
     # badge = models.ForeignKey(Badge, on_delete=models.CASCADE, default=None)
-    badgeId = models.IntegerField(default=0)
-    title = models.CharField(default='', max_length=255)
 
-    receivedOn = models.DateTimeField(default=now)
+    badgeId = models.IntegerField(default=0)
+    tier = models.IntegerField(default=0)
+    receivedOn = models.CharField(default='', max_length=255) # Takes a string from the JS frontend
 
     def __str__(self):
-        return (str(self.badgeId) + ': ' + self.userId.user.get_username() + '-' + self.title)
+        return (str(self.badgeId) + ': ' + self.userId.user.get_username() + '-' + str(self.tier))
 
     def save(self, *args, **kwargs):
         self.id = str(self.userId.id) + '-' + str(self.badgeId)
@@ -198,9 +199,10 @@ class ChatRoom(models.Model):
         super(ChatRoom, self).save(*args, **kwargs)
 
 class ChatMessage(models.Model):
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    senderId = models.IntegerField(default=0)
     content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now=True)
-    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
 
 class EnergizerChoice(str, Enum):
     TETRIS = 'TETRIS',

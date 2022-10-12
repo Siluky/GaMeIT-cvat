@@ -56,10 +56,10 @@ const chatBar = (friend: Profile): JSX.Element => {
 };
 
 export function SocialBar(props: SocialBarProps): JSX.Element {
-    useEffect(() => {
-        getFriendsListAsync();
-    });
     const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getFriendsListAsync());
+    }, []);
 
     const { friends } = props;
 
@@ -78,7 +78,7 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                     </Popover>
                 )}
                 // TODO: Check if Works
-                onClick={() => dispatch(getFriendsListAsync())}
+                // onClick={() => dispatch(getFriendsListAsync())}
                 key='friends_list'
             >
                 <Popover
