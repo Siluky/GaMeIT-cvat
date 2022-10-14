@@ -54,7 +54,6 @@ import SVGCVATS3Provider from './assets/S3.svg';
 import SVGCVATGoogleCloudProvider from './assets/google-cloud.svg';
 import SVGOpenVINO from './assets/openvino.svg';
 // gamification stuff
-import SVGEnergizerIcon from './assets/energizer-button-icon.svg';
 import SVGBadge from './assets/badge-icon.svg';
 import SVGBadgeGrey from './assets/badge-grey-icon.svg';
 import SVGAnnotationCoin from './assets/annotation-coin-icon.svg';
@@ -65,6 +64,19 @@ import SVGLoadingItem from './assets/loading-item.svg';
 import SVGMoneyHoarderBadge from './assets/money-hoarder-badge.svg';
 import SVGImageIcon from './assets/images-icon.svg';
 import SVGTimeIcon from './assets/time-icon.svg';
+
+import SVGEnergizerIcon from './assets/energizer-button-icon.svg';
+import SVGEnergizerIcon1 from './assets/gamification/energizer/Energizer-1.svg';
+import SVGEnergizerIcon2 from './assets/gamification/energizer/Energizer-2.svg';
+import SVGEnergizerIcon3 from './assets/gamification/energizer/Energizer-3.svg';
+import SVGEnergizerIcon4 from './assets/gamification/energizer/Energizer-4.svg';
+import SVGEnergizerIcon5 from './assets/gamification/energizer/Energizer-5.svg';
+import SVGEnergizerIcon6 from './assets/gamification/energizer/Energizer-6.svg';
+import SVGEnergizerIcon7 from './assets/gamification/energizer/Energizer-7.svg';
+import SVGEnergizerIcon8 from './assets/gamification/energizer/Energizer-8.svg';
+import SVGEnergizerIcon9 from './assets/gamification/energizer/Energizer-9.svg';
+import SVGEnergizerIcon10 from './assets/gamification/energizer/Energizer-10.svg';
+import SVGEnergizerIcon11 from './assets/gamification/energizer/Energizer-11.svg';
 
 // Badges
 import SVGBadgeGold from './assets/gamification/badges/badge-gold.svg';
@@ -213,13 +225,24 @@ export const S3Provider = React.memo((): JSX.Element => <SVGCVATS3Provider />);
 export const GoogleCloudProvider = React.memo((): JSX.Element => <SVGCVATGoogleCloudProvider />);
 export const OpenVINOIcon = React.memo((): JSX.Element => <SVGOpenVINO />);
 // gamification stuff
-export const EnergizerIcon = React.memo((): JSX.Element => <SVGEnergizerIcon />);
-export const BadgeIcon = React.memo((): JSX.Element => <SVGBadge />);
-export const BadgeGreyIcon = React.memo((): JSX.Element => <SVGBadgeGrey />);
 
-export const BadgeTooltipTest = React.memo((): JSX.Element => <Icon component={SVGBadgeGrey} />);
+export const EnergizerIcon = React.memo((): JSX.Element => <SVGEnergizerIcon />);
+export const EnergizerIcon1 = React.memo((): JSX.Element => <SVGEnergizerIcon1 />);
+export const EnergizerIcon2 = React.memo((): JSX.Element => <SVGEnergizerIcon2 />);
+export const EnergizerIcon3 = React.memo((): JSX.Element => <SVGEnergizerIcon3 />);
+export const EnergizerIcon4 = React.memo((): JSX.Element => <SVGEnergizerIcon4 />);
+export const EnergizerIcon5 = React.memo((): JSX.Element => <SVGEnergizerIcon5 />);
+export const EnergizerIcon6 = React.memo((): JSX.Element => <SVGEnergizerIcon6 />);
+export const EnergizerIcon7 = React.memo((): JSX.Element => <SVGEnergizerIcon7 />);
+export const EnergizerIcon8 = React.memo((): JSX.Element => <SVGEnergizerIcon8 />);
+export const EnergizerIcon9 = React.memo((): JSX.Element => <SVGEnergizerIcon9 />);
+export const EnergizerIcon10 = React.memo((): JSX.Element => <SVGEnergizerIcon10 />);
+export const EnergizerIcon11 = React.memo((): JSX.Element => <SVGEnergizerIcon11 />);
 
 // Badges
+export const BadgeIcon = React.memo((): JSX.Element => <SVGBadge />);
+export const BadgeGreyIcon = React.memo((): JSX.Element => <SVGBadgeGrey />);
+export const BadgeTooltipTest = React.memo((): JSX.Element => <Icon component={SVGBadgeGrey} />);
 export const BadgeGoldIcon = React.memo((): JSX.Element => <SVGBadgeGold />);
 export const BadgeSilverIcon = React.memo((): JSX.Element => <SVGBadgeSilver />);
 export const BadgeBronzeIcon = React.memo((): JSX.Element => <SVGBadgeBronze />);

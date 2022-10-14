@@ -20,6 +20,7 @@ import {
 import {
     CombinedState, DimensionType, Workspace, PredictorState,
 } from 'reducers/interfaces';
+import QuickStats from './quick-statistics';
 
 interface Props {
     workspace: Workspace;
@@ -125,6 +126,7 @@ function RightGroup(props: Props): JSX.Element {
 
     return (
         <Col className='cvat-annotation-header-right-group'>
+            <QuickStats />
             {isTrainingActive && (
                 <Button
                     type='link'

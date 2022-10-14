@@ -13,7 +13,7 @@ import LeftGroup from './left-group';
 import PlayerButtons from './player-buttons';
 import PlayerNavigation from './player-navigation';
 import RightGroup from './right-group';
-import QuickStats from './quick-statistics';
+// import QuickStats from './quick-statistics';
 import { GamificationDummy } from './gamification-dummy-component';
 
 interface Props {
@@ -178,7 +178,7 @@ export default function AnnotationTopBarComponent(props: Props): JSX.Element {
                 </Row>
             </Col>
             <GamificationDummy />
-            <QuickStats />
+            {/* <QuickStats /> */}
             <RightGroup
                 predictor={predictor}
                 workspace={workspace}

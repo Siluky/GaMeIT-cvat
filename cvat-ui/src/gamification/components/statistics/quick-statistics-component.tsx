@@ -20,6 +20,7 @@ export default function QuickStatistic(props: QuickStatisticProps): JSX.Element 
                 <Button
                     type='text'
                     icon={icon}
+                    className='single-quick-statistic-component'
                 >
                     &nbsp;
                     {value}

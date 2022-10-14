@@ -58,6 +58,7 @@ import { initializeUserData } from 'gamification/actions/user-data-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
 import { Input } from 'antd';
+import { getEnergizerIcon } from 'gamification/gamif-items';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -537,7 +538,7 @@ function HeaderContainer(props: Props): JSX.Element {
                             <Button
                                 type='text'
                                 className='gamif-energizer-button'
-                                icon={<EnergizerIcon />}
+                                icon={getEnergizerIcon(currentEnergy) ?? <EnergizerIcon />}
                                 onClick={(): void => switchEnergizerPopUp(true)}
                             />
                             <div

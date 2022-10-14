@@ -32,6 +32,17 @@ import {
     EforEffortGold,
     EforEffortGrey,
     EnergizedBronze, EnergizedGold, EnergizedGrey, EnergizedSilver,
+    EnergizerIcon1,
+    EnergizerIcon10,
+    EnergizerIcon11,
+    EnergizerIcon2,
+    EnergizerIcon3,
+    EnergizerIcon4,
+    EnergizerIcon5,
+    EnergizerIcon6,
+    EnergizerIcon7,
+    EnergizerIcon8,
+    EnergizerIcon9,
     EnergyCollectorBronze, EnergyCollectorGold, EnergyCollectorGrey, EnergyCollectorSilver,
     EnergyGainedIcon,
     FunHaterGold,
@@ -1423,5 +1434,21 @@ export const getProfileBackgroundElements = (id: number): JSX.Element => {
             </>
         );
         default: return <></>;
+    }
+};
+
+export const getEnergizerIcon = (energy: number): React.ReactNode => {
+    switch (energy) {
+        case 1: return <EnergizerIcon1 />;
+        case 2: return <EnergizerIcon2 />;
+        case 3: return <EnergizerIcon3 />;
+        case 4: return <EnergizerIcon4 />;
+        case 5: return <EnergizerIcon5 />;
+        case 6: return <EnergizerIcon6 />;
+        case 7: return <EnergizerIcon7 />;
+        case 8: return <EnergizerIcon8 />;
+        case 9: return <EnergizerIcon9 />;
+        case 20: return <EnergizerIcon11 />;
+        default: return <EnergizerIcon10 />;
     }
 };

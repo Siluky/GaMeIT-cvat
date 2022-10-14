@@ -28,6 +28,10 @@ import LabelSelector from 'components/label-selector/label-selector';
 import getCore from 'cvat-core-wrapper';
 import isAbleToChangeFrame from 'utils/is-able-to-change-frame';
 import GlobalHotKeys, { KeyMap } from 'utils/mousetrap-react';
+import { Tabs } from 'antd';
+import SocialBar from 'gamification/components/social/social-bar';
+import ChallengeList from 'gamification/components/challenges/challengelist-component';
+import StatisticsList from 'gamification/components/statistics/statisticslist-component';
 import ShortcutsSelect from './shortcuts-select';
 
 const cvat = getCore();
@@ -223,82 +227,94 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
         <>
             <GlobalHotKeys keyMap={subKeyMap} handlers={handlers} />
             <Layout.Sider {...siderProps}>
-                {/* eslint-disable-next-line */}
-                <span
-                    className={`cvat-objects-sidebar-sider
-                        ant-layout-sider-zero-width-trigger
-                        ant-layout-sider-zero-width-trigger-left`}
-                    onClick={() => {
-                        adjustContextImagePosition(!sidebarCollapsed);
-                        setSidebarCollapsed(!sidebarCollapsed);
-                    }}
-                >
-                    {sidebarCollapsed ? <MenuFoldOutlined title='Show' /> : <MenuUnfoldOutlined title='Hide' />}
-                </span>
-                <Row justify='start' className='cvat-tag-annotation-sidebar-label-select'>
-                    <Col>
-                        <Text strong>Tag label</Text>
-                        <LabelSelector labels={labels} value={selectedLabelID} onChange={onChangeLabel} />
-                    </Col>
-                </Row>
-                <Row justify='space-around' className='cvat-tag-annotation-sidebar-buttons'>
-                    <Col span={8}>
-                        <Button onClick={() => onAddTag(selectedLabelID)}>Add tag</Button>
-                    </Col>
-                    <Col span={8}>
-                        <Button onClick={onChangeFrame}>Skip frame</Button>
-                    </Col>
-                </Row>
-                <Row className='cvat-tag-annotation-sidebar-checkbox-skip-frame'>
-                    <Col>
-                        <Checkbox
-                            checked={skipFrame}
-                            onChange={(event: CheckboxChangeEvent): void => {
-                                setSkipFrame(event.target.checked);
+                <Tabs type='card' defaultActiveKey='objects' className='cvat-objects-sidebar-tabs'>
+                    <Tabs.TabPane tab={<Text strong>Annotation</Text>} key='annotation'>
+                        {/* eslint-disable-next-line */}
+                        <span
+                            className={`cvat-objects-sidebar-sider
+                            ant-layout-sider-zero-width-trigger
+                            ant-layout-sider-zero-width-trigger-left`}
+                            onClick={() => {
+                                adjustContextImagePosition(!sidebarCollapsed);
+                                setSidebarCollapsed(!sidebarCollapsed);
                             }}
                         >
-                            Automatically go to the next frame
-                        </Checkbox>
-                    </Col>
-                </Row>
-                <Row justify='start' className='cvat-tag-annotation-sidebar-frame-tags'>
-                    <Col>
-                        <Text strong>Frame tags:&nbsp;</Text>
-                        {frameTags.map((tag: any) => (
-                            <Tag
-                                className='cvat-tag-annotation-sidebar-frame-tag-label'
-                                color={tag.label.color}
-                                onClose={() => {
-                                    onRemoveState(tag);
-                                }}
-                                key={tag.clientID}
-                                closable
-                            >
-                                {tag.label.name}
-                            </Tag>
-                        ))}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <ShortcutsSelect onAddTag={onAddTag} />
-                    </Col>
-                </Row>
-                <Row justify='center' className='cvat-tag-annotation-sidebar-shortcut-help'>
-                    <Col>
-                        <Text>
-                            Use&nbsp;
-                            <Text code>N</Text>
-                            &nbsp;or digits&nbsp;
-                            <Text code>0-9</Text>
-                            &nbsp;to add selected tag
-                            <br />
-                            or&nbsp;
-                            <Text code>→</Text>
-                            &nbsp;to skip frame
-                        </Text>
-                    </Col>
-                </Row>
+                            {sidebarCollapsed ? <MenuFoldOutlined title='Show' /> : <MenuUnfoldOutlined title='Hide' />}
+                        </span>
+                        <Row justify='start' className='cvat-tag-annotation-sidebar-label-select'>
+                            <Col>
+                                <Text strong>Tag label</Text>
+                                <LabelSelector labels={labels} value={selectedLabelID} onChange={onChangeLabel} />
+                            </Col>
+                        </Row>
+                        <Row justify='space-around' className='cvat-tag-annotation-sidebar-buttons'>
+                            <Col span={8}>
+                                <Button onClick={() => onAddTag(selectedLabelID)}>Add tag</Button>
+                            </Col>
+                            <Col span={8}>
+                                <Button onClick={onChangeFrame}>Skip frame</Button>
+                            </Col>
+                        </Row>
+                        <Row className='cvat-tag-annotation-sidebar-checkbox-skip-frame'>
+                            <Col>
+                                <Checkbox
+                                    checked={skipFrame}
+                                    onChange={(event: CheckboxChangeEvent): void => {
+                                        setSkipFrame(event.target.checked);
+                                    }}
+                                >
+                                    Automatically go to the next frame
+                                </Checkbox>
+                            </Col>
+                        </Row>
+                        <Row justify='start' className='cvat-tag-annotation-sidebar-frame-tags'>
+                            <Col>
+                                <Text strong>Frame tags:&nbsp;</Text>
+                                {frameTags.map((tag: any) => (
+                                    <Tag
+                                        className='cvat-tag-annotation-sidebar-frame-tag-label'
+                                        color={tag.label.color}
+                                        onClose={() => {
+                                            onRemoveState(tag);
+                                        }}
+                                        key={tag.clientID}
+                                        closable
+                                    >
+                                        {tag.label.name}
+                                    </Tag>
+                                ))}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <ShortcutsSelect onAddTag={onAddTag} />
+                            </Col>
+                        </Row>
+                        <Row justify='center' className='cvat-tag-annotation-sidebar-shortcut-help'>
+                            <Col>
+                                <Text>
+                                    Use&nbsp;
+                                    <Text code>N</Text>
+                                &nbsp;or digits&nbsp;
+                                    <Text code>0-9</Text>
+                                &nbsp;to add selected tag
+                                    <br />
+                                    or&nbsp;
+                                    <Text code>→</Text>
+                                &nbsp;to skip frame
+                                </Text>
+                            </Col>
+                        </Row>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={<Text strong>Challenges</Text>} key='challenges'>
+                        <ChallengeList />
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
+                        <StatisticsList />
+                    </Tabs.TabPane>
+                </Tabs>
+
+                <SocialBar friends={[]} />
             </Layout.Sider>
         </>
     );
