@@ -6,7 +6,7 @@ import React from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Button, List } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import Popover from 'antd/lib/Popover';
+import Popover from 'antd/lib/popover';
 import { Profile } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
 import { getFriendsListAsync, saveProfileDataAsync } from 'gamification/actions/social-actions';

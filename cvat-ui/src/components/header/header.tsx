@@ -27,7 +27,7 @@ import Icon, {
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
-import Popover from 'antd/lib/Popover';
+import Popover from 'antd/lib/popover';
 import Dropdown from 'antd/lib/dropdown';
 import Modal from 'antd/lib/modal';
 import Text from 'antd/lib/typography/Text';
@@ -198,7 +198,6 @@ function HeaderContainer(props: Props): JSX.Element {
         switchEnergizerModal,
         switchEnergizerPopUp,
         incrementEnergy,
-        saveCurrentEnergy,
         getCurrentEnergy,
         renderChangePasswordItem,
         isAnalyticsPluginActive,
@@ -559,15 +558,6 @@ function HeaderContainer(props: Props): JSX.Element {
                         incrementEnergy(1);
                     }}
                 />
-                <Button
-                    type='text'
-                    className='gamif-debug-button'
-                    onClick={(): void => {
-                        saveCurrentEnergy(currentEnergy);
-                    }}
-                >
-                    Save
-                </Button>
                 <Popover
                     content={<ShopWindow />}
                     mouseLeaveDelay={300}
