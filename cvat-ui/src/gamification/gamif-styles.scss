@@ -264,7 +264,7 @@
   position: relative;
   background: grey;
   bottom: 100%;
-  opacity: 0.8;
+  opacity: 0;
 }
 
 .gamif-energizer-popup {
@@ -641,6 +641,7 @@
     background: #B5BECA;
     position: absolute;
     width: 100%;
+    bottom: 0;
 }
 
 .gamif-friends-list-button {
