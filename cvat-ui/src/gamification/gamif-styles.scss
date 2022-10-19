@@ -496,8 +496,6 @@
   justify-content: center;
 }
 
-
-
 // shop
 
 .gamif-shop-window {
@@ -510,6 +508,7 @@
 
 .gamif-shop-window-header {
   margin: 4px 0 4px 0;
+  padding: 0 0 2px 0;
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid black;
@@ -543,6 +542,8 @@
   font-size: 14px;
   text-align: center;
   margin: auto;
+  padding-left: 5px;
+  display: flex;
 }
 
 .gamif-shop-window-items-wrapper {

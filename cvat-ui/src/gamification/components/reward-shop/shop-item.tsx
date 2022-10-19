@@ -31,7 +31,7 @@ const itemPrice = (item: ShopItem): JSX.Element => {
     return (
         <>
             {item.price}
-            <div>
+            <div style={{ minWidth: '25px', display: 'flex' }}>
                 {/* <SketchOutlined /> */}
                 <AnnotationCoinNoBorderIcon />
             </div>
