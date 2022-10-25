@@ -72,7 +72,7 @@ import {
     UnlockerBronze, UnlockerGold, UnlockerGrey, UnlockerSilver,
 } from 'icons';
 import {
-    Badge, BadgeTier, Challenge, ChallengeType, OnlineStatus, ShopItem, Statistic, UserData,
+    Badge, BadgeTier, Challenge, ChallengeType, OnlineStatus, QuizDuelQuestion, ShopItem, Statistic, UserData,
 } from './gamif-interfaces';
 
 // File for individual challenges / badges, mapping them to their IDs etc
@@ -1083,7 +1083,7 @@ export const items: ShopItem[] = [
         title: 'No Border',
         price: 0,
         repeatable: false,
-        bought: false,
+        bought: true,
         visible: true,
         icon: itemPortrait({ background: 'transparent' }, { outline: '3px solid #bbf1c4' }),
         onPurchase: () => {},
@@ -1439,16 +1439,197 @@ export const getProfileBackgroundElements = (id: number): JSX.Element => {
 
 export const getEnergizerIcon = (energy: number): React.ReactNode => {
     switch (energy) {
-        case 1: return <EnergizerIcon1 />;
-        case 2: return <EnergizerIcon2 />;
-        case 3: return <EnergizerIcon3 />;
-        case 4: return <EnergizerIcon4 />;
-        case 5: return <EnergizerIcon5 />;
-        case 6: return <EnergizerIcon6 />;
-        case 7: return <EnergizerIcon7 />;
-        case 8: return <EnergizerIcon8 />;
-        case 9: return <EnergizerIcon9 />;
+        case 0: return <EnergizerIcon1 />;
+        case 1: return <EnergizerIcon2 />;
+        case 2: return <EnergizerIcon3 />;
+        case 3: return <EnergizerIcon4 />;
+        case 4: return <EnergizerIcon5 />;
+        case 5: return <EnergizerIcon6 />;
+        case 6: return <EnergizerIcon7 />;
+        case 7: return <EnergizerIcon8 />;
+        case 8: return <EnergizerIcon9 />;
+        case 9: return <EnergizerIcon10 />;
+        case 10: return <EnergizerIcon10 />;
         case 20: return <EnergizerIcon11 />;
         default: return <EnergizerIcon10 />;
     }
+};
+
+const quizDuelQuestions: QuizDuelQuestion[] = [
+    {
+        question: 'What company was originally called "Cadabra"?',
+        answerA: 'Google',
+        answerB: 'Amazon',
+        answerC: 'Ebay',
+        answerD: 'Tesla',
+        correctAnswer: 2,
+    },
+    {
+        question: 'What is the 4th letter of the Greek alphabet?',
+        answerA: 'Alpha',
+        answerB: 'Epsilon',
+        answerC: 'Delta',
+        answerD: 'Gamma',
+        correctAnswer: 3,
+    },
+    {
+        question: 'How many bones do we have in an ear?',
+        answerA: '1',
+        answerB: '2',
+        answerC: '3',
+        answerD: '4',
+        correctAnswer: 3,
+    },
+    {
+        question: 'What is the largest Spanish-speaking city in the world?',
+        answerA: 'Mexico City',
+        answerB: 'Madrid',
+        answerC: 'New York',
+        answerD: 'New Orleans',
+        correctAnswer: 1,
+    },
+    {
+        question: 'On what continent would you find the world’s largest desert?',
+        answerA: 'Antarctica',
+        answerB: 'Arctic',
+        answerC: 'Africa',
+        answerD: 'Asia',
+        correctAnswer: 1,
+    },
+    {
+        question: 'What is a Beaujolais?',
+        answerA: 'A dish in France',
+        answerB: 'A small bird',
+        answerC: 'A type of red wine',
+        answerD: 'A beauty salon',
+        correctAnswer: 3,
+    },
+    {
+        question: 'What is the name of the biggest technology company in South Korea?',
+        answerA: 'Apple',
+        answerB: 'Tencent',
+        answerC: 'Hyundai',
+        answerD: 'Samsung',
+        correctAnswer: 4,
+    },
+    {
+        question: 'What is the smallest country in the world?',
+        answerA: 'Liechtenstein',
+        answerB: 'Vatican City',
+        answerC: 'Brunei',
+        answerD: 'Malta',
+        correctAnswer: 2,
+    },
+    {
+        question: 'What type of animal is a Flemish giant?',
+        answerA: 'Cat',
+        answerB: 'Dog',
+        answerC: 'Rabbit',
+        answerD: 'Snake',
+        correctAnswer: 3,
+    },
+    {
+        question: 'Which of these religious observances lasts for the shortest period of time during the calendar year?',
+        answerA: 'Ramadan',
+        answerB: 'Lent',
+        answerC: 'Hanukkah',
+        answerD: 'Diwali',
+        correctAnswer: 4,
+    },
+    {
+        question: 'Construction of which of these famous landmarks was completed first?',
+        answerA: 'Empire State Building',
+        answerB: 'Royal Albert Hall',
+        answerC: 'Eiffel Tower',
+        answerD: 'Big Ben',
+        correctAnswer: 4,
+    },
+    {
+        question: 'How many wives had Henry VIII?',
+        answerA: '1',
+        answerB: '2',
+        answerC: '4',
+        answerD: '6',
+        correctAnswer: 4,
+    },
+    {
+        question: 'In which country is the baht the currency?',
+        answerA: 'China',
+        answerB: 'Thailand',
+        answerC: 'Malaysia',
+        answerD: 'Pakistan',
+        correctAnswer: 2,
+    },
+    {
+        question: 'Who was the 40th President of the United States?',
+        answerA: 'Donald Trump',
+        answerB: 'Ronald Reagan',
+        answerC: 'Teddy Roosevelt',
+        answerD: 'George W. Bush',
+        correctAnswer: 2,
+    },
+    {
+        question: 'Where can you find the smallest bone in the human body?',
+        answerA: 'Ear',
+        answerB: 'Shoulder',
+        answerC: 'Foot',
+        answerD: 'Hand',
+        correctAnswer: 1,
+    },
+    {
+        question: 'What is the name of the Twitter bird?',
+        answerA: 'Larry',
+        answerB: 'Birdy',
+        answerC: 'Tweet',
+        answerD: 'Lorry',
+        correctAnswer: 1,
+    },
+    {
+        question: 'Which animal’s poop is cube-shaped?',
+        answerA: 'Beaver',
+        answerB: 'Wombat',
+        answerC: 'Bear',
+        answerD: 'Penguin',
+        correctAnswer: 3,
+    },
+    {
+        question: 'What animal has more toes on their front legs?',
+        answerA: 'Cats',
+        answerB: 'Dogs',
+        answerC: 'Bears',
+        answerD: 'Ants',
+        correctAnswer: 1,
+    },
+    {
+        question: 'Which of these is a blood group?',
+        answerA: 'AA',
+        answerB: 'AB',
+        answerC: 'BA',
+        answerD: 'BB',
+        correctAnswer: 2,
+    },
+    {
+        question: 'Which year was the first ipod released?',
+        answerA: '1999',
+        answerB: '2000',
+        answerC: '2001',
+        answerD: '2004',
+        correctAnswer: 3,
+    },
+];
+
+function shuffleArray(array: Array<any>): Array<any> {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    return array;
+}
+
+export const getQuizDuelQuestions = (amount: number): QuizDuelQuestion[] => {
+    const shuffledQuestions = shuffleArray(quizDuelQuestions);
+    return shuffledQuestions.slice(0, amount);
 };

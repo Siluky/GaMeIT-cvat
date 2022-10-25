@@ -14,7 +14,7 @@ import {
 import { EditFilled, SettingFilled } from '@ant-design/icons';
 // import { TimeIcon } from 'icons';
 import { useDispatch, useSelector, connect } from 'react-redux';
-
+import CvatTooltip from 'components/common/cvat-tooltip';
 import { toggleSelecting } from 'gamification/actions/statistics-actions';
 import { CombinedState } from 'reducers/interfaces';
 import { Statistic } from 'gamification/gamif-interfaces';
@@ -59,16 +59,18 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                         <Radio.Button value='a' onClick={() => showAllTimeStats(true)}>All Time</Radio.Button>
                         <Radio.Button value='b' onClick={() => showAllTimeStats(false)}>Session</Radio.Button>
                     </Radio.Group>
-                    <Button
-                        className={btnClass}
-                        size='large'
-                        type='text'
-                        icon={<SettingFilled />}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            dispatch(toggleSelecting());
-                        }}
-                    />
+                    <CvatTooltip overlay='Click here to select quick statistics'>
+                        <Button
+                            className={btnClass}
+                            size='large'
+                            type='text'
+                            icon={<SettingFilled />}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                dispatch(toggleSelecting());
+                            }}
+                        />
+                    </CvatTooltip>
                     <Button
                         className='statistics-selecting-button-inactive gamif-debug-button'
                         size='large'

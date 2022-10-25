@@ -68,6 +68,41 @@ export function getChallengesAsync(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
+export function saveChallengesSuccess(): AnyAction {
+    return {
+        type: ChallengeActionTypes.SAVE_CHALLENGES_SUCCESS,
+    };
+}
+
+export function saveChallengesFailed(error: any): AnyAction {
+    return {
+        type: ChallengeActionTypes.SAVE_CHALLENGES_FAILED,
+        payload: error,
+    };
+}
+
+export function saveChallenges(): ThunkAction<void, {}, {}, AnyAction> {
+    return async function saveChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        const state = getCVATStore().getState();
+        const id = state.gamifuserdata.userId;
+        const currentChallenges = state.challenges.availableChallenges;
+        try {
+            const challenges = currentChallenges.map((chal: Challenge) => ({
+                userId: id,
+                challengeId: chal.id,
+                title: chal.instruction,
+                goal: chal.goal,
+                progress: chal.progress,
+            }));
+
+            await cvat.challenges.save(challenges);
+            dispatch(saveChallengesSuccess);
+        } catch (error) {
+            dispatch(saveChallengesFailed(error));
+        }
+    };
+}
+
 export function addChallengeSuccess(): AnyAction {
     return {
         type: ChallengeActionTypes.ADD_CHALLENGE_SUCCESS,
@@ -85,41 +120,9 @@ export function addChallenge(): ThunkAction<void, {}, {}, AnyAction> {
     return async function addChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
             dispatch(addChallengeSuccess());
+            dispatch(saveChallenges());
         } catch (error) {
             dispatch(addChallengeFailed(error));
-        }
-    };
-}
-
-export function saveChallengesSuccess(): AnyAction {
-    return {
-        type: ChallengeActionTypes.SAVE_CHALLENGES_SUCCESS,
-    };
-}
-
-export function saveChallengesFailed(error: any): AnyAction {
-    return {
-        type: ChallengeActionTypes.SAVE_CHALLENGES_FAILED,
-        payload: error,
-    };
-}
-
-export function saveChallenges(_challenges: Challenge[]): ThunkAction<void, {}, {}, AnyAction> {
-    return async function saveChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-        const id = getCVATStore().getState().gamifuserdata.userId;
-        try {
-            const challenges = _challenges.map((chal: Challenge) => ({
-                userId: id,
-                challengeId: chal.id,
-                title: chal.instruction,
-                goal: chal.goal,
-                progress: chal.progress,
-            }));
-
-            await cvat.challenges.save(challenges);
-            dispatch(saveChallengesSuccess);
-        } catch (error) {
-            dispatch(saveChallengesFailed(error));
         }
     };
 }

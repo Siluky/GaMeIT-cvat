@@ -50,6 +50,11 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
         dispatch(setProfileBackgroundEffects(0));
         dispatch(setProfileBackground(0));
 
+        // Check if item is bought
+        const relevantItem = items.find((item) => item.id === id) ?? items[5];
+        console.log('🚀 ~ file: shop-window.tsx ~ line 54 ~ useItem ~ relevantItem', relevantItem);
+        if (!relevantItem.bought) return;
+
         switch (id) {
             // case 1: dispatch(incrementEnergy(10)); break;
             // case 2: mysteryGift(); break;

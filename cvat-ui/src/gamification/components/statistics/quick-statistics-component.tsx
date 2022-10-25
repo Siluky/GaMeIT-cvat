@@ -1,7 +1,7 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-import { Button } from 'antd';
+// import { Button } from 'antd';
 import CvatTooltip from 'components/common/cvat-tooltip';
 import 'gamification/gamif-styles.scss';
 import React from 'react';
@@ -17,13 +17,13 @@ export default function QuickStatistic(props: QuickStatisticProps): JSX.Element 
     return (
         <CvatTooltip overlay={tooltip}>
             <div className='single-quick-statistic-component'>
-                <Button
-                    type='text'
-                    icon={icon}
-                >
+                <div className='quick-stats-content'>
+                    <div style={{ minWidth: '25px' }}>
+                        {icon}
+                    </div>
                     &nbsp;
                     {value}
-                </Button>
+                </div>
             </div>
         </CvatTooltip>
     );

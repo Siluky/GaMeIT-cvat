@@ -51,6 +51,9 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function getFriendsListThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
             const profilesImport = await cvat.social.friends();
+
+            profilesImport.sort((a: any, b: any) => a.online_status - b.online_status);
+
             console.log('🚀 ~ file: social-actions.ts ~ line 49 ~ getFriendsListThunk ~ profilesImport', profilesImport);
             const profiles: Profile[] = profilesImport.map((profile: any): Profile => ({
                 username: profile.user,
@@ -72,6 +75,7 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
                 chatActive: false,
             }));
             console.log('🚀 ~ file: social-actions.ts ~ line 57 ~ getFriendsListThunk ~ profiles', profiles);
+
             dispatch(getFriendsListSuccess(profiles));
         } catch (error) {
             dispatch(getFriendsListFailed(error));

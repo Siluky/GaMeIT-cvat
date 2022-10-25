@@ -56,7 +56,7 @@ export function getShopDataSuccess(items: ShopItem[]): AnyAction {
 export function getShopDataAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function getShopDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
-            const shopData = await cvat.shop.getData(); // TODO:
+            const shopData = await cvat.shop.getData();
 
             dispatch(getShopDataSuccess(shopData));
         } catch (error) {
@@ -129,7 +129,7 @@ export function useRepeatableItem(itemId: number): ThunkAction<void, {}, {}, Any
                 }
             } break;
             case 3: dispatch(addChallenge()); break;
-            case 4: // TODO: Streak saver; break;
+            case 4: dispatch(updateUserData('streak_saver_active', 1)); break;
             case 5: dispatch(upgradeBadgeTier(12)); break; // TODO: Money Badge
             default: break;
         }

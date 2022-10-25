@@ -12,6 +12,8 @@ import { addQuickStatistic } from './statistics-actions';
 import { initShop, updateBalance } from './shop-actions';
 // eslint-disable-next-line import/no-cycle
 import { initProfileBadges } from './badge-actions';
+// eslint-disable-next-line import/no-cycle
+import { addChallenge } from './challenge-actions';
 
 const cvat = getCore();
 
@@ -140,14 +142,37 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             const boughtItems = boughtItemsImport.map((id: string) => parseInt(id, 10));
             dispatch(initShop(boughtItems));
 
-            const selectedBadgesImport = userDataImport.items_bought.split(',');
+            const selectedBadgesImport = userDataImport.selectedBadges.split(',');
             console.log('🚀 ~ file: user-data-actions.ts ~ line 142 ~ loadUserDataThunk ~ selectedBadgesImport', selectedBadgesImport);
             // eslint-disable-next-line max-len
             const badgeIdsPrepared = selectedBadgesImport.map((id: string) => parseInt(id, 10));
             dispatch(initProfileBadges(badgeIdsPrepared));
+            const lastLogin = userDataAllTime.last_login;
+            const currentTime = Date.now();
+            const timeSinceLogin = currentTime - lastLogin;
+            console.log(`Time since last login in hrs: ${timeSinceLogin / 1000 / 60 / 60} `);
+            console.log('🚀 ~ file: user-data-actions.ts ~ line 153 ~ loadUserDataThunk ~ timeSinceLogin', timeSinceLogin);
+            if (timeSinceLogin > 24 * 60 * 60 * 1000) {
+                console.log('More than 24 hours since last login');
+                if (userDataAllTime.streak_saver_active) {
+                    userDataAllTime.streak_saver_active = false;
+                } else {
+                    userDataAllTime.annotation_streak_current = 0;
+                }
+            }
+
+            const newDay = new Date(lastLogin).getDay() - new Date(currentTime).getDay();
+            if (newDay !== 0) {
+                console.log('New day has started');
+                dispatch(addChallenge());
+                userDataAllTime.annotation_streak_current++;
+                userDataAllTime.annotation_streak_max = Math.max(
+                    userDataAllTime.annotation_streak_max, userDataAllTime.annotation_streak_current,
+                );
+            }
 
             const userDataSession: UserData = {
-                last_login: Date.now(),
+                last_login: currentTime,
                 images_annotated: 0,
                 tags_set: 0,
                 images_annotated_night: 0,
@@ -155,7 +180,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 annotation_time_avg: 0,
                 annotation_streak_current: userDataAllTime.annotation_streak_current,
                 annotation_streak_max: 0,
-                streak_saver_active: false,
+                streak_saver_active: userDataAllTime.streak_saver_active,
                 badges_obtained: 0,
                 challenges_completed: 0,
                 energy_gained: 0,
@@ -166,7 +191,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 snake_played: 0,
                 currentBalance: 0,
                 annotation_coins_obtained: 0,
-                annotation_coins_max: userDataAllTime.annotation_coins_max,
+                annotation_coins_max: userDataAllTime.currentBalance,
                 items_bought: 0,
                 chat_messages: 0,
             };
@@ -238,6 +263,7 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         annotation_time_total: totalData.annotation_time,
         annotation_streak_current: sessionData.annotation_streak_current,
         annotation_streak_max: totalData.annotation_streak_max,
+        annotation_streak_saver: sessionData.streak_saver_active,
         badges_obtained_total: totalData.badges_obtained,
         challenges_completed: totalData.challenges_completed,
         energy_total: totalData.energy_gained,

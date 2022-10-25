@@ -183,19 +183,19 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                         type='text'
                         className='gamif-debug-button'
                         onClick={(): void => {
-                            dispatch(updateBadges(availableBadges, true));
+                            dispatch(updateBadges(true));
                         }}
                     >
-                        Init
+                        Init_tiers
                     </Button>
                     <Button
                         type='text'
                         className='gamif-debug-button'
                         onClick={(): void => {
-                            dispatch(updateBadges(availableBadges, false));
+                            dispatch(updateBadges(false));
                         }}
                     >
-                        Update
+                        Update_tiers
                     </Button>
                     <Button
                         type='text'

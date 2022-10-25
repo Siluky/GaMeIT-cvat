@@ -30,14 +30,19 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     const [leaderboardShown, setLeaderboardShown] = useState(false);
     const energizer = useSelector((state: CombinedState) => state.energizer);
     const dispatch = useDispatch();
-    const [e, setE] = useState(EnergizerType.NONE);
+    const active = energizer.activeEnergizer;
+    const [index, setIndex] = useState(1);
 
     const modalContent = (activeEnergizer: EnergizerType): JSX.Element => {
+        // setIndex(index + 1);
         switch (activeEnergizer) {
-            case EnergizerType.QUIZ: return <QuizDuel showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
-            case EnergizerType.SNAKE: return <></>;
-            case EnergizerType.TETRIS: return <></>;
-            default: return <QuizDuel showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
+            case EnergizerType.QUIZ:
+                return <QuizDuel key={index} showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
+            case EnergizerType.SNAKE:
+                return <> </>;
+            case EnergizerType.TETRIS:
+                return <> </>;
+            default: return <QuizDuel key={index} showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
         }
     };
 
@@ -47,31 +52,34 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 className='gamif-shop-item-card'
                 type='text'
                 onClick={() => {
-                    setE(EnergizerType.QUIZ);
+                    setIndex(index + 1);
+                    dispatch(setActiveEnergizer(EnergizerType.QUIZ));
                     dispatch(updateUserData('quiz_played', 1));
                 }}
             >
-                1
+                Quiz
             </Button>
             <Button
                 className='gamif-shop-item-card'
                 type='text'
                 onClick={() => {
-                    setE(EnergizerType.SNAKE);
+                    setIndex(index + 1);
+                    dispatch(setActiveEnergizer(EnergizerType.SNAKE));
                     dispatch(updateUserData('snake_played', 1));
                 }}
             >
-                2
+                Snake
             </Button>
             <Button
                 className='gamif-shop-item-card'
                 type='text'
                 onClick={() => {
-                    setE(EnergizerType.TETRIS);
+                    setIndex(index + 1);
+                    dispatch(setActiveEnergizer(EnergizerType.TETRIS));
                     dispatch(updateUserData('tetris_played', 1));
                 }}
             >
-                3
+                Tetris
             </Button>
         </div>
     );
@@ -87,7 +95,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 footer={null}
                 maskClosable={false}
             >
-                {e === EnergizerType.NONE ? infoScreen() : modalContent(energizer.activeEnergizer)}
+                {active === EnergizerType.NONE ? infoScreen() : modalContent(energizer.activeEnergizer)}
                 <Button
                     className='gamif-energizer-continue-button'
                     type='text'

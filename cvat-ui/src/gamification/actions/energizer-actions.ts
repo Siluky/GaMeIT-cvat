@@ -144,6 +144,8 @@ export function incrementEnergy(increment: number): ThunkAction<void, {}, {}, An
         }
 
         dispatch(incrementEnergyAction(increment));
+        dispatch(saveCurrentEnergyAsync(newEnergy));
+        if (newEnergy === 10) { dispatch(switchEnergizerPopUp(true)); }
     };
 }
 

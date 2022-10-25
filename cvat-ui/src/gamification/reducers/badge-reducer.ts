@@ -90,6 +90,16 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             return state;
         }
 
+        case BadgeActionTypes.INIT_PROFILE_BADGES: {
+            if (action.payload === 0) {
+                return state;
+            }
+            return {
+                ...state,
+                badgesinProfile: action.payload,
+            };
+        }
+
         case BadgeActionTypes.REMOVE_BADGE_FROM_PROFILE: {
             const index = state.badgesinProfile.indexOf(action.payload);
             const newArray = state.badgesinProfile;

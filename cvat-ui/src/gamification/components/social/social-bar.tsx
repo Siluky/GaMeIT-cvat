@@ -78,7 +78,7 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                     </Popover>
                 )}
                 // TODO: Check if Works
-                // onClick={() => dispatch(getFriendsListAsync())}
+                onClick={() => dispatch(getFriendsListAsync())}
                 key='friends_list'
             >
                 <Popover
@@ -87,7 +87,8 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                     content={<FriendsList profiles={friends} />}
                     mouseLeaveDelay={10}
                 >
-                    Online (3)
+                    {`Online (${friends.length ?? 0})`}
+
                 </Popover>
             </Menu.Item>
             {friends.map((user: Profile) => {

@@ -1941,8 +1941,11 @@
             async function getLeaderboard(energizerName, time) {
                 const { backendAPI } = config;
                 let response = null;
+                const timeParam = !time || time === 'undefined' ? '' : time;
+                console.log(`Leaderboard Link: energizer-data?energizer=${energizerName}?time=${timeParam}`);
                 try {
                     response = await Axios.get(`${backendAPI}/energizer-data?energizer=${energizerName}?time=${time}`);
+                    console.log('🚀 ~ file: server-proxy.js ~ line 1947 ~ ServerProxy ~ getLeaderboard ~ response', response);
                 } catch (error) {
                     throw generateError(error);
                 }
@@ -2015,7 +2018,12 @@
 
                 const profiles = response.data.results;
                 const profileswithBadges = await Promise.all(profiles.map(async (_profile) => {
-                    if (_profile.selectedBadges === '0') { return _profile; }
+                    if ((_profile.selectedBadges === '0') || !(_profile.selectedBadges)) {
+                        return {
+                            ..._profile,
+                            selectedBadges: [],
+                        };
+                    }
 
                     const badgeIds = _profile.selectedBadges.split(',').map((id) => parseInt(id, 10));
 

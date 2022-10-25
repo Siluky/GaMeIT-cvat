@@ -38,6 +38,8 @@ const quickProfileBadges = (statuses: BadgeStatus[]): JSX.Element => {
 
     // const todayFormatted = `${mm}/${dd}/${yyyy}`;
 
+    if (!statuses) return <></>;
+
     const selectedBadges = statuses.map((badgeStatus, index) => {
         const badge = badges.availableBadges.find((_badge) => _badge.id === badgeStatus.id);
         if (badge) {

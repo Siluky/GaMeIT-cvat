@@ -9,10 +9,10 @@ import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import {
-    incrementEnergy, setActiveEnergizer, switchEnergizerModal, switchEnergizerPopUp,
+    incrementEnergy, switchEnergizerModal, switchEnergizerPopUp,
 } from 'gamification/actions/energizer-actions';
 import { EnergizerIcon } from 'icons';
-import { EnergizerType } from 'gamification/gamif-interfaces';
+// import { EnergizerType } from 'gamification/gamif-interfaces';
 
 interface EnergizerPopUpProps {
     currentEnergy: number;
@@ -92,7 +92,7 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                             dispatch(switchEnergizerPopUp(false));
                             dispatch(switchEnergizerModal(true));
                             // TODO: Give choice or start random energizer!
-                            dispatch(setActiveEnergizer(EnergizerType.QUIZ));
+                            // dispatch(setActiveEnergizer(EnergizerType.QUIZ));
                         }
                     }}
                 >

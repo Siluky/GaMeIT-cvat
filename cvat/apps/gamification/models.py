@@ -89,7 +89,7 @@ class UserProfile(models.Model):
 
     # badge-related data
     badges_obtained_total = models.IntegerField(default=0)
-    selectedBadges = models.CharField(max_length=255, default='')
+    selectedBadges = models.CharField(max_length=255, default='0')
 
     # challenges-related data
     challenges_completed = models.IntegerField(default=0)

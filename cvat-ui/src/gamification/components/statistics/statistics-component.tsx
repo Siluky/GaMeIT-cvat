@@ -47,12 +47,12 @@ function mapStateToProps(state: CombinedState, ownProps: Props): StateToProps {
 const formatValue = (stat: Statistic): string => {
     if (stat.id === 5 || stat.id === 3) {
         if (stat.value > 3600) {
-            return `${(stat.value / 3600).toFixed(2)} hrs`;
+            return `${Math.floor((stat.value / 3600))}:${Math.floor((stat.value % 3600) / 60)} hrs`;
             // return `${Math.floor(stat.value / 3600)}:${stat.value % 60} min`;
         }
 
         if (stat.value > 60) {
-            return `${(stat.value / 60).toFixed(2)} min`;
+            return `${Math.floor((stat.value / 60))}:${stat.value % 60} min`;
             // return `${Math.floor(stat.value / 60)}:${stat.value % 60} min`;
         }
     }

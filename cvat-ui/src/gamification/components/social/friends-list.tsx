@@ -32,8 +32,9 @@ function mapStateToProps(state: CombinedState): StateToProps {
 export function FriendsList(props: FriendsListProps): JSX.Element {
     const { profiles } = props;
     const dispatch = useDispatch();
-    const social = useSelector((state: CombinedState) => state.social);
-    const badges = useSelector((state: CombinedState) => state.badges);
+    // const social = useSelector((state: CombinedState) => state.social);
+    // const badges = useSelector((state: CombinedState) => state.badges);
+    const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
     return (
         <>
             <List
@@ -47,12 +48,15 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                         mouseLeaveDelay={5}
                         content={<QuickProfile profile={_profile} />}
                     >
-                        <List.Item>
+                        <List.Item
+                            style={_profile.userId === userId ? { background: '#fddeef' } : {}}
+                        >
                             <List.Item.Meta
                                 // avatar={<Avatar src='https://joeschmoe.io/api/v1/random' />}
                                 avatar={<UserOutlined />}
-                                title={_profile.username}
+                                title={_profile.userId === userId ? 'You' : _profile.username}
                                 // description='This is an annotator that is online'
+                                // style={_profile.userId === userId ? { background: 'cyan' } : {}}
                             />
                             <span>
                                 { _profile.status }
@@ -68,17 +72,18 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                     </Popover>
                 )}
             />
-            <Popover
+            {/* <Popover
                 placement='left'
                 trigger='hover'
                 mouseLeaveDelay={60}
+                className='gamif-debug-button'
                 content={<QuickProfile profile={{ ...social.ownProfile, selectedBadges: badges.badgesinProfile }} />}
             >
                 Own Profile
-            </Popover>
+            </Popover> */}
 
-            <Button type='text' onClick={() => dispatch(getFriendsListAsync())}>Load</Button>
-            <Button type='text' onClick={() => dispatch(saveProfileDataAsync())}>Save</Button>
+            <Button type='text' className='gamif-debug-button' onClick={() => dispatch(getFriendsListAsync())}>Load</Button>
+            <Button type='text' className='gamif-debug-button' onClick={() => dispatch(saveProfileDataAsync())}>Save</Button>
         </>
     );
 }

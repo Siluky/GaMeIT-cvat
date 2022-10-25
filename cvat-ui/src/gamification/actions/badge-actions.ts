@@ -77,6 +77,7 @@ export function loadBadgesAsync(): ThunkAction<void, {}, {}, AnyAction> {
                     return {
                         ...badge,
                         tier: decodeBadgeTier(entry.tier),
+                        visible: true,
                         receivedOn: entry.receivedOn ?? null,
                     };
                 }
@@ -270,11 +271,12 @@ function updateBadgesFailed(error: any): AnyAction {
     };
 }
 
-export function updateBadges(badges: Badge[], init: boolean): ThunkAction<void, {}, {}, AnyAction> {
+export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction> {
     return async (dispatch) => {
-        const userDataState = getCVATStore().getState().gamifuserdata;
+        const state = getCVATStore().getState();
+        const badges = state.badges.availableBadges;
+        const userDataState = state.gamifuserdata;
         const userdata = userDataState.userdata_total;
-
         try {
             const updatedBadges = badges.map((badge: Badge) => {
                 let updatedTier = BadgeTier.NOT_OBTAINED;
@@ -303,7 +305,7 @@ export function updateBadges(badges: Badge[], init: boolean): ThunkAction<void, 
             });
 
             const order = Object.values(BadgeTier);
-            const orderedBadges = updatedBadges.sort((a, b) => order.indexOf(b.tier) - order.indexOf(a.tier));
+            const orderedBadges = updatedBadges.sort((a: any, b: any) => order.indexOf(b.tier) - order.indexOf(a.tier));
             console.log('🚀 ~ file: badge-actions.ts ~ line 217 ~ updateBadges ~ orderedBadges', orderedBadges);
 
             dispatch(updateBadgesSuccess(updatedBadges));

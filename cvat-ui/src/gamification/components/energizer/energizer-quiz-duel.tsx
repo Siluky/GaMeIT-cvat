@@ -7,16 +7,14 @@ import 'gamification/gamif-styles.scss';
 import {
     Button,
 } from 'antd';
-import getCore from 'cvat-core-wrapper';
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 import gamifconsts from 'gamification/gamifconsts';
 import { setLatestEntry } from 'gamification/actions/energizer-actions';
+import { getQuizDuelQuestions } from 'gamification/gamif-items';
 import {
     QuizDuelQuestion, EnergizerProps, EnergizerType, LeaderboardEntry,
 } from '../../gamif-interfaces';
-
-const cvat = getCore();
 
 enum Answer {
     A = 'A',
@@ -99,7 +97,8 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
 
     useEffect(() => {
         const getEntries = async (): Promise<void> => {
-            const questionsImport = await cvat.energizer.quizDuelQuestions();
+            // const questionsImport = await cvat.energizer.quizDuelQuestions();
+            const questionsImport = getQuizDuelQuestions(5);
             setLoading(false);
             console.log('🚀 ~ file: energizer-quiz-duel.tsx ~ line 127 ~ getEntries ~ questionsImport', questionsImport);
             setQuestions(questionsImport);

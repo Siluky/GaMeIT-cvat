@@ -148,6 +148,10 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                     totalData.chat_messages += action.payload.increment;
                     break;
                 }
+                case 'streak_saver_active': {
+                    sessionData.streak_saver_active = true;
+                    break;
+                }
 
                 default: break;
             }

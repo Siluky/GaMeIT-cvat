@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import '../../gamif-styles.scss';
 import { Challenge } from 'gamification/gamif-interfaces';
 import { Button, Progress } from 'antd';
-import { AnnotationCoinIcon } from 'icons';
+import { AnnotationCoinNoBorderIcon } from 'icons';
 
 import { blue, geekblue } from '@ant-design/colors';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -85,7 +85,8 @@ export function ChallengePane(props: Props): JSX.Element {
                 </div>
                 <div className='gamif-challenge-pane-top-right'>
                     <Button
-                        icon={<AnnotationCoinIcon />}
+                        // icon={<AnnotationCoinIcon />}
+                        icon={<AnnotationCoinNoBorderIcon />}
                         type='text'
                         onClick={() => {
                             if (challenge.goal === challenge.progress) {

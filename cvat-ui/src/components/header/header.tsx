@@ -55,6 +55,7 @@ import {
 } from 'gamification/actions/energizer-actions';
 import { saveProfileDataAsync } from 'gamification/actions/social-actions';
 import { initializeUserData } from 'gamification/actions/user-data-actions';
+import { updateBadges } from 'gamification/actions/badge-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
 import { Input } from 'antd';
@@ -183,6 +184,27 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
 }
 
 type Props = StateToProps & DispatchToProps;
+
+const gamifSurveyPrompt = (): JSX.Element => (
+    <>
+        <div className='gamif-energizer-popup-top-wrapper'>
+            <div className='gamif-energizer-popup-top-content'>
+                <EnergizerIcon />
+            </div>
+        </div>
+        <div className='gamif-energizer-popup-bottom'>
+            We would like you to participate in a survey!
+            <Button
+                className='gamif-energizer-popup-start-energizer-button'
+                type='link'
+                href='www.google.com'
+            >
+                Go to Survey
+            </Button>
+        </div>
+
+    </>
+);
 
 function HeaderContainer(props: Props): JSX.Element {
     const {
@@ -318,6 +340,7 @@ function HeaderContainer(props: Props): JSX.Element {
                     // TODO: Custom Badge Icon
                     icon={<RadarChartOutlined />}
                     key='badge_profile'
+                    onClick={() => dispatch(updateBadges(false))}
                 >
                     Badges
                 </Menu.Item>
@@ -538,7 +561,7 @@ function HeaderContainer(props: Props): JSX.Element {
                                 type='text'
                                 className='gamif-energizer-button'
                                 icon={getEnergizerIcon(currentEnergy) ?? <EnergizerIcon />}
-                                onClick={(): void => switchEnergizerPopUp(true)}
+                                onClick={(): void => { if (currentEnergy >= 10) { switchEnergizerPopUp(true); } }}
                             />
                             <div
                                 // eslint-disable-next-line max-len
@@ -560,7 +583,8 @@ function HeaderContainer(props: Props): JSX.Element {
                 />
                 <Popover
                     content={<ShopWindow />}
-                    mouseLeaveDelay={300}
+                    mouseLeaveDelay={100}
+                    trigger='click'
                     onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
                 >
                     <div className='gamif-shop-button-wrapper'>
@@ -577,7 +601,15 @@ function HeaderContainer(props: Props): JSX.Element {
                             <TextArea rows={4} />
                         </div>
                     )}
-                    mouseLeaveDelay={300}
+                    trigger='click'
+                    mouseLeaveDelay={5}
+                >
+                    <Button className='gamif-debug-button' type='text' icon={<BugFilled />} />
+                </Popover>
+                <Popover
+                    content={gamifSurveyPrompt}
+                    trigger='click'
+                    mouseLeaveDelay={5}
                 >
                     <Button className='gamif-debug-button' type='text' icon={<BugFilled />} />
                 </Popover>
