@@ -28,6 +28,7 @@ const userdataInit: UserData = {
     annotation_coins_obtained: 0,
     annotation_coins_max: 0,
     items_bought: 0,
+    mystery_gifts_bought: 0,
     chat_messages: 0,
 };
 
@@ -68,6 +69,8 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                 case 'tags_set': {
                     sessionData.tags_set += action.payload.increment;
                     totalData.tags_set += action.payload.increment;
+                    sessionData.images_annotated += Math.floor(sessionData.tags_set / 2);
+                    totalData.images_annotated += Math.floor(totalData.tags_set / 2);
                     break;
                 }
                 case 'images_annotated_night': {
@@ -92,6 +95,12 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                     totalData.badges_obtained += action.payload.increment;
                     break;
                 }
+
+                case 'annotation_coins_max': {
+                    totalData.annotation_coins_max = action.payload.increment;
+                    break;
+                }
+
                 case 'challenges_completed': {
                     sessionData.challenges_completed += action.payload.increment;
                     totalData.challenges_completed += action.payload.increment;

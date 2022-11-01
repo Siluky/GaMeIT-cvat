@@ -204,6 +204,9 @@ class ChatMessage(models.Model):
     content = models.CharField(max_length=1000)
     timestamp = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return (str(self.room.id) + ': Message ' + self.id)
+
 class EnergizerChoice(str, Enum):
     TETRIS = 'TETRIS',
     SNAKE = 'SNAKE',
@@ -225,7 +228,7 @@ class EnergizerData(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (self.userProfile.user.get_username() + '-' + self.energizer + ': ' + str(self.score))
+        return (str(self.id) + self.userProfile.user.get_username() + '-' + self.energizer + ': ' + str(self.score))
 
 class Question(models.Model):
     class correctAnswer(models.IntegerChoices):

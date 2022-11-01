@@ -120,7 +120,7 @@ class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.ChatMessage
-        fields = ('room','content', 'timestamp')
+        fields = ('room','senderId', 'content', 'timestamp')
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:

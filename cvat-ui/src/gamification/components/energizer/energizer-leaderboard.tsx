@@ -11,9 +11,9 @@ import {
     Col,
     Radio,
 } from 'antd';
-import { AndroidFilled } from '@ant-design/icons';
+// import { AndroidFilled } from '@ant-design/icons';
 import { getLeaderboardAsync } from 'gamification/actions/energizer-actions';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
 interface EnergizerLeaderboardProps {
     // newScore: number;
@@ -44,6 +44,8 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
     } = props;
 
     const dispatch = useDispatch();
+    const { latestEntry } = useSelector((state: CombinedState) => state.energizer);
+    const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
 
     useEffect(() => {
         dispatch(getLeaderboardAsync(activeEnergizer));
@@ -56,12 +58,12 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
                     <h2> Leaderboard </h2>
                 </div>
                 <div className='energizer-leaderboard-header-content'>
-                    <div className='energizer-leaderboard-header-text'> 2nd </div>
-                    <div className='energizer-leaderboard-header-text'>
+                    {/* <div className='energizer-leaderboard-header-text'> 2nd </div> */}
+                    {/* <div className='energizer-leaderboard-header-text'>
                         <AndroidFilled />
-                    </div>
+                    </div> */}
                     <div className='energizer-leaderboard-header-text'>
-                        1 correct answer
+                        {`Score: ${latestEntry.score}`}
                     </div>
                 </div>
             </div>
@@ -74,26 +76,29 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
                     </Radio.Group>
                 </div>
                 {
-                    leaderboardEntries.map((entry: LeaderboardEntry, index: number) => (
-                        // TODO: Highlight the current user's row
-                        // --> className='energizer-leaderboard-row energizer-leaderboard-row-highlight'
-                        <Row className='energizer-leaderboard-row' wrap>
-                            <Col span={2}>
-                                <b>
-                                    {index + 1}
-                                </b>
-                            </Col>
-                            <Col span={2}>
-                                <AndroidFilled />
-                            </Col>
-                            <Col span={16}>
-                                {entry.username}
-                            </Col>
-                            <Col span={4}>
-                                {entry.score}
-                            </Col>
-                        </Row>
-                    ))
+                    leaderboardEntries.map((entry: LeaderboardEntry, index: number) => {
+                        const rowStyle = ((entry.userId === userId) && (entry.score === latestEntry.score)) ?
+                            'energizer-leaderboard-row highlight' :
+                            'energizer-leaderboard-row';
+                        return (
+                            <Row className={rowStyle} wrap>
+                                <Col span={2}>
+                                    <b>
+                                        {index + 1}
+                                    </b>
+                                </Col>
+                                {/* <Col span={2}>
+                                    <AndroidFilled />
+                                </Col> */}
+                                <Col span={18}>
+                                    {entry.username}
+                                </Col>
+                                <Col span={4}>
+                                    {entry.score}
+                                </Col>
+                            </Row>
+                        );
+                    })
                 }
             </div>
         </>

@@ -11,7 +11,7 @@ import { connect, useDispatch } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 import StatusMenu from './status-menu';
 import { FriendsList } from './friends-list';
-import ChatBox from './chat-box';
+import Chat from './chat-box';
 
 interface StateToProps {
     friends: Profile[],
@@ -39,7 +39,7 @@ const chatBar = (friend: Profile): JSX.Element => {
             <Popover
                 placement='top'
                 trigger='click'
-                content={<ChatBox userId={friend.userId} />}
+                content={<Chat userId={friend.userId} messages={[]} />}
                 mouseLeaveDelay={10}
                 defaultVisible
             >
@@ -77,8 +77,6 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                         <InfoCircleFilled />
                     </Popover>
                 )}
-                // TODO: Check if Works
-                onClick={() => dispatch(getFriendsListAsync())}
                 key='friends_list'
             >
                 <Popover
@@ -88,7 +86,6 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                     mouseLeaveDelay={10}
                 >
                     {`Online (${friends.length ?? 0})`}
-
                 </Popover>
             </Menu.Item>
             {friends.map((user: Profile) => {

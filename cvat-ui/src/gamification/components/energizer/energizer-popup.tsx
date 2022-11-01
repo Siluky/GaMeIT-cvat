@@ -69,7 +69,10 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                     </Button>
                 </div>
                 <div className='gamif-energizer-popup-header-right'>
-                    <Button onClick={(): void => { dispatch(switchEnergizerPopUp(false)); }}>
+                    <Button
+                        style={{ background: 'transparent' }}
+                        onClick={(): void => { dispatch(switchEnergizerPopUp(false)); }}
+                    >
                         <PlusOutlined rotate={45} />
                     </Button>
                 </div>

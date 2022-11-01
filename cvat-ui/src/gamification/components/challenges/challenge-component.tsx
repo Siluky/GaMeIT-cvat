@@ -10,7 +10,7 @@ import { AnnotationCoinNoBorderIcon } from 'icons';
 
 import { blue, geekblue } from '@ant-design/colors';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { completeChallenge, updateChallengeProgress } from 'gamification/actions/challenge-actions';
+import { completeChallenge } from 'gamification/actions/challenge-actions';
 import { CombinedState } from 'reducers/interfaces';
 import { mapChallengeIdtoFieldName } from 'gamification/gamif-items';
 import { getCVATStore } from 'cvat-store';
@@ -30,11 +30,12 @@ function mapStateToProps(state: CombinedState, ownProps: Props): StateToProps {
     const { gamifuserdata } = state;
 
     const { challenge } = ownProps;
+    const newProgress = (gamifuserdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]) as number;
 
     return {
         challenge: {
             ...challenge,
-            progress: challenge.initProgress + gamifuserdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)],
+            progress: challenge.initProgress + newProgress,
         },
     };
 }
@@ -46,7 +47,6 @@ export function ChallengePane(props: Props): JSX.Element {
     const [startVal, setStart] = useState(0);
 
     useEffect(() => {
-        console.log('checking whether challenge is completed');
         if (challenge.progress >= challenge.goal) {
             dispatch(completeChallenge(challenge));
             dispatch(updateUserData('challenges_completed', 1));
@@ -57,14 +57,11 @@ export function ChallengePane(props: Props): JSX.Element {
         // Snapshot state!
         const udata = getCVATStore().getState().gamifuserdata;
         setStart(udata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]);
-        console.log(`First render of challenge: Setting startVal: ${startVal}`);
     }, []);
 
     useEffect(() => {
-        console.log('User Data field associated to challenge changed: Updating Challenge');
         // eslint-disable-next-line max-len
-        const diff = userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)] - startVal;
-        console.log('🚀 ~ file: challenge-component.tsx ~ line 63 ~ useEffect ~ diff', diff);
+        const diff = userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)] as number - startVal;
         challenge.progress = challenge.initProgress + diff;
     }, [userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]]);
 
@@ -81,7 +78,7 @@ export function ChallengePane(props: Props): JSX.Element {
                         trailColor={geekblue[1]}
                         strokeColor={blue[4]}
                     />
-                    { `${challenge.progress}` }
+                    {/* { `${challenge.progress}` } */}
                 </div>
                 <div className='gamif-challenge-pane-top-right'>
                     <Button
@@ -89,11 +86,11 @@ export function ChallengePane(props: Props): JSX.Element {
                         icon={<AnnotationCoinNoBorderIcon />}
                         type='text'
                         onClick={() => {
-                            if (challenge.goal === challenge.progress) {
-                                dispatch(completeChallenge(challenge));
-                            } else {
-                                dispatch(updateChallengeProgress(challenge.id, 1));
-                            }
+                            // if (challenge.goal === challenge.progress) {
+                            //     dispatch(completeChallenge(challenge));
+                            // } else {
+                            //     dispatch(updateChallengeProgress(challenge.id, 1));
+                            // }
                         }}
                     />
                     {challenge.reward}

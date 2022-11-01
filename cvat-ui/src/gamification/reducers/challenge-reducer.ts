@@ -68,8 +68,6 @@ export default (state = defaultState, action: AnyAction): ChallengeState => {
                 instruction: newChallenge.instruction.replace('GOAL', goalAdjusted.toString()),
                 progress: 0,
             };
-            console.log('🚀 ~ file: challenge-actions.ts ~ line 107 ~ addChallengeThunk ~ newChal', newChal);
-
             const challenges = state.availableChallenges.concat(newChal);
             return {
                 ...state,
@@ -95,7 +93,6 @@ export default (state = defaultState, action: AnyAction): ChallengeState => {
 
         case ChallengeActionTypes.REMOVE_CHALLENGE_SUCCESS: {
             const updatedChallenges = state.availableChallenges.filter((challenge) => challenge.id !== action.payload);
-            console.log('🚀 ~ file: challenge-reducer.ts ~ line 57 ~ updatedChallenges', updatedChallenges);
             return {
                 ...state,
                 availableChallenges: updatedChallenges,

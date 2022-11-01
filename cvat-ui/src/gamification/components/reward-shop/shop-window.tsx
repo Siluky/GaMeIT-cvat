@@ -4,7 +4,9 @@
 import React from 'react';
 import 'gamification/gamif-styles.scss';
 import 'gamification/gamif-profile-styles.scss';
-import { Row, Col, Button } from 'antd';
+import {
+    Row, Col, Button,
+} from 'antd';
 import { connect, useDispatch } from 'react-redux';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
@@ -46,21 +48,17 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const { items, currentBalance, selectedItemId } = props;
     const dispatch = useDispatch();
 
+    // const [modalShown, toggleModal] = useState(false);
+
     const useItem = (id: number): void => {
         dispatch(setProfileBackgroundEffects(0));
         dispatch(setProfileBackground(0));
 
         // Check if item is bought
         const relevantItem = items.find((item) => item.id === id) ?? items[5];
-        console.log('🚀 ~ file: shop-window.tsx ~ line 54 ~ useItem ~ relevantItem', relevantItem);
         if (!relevantItem.bought) return;
 
         switch (id) {
-            // case 1: dispatch(incrementEnergy(10)); break;
-            // case 2: mysteryGift(); break;
-            // case 3: dispatch(addChallenge()); break;
-            // case 4: // TODO: Streak saver; break;
-            // case 5: dispatch(upgradeBadgeTier(12)); break; // Money Badge
             case 6: {
                 dispatch(setProfileBackground(1));
                 dispatch(setAdditionalClassNames(0));
@@ -123,45 +121,52 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
     };
 
     return (
-        <div className='gamif-shop-window'>
-            <div className='gamif-shop-window-header'>
-                <Button
-                    className='gamif-shop-window-button'
-                    onClick={() => {
-                        dispatch(purchaseItem(selectedItemId));
-                    }}
-                >
-                    Buy
-                </Button>
-                <Button
-                    className='gamif-shop-window-button'
-                    onClick={() => useItem(selectedItemId)}
-                >
-                    Use
-                </Button>
-                <div className='gamif-shop-balance-display'>
-                    <h3>
-                        <span>Current Balance: </span>
-                        &nbsp;
-                        {currentBalance}
-                        {/* <SketchOutlined /> */}
-                        <Button
-                            icon={<AnnotationCoinNoBorderIcon />}
-                            type='text'
-                        />
-                    </h3>
+        <>
+            <div className='gamif-shop-window'>
+                <div className='gamif-shop-window-header'>
+                    <Button
+                        className='gamif-shop-window-button'
+                        onClick={() => {
+                            dispatch(purchaseItem(selectedItemId));
+                            // toggleModal(true);
+                        }}
+                    >
+                        Buy
+                    </Button>
+                    <Button
+                        className='gamif-shop-window-button'
+                        onClick={() => useItem(selectedItemId)}
+                    >
+                        Use
+                    </Button>
+                    <div className='gamif-shop-balance-display'>
+                        <h3>
+                            <span>Current Balance: </span>
+                            &nbsp;
+                            {currentBalance}
+                            {/* <SketchOutlined /> */}
+                            <Button
+                                icon={<AnnotationCoinNoBorderIcon />}
+                                type='text'
+                            />
+                        </h3>
+                    </div>
+                </div>
+                <div className='gamif-shop-window-items-wrapper'>
+                    <Row className='gamif-shop-window-items-row'>
+                        {items.map((_item, index) => (_item.bought || _item.visible) && (
+                            <Col flex={1} key={index}>
+                                <ShopItemComponent key={index} item={_item} selected={selectedItemId === _item.id} />
+                            </Col>
+                        ))}
+                    </Row>
                 </div>
             </div>
-            <div className='gamif-shop-window-items-wrapper'>
-                <Row className='gamif-shop-window-items-row'>
-                    {items.map((_item, index) => (_item.bought || _item.visible) && (
-                        <Col flex={1} key={index}>
-                            <ShopItemComponent key={index} item={_item} selected={selectedItemId === _item.id} />
-                        </Col>
-                    ))}
-                </Row>
-            </div>
-        </div>
+            {/* <Modal visible={modalShown}>
+                You got Item XY!
+                <Button onClick={() => toggleModal(false)}> Exit</Button>
+            </Modal> */}
+        </>
     );
 }
 

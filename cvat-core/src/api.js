@@ -1030,13 +1030,13 @@ function build() {
                 return result;
             },
 
-            async chatHistory(userId) {
-                const result = await PluginRegistry.apiWrapper(cvat.social.chatHistory, userId);
+            async chatHistory(user1Id, user2Id) {
+                const result = await PluginRegistry.apiWrapper(cvat.social.chatHistory, user1Id, user2Id);
                 return result;
             },
 
-            async sendMessage(userId, content) {
-                const result = await PluginRegistry.apiWrapper(cvat.social.sendMessage, userId, content);
+            async sendMessage(senderId, receiverId, content) {
+                const result = await PluginRegistry.apiWrapper(cvat.social.sendMessage, senderId, receiverId, content);
                 return result;
             },
 

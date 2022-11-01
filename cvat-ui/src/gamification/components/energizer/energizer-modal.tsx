@@ -11,7 +11,7 @@ import {
 // eslint-disable-next-line import/no-named-as-default
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
-import { addLeaderboardEntry, setActiveEnergizer } from 'gamification/actions/energizer-actions';
+import { setActiveEnergizer } from 'gamification/actions/energizer-actions';
 import { updateUserData } from 'gamification/actions/user-data-actions';
 import { EnergizerType } from 'gamification/gamif-interfaces';
 import QuizDuel from './energizer-quiz-duel';
@@ -23,10 +23,11 @@ import Leaderboard from './energizer-leaderboard';
 interface EnergizerModalProps {
     visible: boolean;
     onClose(): void;
+    destroyonClose: boolean;
 }
 
 function EnergizerModal(props: EnergizerModalProps): JSX.Element {
-    const { visible, onClose } = props;
+    const { visible, onClose, destroyonClose } = props;
     const [leaderboardShown, setLeaderboardShown] = useState(false);
     const energizer = useSelector((state: CombinedState) => state.energizer);
     const dispatch = useDispatch();
@@ -88,26 +89,27 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
         <>
             <Modal
                 className='gamif-energizer-modal'
-                title='Energizer: Quiz Duel'
+                title='Energizer'
                 visible={visible}
                 onCancel={onClose /* safety switch currently */}
                 width={1000}
                 footer={null}
                 maskClosable={false}
+                destroyOnClose={destroyonClose}
             >
                 {active === EnergizerType.NONE ? infoScreen() : modalContent(energizer.activeEnergizer)}
-                <Button
+                {/* <Button
                     className='gamif-energizer-continue-button'
                     type='text'
                     onClick={(): void => setLeaderboardShown(true)}
                 >
                     Show Leaderboard
-                </Button>
+                </Button> */}
             </Modal>
 
             <Modal
                 className='gamif-energizer-leaderboard'
-                title='Energizer: Quiz Duel'
+                title=''
                 visible={leaderboardShown}
                 onCancel={(): void => setLeaderboardShown(false)}
                 width={400}
@@ -123,7 +125,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                         onClick={() => {
                             onClose();
                             setLeaderboardShown(false);
-                            dispatch(addLeaderboardEntry(energizer.latestEntry));
+                            // dispatch(addLeaderboardEntry(energizer.latestEntry));
                             dispatch(setActiveEnergizer(EnergizerType.NONE));
                         }}
                     >

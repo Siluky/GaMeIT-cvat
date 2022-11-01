@@ -28,6 +28,7 @@ export interface UserData {
     annotation_coins_obtained: number,
     annotation_coins_max: number,
     items_bought: number,
+    mystery_gifts_bought: number,
 
     chat_messages: number,
 }
@@ -180,10 +181,22 @@ export interface Profile {
     chatActive: boolean,
 }
 
+export interface Message {
+    sender: boolean;
+    content: string;
+    timestamp: string | any;
+}
+
+export interface ChatRoom {
+    otherUserId: number,
+    messages: Message[],
+}
+
 export interface SocialState {
     status: OnlineStatus,
     friendListEntries: Profile[],
     ownProfile: Profile,
+    chats: ChatRoom[],
 
 }
 

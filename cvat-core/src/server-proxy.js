@@ -1772,7 +1772,6 @@
             async function saveGamifUserData(data) {
                 const { backendAPI } = config;
                 let response = null;
-                console.log('🚀 ~ file: server-proxy.js ~ line 1798 ~ ServerProxy ~ saveGamifUserData ~ data', data);
                 try {
                     response = await Axios.put(`${backendAPI}/userProfiles/${data.id}`, data,
                         {
@@ -1781,7 +1780,6 @@
                                 'Content-Type': 'application/json',
                             },
                         });
-                    console.log('🚀 ~ file: server-proxy.js ~ line 1783 ~ ServerProxy ~ saveGamifUserData ~ response.data.results', response.data.results);
                 } catch (errorData) {
                     throw generateError(errorData);
                 }
@@ -1809,7 +1807,6 @@
                 const { backendAPI } = config;
                 const data = { selectedBadges: ids };
                 let response = null;
-                console.log('🚀 ~ file: server-proxy.js ~ line 1807 ~ ServerProxy ~ saveSelectedBadges ~ data', data);
                 try {
                     response = await Axios.patch(`${backendAPI}/userProfiles/${userId}`,
                         data,
@@ -1840,7 +1837,6 @@
                     tier: newTier,
                     receivedOn: todayFormatted,
                 };
-                console.log('🚀 ~ file: server-proxy.js ~ line 1813 ~ ServerProxy ~ saveBadge ~ data', data);
                 try {
                     response = await Axios.put(`${backendAPI}/badge-status/${uId}-${badgId}`,
                         data, {
@@ -1850,7 +1846,6 @@
                     throw generateError(error);
                 }
 
-                console.log('🚀 ~ file: server-proxy.js ~ line 1793 ~ ServerProxy ~ saveBadge ~ response', response);
                 return response.data;
             }
 
@@ -1863,7 +1858,6 @@
             }
 
             async function saveChallenges(challenges) {
-                console.log('🚀 ~ file: server-proxy.js ~ line 1829 ~ ServerProxy ~ saveChallenges ~ challenges', challenges);
                 const { backendAPI } = config;
                 let response = null;
                 try {
@@ -1891,7 +1885,6 @@
 
             async function removeChallenge(userId, challengeId) {
                 const { backendAPI } = config;
-                console.log('🚀 ~ file: server-proxy.js ~ line 1817 ~ ServerProxy ~ removeChallenge ~ Link: ', `${backendAPI}/${userId}-${challengeId}`);
                 try {
                     await Axios.delete(`${backendAPI}/challenge-status/${userId}-${challengeId}`, {
                         proxy: config.proxy,
@@ -1941,11 +1934,9 @@
             async function getLeaderboard(energizerName, time) {
                 const { backendAPI } = config;
                 let response = null;
-                const timeParam = !time || time === 'undefined' ? '' : time;
-                console.log(`Leaderboard Link: energizer-data?energizer=${energizerName}?time=${timeParam}`);
+                const timeParam = !time || time === 'undefined' ? '' : `?time=${time}`;
                 try {
-                    response = await Axios.get(`${backendAPI}/energizer-data?energizer=${energizerName}?time=${time}`);
-                    console.log('🚀 ~ file: server-proxy.js ~ line 1947 ~ ServerProxy ~ getLeaderboard ~ response', response);
+                    response = await Axios.get(`${backendAPI}/energizer-data?energizer=${energizerName}${timeParam}`);
                 } catch (error) {
                     throw generateError(error);
                 }
@@ -1961,7 +1952,6 @@
                     energizer: energizerName,
                     score: userScore,
                 });
-                console.log('🚀 ~ file: server-proxy.js ~ line 1868 ~ ServerProxy ~ addLeaderboardEntry ~ data', data);
                 try {
                     response = await Axios.post(`${backendAPI}/energizer-data`, data, {
                         proxy: config.proxy,
@@ -2029,21 +2019,17 @@
 
                     const badgestatusResponse = await Promise.all(badgeIds.map(async (badgeId) => {
                         const tempResponse = await Axios.get(`${backendAPI}/badge-status/${_profile.id}-${badgeId}`);
-                        console.log('🚀 ~ file: server-proxy.js ~ line 1999 ~ ServerProxy ~ badgestatusResponse ~ tempResponse', tempResponse);
                         return tempResponse.data;
                     }));
-                    console.log('🚀 ~ file: server-proxy.js ~ line 1991 ~ ServerProxy ~ profileswithBadges ~ badgestatusResponse', badgestatusResponse);
                     return {
                         ..._profile,
                         selectedBadges: badgestatusResponse,
                     };
                 }));
-                console.log('🚀 ~ file: server-proxy.js ~ line 1996 ~ ServerProxy ~ profileswithBadges ~ profileswithBadges', profileswithBadges);
                 return profileswithBadges;
             }
 
             async function profileDataSave(userId, data) {
-                console.log('🚀 ~ file: server-proxy.js ~ line 1985 ~ ServerProxy ~ profileDataSave ~ data', data);
                 const { backendAPI } = config;
                 let response = null;
 
@@ -2056,18 +2042,25 @@
                 return response.data;
             }
 
-            async function getChatHistory(userId) {
+            async function getChatHistory(user1Id, user2Id) {
                 const { backendAPI } = config;
                 let response = null;
-                response = await Axios.get(`${backendAPI}/chat/${userId}/userId2`); // TODO:
-                return response.data; // TODO: double-check, maybe response.data.results
+                response = await Axios.get(`${backendAPI}/chat?chatId=${user1Id}-${user2Id}`);
+                return response.data.results;
             }
 
-            async function sendMessageToUser(userId, message) {
+            async function sendMessageToUser(senderId, receiverId, message) {
                 const { backendAPI } = config;
+                const data = {
+                    room: `${senderId}-${receiverId}`,
+                    senderId,
+                    content: message,
+                };
                 let response = null;
-                response = await Axios.post(`${backendAPI}/chat/${userId}/userId2`, message); // TODO:
-                return response.data; // TODO: double-check, maybe response.data.results
+                response = await Axios.post(`${backendAPI}/chat`, data, {
+                    proxy: config.proxy,
+                });
+                return response;
             }
 
             async function getOnlineStatus() {

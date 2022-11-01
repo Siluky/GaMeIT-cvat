@@ -112,8 +112,6 @@ export function useRepeatableItem(itemId: number): ThunkAction<void, {}, {}, Any
             case 1: dispatch(incrementEnergy(10)); break;
             case 2: {
                 const random = Math.random() * 100;
-                console.log('🚀 ~ file: shop-window.tsx ~ line 50 ~ mysteryGift ~ random', random);
-
                 if (random > 95) {
                     // buy secret item
                 } else if (random > 90) {
@@ -123,7 +121,7 @@ export function useRepeatableItem(itemId: number): ThunkAction<void, {}, {}, Any
                 } else if (random > 35 && state.challenges.availableChallenges.length < 3) {
                     dispatch(addChallenge());
                 } else if (random > 20) {
-                    // TODO: add streak saver
+                    dispatch(updateUserData('streak_saver_active', 1));
                 } else {
                     // get nothing
                 }

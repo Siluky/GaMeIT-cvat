@@ -6,41 +6,6 @@ import { AnyAction } from 'redux';
 import { SocialActionTypes } from '../actions/social-actions';
 import { SocialState, OnlineStatus, Profile } from '../gamif-interfaces';
 
-// const dummyProfiles: Profile[] = [{
-//     username: 'Annotator 1',
-//     userId: 1,
-//     status: OnlineStatus.ONLINE,
-//     avatar: 1,
-//     avatar_border: '',
-//     profile_background: 'yellow',
-//     profile_border: '',
-//     selectedBadges: [1, 5, 12],
-//     chatActive: false,
-// },
-// {
-//     username: 'Annotator 2',
-//     userId: 2,
-//     status: OnlineStatus.DO_NOT_DISTURB,
-//     avatar: 1,
-//     avatar_border: '',
-//     profile_background: 'green',
-//     profile_border: '',
-//     selectedBadges: [1, 2, 4],
-//     chatActive: true,
-// },
-// {
-//     username: 'Annotator 3',
-//     userId: 3,
-//     status: OnlineStatus.OFFLINE,
-//     avatar: 3,
-//     avatar_border: '',
-//     profile_background: 'red',
-//     profile_border: '',
-//     selectedBadges: [8, 13, 2],
-//     chatActive: false,
-// },
-// ];
-
 const profile: Profile = {
     username: 'My Username',
     userId: 0,
@@ -63,6 +28,7 @@ const defaultState: SocialState = {
     status: OnlineStatus.ONLINE,
     friendListEntries: [],
     ownProfile: profile,
+    chats: [],
 };
 
 export default (state = defaultState, action: AnyAction): SocialState => {
@@ -150,26 +116,6 @@ export default (state = defaultState, action: AnyAction): SocialState => {
             };
         }
 
-        // case SocialActionTypes.SET_AVATAR: {
-        //     return {
-        //         ...state,
-        //         ownProfile: {
-        //             ...state.ownProfile,
-        //             profileStyle: { ...state.ownProfile.profileStyle, avatar: action.payload },
-        //         },
-        //     };
-        // }
-
-        // case SocialActionTypes.SET_AVATAR_BORDER: {
-        //     return {
-        //         ...state,
-        //         ownProfile: {
-        //             ...state.ownProfile,
-        //             profileStyle: { ...state.ownProfile.profileStyle, avatarBorder: action.payload },
-        //         },
-        //     };
-        // }
-
         case SocialActionTypes.GET_CHAT_HISTORY_FAILED: {
             return {
                 ...state,
@@ -177,9 +123,54 @@ export default (state = defaultState, action: AnyAction): SocialState => {
         }
 
         case SocialActionTypes.GET_CHAT_HISTORY_SUCCESS: {
+            const { chats } = state;
+
+            const relevantChat = chats.find((chat) => chat.otherUserId === action.payload.id);
+            if (!relevantChat) {
+                return {
+                    ...state,
+                    chats: state.chats.concat({
+                        otherUserId: action.payload.id,
+                        messages: action.payload.messages ?? [],
+                    }),
+                };
+            }
+
+            const updatedChats = chats.map((chat) => {
+                if (chat.otherUserId === action.payload.id) {
+                    return { ...chat, messages: action.payload.messages };
+                }
+                return chat;
+            });
+
             return {
                 ...state,
-                // TODO: use action.payload somehow
+                chats: updatedChats,
+            };
+        }
+
+        case SocialActionTypes.SEND_MESSAGE_FAILED: {
+            return {
+                ...state,
+            };
+        }
+
+        case SocialActionTypes.SEND_MESSAGE_SUCCESS: {
+            const { chats } = state;
+            chats.map((chat) => {
+                if (chat.otherUserId === action.payload.id) {
+                    return chat.messages.concat({
+                        sender: true,
+                        content: action.payload.message,
+                        timestamp: Date.now(),
+                    });
+                }
+                return chat;
+            });
+
+            return {
+                ...state,
+                chats,
             };
         }
 

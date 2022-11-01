@@ -44,7 +44,7 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
     const [allTime, showAllTimeStats] = useState(true);
     const [inc, setInc] = useState(false);
     const stats = useSelector((state: CombinedState) => state.statistics);
-    const udata = useSelector((state: CombinedState) => state.gamifuserdata);
+    // const udata = useSelector((state: CombinedState) => state.gamifuserdata);
 
     useEffect(() => {
         //
@@ -71,17 +71,21 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                             }}
                         />
                     </CvatTooltip>
-                    <Button
-                        className='statistics-selecting-button-inactive gamif-debug-button'
-                        size='large'
-                        // icon={<EditFilled />}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setInc(!inc);
-                        }}
+                    <CvatTooltip
+                        overlay='DEBUG: Press this and then a statistic to increment it by one.'
                     >
-                        <EditFilled />
-                    </Button>
+                        <Button
+                            className='statistics-selecting-button-inactive gamif-debug-button'
+                            size='large'
+                            // icon={<EditFilled />}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setInc(!inc);
+                            }}
+                        >
+                            <EditFilled />
+                        </Button>
+                    </CvatTooltip>
                 </div>
                 <div className='statistics-panel-bottom'>
                     <Row>
@@ -122,20 +126,6 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                     onClick={() => dispatch(saveUserData())}
                 >
                     Save User Data
-                </Button>
-                &nbsp;
-                <Button
-                    className='gamif-debug-button'
-                    onClick={() => {
-                        console.log((udata.userdata_total.last_login) / 1000);
-                        console.log((udata.userdata_session.last_login) / 1000);
-                        // eslint-disable-next-line max-len
-                        console.log(`Time since login: ${(udata.userdata_session.last_login - udata.userdata_total.last_login) / 1000 / 60}`);
-                        // eslint-disable-next-line max-len
-                        console.log(`Time this session: ${(Date.now() - udata.userdata_session.last_login) / 1000 / 60}`);
-                    }}
-                >
-                    Time
                 </Button>
             </div>
         </>

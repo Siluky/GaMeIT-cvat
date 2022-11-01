@@ -21,8 +21,8 @@ import Icon, {
     UserOutlined,
     TeamOutlined,
     PlusOutlined,
-    BugFilled,
     RadarChartOutlined,
+    FormOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -58,13 +58,10 @@ import { initializeUserData } from 'gamification/actions/user-data-actions';
 import { updateBadges } from 'gamification/actions/badge-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
-import { Input } from 'antd';
 import { getEnergizerIcon } from 'gamification/gamif-items';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
-
-const { TextArea } = Input;
 
 interface Tool {
     name: string;
@@ -187,13 +184,12 @@ type Props = StateToProps & DispatchToProps;
 
 const gamifSurveyPrompt = (): JSX.Element => (
     <>
-        <div className='gamif-energizer-popup-top-wrapper'>
-            <div className='gamif-energizer-popup-top-content'>
-                <EnergizerIcon />
-            </div>
-        </div>
         <div className='gamif-energizer-popup-bottom'>
-            We would like you to participate in a survey!
+            <h2>
+                Please help us to evaluate this system by
+                <br />
+                participating in a short survey
+            </h2>
             <Button
                 className='gamif-energizer-popup-start-energizer-button'
                 type='link'
@@ -573,14 +569,17 @@ function HeaderContainer(props: Props): JSX.Element {
                         </div>
                     </Popover>
                 </CVATTooltip>
-                <Button
-                    type='text'
-                    className='gamif-debug-button'
-                    icon={<PlusOutlined />}
-                    onClick={(): void => {
-                        incrementEnergy(1);
-                    }}
-                />
+                <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
+                    <Button
+                        type='text'
+                        className='gamif-debug-button'
+                        style={{ height: '24px', width: '24px', margin: '4px' }}
+                        icon={<PlusOutlined />}
+                        onClick={(): void => {
+                            incrementEnergy(1);
+                        }}
+                    />
+                </CVATTooltip>
                 <Popover
                     content={<ShopWindow />}
                     mouseLeaveDelay={100}
@@ -596,22 +595,17 @@ function HeaderContainer(props: Props): JSX.Element {
                     </div>
                 </Popover>
                 <Popover
-                    content={(
-                        <div style={{ width: '300px', height: '200px' }}>
-                            <TextArea rows={4} />
-                        </div>
-                    )}
-                    trigger='click'
-                    mouseLeaveDelay={5}
-                >
-                    <Button className='gamif-debug-button' type='text' icon={<BugFilled />} />
-                </Popover>
-                <Popover
                     content={gamifSurveyPrompt}
                     trigger='click'
                     mouseLeaveDelay={5}
                 >
-                    <Button className='gamif-debug-button' type='text' icon={<BugFilled />} />
+                    <CVATTooltip overlay='Possible Gamification Survey Prompt'>
+                        <Button
+                            className='gamif-debug-button'
+                            type='text'
+                            icon={<FormOutlined />}
+                        />
+                    </CVATTooltip>
                 </Popover>
             </div>
             <div className='cvat-right-header'>
@@ -670,6 +664,7 @@ function HeaderContainer(props: Props): JSX.Element {
             {renderChangePasswordItem && <ChangePasswordDialog onClose={() => switchChangePasswordDialog(false)} />}
             <EnergizerModal
                 visible={energizerShown}
+                destroyonClose
                 onClose={() => switchEnergizerModal(false)}
             />
         </Layout.Header>

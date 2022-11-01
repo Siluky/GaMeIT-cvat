@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 import gamifconsts from 'gamification/gamifconsts';
-import { setLatestEntry } from 'gamification/actions/energizer-actions';
+import { addLeaderboardEntry, setLatestEntry } from 'gamification/actions/energizer-actions';
 import { getQuizDuelQuestions } from 'gamification/gamif-items';
 import {
     QuizDuelQuestion, EnergizerProps, EnergizerType, LeaderboardEntry,
@@ -92,21 +92,35 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
     const [questions, setQuestions] = useState([dummyQuestion]);
     const [loading, setLoading] = useState(true);
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
+    const [end, setEnd] = useState(false);
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const getEntries = async (): Promise<void> => {
-            // const questionsImport = await cvat.energizer.quizDuelQuestions();
-            const questionsImport = getQuizDuelQuestions(5);
-            setLoading(false);
-            console.log('🚀 ~ file: energizer-quiz-duel.tsx ~ line 127 ~ getEntries ~ questionsImport', questionsImport);
-            setQuestions(questionsImport);
-            setCurrentQuestion(questions[0]);
-        };
+    // useEffect(() => {
+    //     const getEntries = async (): Promise<void> => {
+    //         // const questionsImport = await cvat.energizer.quizDuelQuestions();
+    //         const questionsImport = getQuizDuelQuestions(5);
+    //         setLoading(false);
+    //         console.log('🚀 ~ fi
+    //          le: energizer-quiz-duel.tsx ~ line 127 ~ getEntries ~ questionsImport', questionsImport);
+    //         setQuestions(questionsImport);
+    //         setCurrentQuestion(questions[0]);
+    //     };
 
-        getEntries();
+    //     getEntries();
+    // }, []);
+
+    useEffect(() => {
+        // const questionsImport = await cvat.energizer.quizDuelQuestions();
+        const questionsImport = getQuizDuelQuestions(5);
+        setQuestions(questionsImport);
+        setCurrentQuestion(questions[0]);
+        setLoading(false);
     }, []);
+
+    useEffect(() => {
+        setCurrentQuestion(questions[0]);
+    }, [loading]);
 
     return (
         <div className='gamif-energizer-modal-content-wrapper'>
@@ -172,7 +186,6 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
                 onClick={(): void => {
                     // first button click: Check Answer + show correct answer + update Status Bar
                     if (currentAnswer !== Answer.NONE && !readyToContinue) {
-                        console.log('First Button Press');
                         const answerCorrect = mapAnswertoIndex(currentAnswer) === currentQuestion.correctAnswer;
                         if (answerCorrect) { setScore(quizScore + 1); }
                         updateStatusBar(progress - 1, answerCorrect);
@@ -180,23 +193,25 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
                         setContinue(true);
                     }
 
-                    // if on 3rd question and answer is checked --> show Leaderboard instead of
+                    // if on last question and answer is checked --> show Leaderboard instead of
                     // continuing to the next question
                     if (progress === gamifconsts.QUIZ_DUEL_ROUNDS && readyToContinue) {
+                        if (!end) {
+                            const entry: LeaderboardEntry = {
+                                userId: userdata.userId,
+                                username: userdata.username,
+                                energizer: EnergizerType.QUIZ,
+                                score: quizScore,
+                            };
+                            dispatch(setLatestEntry(entry));
+                            dispatch(addLeaderboardEntry(entry));
+                            setEnd(true);
+                        }
+
                         showLeaderboard(true);
-                        const entry: LeaderboardEntry = {
-                            userId: userdata.userId,
-                            username: userdata.username,
-                            energizer: EnergizerType.QUIZ,
-                            score: quizScore,
-                        };
-                        console.log('🚀 ~ file: energizer-quiz-duel.tsx ~ line 194 ~ QuizDuel ~ entry', entry);
-                        dispatch(setLatestEntry(entry));
 
                         // second button click:
                     } else if (readyToContinue) {
-                        console.log('Second Button Press');
-
                         setContinue(false);
                         setProgress(progress + 1);
                         setCurrentQuestion(questions[progress]);

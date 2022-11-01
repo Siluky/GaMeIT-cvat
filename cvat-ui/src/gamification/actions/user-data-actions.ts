@@ -13,7 +13,7 @@ import { initShop, updateBalance } from './shop-actions';
 // eslint-disable-next-line import/no-cycle
 import { initProfileBadges } from './badge-actions';
 // eslint-disable-next-line import/no-cycle
-import { addChallenge } from './challenge-actions';
+import { addChallenge, getChallengesAsync } from './challenge-actions';
 
 const cvat = getCore();
 
@@ -90,119 +90,6 @@ export function updateUserData(field_name: keyof UserData, increment: number): T
     };
 }
 
-export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
-    return async function loadUserDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-        let userDataImport = null;
-        try {
-            userDataImport = await cvat.gamifuserdata.get();
-            console.log('🚀 ~ file: user-data-actions.ts ~ line 73 ~ loadUserDataThunk ~ userDataImport', userDataImport);
-
-            const userDataAllTime: UserData = {
-                last_login: userDataImport.last_login_ms,
-                images_annotated: userDataImport.images_annotated_total,
-                tags_set: userDataImport.tags_set_total,
-                images_annotated_night: userDataImport.images_annotated_night,
-                annotation_time: userDataImport.annotation_time_total,
-                // eslint-disable-next-line max-len
-                annotation_time_avg: Math.floor(userDataImport.annotation_time_total / userDataImport.images_annotated_total),
-                annotation_streak_current: userDataImport.annotation_streak_current,
-                annotation_streak_max: userDataImport.annotation_streak_max,
-                streak_saver_active: userDataImport.annotation_streak_saver,
-                badges_obtained: userDataImport.badges_obtained_total,
-                challenges_completed: userDataImport.challenges_completed,
-                energy_gained: userDataImport.energy_total,
-                energizers_completed: userDataImport.energizers_completed,
-                energy_expired: userDataImport.energy_expired,
-                tetris_played: userDataImport.tetris_played,
-                quiz_played: userDataImport.quiz_played,
-                snake_played: userDataImport.snake_played,
-                currentBalance: userDataImport.currentBalance,
-                annotation_coins_obtained: userDataImport.annotation_coins_total,
-                annotation_coins_max: userDataImport.annotation_coins_max,
-                items_bought: userDataImport.items_bought_total,
-                chat_messages: userDataImport.chat_messages_total,
-            };
-
-            const userId = userDataImport.id;
-            dispatch(updateUserId(userId));
-
-            const username = userDataImport.user;
-            dispatch(updateUserName(username));
-
-            // Selected Badges / Statistics + Bought Items are stored as a string with the ids
-            // separated by commas, e.g., "1,2,3" --> split them and parse to int
-
-            const selectedStatsImport = userDataImport.selectedStatistics.split(',');
-            const selectedStatIds = selectedStatsImport.map((id: string) => parseInt(id, 10));
-            dispatch(addQuickStatistic(selectedStatIds));
-
-            dispatch(updateBalance(userDataAllTime.currentBalance));
-
-            const boughtItemsImport = userDataImport.items_bought.split(',');
-            const boughtItems = boughtItemsImport.map((id: string) => parseInt(id, 10));
-            dispatch(initShop(boughtItems));
-
-            const selectedBadgesImport = userDataImport.selectedBadges.split(',');
-            console.log('🚀 ~ file: user-data-actions.ts ~ line 142 ~ loadUserDataThunk ~ selectedBadgesImport', selectedBadgesImport);
-            // eslint-disable-next-line max-len
-            const badgeIdsPrepared = selectedBadgesImport.map((id: string) => parseInt(id, 10));
-            dispatch(initProfileBadges(badgeIdsPrepared));
-            const lastLogin = userDataAllTime.last_login;
-            const currentTime = Date.now();
-            const timeSinceLogin = currentTime - lastLogin;
-            console.log(`Time since last login in hrs: ${timeSinceLogin / 1000 / 60 / 60} `);
-            console.log('🚀 ~ file: user-data-actions.ts ~ line 153 ~ loadUserDataThunk ~ timeSinceLogin', timeSinceLogin);
-            if (timeSinceLogin > 24 * 60 * 60 * 1000) {
-                console.log('More than 24 hours since last login');
-                if (userDataAllTime.streak_saver_active) {
-                    userDataAllTime.streak_saver_active = false;
-                } else {
-                    userDataAllTime.annotation_streak_current = 0;
-                }
-            }
-
-            const newDay = new Date(lastLogin).getDay() - new Date(currentTime).getDay();
-            if (newDay !== 0) {
-                console.log('New day has started');
-                dispatch(addChallenge());
-                userDataAllTime.annotation_streak_current++;
-                userDataAllTime.annotation_streak_max = Math.max(
-                    userDataAllTime.annotation_streak_max, userDataAllTime.annotation_streak_current,
-                );
-            }
-
-            const userDataSession: UserData = {
-                last_login: currentTime,
-                images_annotated: 0,
-                tags_set: 0,
-                images_annotated_night: 0,
-                annotation_time: 0,
-                annotation_time_avg: 0,
-                annotation_streak_current: userDataAllTime.annotation_streak_current,
-                annotation_streak_max: 0,
-                streak_saver_active: userDataAllTime.streak_saver_active,
-                badges_obtained: 0,
-                challenges_completed: 0,
-                energy_gained: 0,
-                energizers_completed: 0,
-                energy_expired: 0,
-                tetris_played: 0,
-                quiz_played: 0,
-                snake_played: 0,
-                currentBalance: 0,
-                annotation_coins_obtained: 0,
-                annotation_coins_max: userDataAllTime.currentBalance,
-                items_bought: 0,
-                chat_messages: 0,
-            };
-
-            dispatch(getUserDataSuccess(userDataAllTime, userDataSession));
-        } catch (error) {
-            dispatch(getUserDataFailed(error));
-        }
-    };
-}
-
 function saveUserDataSuccess(): AnyAction {
     return {
         type: UserDataActionTypes.SAVE_USER_DATA_SUCCESS,
@@ -251,8 +138,6 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
     }
     itemsBought = itemsBought.slice(0, -1); // remove trailing comma
 
-    console.log('🚀 ~ file: user-data-actions.ts ~ line 184 ~ saveUserData ~ stats', stats);
-
     const userDataPrepared = {
         id: userDataState.userId,
         user: userDataState.userId,
@@ -289,6 +174,116 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
             dispatch(saveUserDataSuccess());
         } catch (error) {
             dispatch(saveUserDataFailed(error));
+        }
+    };
+}
+
+export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
+    return async function loadUserDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        let userDataImport = null;
+        try {
+            userDataImport = await cvat.gamifuserdata.get();
+            const userDataAllTime: UserData = {
+                last_login: userDataImport.last_login_ms,
+                images_annotated: userDataImport.images_annotated_total,
+                tags_set: userDataImport.tags_set_total,
+                images_annotated_night: userDataImport.images_annotated_night,
+                annotation_time: userDataImport.annotation_time_total,
+                // eslint-disable-next-line max-len
+                annotation_time_avg: Math.floor(userDataImport.annotation_time_total / userDataImport.images_annotated_total),
+                annotation_streak_current: userDataImport.annotation_streak_current,
+                annotation_streak_max: userDataImport.annotation_streak_max,
+                streak_saver_active: userDataImport.annotation_streak_saver,
+                badges_obtained: userDataImport.badges_obtained_total,
+                challenges_completed: userDataImport.challenges_completed,
+                energy_gained: userDataImport.energy_total,
+                energizers_completed: userDataImport.energizers_completed,
+                energy_expired: userDataImport.energy_expired,
+                tetris_played: userDataImport.tetris_played,
+                quiz_played: userDataImport.quiz_played,
+                snake_played: userDataImport.snake_played,
+                currentBalance: userDataImport.currentBalance,
+                annotation_coins_obtained: userDataImport.annotation_coins_total,
+                annotation_coins_max: userDataImport.annotation_coins_max,
+                items_bought: userDataImport.items_bought_total,
+                mystery_gifts_bought: userDataImport.mystery_gifts_bought,
+                chat_messages: userDataImport.chat_messages_total,
+            };
+
+            const userId = userDataImport.id;
+            dispatch(updateUserId(userId));
+
+            const username = userDataImport.user;
+            dispatch(updateUserName(username));
+
+            // Selected Badges / Statistics + Bought Items are stored as a string with the ids
+            // separated by commas, e.g., "1,2,3" --> split them and parse to int
+
+            const selectedStatsImport = userDataImport.selectedStatistics.split(',');
+            const selectedStatIds = selectedStatsImport.map((id: string) => parseInt(id, 10));
+            dispatch(addQuickStatistic(selectedStatIds));
+
+            dispatch(updateBalance(userDataAllTime.currentBalance));
+
+            const boughtItemsImport = userDataImport.items_bought.split(',');
+            const boughtItems = boughtItemsImport.map((id: string) => parseInt(id, 10));
+            dispatch(initShop(boughtItems));
+
+            const selectedBadgesImport = userDataImport.selectedBadges.split(',');
+            // eslint-disable-next-line max-len
+            const badgeIdsPrepared = selectedBadgesImport.map((id: string) => parseInt(id, 10));
+            dispatch(initProfileBadges(badgeIdsPrepared));
+            const lastLogin = userDataAllTime.last_login;
+            const currentTime = Date.now();
+            const timeSinceLogin = currentTime - lastLogin;
+            if (timeSinceLogin > 24 * 60 * 60 * 1000) {
+                if (userDataAllTime.streak_saver_active) {
+                    userDataAllTime.streak_saver_active = false;
+                } else {
+                    userDataAllTime.annotation_streak_current = 0;
+                }
+            }
+            dispatch(getChallengesAsync());
+
+            const newDay = new Date(lastLogin).getDay() - new Date(currentTime).getDay();
+            if (newDay !== 0) {
+                dispatch(addChallenge());
+                userDataAllTime.annotation_streak_current++;
+                userDataAllTime.annotation_streak_max = Math.max(
+                    userDataAllTime.annotation_streak_max, userDataAllTime.annotation_streak_current,
+                );
+            }
+
+            const userDataSession: UserData = {
+                last_login: currentTime,
+                images_annotated: 0,
+                tags_set: 0,
+                images_annotated_night: 0,
+                annotation_time: 0,
+                annotation_time_avg: 0,
+                annotation_streak_current: userDataAllTime.annotation_streak_current,
+                annotation_streak_max: 0,
+                streak_saver_active: userDataAllTime.streak_saver_active,
+                badges_obtained: 0,
+                challenges_completed: 0,
+                energy_gained: 0,
+                energizers_completed: 0,
+                energy_expired: 0,
+                tetris_played: 0,
+                quiz_played: 0,
+                snake_played: 0,
+                currentBalance: 0,
+                annotation_coins_obtained: 0,
+                annotation_coins_max: userDataAllTime.currentBalance,
+                items_bought: 0,
+                chat_messages: 0,
+                mystery_gifts_bought: 0,
+            };
+
+            dispatch(getUserDataSuccess(userDataAllTime, userDataSession));
+            dispatch(saveUserData());
+        } catch (error) {
+            dispatch(getUserDataFailed(error));
         }
     };
 }

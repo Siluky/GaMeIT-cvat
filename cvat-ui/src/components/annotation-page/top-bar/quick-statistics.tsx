@@ -4,7 +4,7 @@
 import React from 'react';
 import { Row, Col } from 'antd/lib/grid';
 import QuickStatistic from 'gamification/components/statistics/quick-statistics-component';
-import ProgressBar from 'gamification/components/progressbar-component';
+// import ProgressBar from 'gamification/components/progressbar-component';
 import { CombinedState } from 'reducers/interfaces';
 import { connect, useSelector } from 'react-redux';
 import { mapStatisticIdtoFieldName, mapStatisticIdtoIcon } from 'gamification/gamif-items';
@@ -52,9 +52,9 @@ export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Eleme
                     return null;
                 })}
             </Row>
-            <Row justify='center'>
+            {/* <Row justify='center'>
                 <ProgressBar />
-            </Row>
+            </Row> */}
         </Col>
     );
 }

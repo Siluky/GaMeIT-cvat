@@ -36,8 +36,6 @@ export default (state = defaultState, action: AnyAction): ShopState => {
         case ShopActionTypes.INIT_SHOP: {
             // eslint-disable-next-line max-len
             const itemsInit = state.availableItems.map((item) => (action.payload.find((id: number) => id === item.id) ? { ...item, bought: true } : item));
-            console.log('🚀 ~ file: shop-reducer.ts ~ line 40 ~ action.payload', action.payload);
-            console.log('🚀 ~ file: shop-reducer.ts ~ line 41 ~ itemsInit', itemsInit);
             return {
                 ...state,
                 availableItems: itemsInit,

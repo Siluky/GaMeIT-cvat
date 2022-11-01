@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
+from datetime import timedelta, timezone
+import datetime
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -162,7 +164,7 @@ class StatisticViewSet(viewsets.ModelViewSet):
     queryset = Statistic.objects.all()
     serializer_class = StatisticSerializer
 
-# TODO: Chat stuff
+# Chat stuff
 
 class ChatViewSet(viewsets.ModelViewSet):
     queryset = ChatRoom.objects.all()
@@ -175,7 +177,25 @@ class ChatViewSet(viewsets.ModelViewSet):
         if chatRoomId:
             targetChatRoom = ChatRoom.objects.filter(id = chatRoomId).first()
             queryset = ChatMessage.objects.filter(room = targetChatRoom)
-        return queryset
+        return queryset.order_by('timestamp')
+
+    # def create(self, request, *args, **kwargs):
+    #     try:
+    #         instance = self.get_object()
+    #         serializer = self.get_serializer(instance, data=request.data)
+    #         serializer.is_valid(raise_exception=True)
+    #         self.perform_create(serializer)
+    #         headers = self.get_success_headers(serializer.data)
+    #         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+
+    #     except Http404:
+    #         ids = request.data.room.split('-')
+    #         ChatRoom.objects.create(user1=ids[0], user2=id[1])
+    #         serializer = self.get_serializer(instance, data=request.data)
+    #         serializer.is_valid(raise_exception=True)
+    #         self.perform_create(serializer)
+    #         headers = self.get_success_headers(serializer.data)
+    #         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
 class EnergizerLeaderboardViewSet(viewsets.ModelViewSet):
     queryset = EnergizerData.objects.all()
@@ -187,11 +207,19 @@ class EnergizerLeaderboardViewSet(viewsets.ModelViewSet):
         if energizerName:
             queryset = queryset.filter(energizer=energizerName)
 
-        # TODO: Filter by date as appropriate
-        # time = self.request.query_params.get('time')
-        # if timeframe:
-        #     queryset.filter(timestamp=###)
-        return queryset
+        timeframe = self.request.query_params.get('time')
+        today = datetime.datetime.now()
+        if timeframe:
+            print(timeframe)
+            if (timeframe == 'Daily'):
+                yesterday = today - timedelta(days=1)
+                queryset = queryset.filter(timestamp__date=yesterday)
+
+            elif (timeframe == 'Weekly'):
+                lastweek = today - timedelta(weeks=1)
+                queryset = queryset.filter(timestamp__week=lastweek.isocalendar()[1])
+
+        return queryset.order_by('score')
 
 class QuizDuelQuestionsViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()

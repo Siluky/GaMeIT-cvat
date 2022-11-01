@@ -69,17 +69,17 @@ export function selectStatistic(id: number): ThunkAction<void, {}, {}, AnyAction
         if (statisticsState.selecting) {
             if (found) {
                 dispatch(removeStatistic(id));
-                console.log(`remove quick statistic with id ${id}`);
+                // console.log(`remove quick statistic with id ${id}`);
             } else if (statisticsState.selectedStatistics.length === 3) {
                 dispatch(selectStatisticFailed(id));
-                console.log('quick statistics full');
+                // console.log('quick statistics full');
             } else {
                 dispatch(addQuickStatistic([id]));
-                console.log(`add quick statistic with id ${id}`);
+                // console.log(`add quick statistic with id ${id}`);
             }
         } else {
             dispatch(selectStatisticFailed(id));
-            console.log('selecting not active');
+            // console.log('selecting not active');
         }
     };
 }

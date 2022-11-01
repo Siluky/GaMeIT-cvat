@@ -151,7 +151,6 @@ export function removeChallengeFailed(error: any): AnyAction {
 export function completeChallenge(challenge: Challenge): ThunkAction<void, {}, {}, AnyAction> {
     return async function addChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         const { userId } = getCVATStore().getState().gamifuserdata;
-        console.log('🚀 ~ file: challenge-actions.ts ~ line 164 ~ addChallengeThunk ~ userId', userId);
         try {
             await cvat.challenges.remove(userId, challenge.id);
             dispatch(updateBalance(challenge.reward));

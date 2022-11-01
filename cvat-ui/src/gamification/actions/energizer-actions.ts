@@ -86,10 +86,8 @@ export function saveCurrentEnergyAsync(newEnergy: number): ThunkAction<void, {},
     return async function saveCurrentEnergyThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let energy = null;
         const { userId } = getCVATStore().getState().gamifuserdata;
-        console.log('🚀 ~ file: energizer-actions.ts ~ line 86 ~ saveCurrentEnergyThunk ~ userId', userId);
         try {
             energy = await cvat.energizer.setEnergy(userId, newEnergy);
-            console.log('🚀 ~ file: energizer-actions.ts ~ line 84 ~ saveCurrentEnergyThunk ~ energy', energy);
             dispatch(saveCurrentEnergySuccess(energy));
         } catch (error) {
             dispatch(saveCurrentEnergyFailed(error));
@@ -144,7 +142,7 @@ export function incrementEnergy(increment: number): ThunkAction<void, {}, {}, An
         }
 
         dispatch(incrementEnergyAction(increment));
-        dispatch(saveCurrentEnergyAsync(newEnergy));
+        dispatch(saveCurrentEnergyAsync(Math.min(newEnergy, 20)));
         if (newEnergy === 10) { dispatch(switchEnergizerPopUp(true)); }
     };
 }
@@ -217,9 +215,7 @@ export function addLeaderboardEntryFailed(error: any): AnyAction {
 export function addLeaderboardEntry(entry: LeaderboardEntry): ThunkAction<void, {}, {}, AnyAction> {
     return async function addLeaderboardEntryThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
-            const addedEntry = await cvat.energizer.addScore(entry.username, entry.energizer, entry.score);
-            console.log('🚀 ~ file: energizer-actions.ts ~ line 186 ~ addLeaderboardThunk ~ addedEntry', addedEntry);
-
+            await cvat.energizer.addScore(entry.userId, entry.energizer, entry.score);
             dispatch(addLeaderboardEntrySuccess(entry));
         } catch (error) {
             dispatch(addLeaderboardEntryFailed(error));

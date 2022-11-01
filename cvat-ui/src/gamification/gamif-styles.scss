@@ -54,6 +54,27 @@
     width: 400px;
     background: #CCCCCC;
     padding: 5px;
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #b5beca;
+      height: 20%;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #1d3c62;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9fbecc;
+      border-radius: 5px;
+    }
 }
 
 .gamif-badge-overview-header {
@@ -75,27 +96,14 @@
     overflow-y: scroll;
     background: #B6BECB;
     border-radius: 5px 5px 0px 0px;
+}
 
-    ::-webkit-scrollbar {
-        width: 15px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #131313;
-        border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: darkblue;
-      }
-
-    ::-webkit-scrollbar-track {
-        background: #CCCCCC;
-    }
+.gamif-badge-overview-individual-badge {
+  border-radius: 50%;
 }
 
 .gamif-badge-overview-individual-badge:hover {
-  box-shadow: 0 0 10px 10px yellow;
+  box-shadow: 0 0 8px 8px yellow;
 }
 
 .gamif-badge-detail-view {
@@ -105,6 +113,7 @@
     background: #B5BECA;
     display: flex;
     border-radius: 0px 0px 5px 5px;
+    overflow: hidden;
 }
 
 .gamif-badge-icon {
@@ -504,6 +513,27 @@
   border-radius: 10px;
   border: 2px solid #1d3c62;
   background: #d2d8df;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #b5beca;
+    height: 20%;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #1d3c62;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9fbecc;
+    border-radius: 5px;
+  }
 }
 
 .gamif-shop-window-header {
@@ -544,6 +574,7 @@
   margin: auto;
   padding-left: 5px;
   display: flex;
+  align-items: center;
 }
 
 .gamif-shop-window-items-wrapper {
@@ -551,27 +582,6 @@
   padding: 5px;
   overflow-y: scroll;
   height: 85%;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #b5beca;
-  height: 20%;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #1d3c62;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #9fbecc;
 }
 
 // .gamif-shop-window-items-row {
@@ -839,6 +849,28 @@
 .statistics-panel-bottom {
   height: 240px;
   overflow-y: scroll;
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #b5beca;
+    height: 20%;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #1d3c62;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9fbecc;
+    border-radius: 5px;
+  }
 }
 
 .statistics-col {
@@ -951,7 +983,7 @@
     height: 100%;
     justify-content: space-between;
     // width: 33%;
-    margin-top: 7%;
+    margin-top: 0%;
 
     // height: 24px;
     // padding: 0 10px 0 10px;

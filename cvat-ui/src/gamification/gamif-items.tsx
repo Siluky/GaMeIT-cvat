@@ -71,8 +71,10 @@ import {
     TimeFliesBronze, TimeFliesGold, TimeFliesGrey, TimeFliesSilver,
     UnlockerBronze, UnlockerGold, UnlockerGrey, UnlockerSilver,
 } from 'icons';
+import { getCVATStore } from 'cvat-store';
 import {
-    Badge, BadgeTier, Challenge, ChallengeType, OnlineStatus, QuizDuelQuestion, ShopItem, Statistic, UserData,
+    Badge, BadgeTier, Challenge, ChallengeType,
+    OnlineStatus, QuizDuelQuestion, ShopItem, Statistic, UserData, UserDataState,
 } from './gamif-interfaces';
 
 // File for individual challenges / badges, mapping them to their IDs etc
@@ -120,13 +122,13 @@ export const badges: Badge[] = [
     {
         id: 4,
         title: 'Time Flies When...',
-        instruction: 'Spend GOAL hours annotating',
+        instruction: 'Spend GOAL seconds annotating',
         progress: 0,
         goal_bronze: 10 * 60 * 60,
         goal_silver: 50 * 60 * 60,
         goal: 100 * 60 * 60,
         tier: BadgeTier.NOT_OBTAINED,
-        goalunit: 'Hours',
+        goalunit: 'Seconds',
         receivedOn: null,
         visible: true,
     },
@@ -268,7 +270,7 @@ export const badges: Badge[] = [
         title: 'Fun Hater',
         instruction: 'Let Energy expire',
         progress: 0,
-        goal: 50,
+        goal: 100,
         tier: BadgeTier.NOT_OBTAINED,
         goalunit: '',
         receivedOn: null,
@@ -690,6 +692,40 @@ export function getBadgeIcon(id: number, tier: BadgeTier): React.ReactNode {
         case '106-3': return <TetrisGold />;
 
         default: return <BadgeGreyIcon />;
+    }
+}
+
+export function getBadgeValue(id: number): number {
+    const state = getCVATStore().getState();
+    const udata: UserDataState = state.gamifuserdata;
+
+    switch (id) {
+        case 1: return udata.userdata_total.images_annotated;
+        case 2: return udata.userdata_session.images_annotated;
+        case 3: return udata.userdata_total.tags_set;
+        case 4: return udata.userdata_total.annotation_time;
+        case 5: return udata.userdata_total.annotation_streak_max;
+        case 6: return udata.userdata_total.energizers_completed;
+        case 7: return udata.userdata_total.energy_gained;
+        case 8:
+            return Math.min(
+                udata.userdata_total.tetris_played,
+                udata.userdata_total.quiz_played,
+                udata.userdata_total.snake_played,
+            );
+        case 9: return udata.userdata_total.challenges_completed;
+        case 10: return udata.userdata_total.annotation_coins_obtained;
+        case 11: return udata.userdata_total.annotation_coins_max;
+        case 12: return 0; // TODO: Money Badge!
+        case 13: return udata.userdata_total.items_bought;
+        case 14: return udata.userdata_total.mystery_gifts_bought;
+        case 101: return udata.userdata_total.energy_expired;
+        case 102: return udata.userdata_total.images_annotated_night;
+        case 103: return udata.userdata_total.chat_messages;
+        case 104: return 0; // TODO: Quiz-based
+        case 105: return 0; // TODO: Snake-based
+        case 106: return 0; // TODO: Tetris-based
+        default: return 0;
     }
 }
 
@@ -1440,15 +1476,15 @@ export const getProfileBackgroundElements = (id: number): JSX.Element => {
 export const getEnergizerIcon = (energy: number): React.ReactNode => {
     switch (energy) {
         case 0: return <EnergizerIcon1 />;
-        case 1: return <EnergizerIcon2 />;
-        case 2: return <EnergizerIcon3 />;
-        case 3: return <EnergizerIcon4 />;
-        case 4: return <EnergizerIcon5 />;
-        case 5: return <EnergizerIcon6 />;
-        case 6: return <EnergizerIcon7 />;
-        case 7: return <EnergizerIcon8 />;
-        case 8: return <EnergizerIcon9 />;
-        case 9: return <EnergizerIcon10 />;
+        case 1: return <EnergizerIcon1 />;
+        case 2: return <EnergizerIcon2 />;
+        case 3: return <EnergizerIcon3 />;
+        case 4: return <EnergizerIcon4 />;
+        case 5: return <EnergizerIcon5 />;
+        case 6: return <EnergizerIcon6 />;
+        case 7: return <EnergizerIcon7 />;
+        case 8: return <EnergizerIcon8 />;
+        case 9: return <EnergizerIcon9 />;
         case 10: return <EnergizerIcon10 />;
         case 20: return <EnergizerIcon11 />;
         default: return <EnergizerIcon10 />;

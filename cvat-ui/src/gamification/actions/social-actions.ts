@@ -5,7 +5,9 @@
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
-import { BadgeStatus, OnlineStatus, Profile } from 'gamification/gamif-interfaces';
+import {
+    BadgeStatus, Message, OnlineStatus, Profile,
+} from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
 import { decodeBadgeTier, decodeStatus, encodeStatus } from 'gamification/gamif-items';
 
@@ -28,6 +30,9 @@ export enum SocialActionTypes {
 
     SAVE_PROFILE_DATA_SUCCESS = 'SAVE_PROFILE_DATA_SUCCESS',
     SAVE_PROFILE_DATA_FAILED = 'SAVE_PROFILE_DATA_FAILED',
+
+    SEND_MESSAGE_SUCCESS = 'SEND_MESSAGE_SUCCESS',
+    SEND_MESSAGE_FAILED = 'SEND_MESSAGE_FAILED',
 
     GET_CHAT_HISTORY_SUCCESS = 'GET_CHAT_HISTORY_SUCCESS', // TODO:
     GET_CHAT_HISTORY_FAILED = 'GET_CHAT_HISTORY_FAILED', // TODO:
@@ -54,7 +59,6 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
 
             profilesImport.sort((a: any, b: any) => a.online_status - b.online_status);
 
-            console.log('🚀 ~ file: social-actions.ts ~ line 49 ~ getFriendsListThunk ~ profilesImport', profilesImport);
             const profiles: Profile[] = profilesImport.map((profile: any): Profile => ({
                 username: profile.user,
                 userId: profile.id,
@@ -74,7 +78,6 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
                 },
                 chatActive: false,
             }));
-            console.log('🚀 ~ file: social-actions.ts ~ line 57 ~ getFriendsListThunk ~ profiles', profiles);
 
             dispatch(getFriendsListSuccess(profiles));
         } catch (error) {
@@ -184,11 +187,10 @@ export function saveProfileDataAsync(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
-// TODO: Mind the any type in params
-function getChatHistorySuccess(messages: any): AnyAction {
+function getChatHistorySuccess(id: number, messages: Message[]): AnyAction {
     return {
         type: SocialActionTypes.GET_CHAT_HISTORY_SUCCESS,
-        payload: messages,
+        payload: { id, messages },
     };
 }
 
@@ -200,15 +202,51 @@ function getChatHistoryFailed(error: any): AnyAction {
     return action;
 }
 
-export function getChatHistoryAsync(otherUserId: number): ThunkAction<void, {}, {}, AnyAction> {
+export function getChatHistoryAsync(user2Id: number): ThunkAction<void, {}, {}, AnyAction> {
+    const { userId } = getCVATStore().getState().gamifuserdata;
+
     return async function getChatHistoryThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
-            // TODO: Not implemented yet!
-            const messages = await cvat.social.getChat(otherUserId);
+            const messages = await cvat.social.chatHistory(Math.min(userId, user2Id), Math.max(userId, user2Id));
 
-            dispatch(getChatHistorySuccess(messages));
+            const messagesFormatted: Message[] = messages.map((msg: any) => ({
+                sender: msg.senderId === userId,
+                content: msg.content,
+                timestamp: msg.timestamp,
+            }));
+
+            dispatch(getChatHistorySuccess(user2Id, messagesFormatted));
         } catch (error) {
             dispatch(getChatHistoryFailed(error));
+        }
+    };
+}
+
+function sendMessageSuccess(id: number, message: string): AnyAction {
+    return {
+        type: SocialActionTypes.SEND_MESSAGE_SUCCESS,
+        payload: { id, message },
+    };
+}
+
+function sendMessageFailed(error: any): AnyAction {
+    const action = {
+        type: SocialActionTypes.SEND_MESSAGE_FAILED,
+        payload: { error },
+    };
+    return action;
+}
+
+export function sendMessageAsync(user2Id: number, content: string): ThunkAction<void, {}, {}, AnyAction> {
+    const { userId } = getCVATStore().getState().gamifuserdata;
+
+    return async function sendMessageThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        try {
+            const msg = await cvat.social.sendMessage(Math.min(userId, user2Id), Math.max(userId, user2Id), content);
+
+            dispatch(sendMessageSuccess(user2Id, msg));
+        } catch (error) {
+            dispatch(sendMessageFailed(error));
         }
     };
 }

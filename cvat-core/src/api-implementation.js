@@ -436,13 +436,13 @@ const config = require('./config');
             return friends;
         };
 
-        cvat.social.chatHistory.implementation = async (userId) => {
-            const items = await serverProxy.social.chatHistory(userId);
+        cvat.social.chatHistory.implementation = async (user1Id, user2Id) => {
+            const items = await serverProxy.social.chatHistory(user1Id, user2Id);
             return items;
         };
 
-        cvat.social.sendMessage.implementation = async (userId, message) => {
-            const items = await serverProxy.sendMessage.friends(userId, message);
+        cvat.social.sendMessage.implementation = async (senderId, receiverId, message) => {
+            const items = await serverProxy.social.sendMessage(senderId, receiverId, message);
             return items;
         };
 

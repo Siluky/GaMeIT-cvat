@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 import 'gamification/gamif-styles.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Row,
     Col,
@@ -22,7 +22,6 @@ import {
     loadBadgesAsync,
     incrementBadge,
     toggleBadgeInProfile,
-    updateBadges,
     upgradeBadgeTier,
     saveSelectedBadges,
 } from '../../actions/badge-actions';
@@ -109,20 +108,25 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                                 icon={
                                     isBadgeSelected ? <CheckSquareOutlined /> : <CloseSquareOutlined />
                                 }
-                                onClick={() => dispatch(toggleBadgeInProfile(badge.id))}
+                                onClick={() => {
+                                    dispatch(toggleBadgeInProfile(badge.id));
+                                    dispatch(saveSelectedBadges(badges.badgesinProfile));
+                                }}
                                 size='small'
                             >
                                 {profileText}
                             </Button>
+                            <Button
+                                className='gamif-debug-button'
+                                icon={<UpOutlined />}
+                                onClick={() => dispatch(upgradeBadgeTier(badge.id))}
+                                size='small'
+                            >
+                                Upgrade
+                            </Button>
                         </div>
                     </>
                 )}
-                <Button
-                    className='gamif-debug-button'
-                    icon={<UpOutlined />}
-                    onClick={() => dispatch(upgradeBadgeTier(badge.id))}
-                    size='small'
-                />
             </div>
         </>
     );
@@ -149,9 +153,9 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
     const dispatch = useDispatch();
 
     // Load in badges from database on open of profile.
-    // useEffect(() => {
-    //     loadBadges();
-    // }, []);
+    useEffect(() => {
+        loadBadges();
+    }, []);
 
     return (
         <div className='gamif-badge-overview-container'>
@@ -179,7 +183,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                         return null;
                     })}
 
-                    <Button
+                    {/* <Button
                         type='text'
                         className='gamif-debug-button'
                         onClick={(): void => {
@@ -205,7 +209,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                         }}
                     >
                         Load
-                    </Button>
+                    </Button> */}
                     <Button
                         type='text'
                         className='gamif-debug-button'
