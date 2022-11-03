@@ -71,7 +71,7 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
 
         case BadgeActionTypes.ADD_BADGE_TO_PROFILE_SUCCESS: {
             const newBadgesinProfile = state.badgesinProfile[0] === 0 ?
-                action.payload : state.badgesinProfile.concat([action.payload]);
+                [action.payload] : state.badgesinProfile.concat([action.payload]);
             return {
                 ...state,
                 badgesinProfile: newBadgesinProfile,

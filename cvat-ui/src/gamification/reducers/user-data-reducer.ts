@@ -55,7 +55,6 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
 
             // console.log('🚀 ~ file: user-data-reducer.ts ~ line 56 ~
             // action.payload.field_name', action.payload.field_name);
-
             switch (action.payload.field_name) {
                 case 'images_annotated': {
                     sessionData.images_annotated += action.payload.increment;
@@ -69,8 +68,8 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                 case 'tags_set': {
                     sessionData.tags_set += action.payload.increment;
                     totalData.tags_set += action.payload.increment;
-                    sessionData.images_annotated += Math.floor(sessionData.tags_set / 2);
-                    totalData.images_annotated += Math.floor(totalData.tags_set / 2);
+                    sessionData.images_annotated = Math.floor(sessionData.tags_set / 2);
+                    totalData.images_annotated = Math.floor(totalData.tags_set / 2);
                     break;
                 }
                 case 'images_annotated_night': {

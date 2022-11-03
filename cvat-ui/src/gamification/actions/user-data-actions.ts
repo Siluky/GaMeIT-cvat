@@ -126,7 +126,7 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         badgeIds += ',';
     }
     badgeIds = badgeIds.slice(0, -1); // remove trailing comma
-    if (badgeIds === '') { badgeIds = '0'; }
+    if (!badgeIds) { badgeIds = '0'; }
 
     let itemsBought = '';
     const items = shopState.availableItems;
@@ -141,7 +141,7 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
     const userDataPrepared = {
         id: userDataState.userId,
         user: userDataState.userId,
-        last_login_ms: sessionData.last_login,
+        last_login_ms: Math.floor(sessionData.last_login / 1000), // in sec to avoid overflow
         image_annotated_total: totalData.images_annotated,
         tags_set_total: totalData.tags_set,
         images_annotated_night: totalData.images_annotated_night,
@@ -167,6 +167,7 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         selectedStatistics: stats,
         selectedBadges: badgeIds,
     };
+    console.log('🚀 ~ file: user-data-actions.ts ~ line 170 ~ saveUserData ~ userDataPrepared', userDataPrepared);
 
     return async (dispatch) => {
         try {
@@ -184,7 +185,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
         try {
             userDataImport = await cvat.gamifuserdata.get();
             const userDataAllTime: UserData = {
-                last_login: userDataImport.last_login_ms,
+                last_login: userDataImport.last_login_ms * 1000,
                 images_annotated: userDataImport.images_annotated_total,
                 tags_set: userDataImport.tags_set_total,
                 images_annotated_night: userDataImport.images_annotated_night,

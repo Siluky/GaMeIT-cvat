@@ -236,6 +236,7 @@ export function saveSelectedBadges(selectedBadgeIds: number[]): ThunkAction<void
                 badgeIds += ',';
             }
             badgeIds = badgeIds.slice(0, -1); // remove trailing comma
+            if (!badgeIds) { badgeIds = '0'; }
             await cvat.badges.saveSelected(userId, badgeIds);
             dispatch(saveSelectedBadgesSuccess());
         } catch (error: any) {

@@ -7,13 +7,32 @@ import 'gamification/gamif-styles.scss';
 import React from 'react';
 
 interface QuickStatisticProps {
+    id: number;
     value: number;
     icon: any;
     tooltip: string;
 }
 
+const formatValue = (id: number, value: number): string => {
+    if (id === 5 || id === 3) {
+        if (value > 3600) {
+            return `${Math.floor((value / 3600))}:${Math.floor((Math.floor(value % 3600)) / 60)}`;
+            // return `${Math.floor(.value / 3600)}:${.value % 60} min`;
+        }
+
+        if (value > 60) {
+            return `${Math.floor((value / 60))}:${Math.floor(value % 60)}`;
+            // return `${Math.floor(.value / 60)}:${.value % 60} min`;
+        }
+    }
+
+    return `${value}`;
+};
+
 export default function QuickStatistic(props: QuickStatisticProps): JSX.Element {
-    const { icon, value, tooltip } = props;
+    const {
+        id, icon, value, tooltip,
+    } = props;
     return (
         <CvatTooltip overlay={tooltip}>
             <div className='single-quick-statistic-component'>
@@ -22,7 +41,7 @@ export default function QuickStatistic(props: QuickStatisticProps): JSX.Element 
                         {icon}
                     </div>
                     &nbsp;
-                    {value}
+                    {formatValue(id, value)}
                 </div>
             </div>
         </CvatTooltip>

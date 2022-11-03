@@ -43,6 +43,7 @@ export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Eleme
                         return (
                             <QuickStatistic
                                 key={id}
+                                id={relevantId}
                                 value={val}
                                 icon={mapStatisticIdtoIcon(stat.id)}
                                 tooltip={session ? stat.tooltip_session : stat.tooltip_total ?? 'Tooltip missing'}
