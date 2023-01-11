@@ -1,0 +1,25 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+.ant-modal-content {
+  max-height: 900px;
+  height: 400px;
+  width: 300px;
+}
+.snake {
+  border-color: red;
+  border-style: solid;
+}
+.playingField {
+  border-style: solid;
+  border-color: black;
+}
+.timer {
+  text-align: center;
+  border: 3px solid green;
+}
+.game-over {
+  font-family: sans-serif;
+  text-align: center;
+}
