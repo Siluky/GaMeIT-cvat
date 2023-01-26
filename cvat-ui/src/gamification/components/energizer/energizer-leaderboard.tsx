@@ -45,7 +45,7 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
 
     const dispatch = useDispatch();
     const { latestEntry } = useSelector((state: CombinedState) => state.energizer);
-    const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
+    const { username } = useSelector((state: CombinedState) => state.gamifuserdata);
 
     useEffect(() => {
         dispatch(getLeaderboardAsync(activeEnergizer));
@@ -77,11 +77,15 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
                 </div>
                 {
                     leaderboardEntries.map((entry: LeaderboardEntry, index: number) => {
-                        const rowStyle = ((entry.userId === userId) && (entry.score === latestEntry.score)) ?
+                        const rowStyle = ((entry.username === username) && (entry.score === latestEntry.score)) ?
                             'energizer-leaderboard-row highlight' :
                             'energizer-leaderboard-row';
                         return (
-                            <Row className={rowStyle} wrap>
+                            <Row
+                                className={rowStyle}
+                                wrap
+                                key={index}
+                            >
                                 <Col span={2}>
                                     <b>
                                         {index + 1}

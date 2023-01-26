@@ -1078,6 +1078,13 @@ function build() {
             },
         },
 
+        gamiflogs: {
+            async save(userId, event) {
+                const result = await PluginRegistry.apiWrapper(cvat.gamiflogs.save, userId, event);
+                return result;
+            },
+        },
+
         /**
          * Namespace is used for access to classes
          * @namespace classes
@@ -1122,6 +1129,7 @@ function build() {
     cvat.shop = Object.freeze(cvat.shop);
     cvat.social = Object.freeze(cvat.social);
     cvat.statistics = Object.freeze(cvat.statistics);
+    cvat.gamiflogs = Object.freeze(cvat.gamiflogs);
 
     const implementAPI = require('./api-implementation');
 

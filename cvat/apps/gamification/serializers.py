@@ -129,3 +129,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return super().create(validated_data)
+
+class GamifLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=models.GamifLog
+        fields= '__all__'

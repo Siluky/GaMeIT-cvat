@@ -25,6 +25,9 @@ export enum UserDataActionTypes {
     SAVE_USER_DATA_SUCCESS = 'SAVE_USER_DATA_SUCCESS',
     SAVE_USER_DATA_FAILED = 'SAVE_USER_DATA_FAILED',
 
+    ADD_LOG_SUCCESS = 'ADD_LOG_SUCCESS',
+    ADD_LOG_FAILED = 'ADD_LOG_FAILED',
+
     UPDATE_USER_DATA_FIELD_SUCCESS = 'UPDATE_USER_DATA_FIELD_SUCCESS',
     UPDATE_USER_DATA_FIELD_FAILED = 'UPDATE_USER_DATA_FIELD_FAILED',
 }
@@ -285,6 +288,30 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             dispatch(saveUserData());
         } catch (error) {
             dispatch(getUserDataFailed(error));
+        }
+    };
+}
+
+function addLogSuccess(): AnyAction {
+    return {
+        type: UserDataActionTypes.ADD_LOG_SUCCESS,
+    };
+}
+
+function addLogFailed(error: any): AnyAction {
+    return {
+        type: UserDataActionTypes.ADD_LOG_FAILED,
+        payload: error,
+    };
+}
+
+export function addGamifLog(userId: number, event: string): ThunkAction<void, {}, {}, AnyAction> {
+    return async (dispatch) => {
+        try {
+            await cvat.gamiflogs.save(userId, event);
+            dispatch(addLogSuccess());
+        } catch (error) {
+            dispatch(addLogFailed(error));
         }
     };
 }

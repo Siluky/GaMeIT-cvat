@@ -557,7 +557,11 @@ function HeaderContainer(props: Props): JSX.Element {
                                 type='text'
                                 className='gamif-energizer-button'
                                 icon={getEnergizerIcon(currentEnergy) ?? <EnergizerIcon />}
-                                onClick={(): void => { if (currentEnergy >= 10) { switchEnergizerPopUp(true); } }}
+                                onClick={(): void => {
+                                    if (currentEnergy >= gamifconsts.ENERGIZER_COST && !energizerShown) {
+                                        switchEnergizerPopUp(true);
+                                    }
+                                }}
                             />
                             <div
                                 // eslint-disable-next-line max-len

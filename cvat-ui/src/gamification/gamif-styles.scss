@@ -343,6 +343,15 @@
 .gamif-energizer-modal {
   background: #b5beca;
   min-width: 600px;
+
+  .ant-modal {
+    padding-bottom: 0px;
+  }
+
+  .ant-modal-body {
+    padding: 0px;
+    background: red;
+  }
 }
 
 .gamif-energizer-modal-content-wrapper {
@@ -449,6 +458,10 @@
 }
 .gamif-energizer-leaderboard {
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+
+  .ant-modal-body {
+    padding: 0;
+  }
 }
 
 .energizer-leaderboard-headline h2 {
@@ -488,7 +501,7 @@
   text-align: center;
   margin: 5px 0px 5px 0px;
 
-  .highlight {
+  &.highlight {
     background: #fddeef;
   }
 

@@ -14,7 +14,9 @@ import { CombinedState } from 'reducers/interfaces';
 import { setActiveEnergizer } from 'gamification/actions/energizer-actions';
 import { updateUserData } from 'gamification/actions/user-data-actions';
 import { EnergizerType } from 'gamification/gamif-interfaces';
+import Snake from './energizer-snake';
 import QuizDuel from './energizer-quiz-duel';
+import TetrisApp from './tetris/src/TetrisApp';
 import Leaderboard from './energizer-leaderboard';
 
 // import { useDispatch, useSelector } from 'react-redux';
@@ -40,9 +42,9 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
             case EnergizerType.QUIZ:
                 return <QuizDuel key={index} showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
             case EnergizerType.SNAKE:
-                return <> </>;
+                return <Snake showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
             case EnergizerType.TETRIS:
-                return <> </>;
+                return <TetrisApp showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
             default: return <QuizDuel key={index} showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
         }
     };

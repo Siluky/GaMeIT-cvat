@@ -14,7 +14,8 @@
     "cvat-ui"
   ],
   "dependencies": {
-    "@ant-design/icons": "^4.7.0"
+    "@ant-design/icons": "^4.7.0",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@ant-design/colors": "^6.0.0",
@@ -28,6 +29,7 @@
     "@istanbuljs/nyc-config-babel": "^1.0.1",
     "@types/mousetrap": "^1.6.5",
     "@types/node": "^12.6.8",
+    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "airbnb": "0.0.2",

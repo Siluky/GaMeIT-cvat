@@ -478,6 +478,11 @@ const config = require('./config');
             return statistic;
         };
 
+        cvat.gamiflogs.save.implementation = async (userId, event) => {
+            const log = await serverProxy.gamiflogs.addLog(userId, event);
+            return log;
+        };
+
         return cvat;
     }
 

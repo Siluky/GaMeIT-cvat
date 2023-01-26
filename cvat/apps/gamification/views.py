@@ -2,15 +2,15 @@
 #
 # SPDX-License-Identifier: MIT
 
-from datetime import timedelta, timezone
+from datetime import date, timedelta
 import datetime
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django.http import Http404
-from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, Question, ShopItem, Statistic, UserProfile
-from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer,ProfileDataSerializer, QuestionSerializer, SaveChallengesSerializer, ShopItemSerializer, StatisticSerializer, UserDataSerializer, UserProfileSerializer
+from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, GamifLog, Question, ShopItem, Statistic, UserProfile
+from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer, GamifLogSerializer, ProfileDataSerializer, QuestionSerializer, SaveChallengesSerializer, ShopItemSerializer, StatisticSerializer, UserDataSerializer, UserProfileSerializer
 
 # def currentUserProfile(self):
 #     currentUser = self.request.user
@@ -208,18 +208,18 @@ class EnergizerLeaderboardViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(energizer=energizerName)
 
         timeframe = self.request.query_params.get('time')
-        today = datetime.datetime.now()
+        print(timeframe)
+
         if timeframe:
-            print(timeframe)
+            today = date.today()
             if (timeframe == 'Daily'):
-                yesterday = today - timedelta(days=1)
-                queryset = queryset.filter(timestamp__date=yesterday)
-
+                start = today - timedelta(days=1)
             elif (timeframe == 'Weekly'):
-                lastweek = today - timedelta(weeks=1)
-                queryset = queryset.filter(timestamp__week=lastweek.isocalendar()[1])
+                start = today - timedelta(days=6)
+            print(start)
+            queryset = queryset.filter(timestamp__date__range=[start, today])
 
-        return queryset.order_by('score')
+        return queryset.order_by('-score')[:10]
 
 class QuizDuelQuestionsViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
@@ -231,3 +231,8 @@ class QuizDuelQuestionsViewSet(viewsets.ModelViewSet):
         random_questions = Question.objects.all().order_by('?')[:5]
         serializer = QuestionSerializer(random_questions, many=True)
         return Response(serializer.data)
+
+
+class GamifLogsViewSet(viewsets.ModelViewSet):
+    queryset = GamifLog.objects.all()
+    serializer_class = GamifLogSerializer

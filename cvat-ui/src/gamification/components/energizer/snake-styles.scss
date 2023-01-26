@@ -1,0 +1,47 @@
+/**
+ * Copyright (C) 2022 Intel Corporation
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+// .ant-modal-content {
+//   max-height: 900px;
+//   height: 400px;
+//   width: 300px;
+// }
+.snake {
+  display: flex;
+  border: 1px solid black;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.snake-container {
+  display: flex;
+  justify-content: center;
+}
+.playingField {
+  border-style: solid;
+  border-color: black;
+}
+.timer {
+  text-align: center;
+  border: 1px solid black;
+  margin: 4px;
+  background: #e6e6e6;
+  border-radius: 5px;
+}
+.game-over {
+  font-family: sans-serif;
+  text-align: center;
+  position: absolute;
+  background: #e6e6e6;
+  border: 1px solid #1d3c62;
+  border-radius: 5px;
+
+}

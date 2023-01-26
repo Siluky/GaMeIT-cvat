@@ -1,6 +1,20 @@
-import Tetris from "./components/Tetris";
-import "./styles.css";
-import styled from "styled-components";
+// Copyright (C) 2022 Intel Corporation
+//
+// SPDX-License-Identifier: MIT
+
+// Copyright (C) 2022 Intel Corporation
+//
+// SPDX-License-Identifier: MIT
+
+import React from 'react';
+import './styles.css';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { CombinedState } from 'reducers/interfaces';
+import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
+import { addLeaderboardEntry } from 'gamification/actions/energizer-actions';
+import { addGamifLog } from 'gamification/actions/user-data-actions';
+import Tetris from './components/Tetris';
 
 const Container = styled.div`
   margin: 1px auto 0;
@@ -79,105 +93,133 @@ const Digit = styled.span`
 `;
 
 type DigitsProps = {
-  children: number;
-  count?: number;
+    children: number;
+    count?: number;
 };
 const Digits = ({ children, count = 4 }: DigitsProps): JSX.Element => {
-  let str = children.toString();
+    let str = children.toString();
 
-  while (str.length < count) {
-    str = `${0}${str}`;
-  }
+    while (str.length < count) {
+        str = `${0}${str}`;
+    }
 
-  return (
-    <>
-      {str.split("").map((digit, index) => (
-        <Digit key={index}>{digit}</Digit>
-      ))}
-    </>
-  );
+    return (
+        <>
+            {str.split('').map((digit, index) => (
+                <Digit key={index}>{digit}</Digit>
+            ))}
+        </>
+    );
 };
 
-const TimeDigits = styled.span`
-  font-family: monospace;
-  padding: 1px;
-  margin: 1px;
-  font-size: 24px;
-`;
+interface TetrisProps {
+    showLeaderboard(show: boolean): void;
+}
 
-const TetrisApp = () => (
-  console.log("hello there");
-  <Container>
-    <Tetris>
-      {({
-        Gameboard,
-        HeldPiece,
-        PieceQueue,
-        points,
-        linesCleared,
-        state,
-        controller,
-        Timer,
-        time
-      }) => (
-        <div>
-          <div style={{ opacity: state === "PLAYING" ? 1 : 0.5 }}>
-            <Score>
-              <LeftHalf>
-                <p>
-                  points
-                  <br />
-                  <Digits>{points}</Digits>
-                </p>
-              </LeftHalf>
-              <TopMiddle>
-                <p>
-                  time
-                  <br />
-                  <Digits>{Math.round(time / 1000)}</Digits>
-                </p>
-                {/* <Timer /> */}
-              </TopMiddle>
-              <RightHalf>
-                <p>
-                  lines
-                  <br />
-                  <Digits>{linesCleared}</Digits>
-                </p>
-              </RightHalf>
-            </Score>
+// const TimeDigits = styled.span`
+//   font-family: monospace;
+//   padding: 1px;
+//   margin: 1px;
+//   font-size: 24px;
+// `;
 
-            <LeftColumn>
-              <HeldPiece />
-            </LeftColumn>
+const TetrisApp = (props: TetrisProps): JSX.Element => {
+    const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
+    const dispatch = useDispatch();
 
-            <MiddleColumn>
-              <Gameboard />
-            </MiddleColumn>
+    return (
+        <Container>
+            <Tetris>
+                {({
+                    Gameboard,
+                    HeldPiece,
+                    PieceQueue,
+                    points,
+                    linesCleared,
+                    state,
+                    controller,
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    Timer,
+                    time,
+                }) => (
+                    <div className='tetris-container'>
+                        <div style={{ opacity: state === 'PLAYING' ? 1 : 0.5 }}>
+                            <div>
+                                <Score>
+                                    <LeftHalf>
+                                        <p>
+                                            points
+                                            <br />
+                                            <Digits>{points}</Digits>
+                                        </p>
+                                    </LeftHalf>
+                                    <TopMiddle>
+                                        <p>
+                                            time
+                                            <br />
+                                            <Digits>{Math.round(time / 1000)}</Digits>
+                                        </p>
+                                        {/* <Timer /> */}
+                                    </TopMiddle>
+                                    <RightHalf>
+                                        <p>
+                                            lines
+                                            <br />
+                                            <Digits>{linesCleared}</Digits>
+                                        </p>
+                                    </RightHalf>
+                                </Score>
+                            </div>
+                            <div>
+                                <LeftColumn>
+                                    <HeldPiece />
+                                </LeftColumn>
 
-            <RightColumn>
-              <PieceQueue />
-            </RightColumn>
+                                <MiddleColumn>
+                                    <Gameboard />
+                                </MiddleColumn>
 
-            {/* <Controller controller={controller} /> */}
-          </div>
-          {state === "PAUSED" && (
-            <Popup>
-              <Alert>Paused</Alert>
-              <Button onClick={controller.resume}>Resume</Button>
-            </Popup>
-          )}
+                                <RightColumn>
+                                    <PieceQueue />
+                                </RightColumn>
+                            </div>
 
-          {state === "LOST" && (
-            <Popup>
-              <Alert>Game Over</Alert>
-              <Button onClick={controller.restart}>Start</Button>
-            </Popup>
-          )}
-        </div>
-      )}
-    </Tetris>
-  </Container>
-);
+                            {/* <Controller controller={controller} /> */}
+                        </div>
+                        {state === 'PAUSED' && (
+                            <Popup>
+                                <Alert>Paused</Alert>
+                                <Button onClick={controller.resume}>Resume</Button>
+                            </Popup>
+                        )}
+
+                        {state === 'LOST' && (
+                            <Popup>
+                                <Alert>Game Over</Alert>
+                                <Button onClick={controller.restart}>Restart</Button>
+                                <Button onClick={() => {
+                                    const { showLeaderboard } = props;
+                                    const entry: LeaderboardEntry = {
+                                        userId: userdata.userId,
+                                        username: userdata.username,
+                                        energizer: EnergizerType.TETRIS,
+                                        score: points,
+                                    };
+                                    console.log('🚀 ~ file: TetrisApp.tsx:203 ~ TetrisApp ~ entry', entry);
+                                    dispatch(addLeaderboardEntry(entry));
+                                    showLeaderboard(true);
+                                    dispatch(addGamifLog(userdata.userId, 'Tetris ended'));
+                                }}
+                                >
+                                    Leaderboard
+                                </Button>
+                            </Popup>
+                        )}
+                    </div>
+                )}
+            </Tetris>
+        </Container>
+    );
+};
 
 export default TetrisApp;

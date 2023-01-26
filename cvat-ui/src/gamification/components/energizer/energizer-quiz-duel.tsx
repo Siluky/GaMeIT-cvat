@@ -128,7 +128,7 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
                 <h2>{`Question ${progress}`}</h2>
             </div>
             <div className='quiz-duel-status-bar'>
-                {divStyle.map((el) => <div className={el}> &nbsp;</div>)}
+                {divStyle.map((el, index) => <div className={el} key={index}> &nbsp;</div>)}
             </div>
 
             {loading ?

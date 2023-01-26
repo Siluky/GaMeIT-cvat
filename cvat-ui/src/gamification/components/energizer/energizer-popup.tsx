@@ -23,8 +23,7 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
 
     const dispatch = useDispatch();
 
-    // TODO: refactor the hard-coded 10 --> make a const
-    const energizerReady = currentEnergy < 10;
+    const energizerReady = currentEnergy < gamifconsts.ENERGIZER_COST;
     const buttonDisabled = { disabled: energizerReady };
 
     const messageReady = (

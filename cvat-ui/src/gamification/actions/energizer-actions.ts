@@ -124,7 +124,7 @@ export function incrementEnergyAction(increment: number): AnyAction {
 }
 
 export function incrementEnergy(increment: number): ThunkAction<void, {}, {}, AnyAction> {
-    const { energyLevel } = getCVATStore().getState().energizer;
+    const { energyLevel, active } = getCVATStore().getState().energizer;
 
     return (dispatch) => {
         const newEnergy = energyLevel + increment;
@@ -143,7 +143,7 @@ export function incrementEnergy(increment: number): ThunkAction<void, {}, {}, An
 
         dispatch(incrementEnergyAction(increment));
         dispatch(saveCurrentEnergyAsync(Math.min(newEnergy, 20)));
-        if (newEnergy === 10) { dispatch(switchEnergizerPopUp(true)); }
+        if (newEnergy === gamifconsts.ENERGIZER_COST && !active) { dispatch(switchEnergizerPopUp(true)); }
     };
 }
 
@@ -217,6 +217,7 @@ export function addLeaderboardEntry(entry: LeaderboardEntry): ThunkAction<void, 
         try {
             await cvat.energizer.addScore(entry.userId, entry.energizer, entry.score);
             dispatch(addLeaderboardEntrySuccess(entry));
+            dispatch(setLatestEntry(entry)); // TODO: Test
         } catch (error) {
             dispatch(addLeaderboardEntryFailed(error));
         }

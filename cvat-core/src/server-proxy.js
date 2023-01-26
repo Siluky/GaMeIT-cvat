@@ -1934,7 +1934,7 @@
             async function getLeaderboard(energizerName, time) {
                 const { backendAPI } = config;
                 let response = null;
-                const timeParam = !time || time === 'undefined' ? '' : `?time=${time}`;
+                const timeParam = !time || time === 'undefined' ? '' : `&time=${time}`;
                 try {
                     response = await Axios.get(`${backendAPI}/energizer-data?energizer=${energizerName}${timeParam}`);
                 } catch (error) {
@@ -1952,6 +1952,7 @@
                     energizer: energizerName,
                     score: userScore,
                 });
+                console.log('🚀 ~ file: server-proxy.js:1955 ~ ServerProxy ~ addLeaderboardEntry ~ data', data);
                 try {
                     response = await Axios.post(`${backendAPI}/energizer-data`, data, {
                         proxy: config.proxy,
@@ -2105,6 +2106,13 @@
                 let response = null;
                 response = await Axios.post(`${backendAPI}/statistics/${statisticId}`); // TODO:
                 return response.data; // TODO: double-check, maybe response.data.results
+            }
+
+            async function addGamifLog(userId, event) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.post(`${backendAPI}/gamiflogs`, { userId, event });
+                return response.data;
             }
 
             Object.defineProperties(
@@ -2333,6 +2341,12 @@
                             set: setStatistic,
                             quickStatistics: getQuickStatistics,
                             setQuick: setQuickStatistic,
+                        }),
+                        writable: false,
+                    },
+                    gamiflogs: {
+                        value: Object.freeze({
+                            addLog: addGamifLog,
                         }),
                         writable: false,
                     },

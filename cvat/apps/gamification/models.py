@@ -247,4 +247,12 @@ class Question(models.Model):
     def __str__(self):
         return self.question
 
+class GamifLog(models.Model):
+    userId = models.IntegerField(default=0)
+    date = models.DateTimeField(auto_now=True)
+    event = models.CharField(default='', max_length=256)
+
+
+
+
 

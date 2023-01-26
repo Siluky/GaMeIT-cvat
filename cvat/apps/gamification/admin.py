@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 from django.contrib import admin
-from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, Question, ShopItem, Statistic,  UserProfile
+from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, GamifLog, Question, ShopItem, Statistic,  UserProfile
 
 admin.site.register(UserProfile)
 
@@ -21,4 +21,5 @@ admin.site.register(ChatRoom)
 admin.site.register(ChatMessage)
 admin.site.register(EnergizerData)
 admin.site.register(Question)
+admin.site.register(GamifLog)
 

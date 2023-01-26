@@ -30,6 +30,7 @@ router.register('questions', views.QuizDuelQuestionsViewSet)
 
 router.register('friends', views.FriendslistViewSet)
 router.register('chat', views.ChatViewSet)
+router.register('gamiflogs', views.GamifLogsViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
