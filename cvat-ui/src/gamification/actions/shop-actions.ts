@@ -30,6 +30,8 @@ export enum ShopActionTypes {
 
     PURCHASE_ITEM_SUCCESS = 'PURCHASE_ITEM_SUCCESS',
     PURCHASE_ITEM_FAILED = 'PURCHASE_ITEM_FAILED',
+
+    SET_OVERLAY_MESSAGE = 'SET_OVERLAY_MESSAGE',
 }
 
 export function getShopDataFailed(error: any): AnyAction {
@@ -105,32 +107,50 @@ export function useItemFailed(itemId: number): AnyAction {
     };
 }
 
+export function setOverlayMessage(msg: string): AnyAction {
+    return {
+        type: ShopActionTypes.SET_OVERLAY_MESSAGE,
+        payload: msg,
+    };
+}
+
 export function useRepeatableItem(itemId: number): ThunkAction<void, {}, {}, AnyAction> {
     return (dispatch) => {
         const state = getCVATStore().getState();
+        let overlayMessage = '';
         switch (itemId) {
             case 1: dispatch(incrementEnergy(10)); break;
             case 2: {
                 const random = Math.random() * 100;
                 if (random > 95) {
                     // buy secret item
+                    overlayMessage = 'You received: Mystery Background.';
                 } else if (random > 90) {
                     // buy secret item
+                    overlayMessage = 'You received: Mystery Profile Border.';
                 } else if (random > 50) {
                     dispatch(incrementEnergy(10));
-                } else if (random > 35 && state.challenges.availableChallenges.length < 3) {
-                    dispatch(addChallenge());
+                    overlayMessage = 'You received: 10 Energy.';
+                } else if (random > 35) {
+                    if (state.challenges.availableChallenges.length < 3) {
+                        dispatch(addChallenge());
+                    }
+                    overlayMessage = 'You received: Additional Challenge.';
                 } else if (random > 20) {
                     dispatch(updateUserData('streak_saver_active', 1));
+                    overlayMessage = 'You received: Streak Saver.';
                 } else {
-                    // get nothing
+                    overlayMessage = 'The gift was empty! Better luck next time.';
                 }
-            } break;
+                dispatch(updateUserData('mystery_gifts_bought', 1));
+                break;
+            }
             case 3: dispatch(addChallenge()); break;
             case 4: dispatch(updateUserData('streak_saver_active', 1)); break;
             case 5: dispatch(upgradeBadgeTier(12)); break; // TODO: Money Badge
             default: break;
         }
+        dispatch(setOverlayMessage(overlayMessage));
     };
 }
 

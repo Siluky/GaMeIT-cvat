@@ -1,7 +1,8 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import 'gamification/gamif-styles.scss';
 import 'gamification/gamif-profile-styles.scss';
 import {
@@ -26,12 +27,14 @@ interface ShopWindowProps {
     items: ShopItem[];
     currentBalance: number;
     selectedItemId: number;
+    overlayMessage: string;
 }
 
 interface StateToProps {
     items: ShopItem[];
     currentBalance: number;
     selectedItemId: number;
+    overlayMessage: string;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
@@ -41,12 +44,16 @@ function mapStateToProps(state: CombinedState): StateToProps {
         items: shop.availableItems,
         currentBalance: shop.currentBalance,
         selectedItemId: shop.selectedItemId,
+        overlayMessage: shop.overlayMessage,
     };
 }
 
 export function ShopWindow(props: ShopWindowProps): JSX.Element {
-    const { items, currentBalance, selectedItemId } = props;
+    const {
+        items, currentBalance, selectedItemId, overlayMessage,
+    } = props;
     const dispatch = useDispatch();
+    const [overlayVisible, toggleOverlay] = useState(false);
 
     // const [modalShown, toggleModal] = useState(false);
 
@@ -120,9 +127,41 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
         }
     };
 
+    // show Overlay every time the message changes (i.e., when an item that needs a message gets bought)
+    useEffect(() => {
+        toggleOverlay(true);
+    }, [overlayMessage]);
+
+    useEffect(() => {
+        toggleOverlay(false);
+    }, []);
+
+    const Popup = styled.div`
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 12px 24px;
+        border-radius: 4px;
+        text-align: center;
+        box-shadow: 2px 7px 18px 3px #d2d2d2;
+        color: black,
+        z-index: 3,
+        `;
+
     return (
         <>
             <div className='gamif-shop-window'>
+                {overlayVisible ?
+                    (
+                        // <div className='gamif-shop-overlay'>
+                        <Popup>
+                            <h2>{overlayMessage}</h2>
+                            <Button onClick={() => { toggleOverlay(false); }}> Close </Button>
+                        </Popup>
+                        /* </div> */
+                    ) : null}
                 <div className='gamif-shop-window-header'>
                     <Button
                         className='gamif-shop-window-button'
@@ -138,6 +177,12 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                         onClick={() => useItem(selectedItemId)}
                     >
                         Use
+                    </Button>
+                    <Button
+                        className='gamif-debug-button'
+                        onClick={() => toggleOverlay(!overlayVisible)}
+                    >
+                        Overlay
                     </Button>
                     <div className='gamif-shop-balance-display'>
                         <h3>

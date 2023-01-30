@@ -11,6 +11,7 @@ const defaultState: ShopState = {
     currentBalance: 0,
     availableItems: items,
     selectedItemId: 0,
+    overlayMessage: '',
 };
 
 export default (state = defaultState, action: AnyAction): ShopState => {
@@ -85,6 +86,13 @@ export default (state = defaultState, action: AnyAction): ShopState => {
         case ShopActionTypes.PURCHASE_ITEM_FAILED: {
             return {
                 ...state,
+            };
+        }
+
+        case ShopActionTypes.SET_OVERLAY_MESSAGE: {
+            return {
+                ...state,
+                overlayMessage: action.payload,
             };
         }
 

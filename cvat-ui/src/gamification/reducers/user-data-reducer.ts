@@ -161,6 +161,12 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                     break;
                 }
 
+                case 'mystery_gifts_bought': {
+                    sessionData.mystery_gifts_bought += action.payload.increment;
+                    totalData.mystery_gifts_bought += action.payload.increment;
+                    break;
+                }
+
                 default: break;
             }
 
