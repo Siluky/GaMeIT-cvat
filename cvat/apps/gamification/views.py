@@ -176,6 +176,15 @@ class ChatViewSet(viewsets.ModelViewSet):
 
         if chatRoomId:
             targetChatRoom = ChatRoom.objects.filter(id = chatRoomId).first()
+            print(targetChatRoom)
+            if (not targetChatRoom):
+                print('creating Chat Room')
+                userids = chatRoomId.split('-')
+                _user1= UserProfile.objects.get(id=userids[0])
+                _user2= UserProfile.objects.get(id=userids[1])
+                print(_user1)
+                print(_user2)
+                ChatRoom.objects.create(user1=_user1, user2=_user2, id=chatRoomId)
             queryset = ChatMessage.objects.filter(room = targetChatRoom)
         return queryset.order_by('timestamp')
 
@@ -219,6 +228,7 @@ class EnergizerLeaderboardViewSet(viewsets.ModelViewSet):
             print(start)
             queryset = queryset.filter(timestamp__date__range=[start, today])
 
+        # return queryset.order_by('-score').distinct('userProfile', 'score')[:10]
         return queryset.order_by('-score')[:10]
 
 class QuizDuelQuestionsViewSet(viewsets.ModelViewSet):

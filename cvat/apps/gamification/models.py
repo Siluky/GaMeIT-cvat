@@ -205,7 +205,7 @@ class ChatMessage(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (str(self.room.id) + ': Message ' + self.id)
+        return (self.room.id + ': Message ' + str(self.id))
 
 class EnergizerChoice(str, Enum):
     TETRIS = 'TETRIS',

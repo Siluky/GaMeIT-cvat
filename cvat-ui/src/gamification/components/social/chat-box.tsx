@@ -14,11 +14,21 @@ interface ChatBoxProps {
     messages: Message[];
 }
 
-const chatMessage = (sender: boolean, message: string, index: number): JSX.Element => {
-    const style = sender ? 'gamif-chat-box-message-right' : 'gamif-chat-box-message-left';
+const chatMessage = (msg: Message, index: number): JSX.Element => {
+    const style = msg.sender ? 'gamif-chat-box-message-right' : 'gamif-chat-box-message-left';
+    // TODO: Refactor to just properly export the Datetime and not do this cheap variant
+    let formattedMessage = '';
+    formattedMessage += msg.timestamp.substring(8, 10);
+    formattedMessage += msg.timestamp.substring('.');
+    formattedMessage += msg.timestamp.substring(5, 7);
+    formattedMessage += msg.timestamp.substring(', ');
+    formattedMessage += msg.timestamp.substring(12, 18);
+
     return (
         <div className={style} key={index}>
-            {message}
+            <span>{msg.content}</span>
+            {/* <span className='time'>{msg.timestamp}</span> */}
+            <span className='time'>{formattedMessage}</span>
         </div>
     );
 };
@@ -47,30 +57,33 @@ export function ChatBox(props: ChatBoxProps): JSX.Element {
     useEffect(() => {
         // dispatch(getChatHistoryAsync(userId));
     }, []);
-
     return (
         <>
             <div className='gamif-chat-box-container'>
                 <div className='gamif-chat-box-messages-container'>
-                    {messages.map((m, index) => chatMessage(m.sender, m.content, index))}
+                    {messages.map((m, index) => chatMessage(m, index))}
                 </div>
-                <Button type='text' onClick={() => dispatch(getChatHistoryAsync(userId))}> Load </Button>
-                <div>
-                    <Form>
-                        <Form.Item>
-                            <Input
-                                className='gamif-chat-box-input'
-                                placeholder='Type a message...'
-                                value={message}
-                                onPressEnter={() => {
-                                    dispatch(sendMessageAsync(userId, message));
-                                    setMessage('');
-                                }}
-                                onChange={(e) => setMessage(e.target.value)}
-                            />
-                        </Form.Item>
-                    </Form>
-                </div>
+                <Button
+                    type='text'
+                    className='gamif-debug-button'
+                    onClick={() => dispatch(getChatHistoryAsync(userId))}
+                >
+                    Load
+                </Button>
+                <Form>
+                    <Form.Item>
+                        <Input
+                            className='gamif-chat-box-input'
+                            placeholder='Type a message...'
+                            value={message}
+                            onPressEnter={() => {
+                                dispatch(sendMessageAsync(userId, message));
+                                setMessage('');
+                            }}
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
+                    </Form.Item>
+                </Form>
             </div>
         </>
     );

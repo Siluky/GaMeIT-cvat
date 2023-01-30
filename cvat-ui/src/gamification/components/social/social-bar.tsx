@@ -4,8 +4,8 @@
 import React, { useEffect } from 'react';
 import '../../gamif-styles.scss';
 import { Menu, Popover, Button } from 'antd';
-import { RadarChartOutlined, CloseOutlined, InfoCircleFilled } from '@ant-design/icons';
-import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
+import { CloseOutlined, InfoCircleFilled } from '@ant-design/icons';
+import { getFriendsListAsync, saveProfileDataAsync, toggleChat } from 'gamification/actions/social-actions';
 import { Profile } from 'gamification/gamif-interfaces';
 import { connect, useDispatch } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
@@ -33,7 +33,7 @@ const chatBar = (friend: Profile): JSX.Element => {
     const dispatch = useDispatch();
     return (
         <Menu.Item
-            icon={<RadarChartOutlined />}
+            // icon={<RadarChartOutlined />}
             key={friend.userId}
         >
             <Popover
@@ -57,6 +57,8 @@ const chatBar = (friend: Profile): JSX.Element => {
 
 export function SocialBar(props: SocialBarProps): JSX.Element {
     const dispatch = useDispatch();
+    // const social = useSelector((state: CombinedState) => state.social);
+
     useEffect(() => {
         dispatch(getFriendsListAsync());
     }, []);
@@ -66,13 +68,15 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
     return (
         <Menu className='gamif-social-bar' mode='horizontal'>
             <Menu.Item
-                className='gamif-friends-list-button'
+                className='gamif-friends-list-menu'
                 icon={(
                     <Popover
                         placement='leftBottom'
                         trigger='click'
                         content={<StatusMenu />}
                         mouseLeaveDelay={10}
+                        onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
+
                     >
                         <InfoCircleFilled />
                     </Popover>
@@ -85,13 +89,27 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                     content={<FriendsList profiles={friends} />}
                     mouseLeaveDelay={10}
                 >
-                    {`Online (${friends.length ?? 0})`}
+                    <Button
+                        className='friends-list-popover-trigger-button'
+                        onClick={() => dispatch(getFriendsListAsync())}
+                        ghost
+                    >
+                        {`Online (${friends.length ?? 0})`}
+                    </Button>
                 </Popover>
             </Menu.Item>
+            {/* {social.chats.map((chat: ChatRoom) => {
+                const user = social.chats.find((e) => e.otherUserId === chat.otherUserId);
+                if (user) {
+                    return chatBar(user);
+                }
+                return <></>;
+            })} */}
             {friends.map((user: Profile) => {
                 if (user.chatActive) { return chatBar(user); }
                 return null;
             })}
+            {/* //TODO:  */}
         </Menu>
     );
 }
