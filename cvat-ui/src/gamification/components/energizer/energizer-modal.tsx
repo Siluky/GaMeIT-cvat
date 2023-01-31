@@ -98,6 +98,9 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 footer={null}
                 maskClosable={false}
                 destroyOnClose={destroyonClose}
+                closable={false}
+                zIndex={1000}
+                keyboard={false}
             >
                 {active === EnergizerType.NONE ? infoScreen() : modalContent(energizer.activeEnergizer)}
                 {/* <Button
@@ -107,6 +110,18 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 >
                     Show Leaderboard
                 </Button> */}
+                <Button
+                    className='gamif-energizer-continue-button'
+                    type='text'
+                    onClick={() => {
+                        onClose();
+                        setLeaderboardShown(false);
+                        // dispatch(addLeaderboardEntry(energizer.latestEntry));
+                        dispatch(setActiveEnergizer(EnergizerType.NONE));
+                    }}
+                >
+                    Exit
+                </Button>
             </Modal>
 
             <Modal
@@ -114,9 +129,12 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 title=''
                 visible={leaderboardShown}
                 onCancel={(): void => setLeaderboardShown(false)}
-                width={400}
+                width={320}
                 footer={null}
                 maskClosable={false}
+                closable={false}
+                keyboard={false}
+                zIndex={1001}
             >
                 <Leaderboard />
 

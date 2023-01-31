@@ -57,11 +57,7 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
                 <div className='energizer-leaderboard-headline'>
                     <h2> Leaderboard </h2>
                 </div>
-                <div className='energizer-leaderboard-header-content'>
-                    {/* <div className='energizer-leaderboard-header-text'> 2nd </div> */}
-                    {/* <div className='energizer-leaderboard-header-text'>
-                        <AndroidFilled />
-                    </div> */}
+                <div>
                     <div className='energizer-leaderboard-header-text'>
                         {`Score: ${latestEntry.score}`}
                     </div>

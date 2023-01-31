@@ -196,11 +196,16 @@ export function getLeaderboardAsync(energizerName: EnergizerType, time?: string)
     };
 }
 
-export function addLeaderboardEntrySuccess(entry: LeaderboardEntry): AnyAction {
+// export function addLeaderboardEntrySuccess(entry: LeaderboardEntry): AnyAction {
+//     return {
+//         type: EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_SUCCESS,
+//         payload: entry,
+
+//     };
+// }
+export function addLeaderboardEntrySuccess(): AnyAction {
     return {
         type: EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_SUCCESS,
-        payload: entry,
-
     };
 }
 
@@ -216,8 +221,9 @@ export function addLeaderboardEntry(entry: LeaderboardEntry): ThunkAction<void, 
     return async function addLeaderboardEntryThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
             await cvat.energizer.addScore(entry.userId, entry.energizer, entry.score);
-            dispatch(addLeaderboardEntrySuccess(entry));
-            dispatch(setLatestEntry(entry)); // TODO: Test
+            dispatch(addLeaderboardEntrySuccess());
+            dispatch(getLeaderboardAsync(entry.energizer));
+            dispatch(setLatestEntry(entry));
         } catch (error) {
             dispatch(addLeaderboardEntryFailed(error));
         }

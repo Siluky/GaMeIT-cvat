@@ -11,7 +11,7 @@ import { addQuickStatistic } from './statistics-actions';
 // eslint-disable-next-line import/no-cycle
 import { initShop, updateBalance } from './shop-actions';
 // eslint-disable-next-line import/no-cycle
-import { initProfileBadges } from './badge-actions';
+import { initProfileBadges, loadBadgesAsync } from './badge-actions';
 // eslint-disable-next-line import/no-cycle
 import { addChallenge, getChallengesAsync } from './challenge-actions';
 
@@ -145,7 +145,7 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         id: userDataState.userId,
         user: userDataState.userId,
         last_login_ms: Math.floor(sessionData.last_login / 1000), // in sec to avoid overflow
-        image_annotated_total: totalData.images_annotated,
+        images_annotated_total: totalData.images_annotated,
         tags_set_total: totalData.tags_set,
         images_annotated_night: totalData.images_annotated_night,
         annotation_time_total: totalData.annotation_time,
@@ -187,6 +187,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
         let userDataImport = null;
         try {
             userDataImport = await cvat.gamifuserdata.get();
+            console.log('🚀 ~ file: user-data-actions.ts:190 ~ loadUserDataThunk ~ userDataImport', userDataImport);
             const userDataAllTime: UserData = {
                 last_login: userDataImport.last_login_ms * 1000,
                 images_annotated: userDataImport.images_annotated_total,
@@ -194,7 +195,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 images_annotated_night: userDataImport.images_annotated_night,
                 annotation_time: userDataImport.annotation_time_total,
                 // eslint-disable-next-line max-len
-                annotation_time_avg: Math.floor(userDataImport.annotation_time_total / userDataImport.images_annotated_total),
+                annotation_time_avg: Math.floor(userDataImport.annotation_time_total / userDataImport.images_annotated_total) ?? 0,
                 annotation_streak_current: userDataImport.annotation_streak_current,
                 annotation_streak_max: userDataImport.annotation_streak_max,
                 streak_saver_active: userDataImport.annotation_streak_saver,
@@ -237,6 +238,8 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             // eslint-disable-next-line max-len
             const badgeIdsPrepared = selectedBadgesImport.map((id: string) => parseInt(id, 10));
             dispatch(initProfileBadges(badgeIdsPrepared));
+            dispatch(loadBadgesAsync());
+
             const lastLogin = userDataAllTime.last_login;
             const currentTime = Date.now();
             const timeSinceLogin = currentTime - lastLogin;

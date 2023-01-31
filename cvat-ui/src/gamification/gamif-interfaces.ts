@@ -147,6 +147,7 @@ export interface ShopState {
     availableItems: ShopItem[];
     currentBalance: number;
     selectedItemId: number;
+    overlayMessage: string;
 }
 
 export enum OnlineStatus {

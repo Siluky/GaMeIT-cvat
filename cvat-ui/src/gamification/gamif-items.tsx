@@ -312,7 +312,7 @@ export const badges: Badge[] = [
     {
         id: 105,
         title: 'Cobra',
-        instruction: 'Achieve a 50-foot long snake',
+        instruction: 'Achieve a score of 20 in Snake',
         progress: 0,
         goal: 1,
         tier: BadgeTier.NOT_OBTAINED,
@@ -324,7 +324,7 @@ export const badges: Badge[] = [
     {
         id: 106,
         title: 'Tetris',
-        instruction: 'Score 2 Tetrises in a row',
+        instruction: 'Achieve a score of 20 in Tetris',
         progress: 0,
         goal: 1,
         tier: BadgeTier.NOT_OBTAINED,

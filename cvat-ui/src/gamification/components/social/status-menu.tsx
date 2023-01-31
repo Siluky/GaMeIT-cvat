@@ -27,9 +27,9 @@ export default function StatusMenu(): JSX.Element {
             onChange={(event) => dispatch(setStatus(valuetoStatus(event.target.value)))}
         >
             <Space direction='vertical'>
-                <Radio value={1} defaultChecked>Online</Radio>
-                <Radio value={2}>Do not Disturb</Radio>
-                <Radio value={3}>Offline</Radio>
+                <Radio className='gamif-status-menu-row' value={1} defaultChecked>Online</Radio>
+                <Radio className='gamif-status-menu-row' value={2}>Do not Disturb</Radio>
+                <Radio className='gamif-status-menu-row' value={3}>Offline</Radio>
             </Space>
         </Radio.Group>
     );

@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
+import { notification } from 'antd';
 import getCore from 'cvat-core-wrapper';
 import { getCVATStore } from 'cvat-store';
 import { ThunkAction } from 'redux-thunk';
@@ -278,9 +279,14 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                 }
 
                 if (encodeBadgeTier(updatedTier) > encodeBadgeTier(badge.tier) && !init) {
-                    // console.log(`Upgrading tier of badge ${badge.title} to ${updatedTier}`);
+                    console.log(`Upgrading tier of badge ${badge.title} to ${updatedTier}`);
                     dispatch(updateUserData('badges_obtained', 1));
                     cvat.badges.save(userDataState.userId, badge.id, encodeBadgeTier(updatedTier));
+                    // eslint-disable-next-line security/detect-non-literal-fs-filename
+                    notification.open({
+                        message: 'Badge Obtained!',
+                        description: `Congratulations! You obtained the ${badge.title} Badge (${updatedTier})!`,
+                    });
                 }
 
                 // switch visibility to true if badge is obtained,

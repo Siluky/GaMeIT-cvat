@@ -240,6 +240,7 @@ function HeaderContainer(props: Props): JSX.Element {
         dispatch(initializeUserData());
         const interval = setInterval(() => {
             incrementEnergy(gamifconsts.ENERGY_INCREMENT);
+            dispatch(updateBadges(false));
         }, gamifconsts.ENERGY_RATE);
 
         return () => {

@@ -89,7 +89,6 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
             return {
                 ...state,
                 leaderboardEntries: action.payload,
-
             };
         }
 
@@ -100,7 +99,7 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
         case EnergizerActionTypes.ADD_LEADERBOARD_ENTRY_SUCCESS: {
             return {
                 ...state,
-                leaderboardEntries: state.leaderboardEntries.concat(action.payload),
+                // leaderboardEntries: state.leaderboardEntries.concat(action.payload),
             };
         }
 

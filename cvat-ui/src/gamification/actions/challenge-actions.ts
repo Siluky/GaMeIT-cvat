@@ -15,7 +15,6 @@ import { updateUserData } from './user-data-actions';
 const cvat = getCore();
 
 export enum ChallengeActionTypes {
-    // TODO:
     GET_CHALLENGES_SUCCESS = 'GET_CHALLENGES_SUCCESS',
     GET_CHALLENGES_FAILED = 'GET_CHALLENGES_FAILED',
 

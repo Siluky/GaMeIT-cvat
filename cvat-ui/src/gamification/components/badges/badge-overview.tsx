@@ -175,7 +175,9 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                         className='gamif-badge-overview-individual-badge'
                                         type='text'
                                         icon={getBadgeIcon(badge.id, badge.tier)}
-                                        onClick={(): void => { dispatch(setCurrentBadge(badge.id)); }}
+                                        onClick={(): void => {
+                                            dispatch(setCurrentBadge(badge.id));
+                                        }}
                                     />
                                 </Col>
                             );
@@ -214,7 +216,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                         type='text'
                         className='gamif-debug-button'
                         onClick={(): void => {
-                            dispatch(saveSelectedBadges(badges.badgesinProfile));
+                            // dispatch(saveSelectedBadges(badges.badgesinProfile));
                         }}
                     >
                         Save Selected

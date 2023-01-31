@@ -343,6 +343,7 @@
 .gamif-energizer-modal {
   background: #b5beca;
   min-width: 600px;
+  padding: 5px;
 
   .ant-modal {
     padding-bottom: 0px;
@@ -350,7 +351,7 @@
 
   .ant-modal-body {
     padding: 0px;
-    background: red;
+    // background: red;
   }
 }
 
@@ -447,8 +448,6 @@
   background: red;
 }
 
-
-
 .gamif-energizer-continue-button {
   background: #0e2b4d;
   color: white;
@@ -461,6 +460,10 @@
 
   .ant-modal-body {
     padding: 0;
+  }
+
+  .ant-modal-content {
+    border-radius: 12px
   }
 }
 
@@ -512,7 +515,7 @@
 
 .energizer-leaderboard-footer {
   background: #e6e6e6;
-  padding: 100px 0 0 0;
+  padding: 10px 0 0 0;
   border-radius: 0 0 10px 10px;
   display: flex;
   justify-content: center;
@@ -547,6 +550,28 @@
     background: #9fbecc;
     border-radius: 5px;
   }
+}
+
+.gamif-shop-overlay-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gamif-shop-overlay {
+  width: 200px;
+  height: 100px;
+  background: #1d3c62;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  // opacity: 0.5;
+  box-shadow: 0 0 20px 20px #e6e6e6;
+  display:flex;
+  flex-direction: column;
+
 }
 
 .gamif-shop-window-header {
@@ -668,8 +693,16 @@
     bottom: 0;
 }
 
-.gamif-friends-list-button {
+.gamif-friends-list-menu {
     background: #9EBECB
+}
+
+.friends-list-popover-trigger-button {
+  border: 0;
+}
+
+.gamif-friends-list-popover-trigger {
+  display: inline-block
 }
 
 .gamif-friends-list-content {
@@ -679,12 +712,21 @@
 }
 
 .gamif-status-menu {
-    width: 180px;
+    width: 150px;
     height: 120px;
-    margin: 5px;
+    // margin: 5px;
+    padding: 2px;
     border: 1px solid #1E3D59;
     border-radius: 5px;
     background: #ADC6D1;
+}
+
+.gamif-status-menu-row {
+  width: 100%;
+
+  &:hover {
+    background: red;
+  }
 }
 
 
@@ -783,52 +825,214 @@
   border-radius: 8px;
 }
 
+.gamif-chat-box-container {
+  width: 240px;
+  height: 400px;
+  background: #97A4B4;
+  display: flex;
+  flex-direction: column;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #b5beca;
+    height: 20%;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #1d3c62;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9fbecc;
+    border-radius: 5px;
+  }
+}
+
   .gamif-chat-box-messages-container {
+    padding-top: 4px;
     height: 80%;
     overflow-y: scroll;
-    border-bottom: 1px solid black;
   }
 
-  .gamif-chat-box-container {
-    width: 240px;
-    height: 240px;
-    background: #97A4B4;
-    display: flex;
-    flex-direction: column;
-  }
 
   .gamif-chat-box-message-right {
-      width: 70%;
-      margin: 8px;
-      margin-left: auto;
-      background: #607185;
-      color: white;
-      border-radius: 5px;
-      text-align: right;
+    position: relative;
+    width: 80%;
+    height: auto;
+    display: inline-block;
+    background: #fff;
+    padding: 10px;
+    padding-bottom: 25px;
+    box-shadow: 2px 2px 20px -2px rgba(60,51,176,0.2);
+    color: rgba(60,51,176,1);
+    border-radius: 15px;
+    margin: 1px 0 1px 4px;
+    word-break: break-word;
+
+    span.time {
+      position: absolute;
+      display: block;
+      right: 0;
+      margin-top: 5px;
+      margin-right: 10px;
+      font-size: 10px;
+      font-weight: 500;
+      color: rgba(60,51,176,0.5);
     }
 
+  }
+
   .gamif-chat-box-message-left {
-      width: 70%;
-      margin: 8px;
-      margin-right: auto;
-      background: #EEFBFB;
-      border-radius: 5px;
-      text-align: left;
+      position: relative;
+      float: right;
+      width: 80%;
+      height: auto;
+      background: #5850c0;
+      display: inline-block;
+      padding: 10px;
+      padding-bottom: 25px;
+      color: #fff;
+      border-radius: 15px;
+      margin: 1px 4px 1px 0;
+      word-break: break-word;
+
+
+      box-shadow: 2px 2px 20px rgba(60,51,176,0.2),
+                  inset -10px -10px 55px rgba(255,255,255,0.1);
+
+      span.time {
+        position: absolute;
+        display: block;
+        right: 0;
+        margin-top: 5px;
+        margin-right: 10px;
+        font-size: 10px;
+        font-weight: 500;
+        color: rgba(255,255,255,0.5)
+      }
+
     }
 
     .gamif-chat-box-input {
-      background: #EEFBFB;
-      margin: auto;
-      width: 90%;
-      height: 20px;
-      font-style: italic;
-      color: grey;
-      font-size: 12px;
-      text-align: left;
-      border-radius: 5px;
-      align-items: flex-end;
-      margin: auto auto 8px auto;
+      // background: #EEFBFB;
+      // margin: auto;
+      // width: 90%;
+      // height: 20px;
+      // font-style: italic;
+      // color: grey;
+      // font-size: 12px;
+      // text-align: left;
+      // border-radius: 5px;
+      // align-items: flex-end;
+      // margin: auto auto 8px auto;
+      // width: 70%;
+      border-top: 1px solid rgba(60,51,176,0.1);
+      font-size: 14px;
+      padding: 15px;
+      padding-right: 30%;
+      color: rgba(60,51,176,0.9);
+      border: none;
+      background: rgba(0,0,0,0.03);
+      &::placeholder
+      {
+        color: rgba(60,51,176,0.4);
+      }
   }
+
+div.chat-messages
+{
+  // position: relative;
+  margin-top: 15px;
+  z-index: 10;
+}
+
+div.chat-messages div.chat
+{
+  // position: relative;
+  // width: 260px;
+  // height: 270px;
+  background: #fcfcfe;
+  // left: 50%;
+  margin-left: -150px;
+  padding: 20px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+div.msg-box
+{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid rgba(60,51,176,0.1);
+  overflow: hidden;
+  z-index: -999 // TODO: Rremove, testing only.
+}
+
+div.chat div.chat-content > span
+{
+  margin-bottom: 12px;
+}
+
+div.chat div.chat-content span.friend
+{
+  position: relative;
+  width: 70%;
+  height: auto;
+  display: inline-block;
+  background: #fff;
+  padding: 10px;
+  padding-bottom: 25px;
+  box-shadow: 2px 2px 20px -2px rgba(60,51,176,0.2);
+  color: rgba(60,51,176,1);
+}
+
+div.chat div.chat-content span.friend.first
+{
+  border-radius: 15px 15px 15px 2px;
+}
+
+div.chat div.chat-content span.friend.last
+{
+  border-radius: 2px 15px 15px 15px;
+}
+
+div.chat div.chat-content span.friend span.time
+{
+  position: absolute;
+  display: block;
+  right: 0;
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(60,51,176,0.5);
+}
+
+div.chat div.chat-content span.you
+{
+  position: relative;
+  float: right;
+  width: 70%;
+  height: auto;
+  background: #5850c0;
+  display: inline-block;
+  padding: 10px;
+  padding-bottom: 25px;
+  color: #fff;
+
+  box-shadow: 2px 2px 20px rgba(60,51,176,0.2),
+              inset -10px -10px 55px rgba(255,255,255,0.1);
+}
+
+
 
 
 // Statistics
@@ -838,6 +1042,29 @@
     border-radius: 10px;
     padding-bottom: 5px;
     padding-top: 5px;
+
+
+    /* width */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #b5beca;
+      height: 20%;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #1d3c62;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9fbecc;
+      border-radius: 5px;
+    }
 }
 
 .statistics-panel-top {
@@ -863,27 +1090,6 @@
   height: 240px;
   overflow-y: scroll;
 
-  /* width */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #b5beca;
-    height: 20%;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #1d3c62;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #9fbecc;
-    border-radius: 5px;
-  }
 }
 
 .statistics-col {
@@ -970,7 +1176,7 @@
 //quick statistics
 .cvat-annotation-header-quick-statistics-group {
     height: 48px;
-    width: 160px;
+    // width: 160px;
     // margin-left: 10px;
     padding-left: 10px;
     flex-direction: column;
@@ -988,6 +1194,8 @@
 }
 .cvat-annotation-header-quick-statistics {
   justify-content: center;
+  margin: 0 4px 0 4px;
+  overflow-x: visible;
 }
 
 .single-quick-statistic-component {

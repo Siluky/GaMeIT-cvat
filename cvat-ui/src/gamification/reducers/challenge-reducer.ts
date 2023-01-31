@@ -41,7 +41,10 @@ export default (state = defaultState, action: AnyAction): ChallengeState => {
         }
 
         case ChallengeActionTypes.ADD_CHALLENGE_SUCCESS: {
-            if (state.availableChallenges.length >= 3) { return state; }
+            console.log('🚀 ~ file: challenge-reducer.ts:45 ~ state.availableChallenges.length', state.availableChallenges.length);
+            if (state.availableChallenges.length >= 3) {
+                return state;
+            }
 
             // Brute force pick a new, not already existing challenge
             const existingIds = state.availableChallenges.map((chal) => chal.id);

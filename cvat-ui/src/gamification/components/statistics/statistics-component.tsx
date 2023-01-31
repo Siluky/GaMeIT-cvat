@@ -13,7 +13,7 @@ import { mapStatisticIdtoFieldName, mapStatisticIdtoIcon } from 'gamification/ga
 import { CombinedState } from 'reducers/interfaces';
 
 interface Props {
-    id: number;
+    // id: number;
     statistic: Statistic;
     inc: boolean;
     allTime: boolean;
