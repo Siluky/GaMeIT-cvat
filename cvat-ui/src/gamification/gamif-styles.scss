@@ -433,14 +433,20 @@
 .quiz-duel-timer-wrapper {
   display: flex;
   justify-content: center;
-  border: 1px solid #595959;
+  // border: 1px solid #595959;
 }
 
 .quiz-duel-timer {
   display: flex;
   justify-content: center;
-  background: #b6afac;
+  // background: #b6afac;
+  background: #152f3e;
+  font-weight: bold;
+  color: white;
+  padding: 4px;
+
   border-radius: 8px;
+
 
 }
 

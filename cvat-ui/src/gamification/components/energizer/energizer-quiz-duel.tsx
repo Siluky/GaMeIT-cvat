@@ -104,14 +104,14 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
         setLoading(false);
         // setPoints(startTime);
 
-        const interval = setInterval(() => {
+        const intervalQuiz = setInterval(() => {
             console.log('interval active');
-            setPoints(questionPoints - 1);
+            setPoints((currentPoints) => Math.max(0, currentPoints - 1));
 
             console.log('🚀 ~ file: energizer-quiz-duel.tsx:125 ~ interval ~ questionPoints', questionPoints);
-        }, 1000);
+        }, 333);
         return () => {
-            clearInterval(interval);
+            clearInterval(intervalQuiz);
         };
     }, []);
 
@@ -157,10 +157,11 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
                             <div className='quiz-duel-timer-wrapper'>
                                 <span className='quiz-duel-timer'>
                                     Points remaining:
+                                    {'\n'}
+                                    &nbsp;
                                     {questionPoints}
                                 </span>
                             </div>
-                            <Button onClick={() => setPoints(questionPoints - 1)}> Test </Button>
                             <div>
                                 <Button
                                     className={answerButtonStyle[2]}

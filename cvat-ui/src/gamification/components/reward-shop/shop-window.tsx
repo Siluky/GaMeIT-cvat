@@ -152,7 +152,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
 
     // show Overlay every time the message changes (i.e., when an item that needs a message gets bought)
     useEffect(() => {
-        toggleOverlay(true);
+        if (overlayMessage !== '') { toggleOverlay(true); }
     }, [overlayMessage]);
 
     useEffect(() => {

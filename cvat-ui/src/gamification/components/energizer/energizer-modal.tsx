@@ -43,7 +43,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 return (
                     <QuizDuel
                         key={index}
-                        startTime={60}
+                        startTime={100}
                         showLeaderboard={(show: boolean) => setLeaderboardShown(show)}
                     />
                 );
@@ -54,7 +54,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
             default: return (
                 <QuizDuel
                     key={index}
-                    startTime={60}
+                    startTime={100}
                     showLeaderboard={(show: boolean) => setLeaderboardShown(show)}
                 />
             );
