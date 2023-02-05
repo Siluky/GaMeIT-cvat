@@ -34,14 +34,13 @@ const mapAnswertoIndex = (answer: Answer): number => {
     }
 };
 
-// interface QuizDuelUniqueProps {
-//     questions: QuizDuelQuestion[],
-// }
+interface QuizDuelUniqueProps {
+    startTime: number;
+}
+type QuizDuelProps = QuizDuelUniqueProps & EnergizerProps;
 
-// type QuizDuelProps = QuizDuelUniqueProps & EnergizerProps;
-
-export default function QuizDuel(props: EnergizerProps): JSX.Element {
-    const { showLeaderboard } = props;
+export default function QuizDuel(props: QuizDuelProps): JSX.Element {
+    const { showLeaderboard, startTime } = props;
     const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
 
     const [divStyle, setDivStyle] = useState([
@@ -93,22 +92,9 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
     const [loading, setLoading] = useState(true);
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
     const [end, setEnd] = useState(false);
+    const [questionPoints, setPoints] = useState(startTime);
 
     const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     const getEntries = async (): Promise<void> => {
-    //         // const questionsImport = await cvat.energizer.quizDuelQuestions();
-    //         const questionsImport = getQuizDuelQuestions(5);
-    //         setLoading(false);
-    //         console.log('🚀 ~ fi
-    //          le: energizer-quiz-duel.tsx ~ line 127 ~ getEntries ~ questionsImport', questionsImport);
-    //         setQuestions(questionsImport);
-    //         setCurrentQuestion(questions[0]);
-    //     };
-
-    //     getEntries();
-    // }, []);
 
     useEffect(() => {
         // const questionsImport = await cvat.energizer.quizDuelQuestions();
@@ -116,6 +102,17 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
         setQuestions(questionsImport);
         setCurrentQuestion(questions[0]);
         setLoading(false);
+        // setPoints(startTime);
+
+        const interval = setInterval(() => {
+            console.log('interval active');
+            setPoints(questionPoints - 1);
+
+            console.log('🚀 ~ file: energizer-quiz-duel.tsx:125 ~ interval ~ questionPoints', questionPoints);
+        }, 1000);
+        return () => {
+            clearInterval(interval);
+        };
     }, []);
 
     useEffect(() => {
@@ -157,6 +154,13 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
                                 </Button>
 
                             </div>
+                            <div className='quiz-duel-timer-wrapper'>
+                                <span className='quiz-duel-timer'>
+                                    Points remaining:
+                                    {questionPoints}
+                                </span>
+                            </div>
+                            <Button onClick={() => setPoints(questionPoints - 1)}> Test </Button>
                             <div>
                                 <Button
                                     className={answerButtonStyle[2]}
@@ -187,7 +191,9 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
                     // first button click: Check Answer + show correct answer + update Status Bar
                     if (currentAnswer !== Answer.NONE && !readyToContinue) {
                         const answerCorrect = mapAnswertoIndex(currentAnswer) === currentQuestion.correctAnswer;
-                        if (answerCorrect) { setScore(quizScore + 1); }
+                        if (answerCorrect) {
+                            setScore(quizScore + questionPoints);
+                        }
                         updateStatusBar(progress - 1, answerCorrect);
                         styleAnswerButtons(mapAnswertoIndex(currentAnswer) - 1, currentQuestion.correctAnswer - 1);
                         setContinue(true);
@@ -217,6 +223,7 @@ export default function QuizDuel(props: EnergizerProps): JSX.Element {
                         setCurrentQuestion(questions[progress]);
                         setAnswerButtonStyle(initialButtonState);
                         setCurrentAnswer(Answer.NONE);
+                        setPoints(startTime);
                     }
                 }}
             >

@@ -51,6 +51,8 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
         dispatch(getLeaderboardAsync(activeEnergizer));
     }, []);
 
+    // const [highlightedRow, setHighlight] = useState(false);
+
     return (
         <>
             <div className='energizer-leaderboard-header'>
@@ -73,9 +75,11 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
                 </div>
                 {
                     leaderboardEntries.map((entry: LeaderboardEntry, index: number) => {
-                        const rowStyle = ((entry.username === username) && (entry.score === latestEntry.score)) ?
+                        const rowStyle = ((entry.username === username) &&
+                         (entry.score === latestEntry.score)) ?
                             'energizer-leaderboard-row highlight' :
                             'energizer-leaderboard-row';
+                        // if (rowStyle === 'energizer-leaderboard-row highlight') { setHighlight(true); }
                         return (
                             <Row
                                 className={rowStyle}

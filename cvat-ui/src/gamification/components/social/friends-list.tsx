@@ -44,8 +44,8 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                 renderItem={(_profile) => (
                     <Popover
                         placement='left'
-                        trigger='hover'
-                        mouseLeaveDelay={1}
+                        trigger='click'
+                        mouseLeaveDelay={100}
                         content={<QuickProfile profile={_profile} />}
                     >
                         <List.Item

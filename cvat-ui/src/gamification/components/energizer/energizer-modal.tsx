@@ -40,12 +40,24 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
         // setIndex(index + 1);
         switch (activeEnergizer) {
             case EnergizerType.QUIZ:
-                return <QuizDuel key={index} showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
+                return (
+                    <QuizDuel
+                        key={index}
+                        startTime={60}
+                        showLeaderboard={(show: boolean) => setLeaderboardShown(show)}
+                    />
+                );
             case EnergizerType.SNAKE:
                 return <Snake showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
             case EnergizerType.TETRIS:
                 return <TetrisApp showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
-            default: return <QuizDuel key={index} showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
+            default: return (
+                <QuizDuel
+                    key={index}
+                    startTime={60}
+                    showLeaderboard={(show: boolean) => setLeaderboardShown(show)}
+                />
+            );
         }
     };
 
@@ -87,11 +99,29 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
         </div>
     );
 
+    const modalTitleMessage = (activeEnergizer: EnergizerType): string => {
+        switch (activeEnergizer) {
+            case EnergizerType.NONE: return '';
+
+            case EnergizerType.QUIZ:
+                return 'Quiz: Answer 5 Questions as quickly as possible!';
+
+            case EnergizerType.TETRIS:
+                return 'Tetris: Clear as many lines as you can in 60 seconds!';
+
+            case EnergizerType.SNAKE:
+                return 'Snake: Collect as many apples as you can in 60 seconds!';
+
+            default: return '';
+        }
+    };
+
     return (
         <>
             <Modal
                 className='gamif-energizer-modal'
-                title='Energizer'
+                // title='Energizer'
+                title={modalTitleMessage(active)}
                 visible={visible}
                 onCancel={onClose /* safety switch currently */}
                 width={1000}
@@ -111,7 +141,8 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                     Show Leaderboard
                 </Button> */}
                 <Button
-                    className='gamif-energizer-continue-button'
+                    // className='gamif-energizer-continue-button'
+                    className='gamif-debug-button'
                     type='text'
                     onClick={() => {
                         onClose();

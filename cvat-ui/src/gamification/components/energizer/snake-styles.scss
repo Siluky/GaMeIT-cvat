@@ -15,7 +15,7 @@
 // }
 .snake {
   display: flex;
-  border: 1px solid black;
+  // border: 1px solid black;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -31,10 +31,20 @@
 }
 .timer {
   text-align: center;
+  width: 120px;
+
   border: 1px solid black;
   margin: 4px;
   background: #e6e6e6;
   border-radius: 5px;
+  padding: 2px;
+
+  width: 120px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
 }
 .game-over {
   font-family: sans-serif;

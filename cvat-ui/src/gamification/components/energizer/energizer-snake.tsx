@@ -53,7 +53,7 @@ interface State {
 const initialState: State = {
     speed: 250,
     direction: 'right',
-    size: 10,
+    size: 15,
     position: [
         [6, 0],
         [5, 0],
@@ -334,6 +334,7 @@ class Snake extends React.Component<EnergizerProps, State> {
         if (_.isEqual(newPosition, this.state.apple)) {
             this.setState({
                 ...this.state,
+                speed: (this.state.speed * 1.2), // TODO: TEST
                 apple: this.generateApplePosition(),
                 position: [newPosition, ...this.state.position],
             });
