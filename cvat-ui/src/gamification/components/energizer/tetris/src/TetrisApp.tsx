@@ -14,6 +14,7 @@ import { CombinedState } from 'reducers/interfaces';
 import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
 import { addLeaderboardEntry } from 'gamification/actions/energizer-actions';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
+import { updateEnergizerBadge } from 'gamification/actions/badge-actions';
 import Tetris from './components/Tetris';
 
 const Container = styled.div`
@@ -205,8 +206,10 @@ const TetrisApp = (props: TetrisProps): JSX.Element => {
                                         energizer: EnergizerType.TETRIS,
                                         score: points,
                                     };
-                                    console.log('🚀 ~ file: TetrisApp.tsx:203 ~ TetrisApp ~ entry', entry);
                                     dispatch(addLeaderboardEntry(entry));
+                                    if (points >= 20) {
+                                        dispatch(updateEnergizerBadge(EnergizerType.TETRIS));
+                                    }
                                     showLeaderboard(true);
                                     dispatch(addGamifLog(userdata.userId, 'Tetris ended'));
                                 }}

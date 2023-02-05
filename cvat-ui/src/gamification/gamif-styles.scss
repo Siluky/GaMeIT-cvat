@@ -52,8 +52,9 @@
 .gamif-badge-overview-container {
     height: 360px;
     width: 400px;
-    background: #CCCCCC;
-    padding: 5px;
+    // background: #CCCCCC;
+    background: #B6BECB;
+    padding: 1px;
 
     ::-webkit-scrollbar {
       width: 8px;
@@ -91,7 +92,7 @@
 }
 
 .gamif-badge-overview-content {
-    height: 46%;
+    height: 40%;
     padding: 5px;
     overflow-y: scroll;
     background: #B6BECB;
@@ -100,20 +101,29 @@
 
 .gamif-badge-overview-individual-badge {
   border-radius: 50%;
+  padding-top: 0;
+
+  &.selected {
+    box-shadow: 0 0 4px 4px #fddeef;
+    background: #fddeef;
+  }
 }
 
 .gamif-badge-overview-individual-badge:hover {
-  box-shadow: 0 0 8px 8px yellow;
+  box-shadow: 0 0 6px 6px yellow;
 }
 
 .gamif-badge-detail-view {
-    height: 46%;
+    height: 50%;
     padding-left: 5%;
     padding-right: 5%;
     background: #B5BECA;
     display: flex;
-    border-radius: 0px 0px 5px 5px;
+    // border-radius: 0px 0px 5px 5px;
+    border-radius: 5px;
     overflow: hidden;
+    margin: 5px;
+
 }
 
 .gamif-badge-icon {
@@ -131,11 +141,33 @@
     overflow-y: scroll;
 }
 
+.gamif-badge-detail-title {
+  margin-bottom: 0.2em;
+  margin-top: 14px;
+}
+
 .gamif-badges-instruction {
   margin: 0;
   // white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.gamif-badge-detail-profile-button-wrapper {
+  background: #e6e6e6;
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gamif-badges-profile-button {
+  &.ant-btn-icon-only.ant-btn-sm {
+    width: 16px;
+    margin-right: 4px;
+    height: 16px;
+  }
 }
 
 .gamif-badge-load-fail {

@@ -8,7 +8,7 @@ import getCore from 'cvat-core-wrapper';
 import { getCVATStore } from 'cvat-store';
 import { ThunkAction } from 'redux-thunk';
 import { decodeBadgeTier, encodeBadgeTier } from 'gamification/gamif-items';
-import { Badge, BadgeTier } from '../gamif-interfaces';
+import { Badge, BadgeTier, EnergizerType } from '../gamif-interfaces';
 // eslint-disable-next-line import/no-cycle
 import { updateUserData } from './user-data-actions';
 import { getBadgeValue } from '../gamif-items';
@@ -36,6 +36,8 @@ export enum BadgeActionTypes {
     UPDATE_BADGE_TIERS_FAILED = 'UPDATE_BADGE_TIERS_FAILED',
     UPDATE_BADGE_TIERS_SUCCESS = 'UPDATE_BADGE_TIERS_SUCCESS',
     UPGRADE_BADGE_TIER = 'UPGRADE_BADGE_TIER',
+
+    UPDATE_ENERGIZER_BADGE = 'UPDATE_ENERGIZER_BADGE',
 }
 export function initProfileBadges(badgeIds: number[]): AnyAction {
     return {
@@ -307,5 +309,12 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
         } catch (error) {
             dispatch(updateBadgesFailed(error));
         }
+    };
+}
+
+export function updateEnergizerBadge(energizer: EnergizerType): AnyAction {
+    return {
+        type: BadgeActionTypes.UPDATE_ENERGIZER_BADGE,
+        payload: energizer,
     };
 }

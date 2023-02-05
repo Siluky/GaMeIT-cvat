@@ -5,7 +5,7 @@
 import { AnyAction } from 'redux';
 import { badges } from 'gamification/gamif-items';
 import { BadgeActionTypes } from '../actions/badge-actions';
-import { BadgeState, BadgeTier } from '../gamif-interfaces';
+import { BadgeState, BadgeTier, EnergizerType } from '../gamif-interfaces';
 
 const defaultState: BadgeState = {
     availableBadges: badges,
@@ -13,6 +13,11 @@ const defaultState: BadgeState = {
     badgesinProfile: [],
     currentUserId: 0,
     loading: false,
+    energizerBadges: {
+        quizBadge: 0,
+        snakeBadge: 0,
+        tetrisBadge: 0,
+    },
 };
 
 export default (state = defaultState, action: AnyAction): BadgeState => {
@@ -136,6 +141,40 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             return {
                 ...state,
                 availableBadges: updatedBadges,
+            };
+        }
+
+        case BadgeActionTypes.UPDATE_ENERGIZER_BADGE: {
+            let energizerBadgeStatus = state.energizerBadges;
+
+            // for each badge: Check whether it is obtained before updating the value --> avoid double obtain
+            switch (action.payload) {
+                case EnergizerType.QUIZ: {
+                    if (state.availableBadges.find((badge) => badge.id === 104)?.tier !== BadgeTier.NOT_OBTAINED) {
+                        break;
+                    }
+                    energizerBadgeStatus = { ...energizerBadgeStatus, quizBadge: 1 };
+                    break;
+                }
+                case EnergizerType.SNAKE: {
+                    if (state.availableBadges.find((badge) => badge.id === 105)?.tier !== BadgeTier.NOT_OBTAINED) {
+                        break;
+                    }
+                    energizerBadgeStatus = { ...energizerBadgeStatus, snakeBadge: 1 };
+                    break;
+                }
+                case EnergizerType.TETRIS: {
+                    if (state.availableBadges.find((badge) => badge.id === 106)?.tier !== BadgeTier.NOT_OBTAINED) {
+                        break;
+                    }
+                    energizerBadgeStatus = { ...energizerBadgeStatus, tetrisBadge: 1 };
+                    break;
+                }
+                default: return state;
+            }
+            return {
+                ...state,
+                energizerBadges: energizerBadgeStatus,
             };
         }
 

@@ -13,7 +13,7 @@ import {
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 import {
-    CheckSquareOutlined, CloseSquareOutlined, UpOutlined,
+    CheckSquareOutlined, CloseSquareOutlined,
 } from '@ant-design/icons';
 import { getBadgeIcon } from 'gamification/gamif-items';
 import { Badge, BadgeTier } from '../../gamif-interfaces';
@@ -22,7 +22,7 @@ import {
     loadBadgesAsync,
     incrementBadge,
     toggleBadgeInProfile,
-    upgradeBadgeTier,
+    // upgradeBadgeTier,
     saveSelectedBadges,
 } from '../../actions/badge-actions';
 
@@ -75,16 +75,23 @@ function showSelectedBadge(badge: Badge): JSX.Element {
         return badge.goal;
     };
     const goal = relevantGoal();
-    const progress = `Progress: ${Math.min(badge.progress, goal)} / ${goal} ${badge.goalunit}`;
+    let progress = `Progress: ${Math.min(badge.progress, goal)} / ${goal} ${badge.goalunit}`;
     // const receivedOn = `Achieved on ${badge.receivedOn}`;
     const receivedOn = `Achieved on ${badge.receivedOn}`;
     const dispatch = useDispatch();
     const badges = useSelector((state: CombinedState) => state.badges);
 
-    const formattedInstruction = badge.instruction.replace('GOAL', goal.toString());
+    let formattedInstruction = '';
+
+    // special formatting for "Time Flies When" Badge
+    if (badge.id === 4) {
+        // eslint-disable-next-line max-len
+        progress = `Progress: ${Math.min(Math.round((badge.progress / 3600) * 10) / 10, goal / 3600)} / ${goal / 3600} ${badge.goalunit}`;
+        formattedInstruction = badge.instruction.replace('GOAL', (goal / 3600).toString());
+    } else { formattedInstruction = badge.instruction.replace('GOAL', goal.toString()); }
 
     const isBadgeSelected = badges.badgesinProfile.includes(badge.id);
-    const profileText = !isBadgeSelected ? 'Add' : 'Rmv';
+    const profileText = !isBadgeSelected ? 'Add to Profile' : 'Remove from profile';
 
     return (
         <>
@@ -95,7 +102,7 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                 {getBadgeIcon(badge.id, badge.tier)}
             </div>
             <div className='gamif-badge-details'>
-                <p><strong>{badge.title}</strong></p>
+                <p className='gamif-badge-detail-title'><strong>{badge.title}</strong></p>
                 <p className='gamif-badges-instruction'>{formattedInstruction}</p>
                 <Progress percent={Math.floor((badge.progress / goal) * 100)} />
                 {/* {badge.tier !== BadgeTier.GOLD && progress} */}
@@ -103,27 +110,31 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                 {badge.tier !== BadgeTier.NOT_OBTAINED && (
                     <>
                         <div>
-                            {receivedOn}
-                            <Button
-                                icon={
-                                    isBadgeSelected ? <CheckSquareOutlined /> : <CloseSquareOutlined />
-                                }
-                                onClick={() => {
-                                    dispatch(toggleBadgeInProfile(badge.id));
-                                    dispatch(saveSelectedBadges(badges.badgesinProfile));
-                                }}
-                                size='small'
-                            >
+                            <div>
+                                {receivedOn}
+                            </div>
+                            <div className='gamif-badge-detail-profile-button-wrapper'>
+                                <Button
+                                    className='gamif-badges-profile-button'
+                                    icon={
+                                        isBadgeSelected ? <CheckSquareOutlined /> : <CloseSquareOutlined />
+                                    }
+                                    onClick={() => {
+                                        dispatch(toggleBadgeInProfile(badge.id));
+                                        dispatch(saveSelectedBadges(badges.badgesinProfile));
+                                    }}
+                                    size='small'
+                                />
                                 {profileText}
-                            </Button>
-                            <Button
-                                className='gamif-debug-button'
-                                icon={<UpOutlined />}
-                                onClick={() => dispatch(upgradeBadgeTier(badge.id))}
-                                size='small'
-                            >
-                                Upgrade
-                            </Button>
+                                {/* <Button
+                                    className='gamif-debug-button'
+                                    icon={<UpOutlined />}
+                                    onClick={() => dispatch(upgradeBadgeTier(badge.id))}
+                                    size='small'
+                                >
+                                    Upgrade
+                                </Button> */}
+                            </div>
                         </div>
                     </>
                 )}
@@ -164,6 +175,9 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                 <Row>
                     {Object.values(badges.availableBadges).map((badge: Badge, index: number) => {
                         if (badge.visible) {
+                            const isBadgeSelected = badges.badgesinProfile.includes(badge.id);
+                            const classes = isBadgeSelected ? 'selected' : '';
+
                             return (
                                 <Col
                                     span={4}
@@ -172,7 +186,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                 >
                                     <Button
                                         key={index}
-                                        className='gamif-badge-overview-individual-badge'
+                                        className={`gamif-badge-overview-individual-badge ${classes}`}
                                         type='text'
                                         icon={getBadgeIcon(badge.id, badge.tier)}
                                         onClick={(): void => {
@@ -184,43 +198,6 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                         }
                         return null;
                     })}
-
-                    {/* <Button
-                        type='text'
-                        className='gamif-debug-button'
-                        onClick={(): void => {
-                            dispatch(updateBadges(true));
-                        }}
-                    >
-                        Init_tiers
-                    </Button>
-                    <Button
-                        type='text'
-                        className='gamif-debug-button'
-                        onClick={(): void => {
-                            dispatch(updateBadges(false));
-                        }}
-                    >
-                        Update_tiers
-                    </Button>
-                    <Button
-                        type='text'
-                        className='gamif-debug-button'
-                        onClick={(): void => {
-                            dispatch(loadBadges());
-                        }}
-                    >
-                        Load
-                    </Button> */}
-                    <Button
-                        type='text'
-                        className='gamif-debug-button'
-                        onClick={(): void => {
-                            // dispatch(saveSelectedBadges(badges.badgesinProfile));
-                        }}
-                    >
-                        Save Selected
-                    </Button>
                 </Row>
             </div>
             <div className='gamif-badge-detail-view'>

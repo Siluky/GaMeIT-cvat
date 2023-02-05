@@ -12,6 +12,7 @@ import { CombinedState } from 'reducers/interfaces';
 import { addLeaderboardEntry } from 'gamification/actions/energizer-actions';
 import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
 import { connect } from 'react-redux';
+import { updateEnergizerBadge } from 'gamification/actions/badge-actions';
 
 interface EnergizerProps {
     showLeaderboard: (show: boolean) => void;
@@ -20,6 +21,7 @@ interface EnergizerProps {
     username: string;
     userId: number;
     addEntry(entry: LeaderboardEntry): void;
+    updateSnakeBadge(): void;
 }
 
 interface StateToProps {
@@ -29,6 +31,7 @@ interface StateToProps {
 
 interface DispatchToProps {
     addEntry(entry: LeaderboardEntry): void;
+    updateSnakeBadge(): void;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
@@ -39,6 +42,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
 function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
         addEntry: (entry: LeaderboardEntry): void => dispatch(addLeaderboardEntry(entry)),
+        updateSnakeBadge: (): void => dispatch(updateEnergizerBadge(EnergizerType.SNAKE)),
     };
 }
 
@@ -427,15 +431,19 @@ class Snake extends React.Component<EnergizerProps, State> {
                             <Button onClick={
                                 () => {
                                     const {
-                                        showLeaderboard, addEntry, username, userId,
+                                        showLeaderboard, addEntry, updateSnakeBadge, username, userId,
                                     } = this.props;
+                                    const snakeScore = position.length - 3;
                                     const entry: LeaderboardEntry = {
                                         userId,
                                         username,
                                         energizer: EnergizerType.SNAKE,
-                                        score: position.length - 3,
+                                        score: snakeScore,
                                     };
                                     addEntry(entry);
+                                    if (snakeScore >= 20) {
+                                        updateSnakeBadge();
+                                    }
                                     showLeaderboard(true);
                                 }
                             }

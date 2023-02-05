@@ -12,6 +12,7 @@ import { CombinedState } from 'reducers/interfaces';
 import gamifconsts from 'gamification/gamifconsts';
 import { addLeaderboardEntry, setLatestEntry } from 'gamification/actions/energizer-actions';
 import { getQuizDuelQuestions } from 'gamification/gamif-items';
+import { updateEnergizerBadge } from 'gamification/actions/badge-actions';
 import {
     QuizDuelQuestion, EnergizerProps, EnergizerType, LeaderboardEntry,
 } from '../../gamif-interfaces';
@@ -213,6 +214,7 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
                             dispatch(setLatestEntry(entry));
                             dispatch(addLeaderboardEntry(entry));
                             setEnd(true);
+                            if (quizScore === 0) { dispatch(updateEnergizerBadge(EnergizerType.QUIZ)); }
                         }
 
                         showLeaderboard(true);

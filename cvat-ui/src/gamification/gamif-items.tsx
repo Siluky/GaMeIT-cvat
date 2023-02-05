@@ -122,13 +122,13 @@ export const badges: Badge[] = [
     {
         id: 4,
         title: 'Time Flies When...',
-        instruction: 'Spend GOAL seconds annotating',
+        instruction: 'Spend GOAL hours annotating',
         progress: 0,
         goal_bronze: 10 * 60 * 60,
         goal_silver: 50 * 60 * 60,
         goal: 100 * 60 * 60,
         tier: BadgeTier.NOT_OBTAINED,
-        goalunit: 'Seconds',
+        goalunit: 'Hours',
         receivedOn: null,
         visible: true,
     },
@@ -320,7 +320,6 @@ export const badges: Badge[] = [
         receivedOn: null,
         visible: false,
     },
-
     {
         id: 106,
         title: 'Tetris',
@@ -698,6 +697,7 @@ export function getBadgeIcon(id: number, tier: BadgeTier): React.ReactNode {
 export function getBadgeValue(id: number): number {
     const state = getCVATStore().getState();
     const udata: UserDataState = state.gamifuserdata;
+    const { energizerBadges } = state.badges;
 
     switch (id) {
         case 1: return udata.userdata_total.images_annotated;
@@ -722,9 +722,9 @@ export function getBadgeValue(id: number): number {
         case 101: return udata.userdata_total.energy_expired;
         case 102: return udata.userdata_total.images_annotated_night;
         case 103: return udata.userdata_total.chat_messages;
-        case 104: return 0; // TODO: Quiz-based
-        case 105: return 0; // TODO: Snake-based
-        case 106: return 0; // TODO: Tetris-based
+        case 104: return energizerBadges.quizBadge;
+        case 105: return energizerBadges.snakeBadge;
+        case 106: return energizerBadges.tetrisBadge;
         default: return 0;
     }
 }

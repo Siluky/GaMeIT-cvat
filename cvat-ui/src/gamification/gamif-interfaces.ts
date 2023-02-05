@@ -64,12 +64,19 @@ export interface Badge {
     visible: boolean;
 }
 
+interface EnergizerBadges {
+    quizBadge: number;
+    tetrisBadge: number;
+    snakeBadge: number;
+}
+
 export interface BadgeState {
     currentUserId: number;
     availableBadges: Badge[];
     selectedBadgeId: number;
     badgesinProfile: number[];
     loading: boolean;
+    energizerBadges: EnergizerBadges;
 }
 
 export enum ChallengeType {

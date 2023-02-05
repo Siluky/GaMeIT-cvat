@@ -328,14 +328,13 @@ function HeaderContainer(props: Props): JSX.Element {
         <Menu className='cvat-header-menu'>
             <Popover
                 placement='leftTop'
-                className='gamif-badge-popover'
+                overlayClassName='gamif-popover'
                 trigger='click'
                 content={<BadgeOverview />}
                 mouseLeaveDelay={10}
                 destroyTooltipOnHide
             >
                 <Menu.Item
-                    // TODO: Custom Badge Icon
                     icon={<RadarChartOutlined />}
                     key='badge_profile'
                     onClick={() => dispatch(updateBadges(false))}
