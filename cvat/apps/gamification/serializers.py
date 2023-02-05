@@ -25,6 +25,7 @@ class UserDataSerializer(serializers.ModelSerializer):
         'currentBalance','items_bought','annotation_coins_total','annotation_coins_max','items_bought_total','mystery_gifts_bought',
         'chat_messages_total',
         'selectedStatistics',
+        'moneyBadgeTier',
         )
 
     def to_representation(self, instance):

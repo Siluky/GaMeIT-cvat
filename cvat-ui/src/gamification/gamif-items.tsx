@@ -9,7 +9,7 @@ import 'gamification/gamif-profile-styles.scss';
 import {
     ThunderboltFilled,
     UserOutlined, UserAddOutlined, UserDeleteOutlined,
-    UserSwitchOutlined, UsergroupAddOutlined, QuestionCircleOutlined,
+    UserSwitchOutlined, UsergroupAddOutlined,
 } from '@ant-design/icons';
 import {
     AddChallengeIcon,
@@ -716,7 +716,7 @@ export function getBadgeValue(id: number): number {
         case 9: return udata.userdata_total.challenges_completed;
         case 10: return udata.userdata_total.annotation_coins_obtained;
         case 11: return udata.userdata_total.annotation_coins_max;
-        case 12: return 0; // TODO: Money Badge!
+        case 12: return udata.userdata_total.money_badge_tier;
         case 13: return udata.userdata_total.items_bought;
         case 14: return udata.userdata_total.mystery_gifts_bought;
         case 101: return udata.userdata_total.energy_expired;
@@ -945,12 +945,22 @@ export const items: ShopItem[] = [
     },
     {
         id: 5,
-        title: 'Money Badge',
+        title: 'Money Man Badge',
         price: 2000,
         repeatable: false,
         bought: false,
         visible: true,
         icon: <MoneyManGold />,
+        // icon() {
+        //     const { shop } = getCVATStore().getState();
+        //     switch (shop.moneyBadgeTier) {
+        //         case BadgeTier.NOT_OBTAINED: return <MoneyManBronze />;
+        //         case BadgeTier.BRONZE: return <MoneyManSilver />;
+        //         case BadgeTier.SILVER: return <MoneyManGold />;
+        //         case BadgeTier.GOLD: return <MoneyManGold />;
+        //         default: return <MoneyManBronze />;
+        //     }
+        // },
         onPurchase: () => {},
     },
     {
@@ -1107,11 +1117,26 @@ export const items: ShopItem[] = [
     {
         id: 15,
         title: 'Mystery Background',
-        price: 100,
+        price: 100000,
         repeatable: false,
         bought: false,
         visible: true,
-        icon: <QuestionCircleOutlined />,
+        icon: (
+            <div
+                className='bubbles'
+                style={{
+                    width: '45px',
+                    height: '35px',
+                    borderRadius: '20%',
+                    position: 'absolute',
+                    background: '#1a1e23',
+                }}
+            >
+                <div className='bubble' />
+                <div className='bubble' />
+                <div className='bubble' />
+                <div className='bubble' />
+            </div>),
         onPurchase: () => {},
     },
     {
@@ -1243,14 +1268,21 @@ export const items: ShopItem[] = [
     {
         id: 25,
         title: 'Mystery Profile Border',
-        price: 0,
+        price: 100000,
         repeatable: false,
         bought: false,
         visible: true,
         icon: (
-            <div>
-                <QuestionCircleOutlined />
-            </div>
+            <div
+                className='gamif-profile-hover-background'
+                style={{
+                    width: '45px',
+                    height: '35px',
+                    borderRadius: '20%',
+                    position: 'absolute',
+                    background: '#1a1e23',
+                }}
+            />
         ),
         onPurchase: () => {},
     },
@@ -1424,6 +1456,7 @@ export const getProfileClassNames = (id: number): string => {
         case 8: return 'gamif-profile-christmas-box';
         case 9: return 'gamif-profile-rainbow-box';
         case 10: return 'gamif-profile-rainbow-effect';
+        case 11: return 'gamif-profile-hover-background';
         default: return '';
     }
 };
@@ -1435,6 +1468,7 @@ export const getProfileBackground = (id: number): string => {
         case 2: return '#bbf1c4';
         case 3: return '#aec6cf';
         case 4: return '#ff6961';
+        case 5: return '#1a1e23';
         default: return '';
     }
 };
@@ -1466,6 +1500,37 @@ export const getProfileBackgroundElements = (id: number): JSX.Element => {
                     <div className='shooting_star'> </div>
                     <div className='shooting_star'> </div>
                     <div className='shooting_star'> </div>
+                </div>
+            </>
+        );
+        case 2: return (
+            <>
+                <div className='bubbles'>
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
+                    <div className='bubble' />
                 </div>
             </>
         );

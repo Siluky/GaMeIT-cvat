@@ -165,6 +165,8 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         annotation_coins_max: totalData.annotation_coins_max,
         items_bought_total: totalData.items_bought,
         chat_messages_total: totalData.chat_messages,
+        mystery_gifts_bought: totalData.mystery_gifts_bought,
+        moneyBadgeTier: totalData.money_badge_tier,
 
         items_bought: itemsBought,
         selectedStatistics: stats,
@@ -213,6 +215,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 items_bought: userDataImport.items_bought_total,
                 mystery_gifts_bought: userDataImport.mystery_gifts_bought,
                 chat_messages: userDataImport.chat_messages_total,
+                money_badge_tier: userDataImport.moneyBadgeTier,
             };
 
             const userId = userDataImport.id;
@@ -285,6 +288,7 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 items_bought: 0,
                 chat_messages: 0,
                 mystery_gifts_bought: 0,
+                money_badge_tier: 0,
             };
 
             dispatch(getUserDataSuccess(userDataAllTime, userDataSession));

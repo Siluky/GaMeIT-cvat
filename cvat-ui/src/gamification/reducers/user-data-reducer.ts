@@ -30,6 +30,7 @@ const userdataInit: UserData = {
     items_bought: 0,
     mystery_gifts_bought: 0,
     chat_messages: 0,
+    money_badge_tier: 0,
 };
 
 const defaultState: UserDataState = {
@@ -86,6 +87,9 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                     sessionData.annotation_streak_current += action.payload.increment;
                     totalData.annotation_streak_current = Math.max(
                         sessionData.annotation_streak_current, totalData.annotation_streak_current,
+                    );
+                    totalData.annotation_streak_max = Math.max(
+                        totalData.annotation_streak_max, totalData.annotation_streak_current,
                     );
                     break;
                 }
@@ -164,6 +168,11 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                 case 'mystery_gifts_bought': {
                     sessionData.mystery_gifts_bought += action.payload.increment;
                     totalData.mystery_gifts_bought += action.payload.increment;
+                    break;
+                }
+
+                case 'money_badge_tier': {
+                    totalData.money_badge_tier += action.payload.increment;
                     break;
                 }
 

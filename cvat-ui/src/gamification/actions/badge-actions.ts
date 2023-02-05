@@ -287,6 +287,8 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                         message: 'Badge Obtained!',
                         description: `Congratulations! You obtained the ${badge.title} Badge (${updatedTier})!`,
                     });
+                    // load badges again so received date is properly displayed
+                    dispatch(loadBadgesAsync());
                 }
 
                 // switch visibility to true if badge is obtained,

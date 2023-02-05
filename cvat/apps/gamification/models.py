@@ -90,6 +90,7 @@ class UserProfile(models.Model):
     # badge-related data
     badges_obtained_total = models.IntegerField(default=0)
     selectedBadges = models.CharField(max_length=255, default='0')
+    moneyBadgeTier = models.IntegerField(default=0)
 
     # challenges-related data
     challenges_completed = models.IntegerField(default=0)
@@ -226,6 +227,9 @@ class EnergizerData(models.Model):
                                     default=EnergizerChoice.NONE)
     score = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now=True)
+
+    # class Meta:
+    #     unique_together = ('userProfile', 'score');
 
     def __str__(self):
         return (str(self.id) + self.userProfile.user.get_username() + '-' + self.energizer + ': ' + str(self.score))

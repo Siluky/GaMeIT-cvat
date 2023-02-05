@@ -72,7 +72,9 @@ export default (state = defaultState, action: AnyAction): ShopState => {
         case ShopActionTypes.PURCHASE_ITEM_SUCCESS: {
             const updatedItems = state.availableItems.map(
                 (_item: ShopItem) => {
-                    if (_item.id === action.payload && !_item.repeatable) { return { ..._item, bought: true }; }
+                    if (_item.id === action.payload && !_item.repeatable) {
+                        return { ..._item, bought: true };
+                    }
                     return _item;
                 },
             );
@@ -95,6 +97,21 @@ export default (state = defaultState, action: AnyAction): ShopState => {
                 overlayMessage: action.payload,
             };
         }
+
+        // case ShopActionTypes.UPGRADE_MONEY_BADGE_TIER: {
+        //     let newTier = BadgeTier.NOT_OBTAINED;
+        //     switch (state.moneyBadgeTier) {
+        //         case BadgeTier.NOT_OBTAINED: newTier = BadgeTier.BRONZE; break;
+        //         case BadgeTier.BRONZE: newTier = BadgeTier.SILVER; break;
+        //         case BadgeTier.SILVER: newTier = BadgeTier.GOLD; break;
+        //         case BadgeTier.GOLD: newTier = BadgeTier.GOLD; break;
+        //         default: break;
+        //     }
+        //     return {
+        //         ...state,
+        //         moneyBadgeTier: newTier,
+        //     };
+        // }
 
         default: {
             return state;

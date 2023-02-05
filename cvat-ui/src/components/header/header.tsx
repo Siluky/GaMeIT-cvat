@@ -332,6 +332,7 @@ function HeaderContainer(props: Props): JSX.Element {
                 trigger='click'
                 content={<BadgeOverview />}
                 mouseLeaveDelay={10}
+                destroyTooltipOnHide
             >
                 <Menu.Item
                     // TODO: Custom Badge Icon
@@ -587,8 +588,10 @@ function HeaderContainer(props: Props): JSX.Element {
                 </CVATTooltip>
                 <Popover
                     content={<ShopWindow />}
+                    overlayClassName='gamif-popover'
                     mouseLeaveDelay={100}
                     trigger='click'
+                    destroyTooltipOnHide
                     onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
                 >
                     <div className='gamif-shop-button-wrapper'>

@@ -430,6 +430,19 @@
 .quiz-duel-answer-box {
   flex-direction: row;
 }
+.quiz-duel-timer-wrapper {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #595959;
+}
+
+.quiz-duel-timer {
+  display: flex;
+  justify-content: center;
+  background: #b6afac;
+  border-radius: 8px;
+
+}
 
 .quiz-duel-answer-button {
   width: 240px;
@@ -523,6 +536,13 @@
 
 // shop
 
+.gamif-popover {
+  .ant-popover-inner {
+    border-radius: 16px;
+  }
+}
+
+
 .gamif-shop-window {
   width: 500px;
   height: 360px;
@@ -598,7 +618,7 @@
   margin-right: 10%;
   font-weight: bold;
   border-radius: 8px;
-  width: 172px;
+  width: 180px;
   height: 30px;
   display: flex;
   justify-content: center;
@@ -613,6 +633,7 @@
   padding-left: 5px;
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 .gamif-shop-window-items-wrapper {

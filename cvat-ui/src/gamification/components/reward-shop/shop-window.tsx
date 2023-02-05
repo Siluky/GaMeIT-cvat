@@ -11,7 +11,7 @@ import {
 import { connect, useDispatch } from 'react-redux';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
-import { purchaseItem } from 'gamification/actions/shop-actions';
+import { purchaseItem, setOverlayMessage } from 'gamification/actions/shop-actions';
 import {
     setAdditionalClassNames,
     setColor, setProfileBackground, setProfileBackgroundEffects, setProfileBorder,
@@ -48,6 +48,20 @@ function mapStateToProps(state: CombinedState): StateToProps {
     };
 }
 
+const Popup = styled.div`
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: #fff;
+padding: 12px 24px;
+border-radius: 4px;
+text-align: center;
+box-shadow: 2px 7px 18px 3px #d2d2d2;
+color: black;
+z-index: 3;
+`;
+
 export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const {
         items, currentBalance, selectedItemId, overlayMessage,
@@ -58,12 +72,12 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
     // const [modalShown, toggleModal] = useState(false);
 
     const useItem = (id: number): void => {
-        dispatch(setProfileBackgroundEffects(0));
-        dispatch(setProfileBackground(0));
-
-        // Check if item is bought
+        // IF item is not bought, return.
         const relevantItem = items.find((item) => item.id === id) ?? items[5];
         if (!relevantItem.bought) return;
+
+        dispatch(setProfileBackgroundEffects(0));
+        // dispatch(setProfileBackground(0));
 
         switch (id) {
             case 6: {
@@ -98,7 +112,13 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 dispatch(setProfileBackgroundEffects(1));
                 break;
             }
-            case 15: // TODO: Hidden profile background
+            case 15: {
+                dispatch(setProfileBackground(0));
+                dispatch(setProfileBackground(5));
+                dispatch(setProfileBackgroundEffects(2));
+
+                break;
+            }
             case 16: dispatch(setProfileBorder(0)); break;
             case 17: dispatch(setProfileBorder(1)); break;
             case 18: dispatch(setProfileBorder(2)); break;
@@ -122,7 +142,10 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             case 24:
                 dispatch(setAdditionalClassNames(10));
                 break;
-            case 25: /* TODO: hidden */ break;
+            case 25: {
+                dispatch(setAdditionalClassNames(11));
+                break;
+            }
             default: break;
         }
     };
@@ -136,20 +159,6 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
         toggleOverlay(false);
     }, []);
 
-    const Popup = styled.div`
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: #fff;
-        padding: 12px 24px;
-        border-radius: 4px;
-        text-align: center;
-        box-shadow: 2px 7px 18px 3px #d2d2d2;
-        color: black,
-        z-index: 3,
-        `;
-
     return (
         <>
             <div className='gamif-shop-window'>
@@ -157,8 +166,14 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                     (
                         // <div className='gamif-shop-overlay'>
                         <Popup>
-                            <h2>{overlayMessage}</h2>
-                            <Button onClick={() => { toggleOverlay(false); }}> Close </Button>
+                            <h2 style={{ color: 'black' }}>{overlayMessage}</h2>
+                            <Button onClick={() => {
+                                dispatch(setOverlayMessage(''));
+                                toggleOverlay(false);
+                            }}
+                            >
+                                Close
+                            </Button>
                         </Popup>
                         /* </div> */
                     ) : null}
@@ -190,10 +205,13 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                             &nbsp;
                             {currentBalance}
                             {/* <SketchOutlined /> */}
-                            <Button
+                            <div style={{ width: '25px', height: '25px' }}>
+                                <AnnotationCoinNoBorderIcon />
+                            </div>
+                            {/* <Button
                                 icon={<AnnotationCoinNoBorderIcon />}
                                 type='text'
-                            />
+                            /> */}
                         </h3>
                     </div>
                 </div>

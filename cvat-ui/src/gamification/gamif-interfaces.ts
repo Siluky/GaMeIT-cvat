@@ -29,6 +29,7 @@ export interface UserData {
     annotation_coins_max: number,
     items_bought: number,
     mystery_gifts_bought: number,
+    money_badge_tier: number,
 
     chat_messages: number,
 }
