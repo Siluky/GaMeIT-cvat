@@ -42,6 +42,7 @@ const chatBar = (friend: Profile): JSX.Element => {
                 content={<Chat userId={friend.userId} messages={[]} />}
                 mouseLeaveDelay={10}
                 defaultVisible
+                overlayClassName='gamif-popover'
             >
                 {friend.username}
             </Popover>
@@ -57,28 +58,33 @@ const chatBar = (friend: Profile): JSX.Element => {
 
 export function SocialBar(props: SocialBarProps): JSX.Element {
     const dispatch = useDispatch();
-    // const social = useSelector((state: CombinedState) => state.social);
+    const { friends } = props;
 
     useEffect(() => {
         dispatch(getFriendsListAsync());
     }, []);
 
-    const { friends } = props;
-
     return (
-        <Menu className='gamif-social-bar' mode='horizontal'>
+        <Menu
+            className='gamif-social-bar'
+            mode='horizontal'
+            style={{ padding: '0', borderBottom: '0' }}
+        >
             <Menu.Item
                 className='gamif-friends-list-menu'
+                style={{ display: 'flex' }}
                 icon={(
                     <Popover
-                        placement='leftBottom'
+                        placement='left'
                         trigger='click'
                         content={<StatusMenu />}
                         mouseLeaveDelay={10}
                         onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
-
+                        overlayClassName='gamif-popover'
                     >
-                        <InfoCircleFilled />
+                        <div className='gamif-status-menu-trigger'>
+                            <InfoCircleFilled />
+                        </div>
                     </Popover>
                 )}
                 key='friends_list'
@@ -109,7 +115,6 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                 if (user.chatActive) { return chatBar(user); }
                 return null;
             })}
-            {/* //TODO:  */}
         </Menu>
     );
 }

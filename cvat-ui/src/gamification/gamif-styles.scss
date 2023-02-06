@@ -752,6 +752,13 @@
     bottom: 0;
 }
 
+.gamif-status-menu-trigger {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .gamif-friends-list-menu {
     background: #9EBECB
 }
@@ -784,7 +791,8 @@
   width: 100%;
 
   &:hover {
-    background: red;
+    color: #e6e6e6;
+    background: #1E3D59;
   }
 }
 
@@ -1090,8 +1098,6 @@ div.chat div.chat-content span.you
   box-shadow: 2px 2px 20px rgba(60,51,176,0.2),
               inset -10px -10px 55px rgba(255,255,255,0.1);
 }
-
-
 
 
 // Statistics

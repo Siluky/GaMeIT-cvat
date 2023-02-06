@@ -2052,8 +2052,11 @@
 
             async function sendMessageToUser(senderId, receiverId, message) {
                 const { backendAPI } = config;
+                // Make sure data gets saves to the right chat room --> Numerically lower ID goes first!
+                const lowerUserId = Math.min(senderId, receiverId);
+                const higherUserId = Math.max(senderId, receiverId);
                 const data = {
-                    room: `${senderId}-${receiverId}`,
+                    room: `${lowerUserId}-${higherUserId}`,
                     senderId,
                     content: message,
                 };

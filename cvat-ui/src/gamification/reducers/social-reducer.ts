@@ -18,8 +18,6 @@ const profile: Profile = {
         color: 0,
         border: 0,
         backgroundElements: 0,
-        // avatar: 1,
-        // avatarBorder: '1px solid cyan',
     },
     chatActive: false,
 };

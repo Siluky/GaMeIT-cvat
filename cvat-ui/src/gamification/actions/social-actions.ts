@@ -214,6 +214,7 @@ export function getChatHistoryAsync(user2Id: number): ThunkAction<void, {}, {}, 
                 content: msg.content,
                 timestamp: msg.timestamp,
             }));
+            console.log('🚀 ~ file: social-actions.ts:217 ~ messagesFormatted', messagesFormatted);
 
             dispatch(getChatHistorySuccess(user2Id, messagesFormatted));
         } catch (error) {
@@ -242,7 +243,7 @@ export function sendMessageAsync(user2Id: number, content: string): ThunkAction<
 
     return async function sendMessageThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         try {
-            const msg = await cvat.social.sendMessage(Math.min(userId, user2Id), Math.max(userId, user2Id), content);
+            const msg = await cvat.social.sendMessage(userId, user2Id, content);
 
             dispatch(sendMessageSuccess(user2Id, msg));
         } catch (error) {

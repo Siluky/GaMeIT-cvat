@@ -2,14 +2,14 @@
 //
 // SPDX-License-Identifier: MIT
 import '../../gamif-styles.scss';
-import React from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { Button, List } from 'antd';
+import React, { useState } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { List } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import Popover from 'antd/lib/popover';
-import { Profile } from 'gamification/gamif-interfaces';
+import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
-import { getFriendsListAsync, saveProfileDataAsync } from 'gamification/actions/social-actions';
+// import { getFriendsListAsync, saveProfileDataAsync } from 'gamification/actions/social-actions';
 import { getstatusStyle } from 'gamification/gamif-items';
 import QuickProfile from './quick-profile';
 
@@ -29,12 +29,23 @@ function mapStateToProps(state: CombinedState): StateToProps {
     };
 }
 
+const formatStatus = (status: OnlineStatus): string => {
+    switch (status) {
+        case OnlineStatus.ONLINE: return 'Online';
+        case OnlineStatus.DO_NOT_DISTURB: return 'Do not Disturb';
+        case OnlineStatus.OFFLINE: return 'Offline';
+        default: return '';
+    }
+};
+
 export function FriendsList(props: FriendsListProps): JSX.Element {
     const { profiles } = props;
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     // const social = useSelector((state: CombinedState) => state.social);
     // const badges = useSelector((state: CombinedState) => state.badges);
     const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
+    const [zIndex, setZIndex] = useState(1);
+
     return (
         <>
             <List
@@ -44,9 +55,20 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                 renderItem={(_profile) => (
                     <Popover
                         placement='left'
-                        trigger='click'
-                        mouseLeaveDelay={100}
+                        trigger='hover'
+                        mouseLeaveDelay={10}
                         content={<QuickProfile profile={_profile} />}
+                        overlayClassName='gamif-popover'
+                        onVisibleChange={(visible: boolean) => {
+                            if (visible) {
+                                console.log('chat is now visible');
+                                setZIndex(zIndex + 1);
+                            } else {
+                                console.log('chat is now not visible');
+                                setZIndex(Math.max(zIndex - 1, 1));
+                            }
+                        }}
+                        zIndex={zIndex}
                     >
                         <List.Item
                             style={_profile.userId === userId ? { background: '#fddeef' } : {}}
@@ -59,7 +81,7 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                                 // style={_profile.userId === userId ? { background: 'cyan' } : {}}
                             />
                             <span>
-                                { _profile.status }
+                                { formatStatus(_profile.status) }
                                 &nbsp;
                             </span>
                             <div
@@ -82,8 +104,10 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                 Own Profile
             </Popover> */}
 
-            <Button type='text' className='gamif-debug-button' onClick={() => dispatch(getFriendsListAsync())}>Load</Button>
-            <Button type='text' className='gamif-debug-button' onClick={() => dispatch(saveProfileDataAsync())}>Save</Button>
+            {/* <Button type='text' className='gamif-debug-button'
+            onClick={() => dispatch(getFriendsListAsync())}>Load</Button> */}
+            {/* <Button type='text' className='gamif-debug-button'
+            onClick={() => dispatch(saveProfileDataAsync())}>Save</Button> */}
         </>
     );
 }
