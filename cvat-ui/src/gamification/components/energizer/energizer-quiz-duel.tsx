@@ -106,10 +106,7 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
         // setPoints(startTime);
 
         const intervalQuiz = setInterval(() => {
-            console.log('interval active');
             setPoints((currentPoints) => Math.max(0, currentPoints - 1));
-
-            console.log('🚀 ~ file: energizer-quiz-duel.tsx:125 ~ interval ~ questionPoints', questionPoints);
         }, 333);
         return () => {
             clearInterval(intervalQuiz);

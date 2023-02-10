@@ -30,6 +30,44 @@ export enum UserDataActionTypes {
 
     UPDATE_USER_DATA_FIELD_SUCCESS = 'UPDATE_USER_DATA_FIELD_SUCCESS',
     UPDATE_USER_DATA_FIELD_FAILED = 'UPDATE_USER_DATA_FIELD_FAILED',
+
+    TOGGLE_SURVEY_PROMPT = 'TOGGLE_SURVEY_PROMPT',
+    SET_FINISHED_STATUS = 'SET_FINISHED_STATUS',
+
+    SET_SURVEY_TIMING = 'SET_SURVEY_TIMING',
+}
+
+export function setSurveyTiming(timing: number): AnyAction {
+    return {
+        type: UserDataActionTypes.SET_SURVEY_TIMING,
+        payload: timing,
+    };
+}
+
+function addLogSuccess(): AnyAction {
+    return {
+        type: UserDataActionTypes.ADD_LOG_SUCCESS,
+    };
+}
+
+function addLogFailed(error: any): AnyAction {
+    return {
+        type: UserDataActionTypes.ADD_LOG_FAILED,
+        payload: error,
+    };
+}
+
+export function addGamifLog(event: string): ThunkAction<void, {}, {}, AnyAction> {
+    const { userId } = getCVATStore().getState().gamifuserdata;
+
+    return async (dispatch) => {
+        try {
+            await cvat.gamiflogs.save(userId, event);
+            dispatch(addLogSuccess());
+        } catch (error) {
+            dispatch(addLogFailed(error));
+        }
+    };
 }
 
 export function getUserDataSuccess(userDataAllTime: UserData, userDataSession: UserData): AnyAction {
@@ -106,7 +144,7 @@ function saveUserDataFailed(error: any): AnyAction {
     };
 }
 
-export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
+export function saveUserData(backup: boolean): ThunkAction<void, {}, {}, AnyAction> {
     const state = getCVATStore().getState();
     const userDataState = state.gamifuserdata;
     const shopState = state.shop;
@@ -172,12 +210,12 @@ export function saveUserData(): ThunkAction<void, {}, {}, AnyAction> {
         selectedStatistics: stats,
         selectedBadges: badgeIds,
     };
-    console.log('🚀 ~ file: user-data-actions.ts ~ line 170 ~ saveUserData ~ userDataPrepared', userDataPrepared);
 
     return async (dispatch) => {
         try {
             await cvat.gamifuserdata.save(userDataPrepared);
             dispatch(saveUserDataSuccess());
+            if (backup) { dispatch(addGamifLog(JSON.stringify(userDataPrepared))); }
         } catch (error) {
             dispatch(saveUserDataFailed(error));
         }
@@ -189,7 +227,6 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
         let userDataImport = null;
         try {
             userDataImport = await cvat.gamifuserdata.get();
-            console.log('🚀 ~ file: user-data-actions.ts:190 ~ loadUserDataThunk ~ userDataImport', userDataImport);
             const userDataAllTime: UserData = {
                 last_login: userDataImport.last_login_ms * 1000,
                 images_annotated: userDataImport.images_annotated_total,
@@ -292,33 +329,23 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             };
 
             dispatch(getUserDataSuccess(userDataAllTime, userDataSession));
-            dispatch(saveUserData());
+            dispatch(saveUserData(false));
         } catch (error) {
             dispatch(getUserDataFailed(error));
         }
     };
 }
 
-function addLogSuccess(): AnyAction {
+export function toggleSurveyPrompt(show: boolean): AnyAction {
     return {
-        type: UserDataActionTypes.ADD_LOG_SUCCESS,
+        type: UserDataActionTypes.TOGGLE_SURVEY_PROMPT,
+        payload: show,
     };
 }
 
-function addLogFailed(error: any): AnyAction {
+export function setFinishedStatus(imageId: number, status: boolean): AnyAction {
     return {
-        type: UserDataActionTypes.ADD_LOG_FAILED,
-        payload: error,
-    };
-}
-
-export function addGamifLog(userId: number, event: string): ThunkAction<void, {}, {}, AnyAction> {
-    return async (dispatch) => {
-        try {
-            await cvat.gamiflogs.save(userId, event);
-            dispatch(addLogSuccess());
-        } catch (error) {
-            dispatch(addLogFailed(error));
-        }
+        type: UserDataActionTypes.SET_FINISHED_STATUS,
+        payload: { imageId, status },
     };
 }

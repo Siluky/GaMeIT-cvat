@@ -10,7 +10,7 @@ import { ThunkAction } from 'redux-thunk';
 import { decodeBadgeTier, encodeBadgeTier } from 'gamification/gamif-items';
 import { Badge, BadgeTier, EnergizerType } from '../gamif-interfaces';
 // eslint-disable-next-line import/no-cycle
-import { updateUserData } from './user-data-actions';
+import { addGamifLog, updateUserData } from './user-data-actions';
 import { getBadgeValue } from '../gamif-items';
 
 const cvat = getCore();
@@ -281,7 +281,8 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                 }
 
                 if (encodeBadgeTier(updatedTier) > encodeBadgeTier(badge.tier) && !init) {
-                    console.log(`Upgrading tier of badge ${badge.title} to ${updatedTier}`);
+                    // console.log(`Upgrading tier of badge ${badge.title} to ${updatedTier}`);
+                    dispatch(addGamifLog(`Upgrading tier of badge ${badge.title} to ${updatedTier}`));
                     dispatch(updateUserData('badges_obtained', 1));
                     cvat.badges.save(userDataState.userId, badge.id, encodeBadgeTier(updatedTier));
                     // eslint-disable-next-line security/detect-non-literal-fs-filename

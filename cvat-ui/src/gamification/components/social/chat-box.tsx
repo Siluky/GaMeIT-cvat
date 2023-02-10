@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 import { Input, Form } from 'antd';
 import { getChatHistoryAsync, sendMessageAsync } from 'gamification/actions/social-actions';
+import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { Message } from 'gamification/gamif-interfaces';
 import 'gamification/gamif-styles.scss';
 import React, { useEffect, useState } from 'react';
@@ -63,7 +64,7 @@ export function ChatBox(props: ChatBoxProps): JSX.Element {
         scrolltoTop();
 
         const interval = setInterval(() => {
-            console.log(`fetching chat history for ${userId}`);
+            // console.log(`fetching chat history for ${userId}`);
             dispatch(getChatHistoryAsync(userId));
             scrolltoTop();
         }, 5000);
@@ -93,6 +94,7 @@ export function ChatBox(props: ChatBoxProps): JSX.Element {
                             value={message}
                             onPressEnter={() => {
                                 dispatch(sendMessageAsync(userId, message));
+                                dispatch(addGamifLog('Sent a chat message'));
                                 setMessage('');
                             }}
                             onChange={(e) => setMessage(e.target.value)}

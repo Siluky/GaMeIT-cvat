@@ -5,7 +5,7 @@
 import './styles.scss';
 import '../../gamification/gamif-styles.scss';
 import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Row, Col } from 'antd/lib/grid';
 import Icon, {
@@ -54,7 +54,7 @@ import {
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
 import { saveProfileDataAsync } from 'gamification/actions/social-actions';
-import { initializeUserData } from 'gamification/actions/user-data-actions';
+import { addGamifLog, initializeUserData, toggleSurveyPrompt } from 'gamification/actions/user-data-actions';
 import { updateBadges } from 'gamification/actions/badge-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
@@ -100,6 +100,7 @@ interface StateToProps {
     energizerShown: boolean;
     energizerPopUpShown: boolean;
     currentEnergy: number;
+    surveyPromptVisible: boolean;
 }
 
 interface DispatchToProps {
@@ -128,6 +129,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         settings: { showDialog: settingsDialogShown },
         organizations: { fetching: organizationsFetching, current: currentOrganization, list: organizationsList },
         energizer: { energyLevel: currentEnergy, active: energizerShown, popupOpen: energizerPopUpShown },
+        gamifuserdata: { surveyPromptVisible },
     } = state;
 
     return {
@@ -164,6 +166,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         currentEnergy,
         energizerShown,
         energizerPopUpShown,
+        surveyPromptVisible,
     };
 }
 
@@ -181,26 +184,6 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
 }
 
 type Props = StateToProps & DispatchToProps;
-
-const gamifSurveyPrompt = (): JSX.Element => (
-    <>
-        <div className='gamif-energizer-popup-bottom'>
-            <h2>
-                Please help us to evaluate this system by
-                <br />
-                participating in a short survey
-            </h2>
-            <Button
-                className='gamif-energizer-popup-start-energizer-button'
-                type='link'
-                href='www.google.com'
-            >
-                Go to Survey
-            </Button>
-        </div>
-
-    </>
-);
 
 function HeaderContainer(props: Props): JSX.Element {
     const {
@@ -226,6 +209,7 @@ function HeaderContainer(props: Props): JSX.Element {
         currentEnergy,
         energizerShown,
         energizerPopUpShown,
+        surveyPromptVisible,
     } = props;
 
     const {
@@ -234,6 +218,8 @@ function HeaderContainer(props: Props): JSX.Element {
 
     const history = useHistory();
     const dispatch = useDispatch();
+    const udata = useSelector((state: CombinedState) => state.gamifuserdata);
+    const { userId, surveyTiming } = udata;
 
     useEffect(() => {
         getCurrentEnergy();
@@ -242,11 +228,46 @@ function HeaderContainer(props: Props): JSX.Element {
             incrementEnergy(gamifconsts.ENERGY_INCREMENT);
             dispatch(updateBadges(false));
         }, gamifconsts.ENERGY_RATE);
-
         return () => {
             clearInterval(interval);
         };
     }, []);
+
+    const gamifSurveyPrompt = (uId: number, timing: number): JSX.Element => {
+        const SURVEY_URL = `https://www.soscisurvey.de/cvat_eval/?act=LApuaEG7vUrRZaKfJnl85KB0&r=${uId}-${timing}`;
+        return (
+            <>
+                <div className='gamif-survey-popup-top'>
+                    <Button
+                        onClick={(): void => { dispatch(toggleSurveyPrompt(false)); }}
+                    >
+                        <PlusOutlined rotate={45} />
+                    </Button>
+                </div>
+                <div className='gamif-energizer-popup-bottom'>
+                    <h2>
+                        Please help us to evaluate this system by
+                        <br />
+                        participating in a short survey
+                    </h2>
+                    <Button
+                        className='gamif-energizer-popup-start-energizer-button'
+                        type='link'
+                        href={SURVEY_URL}
+                        onClick={(event: React.MouseEvent): void => {
+                            event.preventDefault();
+                            // false alarm
+                            // eslint-disable-next-line security/detect-non-literal-fs-filename
+                            window.open(SURVEY_URL, '_blank');
+                        }}
+                    >
+                        Go to Survey
+                    </Button>
+                </div>
+
+            </>
+        );
+    };
 
     function showAboutModal(): void {
         Modal.info({
@@ -337,7 +358,10 @@ function HeaderContainer(props: Props): JSX.Element {
                 <Menu.Item
                     icon={<RadarChartOutlined />}
                     key='badge_profile'
-                    onClick={() => dispatch(updateBadges(false))}
+                    onClick={() => {
+                        dispatch(updateBadges(false));
+                        dispatch(addGamifLog('Checked Badge Overview'));
+                    }}
                 >
                     Badges
                 </Menu.Item>
@@ -574,17 +598,6 @@ function HeaderContainer(props: Props): JSX.Element {
                         </div>
                     </Popover>
                 </CVATTooltip>
-                <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
-                    <Button
-                        type='text'
-                        className='gamif-debug-button'
-                        style={{ height: '24px', width: '24px', margin: '4px' }}
-                        icon={<PlusOutlined />}
-                        onClick={(): void => {
-                            incrementEnergy(1);
-                        }}
-                    />
-                </CVATTooltip>
                 <Popover
                     content={<ShopWindow />}
                     overlayClassName='gamif-popover'
@@ -598,22 +611,36 @@ function HeaderContainer(props: Props): JSX.Element {
                             type='default'
                             className='gamif-shop-button'
                             icon={<ShopIcon />}
+                            onClick={() => dispatch(addGamifLog('Opened Shop.'))}
                         />
                     </div>
                 </Popover>
                 <Popover
-                    content={gamifSurveyPrompt}
+                    content={gamifSurveyPrompt(userId, surveyTiming)}
                     trigger='click'
-                    mouseLeaveDelay={5}
+                    mouseLeaveDelay={2}
+                    visible={surveyPromptVisible}
                 >
                     <CVATTooltip overlay='Possible Gamification Survey Prompt'>
                         <Button
                             className='gamif-debug-button'
                             type='text'
                             icon={<FormOutlined />}
+                            onClick={() => dispatch(toggleSurveyPrompt(!surveyPromptVisible))}
                         />
                     </CVATTooltip>
                 </Popover>
+                <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
+                    <Button
+                        type='text'
+                        className='gamif-debug-button'
+                        style={{ height: '24px', width: '24px', margin: '4px' }}
+                        icon={<PlusOutlined />}
+                        onClick={(): void => {
+                            incrementEnergy(1);
+                        }}
+                    />
+                </CVATTooltip>
             </div>
             <div className='cvat-right-header'>
                 <CVATTooltip overlay='Click to open repository'>

@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { availableChallenges } from 'gamification/gamif-items';
 import { AnyAction } from 'redux';
 import { ChallengeActionTypes } from '../actions/challenge-actions';
 import { ChallengeState } from '../gamif-interfaces';
@@ -41,37 +40,7 @@ export default (state = defaultState, action: AnyAction): ChallengeState => {
         }
 
         case ChallengeActionTypes.ADD_CHALLENGE_SUCCESS: {
-            console.log('🚀 ~ file: challenge-reducer.ts:45 ~ state.availableChallenges.length', state.availableChallenges.length);
-            if (state.availableChallenges.length >= 3) {
-                return state;
-            }
-
-            // Brute force pick a new, not already existing challenge
-            const existingIds = state.availableChallenges.map((chal) => chal.id);
-            let idExists = true;
-            let newId = 0;
-            while (idExists) {
-                newId = Math.floor(Math.random() * (availableChallenges.length + 1));
-                idExists = existingIds.includes(newId);
-            }
-
-            const newChallenge = availableChallenges.find((chal) => chal.id === newId) ?? availableChallenges[0];
-
-            // randomize goal and reward by same factor
-            const randomFactor = Math.random();
-            // eslint-disable-next-line max-len
-            const goalAdjusted = Math.max(1, Math.floor((newChallenge.goal + (randomFactor * newChallenge.goal_variance)) / 5) * 5);
-            // eslint-disable-next-line max-len
-            const rewardAdjusted = Math.round((newChallenge.reward + (randomFactor * newChallenge.reward_variance)) / 5) * 5;
-
-            const newChal = {
-                ...newChallenge,
-                goal: goalAdjusted,
-                reward: rewardAdjusted,
-                instruction: newChallenge.instruction.replace('GOAL', goalAdjusted.toString()),
-                progress: 0,
-            };
-            const challenges = state.availableChallenges.concat(newChal);
+            const challenges = state.availableChallenges.concat(action.payload);
             return {
                 ...state,
                 availableChallenges: challenges,
@@ -92,6 +61,17 @@ export default (state = defaultState, action: AnyAction): ChallengeState => {
 
         case ChallengeActionTypes.SAVE_CHALLENGES_SUCCESS: {
             return state;
+        }
+
+        case ChallengeActionTypes.UPDATE_CHALLENGES_FAILED: {
+            return state;
+        }
+
+        case ChallengeActionTypes.UPDATE_CHALLENGES_SUCCESS: {
+            return {
+                ...state,
+                availableChallenges: action.payload,
+            };
         }
 
         case ChallengeActionTypes.REMOVE_CHALLENGE_SUCCESS: {

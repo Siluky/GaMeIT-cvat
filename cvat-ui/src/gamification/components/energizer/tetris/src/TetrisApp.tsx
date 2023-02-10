@@ -197,7 +197,7 @@ const TetrisApp = (props: TetrisProps): JSX.Element => {
                         {state === 'LOST' && (
                             <Popup>
                                 <Alert>Game Over</Alert>
-                                <Button onClick={controller.restart}>Restart</Button>
+                                {/* <Button onClick={controller.restart}>Restart</Button> */}
                                 <Button onClick={() => {
                                     const { showLeaderboard } = props;
                                     const entry: LeaderboardEntry = {
@@ -207,11 +207,11 @@ const TetrisApp = (props: TetrisProps): JSX.Element => {
                                         score: points,
                                     };
                                     dispatch(addLeaderboardEntry(entry));
-                                    if (points >= 20) {
+                                    if (points >= 2000) {
                                         dispatch(updateEnergizerBadge(EnergizerType.TETRIS));
                                     }
                                     showLeaderboard(true);
-                                    dispatch(addGamifLog(userdata.userId, 'Tetris ended'));
+                                    dispatch(addGamifLog('Tetris ended'));
                                 }}
                                 >
                                     Leaderboard

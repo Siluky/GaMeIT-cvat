@@ -95,7 +95,6 @@ class Snake extends React.Component<EnergizerProps, State> {
     constructor(props: EnergizerProps) {
         super(props);
         this.state = initialState;
-        console.log('1');
         // this.canvasRef = React.createRef();
         // this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
         // const context = null;
@@ -108,9 +107,7 @@ class Snake extends React.Component<EnergizerProps, State> {
         // this.context = this.canvas.getContext('2d');
         // const a: React.RefObject<HTMLInputElement> = this.refs.canvas;
         // this.context = a.getContext('2d');
-        console.log('2');
         this.init();
-        console.log(`context :${this.context}`);
     }
 
     componentWillUnmount(): void {
@@ -182,7 +179,6 @@ class Snake extends React.Component<EnergizerProps, State> {
     };
 
     init = (): void => {
-        console.log('3');
         this.focusInput();
         this.setState({
             ...initialState,
@@ -210,7 +206,6 @@ class Snake extends React.Component<EnergizerProps, State> {
         const { position } = this.state;
 
         const inputdir = keys[event.which];
-        console.log('🚀 ~ file: energizer-snake.tsx:209 ~ Snake ~ inputdir', inputdir);
 
         if (inputdir) {
             const { direction } = this.state;
@@ -231,16 +226,11 @@ class Snake extends React.Component<EnergizerProps, State> {
             ) {
                 return;
             }
-            console.log('🚀 ~ file: energizer-snake.tsx:231 ~ Snake ~ ...this.state', this.state);
             this.setState({ ...this.state, direction: inputdir });
-            console.log('🚀 ~ file: energizer-snake.tsx:231 ~ Snake ~ ...this.state', this.state);
-            // this.setState(() => ({...this.state}), direction );
         }
     };
 
     focusInput = (): void => {
-        console.log('focusing input');
-        console.log('🚀 ~ file: energizer-snake.tsx:238 ~ Snake ~ this.inputRef.current', this.inputRef.current);
         if (this.inputRef.current) {
             this.inputRef.current.focus();
         }
@@ -307,9 +297,9 @@ class Snake extends React.Component<EnergizerProps, State> {
         position.forEach((element) => {
             if (_.isEqual(applePos, element)) {
                 // console.log("game should be over");
-                console.log('generate apple conflict');
-                console.log(applePos);
-                console.log(position);
+                // console.log('generate apple conflict');
+                // console.log(applePos);
+                // console.log(position);
                 applePos = this.generateApplePosition();
 
                 // this.setState({ ...this.state, gameOver: true });
@@ -427,7 +417,7 @@ class Snake extends React.Component<EnergizerProps, State> {
                                     {' '}
                                 </b>
                             </div>
-                            <Button onClick={this.init}>Reset</Button>
+                            {/* <Button onClick={this.init}>Reset</Button> */}
                             <Button onClick={
                                 () => {
                                     const {

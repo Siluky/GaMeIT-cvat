@@ -59,11 +59,11 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
                 <div className='energizer-leaderboard-headline'>
                     <h2> Leaderboard </h2>
                 </div>
-                <div>
+                {/* <div>
                     <div className='energizer-leaderboard-header-text'>
                         {`Score: ${latestEntry.score}`}
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className='energizer-leaderboard-content'>
                 <div className='energizer-leaderboard-content-header'>

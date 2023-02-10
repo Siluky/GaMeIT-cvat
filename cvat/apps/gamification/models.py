@@ -254,7 +254,10 @@ class Question(models.Model):
 class GamifLog(models.Model):
     userId = models.IntegerField(default=0)
     date = models.DateTimeField(auto_now=True)
-    event = models.CharField(default='', max_length=256)
+    event = models.CharField(default='', max_length=1024)
+
+    def __str__(self):
+        return self.userId + ': ' + str(self.id)
 
 
 

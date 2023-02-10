@@ -214,7 +214,6 @@ export function getChatHistoryAsync(user2Id: number): ThunkAction<void, {}, {}, 
                 content: msg.content,
                 timestamp: msg.timestamp,
             }));
-            console.log('🚀 ~ file: social-actions.ts:217 ~ messagesFormatted', messagesFormatted);
 
             dispatch(getChatHistorySuccess(user2Id, messagesFormatted));
         } catch (error) {

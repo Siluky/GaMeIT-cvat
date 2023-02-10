@@ -5,7 +5,7 @@
 import './styles.scss';
 import React, { Dispatch, TransitionEvent } from 'react';
 import { AnyAction } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import Text from 'antd/lib/typography/Text';
 import Tabs from 'antd/lib/tabs';
@@ -22,6 +22,8 @@ import IssuesListComponent from 'components/annotation-page/standard-workspace/o
 import ChallengeList from 'gamification/components/challenges/challengelist-component';
 import StatisticsList from 'gamification/components/statistics/statisticslist-component';
 import SocialBar from 'gamification/components/social/social-bar';
+import { updateChallenges } from 'gamification/actions/challenge-actions';
+import { addGamifLog } from 'gamification/actions/user-data-actions';
 
 interface OwnProps {
     objectsList: JSX.Element;
@@ -65,6 +67,8 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
     const {
         sidebarCollapsed, canvasInstance, collapseSidebar, objectsList, jobInstance,
     } = props;
+    const dispatch = useDispatch();
+    // const [challengeIntervalActive, switchInterval] = useState(false);
 
     const collapse = (): void => {
         const [collapser] = window.document.getElementsByClassName('cvat-objects-sidebar');
@@ -106,7 +110,30 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                 {sidebarCollapsed ? <MenuFoldOutlined title='Show' /> : <MenuUnfoldOutlined title='Hide' />}
             </span>
 
-            <Tabs type='card' defaultActiveKey='objects' className='cvat-objects-sidebar-tabs'>
+            <Tabs
+                type='card'
+                defaultActiveKey='objects'
+                className='cvat-objects-sidebar-tabs'
+                // onChange={(key) => {
+                //     if (key === 'challenges') {
+                //         switchInterval(true);
+                //         const interval = setInterval(() => {
+                //             dispatch(updateChallenges());
+                //             console.log('updating challenges');
+                //             if (!challengeIntervalActive) { clearInterval(interval); }
+                //         }, 3000);
+                //     } else { switchInterval(false); }
+                // }}
+                onChange={(key) => {
+                    if (key === 'challenges') {
+                        dispatch(updateChallenges());
+                        dispatch(addGamifLog('Checked Challenge Tab'));
+                    }
+                    if (key === 'statistics') {
+                        dispatch(addGamifLog('Checked Statistics Tab'));
+                    }
+                }}
+            >
                 <Tabs.TabPane tab={<Text strong>Objects</Text>} key='objects'>
                     {objectsList}
                 </Tabs.TabPane>
@@ -119,7 +146,10 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                         <IssuesListComponent />
                     </Tabs.TabPane>
                 ) : null}
-                <Tabs.TabPane tab={<Text strong>Challenges</Text>} key='challenges'>
+                <Tabs.TabPane
+                    tab={<Text strong>Challenges</Text>}
+                    key='challenges'
+                >
                     <ChallengeList />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
@@ -128,6 +158,24 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
             </Tabs>
 
             {!sidebarCollapsed && <AppearanceBlock />}
+            {/* <div className='objects-side-bar-half'>
+
+                <Tabs
+                    type='card'
+                    defaultActiveKey='challenges'
+                    className='cvat-objects-sidebar-tabs'
+                >
+                    <Tabs.TabPane
+                        tab={<Text strong>Challenges</Text>}
+                        key='challenges'
+                    >
+                        <ChallengeList />
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
+                        <StatisticsList />
+                    </Tabs.TabPane>
+                </Tabs>
+            </div> */}
             <SocialBar />
         </Layout.Sider>
     );

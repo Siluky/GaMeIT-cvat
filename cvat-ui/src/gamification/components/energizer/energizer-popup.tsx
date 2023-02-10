@@ -9,7 +9,7 @@ import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import {
-    incrementEnergy, switchEnergizerModal, switchEnergizerPopUp,
+    switchEnergizerModal, switchEnergizerPopUp,
 } from 'gamification/actions/energizer-actions';
 import { EnergizerIcon } from 'icons';
 // import { EnergizerType } from 'gamification/gamif-interfaces';
@@ -51,7 +51,7 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
     return (
         <div className='gamif-energizer-popup'>
             <div className='gamif-energizer-popup-header'>
-                <div className='gamif-energizer-popup-header-left'>
+                {/* <div className='gamif-energizer-popup-header-left'>
                     <Button
                         className='gamif-energizer-popup-color-button'
                         shape='round'
@@ -66,10 +66,11 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                     >
                         {' '}
                     </Button>
-                </div>
+                </div> */}
                 <div className='gamif-energizer-popup-header-right'>
                     <Button
-                        style={{ background: 'transparent' }}
+                        style={{ background: 'transparent', border: '0' }}
+                        ghost
                         onClick={(): void => { dispatch(switchEnergizerPopUp(false)); }}
                     >
                         <PlusOutlined rotate={45} />
@@ -90,11 +91,9 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                     type='text'
                     onClick={(): void => {
                         if (currentEnergy >= gamifconsts.ENERGIZER_COST) {
-                            dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
+                            // dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
                             dispatch(switchEnergizerPopUp(false));
                             dispatch(switchEnergizerModal(true));
-                            // TODO: Give choice or start random energizer!
-                            // dispatch(setActiveEnergizer(EnergizerType.QUIZ));
                         }
                     }}
                 >

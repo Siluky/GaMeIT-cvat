@@ -20,6 +20,7 @@ import {
 // import { incrementEnergy } from 'gamification/actions/energizer-actions';
 // import { addChallenge } from 'gamification/actions/challenge-actions';
 // import { SketchOutlined } from '@ant-design/icons';
+import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { AnnotationCoinNoBorderIcon } from 'icons';
 import ShopItemComponent from './shop-item';
 
@@ -182,6 +183,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                         className='gamif-shop-window-button'
                         onClick={() => {
                             dispatch(purchaseItem(selectedItemId));
+                            dispatch(addGamifLog(`Bought item: ${selectedItemId}`));
                             // toggleModal(true);
                         }}
                     >
@@ -193,12 +195,12 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                     >
                         Use
                     </Button>
-                    <Button
+                    {/* <Button
                         className='gamif-debug-button'
                         onClick={() => toggleOverlay(!overlayVisible)}
                     >
                         Overlay
-                    </Button>
+                    </Button> */}
                     <div className='gamif-shop-balance-display'>
                         <h3>
                             <span>Current Balance: </span>

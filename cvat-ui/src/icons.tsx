@@ -64,6 +64,7 @@ import SVGLoadingItem from './assets/loading-item.svg';
 import SVGMoneyHoarderBadge from './assets/money-hoarder-badge.svg';
 import SVGImageIcon from './assets/images-icon.svg';
 import SVGTimeIcon from './assets/time-icon.svg';
+import SVGImageFinished from './assets/image-finished-icon.svg';
 
 import SVGEnergizerIcon from './assets/energizer-button-icon.svg';
 import SVGEnergizerIcon1 from './assets/gamification/energizer/Energizer-1.svg';
@@ -238,6 +239,7 @@ export const EnergizerIcon8 = React.memo((): JSX.Element => <SVGEnergizerIcon8 /
 export const EnergizerIcon9 = React.memo((): JSX.Element => <SVGEnergizerIcon9 />);
 export const EnergizerIcon10 = React.memo((): JSX.Element => <SVGEnergizerIcon10 />);
 export const EnergizerIcon11 = React.memo((): JSX.Element => <SVGEnergizerIcon11 />);
+export const ImageFinishedIcon = React.memo((): JSX.Element => <SVGImageFinished />);
 
 // Badges
 export const BadgeIcon = React.memo((): JSX.Element => <SVGBadge />);

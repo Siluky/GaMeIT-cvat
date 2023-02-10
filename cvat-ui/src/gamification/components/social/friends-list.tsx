@@ -56,15 +56,15 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                     <Popover
                         placement='left'
                         trigger='hover'
-                        mouseLeaveDelay={10}
+                        mouseLeaveDelay={1}
                         content={<QuickProfile profile={_profile} />}
                         overlayClassName='gamif-popover'
                         onVisibleChange={(visible: boolean) => {
                             if (visible) {
-                                console.log('chat is now visible');
+                                // console.log('chat is now visible');
                                 setZIndex(zIndex + 1);
                             } else {
-                                console.log('chat is now not visible');
+                                // console.log('chat is now not visible');
                                 setZIndex(Math.max(zIndex - 1, 1));
                             }
                         }}

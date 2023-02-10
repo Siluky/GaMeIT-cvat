@@ -26,7 +26,6 @@ import {
     Task,
     Workspace,
 } from 'reducers/interfaces';
-import { updateUserData } from 'gamification/actions/user-data-actions';
 import { updateJobAsync } from './tasks-actions';
 import { switchToolsBlockerState } from './settings-actions';
 
@@ -1268,8 +1267,6 @@ export function createAnnotationsAsync(sessionInstance: any, frame: number, stat
                     history,
                 },
             });
-            // TODO: TEST;
-            dispatch(updateUserData('tags_set', 1));
         } catch (error) {
             dispatch({
                 type: AnnotationActionTypes.CREATE_ANNOTATIONS_FAILED,

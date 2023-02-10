@@ -6,29 +6,40 @@ import 'gamification/gamif-styles.scss';
 import React, { useEffect } from 'react';
 import { Button, Row } from 'antd';
 import { Challenge } from 'gamification/gamif-interfaces';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
-import { addChallenge, getChallengesAsync } from 'gamification/actions/challenge-actions';
+import {
+    addChallenge, updateChallenges,
+} from 'gamification/actions/challenge-actions';
 // import { UndoOutlined } from '@ant-design/icons';
 // import { AnnotationCoinIcon } from 'icons';
 import { ChallengePane } from './challenge-component';
 
-export default function ChallengeList(): JSX.Element {
-    const challenges = useSelector((state: CombinedState) => state.challenges);
+interface ChallengeListProps {
+    challenges: Challenge[],
+}
+
+interface StateToProps {
+    challenges: Challenge[],
+}
+
+function mapStateToProps(state: CombinedState): StateToProps {
+    return { challenges: state.challenges.availableChallenges };
+}
+
+function ChallengeList(props: ChallengeListProps): JSX.Element {
+    const { challenges } = props;
     const dispatch = useDispatch();
 
-    useEffect(() => { dispatch(getChallengesAsync()); }, []);
+    useEffect(() => {
+        dispatch(updateChallenges());
+    }, []);
 
     return (
         <>
             <div className='gamif-challenge-list'>
-                {/* <div className='gamif-challenge-list-header'>
-                    Reroll: 20
-                    <Button type='text' icon={<AnnotationCoinIcon />} />
-                    <Button type='text' icon={<UndoOutlined />} />
-                </div> */}
                 <div>
-                    {challenges.availableChallenges.map((_challenge: Challenge, index: number) => (
+                    {challenges.map((_challenge: Challenge, index: number) => (
                         <Row key={index}>
                             <ChallengePane
                                 id={index}
@@ -44,7 +55,15 @@ export default function ChallengeList(): JSX.Element {
             onClick={() => dispatch(getChallengesAsync())}> Get Challenges </Button> */}
             <Button className='gamif-debug-button' onClick={() => dispatch(addChallenge())}> Add Challenge </Button>
             {/* <Button className='gamif-debug-button'
-            onClick={() => dispatch(saveChallenges())}> Save Challenges </Button> */}
+            onClick={() => dispatch(saveChallenges())}> Save Challenges </Button>
+            <Button
+                className='gamif-debug-button'
+                onClick={() => dispatch(updateChallenges())}
+            >
+                Update Challenges
+            </Button> */}
         </>
     );
 }
+
+export default connect(mapStateToProps)(ChallengeList);

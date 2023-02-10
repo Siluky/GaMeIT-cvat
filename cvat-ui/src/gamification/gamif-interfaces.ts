@@ -34,11 +34,28 @@ export interface UserData {
     chat_messages: number,
 }
 
+export interface GamifImagesFinishedLog {
+    logs: UrlLog[]
+}
+
+export interface ImageStatus {
+    id: number,
+    finished: boolean,
+}
+
+export interface UrlLog {
+    url: string,
+    statuses: ImageStatus[],
+}
+
 export interface UserDataState {
     userdata_session: UserData,
     userdata_total: UserData,
     userId: number,
     username: string,
+    surveyPromptVisible: boolean,
+    surveyTiming: number,
+    imagesFinished: GamifImagesFinishedLog,
 }
 
 export enum BadgeTier {
@@ -88,7 +105,8 @@ export enum ChallengeType {
 export interface Challenge {
     id: number;
     instruction: string;
-    initProgress: number;
+    importedProgress: number;
+    baselineValue: number;
     progress: number;
     goal: number;
     goal_variance: number;

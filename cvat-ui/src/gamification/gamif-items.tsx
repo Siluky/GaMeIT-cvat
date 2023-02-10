@@ -323,7 +323,7 @@ export const badges: Badge[] = [
     {
         id: 106,
         title: 'Tetris',
-        instruction: 'Achieve a score of 20 in Tetris',
+        instruction: 'Achieve a score of 2000 in Tetris',
         progress: 0,
         goal: 1,
         tier: BadgeTier.NOT_OBTAINED,
@@ -863,7 +863,7 @@ export const stats: Statistic[] = [
         value: 0,
         unit: '',
         tooltip_total: 'Annotation coin maximum',
-        tooltip_session: 'Current annotation coins',
+        tooltip_session: 'Annotation coin maximum',
     },
     {
         id: 14,
@@ -1303,7 +1303,8 @@ export const availableChallenges: Challenge[] = [
     {
         id: 1,
         instruction: 'Annotate GOAL Images',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
         goal: 40,
         goal_variance: 20,
@@ -1314,7 +1315,8 @@ export const availableChallenges: Challenge[] = [
     {
         id: 2,
         instruction: 'Annotate GOAL Minutes',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
         goal: 45,
         goal_variance: 15,
@@ -1325,9 +1327,10 @@ export const availableChallenges: Challenge[] = [
     {
         id: 3,
         instruction: 'Annotate GOAL Minutes in one Session',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
-        goal: 30,
+        goal: 30 * 60,
         goal_variance: 10,
         reward: 90,
         reward_variance: 30,
@@ -1336,7 +1339,8 @@ export const availableChallenges: Challenge[] = [
     {
         id: 4,
         instruction: 'Complete GOAL Energizers',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
         goal: 3,
         goal_variance: 1,
@@ -1347,7 +1351,8 @@ export const availableChallenges: Challenge[] = [
     {
         id: 5,
         instruction: 'Play Tetris GOAL times',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
         goal: 1,
         goal_variance: 2,
@@ -1358,7 +1363,8 @@ export const availableChallenges: Challenge[] = [
     {
         id: 6,
         instruction: 'Play Snake GOAL times',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
         goal: 1,
         goal_variance: 2,
@@ -1369,7 +1375,8 @@ export const availableChallenges: Challenge[] = [
     {
         id: 7,
         instruction: 'Play Quiz GOAL times',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
         goal: 2,
         goal_variance: 1,
@@ -1380,7 +1387,8 @@ export const availableChallenges: Challenge[] = [
     {
         id: 8,
         instruction: 'Obtain or upgrade GOAL badge',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
         goal: 1,
         goal_variance: 0,
@@ -1391,7 +1399,8 @@ export const availableChallenges: Challenge[] = [
     {
         id: 9,
         instruction: 'Collect GOAL Energy',
-        initProgress: 0,
+        importedProgress: 0,
+        baselineValue: 0,
         progress: 0,
         goal: 20,
         goal_variance: 10,
@@ -1401,18 +1410,21 @@ export const availableChallenges: Challenge[] = [
     },
 ];
 
-export function mapChallengeIdtoFieldName(id: number): keyof UserData {
+export function getChallengeValue(id: number): number {
+    const state = getCVATStore().getState();
+    const udata: UserDataState = state.gamifuserdata;
+
     switch (id) {
-        case 1: return 'images_annotated';
-        case 2: return 'annotation_time';
-        case 3: return 'annotation_time'; // TODO: Session!
-        case 4: return 'energizers_completed';
-        case 5: return 'tetris_played';
-        case 6: return 'snake_played';
-        case 7: return 'quiz_played';
-        case 8: return 'badges_obtained';
-        case 9: return 'energy_gained';
-        default: return 'images_annotated';
+        case 1: return udata.userdata_session.images_annotated;
+        case 2: return udata.userdata_session.annotation_time;
+        case 3: return udata.userdata_session.annotation_time; // TODO: refine
+        case 4: return udata.userdata_session.energizers_completed;
+        case 5: return udata.userdata_session.tetris_played;
+        case 6: return udata.userdata_session.snake_played;
+        case 7: return udata.userdata_session.quiz_played;
+        case 8: return udata.userdata_session.badges_obtained;
+        case 9: return udata.userdata_session.energy_gained;
+        default: return 0;
     }
 }
 

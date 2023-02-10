@@ -2,18 +2,15 @@
 //
 // SPDX-License-Identifier: MIT
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '../../gamif-styles.scss';
 import { Challenge } from 'gamification/gamif-interfaces';
 import { Button, Progress } from 'antd';
 import { AnnotationCoinNoBorderIcon } from 'icons';
 
 import { blue, geekblue } from '@ant-design/colors';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { completeChallenge } from 'gamification/actions/challenge-actions';
-import { CombinedState } from 'reducers/interfaces';
-import { mapChallengeIdtoFieldName } from 'gamification/gamif-items';
-import { getCVATStore } from 'cvat-store';
 import { updateUserData } from 'gamification/actions/user-data-actions';
 
 interface Props {
@@ -22,30 +19,13 @@ interface Props {
     initProgress: number;
 }
 
-interface StateToProps {
-    challenge: Challenge;
-}
-
-function mapStateToProps(state: CombinedState, ownProps: Props): StateToProps {
-    const { gamifuserdata } = state;
-
-    const { challenge } = ownProps;
-    const newProgress = (gamifuserdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]) as number;
-
-    return {
-        challenge: {
-            ...challenge,
-            progress: challenge.initProgress + newProgress,
-        },
-    };
-}
-
 export function ChallengePane(props: Props): JSX.Element {
     const { challenge } = props;
     const dispatch = useDispatch();
-    const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
-    const [startVal, setStart] = useState(0);
+    // const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
+    // const [startVal, setStart] = useState(0);
 
+    // check for challenge completion
     useEffect(() => {
         if (challenge.progress >= challenge.goal) {
             dispatch(completeChallenge(challenge));
@@ -53,17 +33,17 @@ export function ChallengePane(props: Props): JSX.Element {
         }
     }, [challenge.progress]);
 
-    useEffect(() => {
-        // Snapshot state!
-        const udata = getCVATStore().getState().gamifuserdata;
-        setStart(udata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]);
-    }, []);
+    // useEffect(() => {
+    //     // Snapshot state!
+    //     const udata = getCVATStore().getState().gamifuserdata;
+    //     setStart(udata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]);
+    // }, []);
 
-    useEffect(() => {
-        // eslint-disable-next-line max-len
-        const diff = userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)] as number - startVal;
-        challenge.progress = challenge.initProgress + diff;
-    }, [userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]]);
+    // useEffect(() => {
+    //     // eslint-disable-next-line max-len
+    //     const diff = userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)] as number - startVal;
+    //     challenge.progress = challenge.initProgress + diff;
+    // }, [userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]]);
 
     return (
         <div className='gamif-challenge-pane-wrapper'>
@@ -78,7 +58,6 @@ export function ChallengePane(props: Props): JSX.Element {
                         trailColor={geekblue[1]}
                         strokeColor={blue[4]}
                     />
-                    {/* { `${challenge.progress}` } */}
                 </div>
                 <div className='gamif-challenge-pane-top-right'>
                     <Button
@@ -105,4 +84,4 @@ export function ChallengePane(props: Props): JSX.Element {
 
 ChallengePane.initProgress = 0;
 
-export default connect(mapStateToProps)(ChallengePane);
+// export default connect(mapStateToProps)(ChallengePane);

@@ -36,13 +36,13 @@ export default function QuickStatistic(props: QuickStatisticProps): JSX.Element 
     return (
         <CvatTooltip overlay={tooltip}>
             <div className='single-quick-statistic-component'>
-                <div className='quick-stats-content'>
-                    <div style={{ minWidth: '25px' }}>
-                        {icon}
-                    </div>
+                <div className='quick-stats-icon'>
+                    {icon}
+                </div>
+                <span className='quick-stats-text'>
                     &nbsp;
                     {formatValue(id, value)}
-                </div>
+                </span>
             </div>
         </CvatTooltip>
     );

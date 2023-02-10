@@ -11,14 +11,13 @@ import {
     Radio,
 }
     from 'antd';
-import { EditFilled, SettingFilled } from '@ant-design/icons';
+import { SettingFilled } from '@ant-design/icons';
 // import { TimeIcon } from 'icons';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import CvatTooltip from 'components/common/cvat-tooltip';
 import { toggleSelecting } from 'gamification/actions/statistics-actions';
 import { CombinedState } from 'reducers/interfaces';
 import { Statistic } from 'gamification/gamif-interfaces';
-import { saveUserData } from 'gamification/actions/user-data-actions';
 import StatisticsComponent from './statistics-component';
 
 interface StateToProps {
@@ -42,7 +41,7 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
 
     const { selecting } = props;
     const [allTime, showAllTimeStats] = useState(true);
-    const [inc, setInc] = useState(false);
+    // const [inc, setInc] = useState(false);
     const stats = useSelector((state: CombinedState) => state.statistics);
     // const udata = useSelector((state: CombinedState) => state.gamifuserdata);
 
@@ -63,7 +62,7 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                         <Button
                             className={btnClass}
                             size='large'
-                            type='text'
+                            type='ghost'
                             icon={<SettingFilled />}
                             onClick={(e) => {
                                 e.preventDefault();
@@ -71,27 +70,12 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                             }}
                         />
                     </CvatTooltip>
-                    <CvatTooltip
-                        overlay='DEBUG: Press this and then a statistic to increment it by one.'
-                    >
-                        <Button
-                            className='statistics-selecting-button-inactive gamif-debug-button'
-                            size='large'
-                            // icon={<EditFilled />}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setInc(!inc);
-                            }}
-                        >
-                            <EditFilled />
-                        </Button>
-                    </CvatTooltip>
                 </div>
                 <div className='statistics-panel-bottom'>
                     <Row>
                         {stats.statistics.map((_stat: Statistic, index: number) => (
                             <Col span={12} key={index}>
-                                <StatisticsComponent statistic={_stat} inc={inc} allTime={allTime} />
+                                <StatisticsComponent statistic={_stat} inc={false} allTime={allTime} />
                                 {/* <CvatTooltip
                                     overlay={allTime ? _stat.tooltip_total : _stat.tooltip_session}
                                 >
@@ -121,12 +105,33 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                         ))}
                     </Row>
                 </div>
-                <Button
+                {/* <Button
                     className='gamif-debug-button'
-                    onClick={() => dispatch(saveUserData())}
+                    onClick={() => dispatch(saveUserData(false))}
                 >
                     Save User Data
                 </Button>
+                <Button
+                    className='gamif-debug-button'
+                    onClick={() => dispatch(saveUserData(true))}
+                >
+                    Backup User Data
+                </Button> */}
+                {/* <CvatTooltip
+                    overlay='DEBUG: Press this and then a statistic to increment it by one.'
+                >
+                    <Button
+                        className='statistics-selecting-button-inactive gamif-debug-button'
+                        size='large'
+                        // icon={<EditFilled />}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setInc(!inc);
+                        }}
+                    >
+                        <EditFilled />
+                    </Button>
+                </CvatTooltip> */}
             </div>
         </>
     );

@@ -3,10 +3,11 @@
 // SPDX-License-Identifier: MIT
 import React, { useEffect } from 'react';
 import '../../gamif-styles.scss';
-import { Menu, Popover, Button } from 'antd';
+import { Popover, Button } from 'antd';
 import { CloseOutlined, InfoCircleFilled } from '@ant-design/icons';
 import { getFriendsListAsync, saveProfileDataAsync, toggleChat } from 'gamification/actions/social-actions';
 import { Profile } from 'gamification/gamif-interfaces';
+import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { connect, useDispatch } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 import StatusMenu from './status-menu';
@@ -32,9 +33,9 @@ interface SocialBarProps {
 const chatBar = (friend: Profile): JSX.Element => {
     const dispatch = useDispatch();
     return (
-        <Menu.Item
-            // icon={<RadarChartOutlined />}
+        <div
             key={friend.userId}
+            className='gamif-chat-bar-bubble'
         >
             <Popover
                 placement='top'
@@ -52,7 +53,7 @@ const chatBar = (friend: Profile): JSX.Element => {
                 type='text'
                 size='small'
             />
-        </Menu.Item>
+        </div>
     );
 };
 
@@ -65,45 +66,48 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
     }, []);
 
     return (
-        <Menu
+        <div
             className='gamif-social-bar'
-            mode='horizontal'
+            // mode='horizontal'
             style={{ padding: '0', borderBottom: '0' }}
         >
-            <Menu.Item
-                className='gamif-friends-list-menu'
-                style={{ display: 'flex' }}
-                icon={(
-                    <Popover
-                        placement='left'
-                        trigger='click'
-                        content={<StatusMenu />}
-                        mouseLeaveDelay={10}
-                        onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
-                        overlayClassName='gamif-popover'
-                    >
-                        <div className='gamif-status-menu-trigger'>
-                            <InfoCircleFilled />
-                        </div>
-                    </Popover>
-                )}
-                key='friends_list'
-            >
+            <div className='gamif-social-bar-friends-menu'>
                 <Popover
-                    placement='top'
+                    placement='left'
                     trigger='click'
-                    content={<FriendsList profiles={friends} />}
+                    content={<StatusMenu />}
                     mouseLeaveDelay={10}
+                    onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
+                    overlayClassName='gamif-popover'
                 >
-                    <Button
-                        className='friends-list-popover-trigger-button'
-                        onClick={() => dispatch(getFriendsListAsync())}
-                        ghost
-                    >
-                        {`Online (${friends.length ?? 0})`}
-                    </Button>
+                    <div className='gamif-status-menu-trigger'>
+                        <InfoCircleFilled />
+                    </div>
                 </Popover>
-            </Menu.Item>
+                <div
+                    className='gamif-friends-list-menu'
+                    style={{ display: 'flex' }}
+                    key='friends_list'
+                >
+                    <Popover
+                        placement='top'
+                        trigger='click'
+                        content={<FriendsList profiles={friends} />}
+                        mouseLeaveDelay={10}
+                    >
+                        <Button
+                            className='friends-list-popover-trigger-button'
+                            onClick={() => {
+                                dispatch(getFriendsListAsync());
+                                dispatch(addGamifLog('Opened Friends List'));
+                            }}
+                            ghost
+                        >
+                            {`Online (${friends.length ?? 0})`}
+                        </Button>
+                    </Popover>
+                </div>
+            </div>
             {/* {social.chats.map((chat: ChatRoom) => {
                 const user = social.chats.find((e) => e.otherUserId === chat.otherUserId);
                 if (user) {
@@ -111,11 +115,13 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                 }
                 return <></>;
             })} */}
-            {friends.map((user: Profile) => {
-                if (user.chatActive) { return chatBar(user); }
-                return null;
-            })}
-        </Menu>
+            <div className='gamif-social-bar-chat-boxes-wrapper'>
+                {friends.map((user: Profile) => {
+                    if (user.chatActive) { return chatBar(user); }
+                    return null;
+                })}
+            </div>
+        </div>
     );
 }
 

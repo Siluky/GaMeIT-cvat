@@ -113,16 +113,22 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                             <div>
                                 {receivedOn}
                             </div>
-                            <div className='gamif-badge-detail-profile-button-wrapper'>
+                            <Button
+                                className='gamif-badge-detail-profile-button-wrapper'
+                                onClick={() => {
+                                    dispatch(toggleBadgeInProfile(badge.id));
+                                    dispatch(saveSelectedBadges(badges.badgesinProfile));
+                                }}
+                            >
                                 <Button
                                     className='gamif-badges-profile-button'
                                     icon={
                                         isBadgeSelected ? <CheckSquareOutlined /> : <CloseSquareOutlined />
                                     }
-                                    onClick={() => {
-                                        dispatch(toggleBadgeInProfile(badge.id));
-                                        dispatch(saveSelectedBadges(badges.badgesinProfile));
-                                    }}
+                                    // onClick={() => {
+                                    //     dispatch(toggleBadgeInProfile(badge.id));
+                                    //     dispatch(saveSelectedBadges(badges.badgesinProfile));
+                                    // }}
                                     size='small'
                                 />
                                 {profileText}
@@ -134,7 +140,7 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                                 >
                                     Upgrade
                                 </Button> */}
-                            </div>
+                            </Button>
                         </div>
                     </>
                 )}

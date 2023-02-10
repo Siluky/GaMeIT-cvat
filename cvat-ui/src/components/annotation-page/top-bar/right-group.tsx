@@ -10,16 +10,18 @@ import Button from 'antd/lib/button';
 import Text from 'antd/lib/typography/Text';
 import Tooltip from 'antd/lib/tooltip';
 import Moment from 'react-moment';
+import 'gamification/gamif-styles.scss';
 
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
 import {
-    FilterIcon, FullscreenIcon, InfoIcon, BrainIcon,
+    FilterIcon, FullscreenIcon, InfoIcon, BrainIcon, ImageFinishedIcon,
 } from 'icons';
 import {
     CombinedState, DimensionType, Workspace, PredictorState,
 } from 'reducers/interfaces';
+import { addGamifLog, setFinishedStatus, updateUserData } from 'gamification/actions/user-data-actions';
 import QuickStats from './quick-statistics';
 
 interface Props {
@@ -32,6 +34,24 @@ interface Props {
     changeWorkspace(workspace: Workspace): void;
 
     jobInstance: any;
+    imageFinished: boolean;
+}
+
+interface StateToProps {
+    imageFinished: boolean;
+}
+
+function mapStateToProps(state: CombinedState): StateToProps {
+    const frameNumber = state.annotation.player.frame.number;
+    const url = window.location.href;
+
+    const { logs } = state.gamifuserdata.imagesFinished;
+    const log = logs.find((l) => l.url === url);
+    const status = log?.statuses.find((stat) => stat.id === frameNumber);
+
+    return {
+        imageFinished: !!status?.finished,
+    };
 }
 
 function RightGroup(props: Props): JSX.Element {
@@ -44,6 +64,7 @@ function RightGroup(props: Props): JSX.Element {
         jobInstance,
         isTrainingActive,
         showFilters,
+        imageFinished,
     } = props;
     const annotationAmount = predictor.annotationAmount || 0;
     const mediaAmount = predictor.mediaAmount || 0;
@@ -123,10 +144,30 @@ function RightGroup(props: Props): JSX.Element {
     }
 
     const filters = useSelector((state: CombinedState) => state.annotation.annotations.filters);
+    const frameNumber = useSelector((state: CombinedState) => state.annotation.player.frame.number);
+    const dispatch = useDispatch();
 
     return (
         <Col className='cvat-annotation-header-right-group'>
-            <QuickStats />
+
+            <Button
+                className={`gamif-images-finished-button-wrapper ${imageFinished ? 'green' : 'grey'}`}
+                style={{ height: '40px', width: '40px', margin: 'auto' }}
+                onClick={() => {
+                    // setImageFinished(!imageFinished);
+                    dispatch(updateUserData('images_annotated',
+                        (imageFinished ? -1 : 1)));
+                    dispatch(setFinishedStatus(frameNumber, !imageFinished));
+                    if (imageFinished) {
+                        dispatch(addGamifLog('Image Finished'));
+                    }
+                }}
+                // icon={!imageFinished ? <CheckSquareOutlined /> : <CloseSquareOutlined />}
+                icon={<ImageFinishedIcon />}
+            />
+            <div>
+                <QuickStats />
+            </div>
             {isTrainingActive && (
                 <Button
                     type='link'
@@ -202,4 +243,4 @@ function RightGroup(props: Props): JSX.Element {
     );
 }
 
-export default React.memo(RightGroup);
+export default connect(mapStateToProps)(RightGroup);

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Intel Corporation
+// Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
 
@@ -17,6 +17,8 @@ import copy from 'copy-to-clipboard';
 
 import { JobStage } from 'reducers/interfaces';
 import CVATTooltip from 'components/common/cvat-tooltip';
+import { useDispatch } from 'react-redux';
+import { setSurveyTiming, toggleSurveyPrompt } from 'gamification/actions/user-data-actions';
 import UserSelector, { User } from './user-selector';
 
 interface Props {
@@ -87,6 +89,8 @@ function JobListComponent(props: Props & RouteComponentProps): JSX.Element {
         onJobUpdate,
         history: { push },
     } = props;
+
+    const dispatch = useDispatch();
 
     const { jobs, id: taskId } = taskInstance;
 
@@ -170,6 +174,10 @@ function JobListComponent(props: Props & RouteComponentProps): JSX.Element {
                             onChange={(newValue: string) => {
                                 jobInstance.stage = newValue;
                                 onJobUpdate(jobInstance);
+                                if (newValue === JobStage.ACCEPTANCE) {
+                                    dispatch(toggleSurveyPrompt(true));
+                                    dispatch(setSurveyTiming(1));
+                                }
                             }}
                         >
                             <Select.Option value={JobStage.ANNOTATION}>{JobStage.ANNOTATION}</Select.Option>

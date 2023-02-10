@@ -10,6 +10,10 @@
   font-weight: bold;
 }
 
+.gamif-image-finished-button {
+  width: 50px;
+}
+
 // Badges
 
 .gamif-badge-popover {
@@ -155,6 +159,7 @@
 
 .gamif-badge-detail-profile-button-wrapper {
   background: #e6e6e6;
+  width: 100%;
   padding: 2px;
   border-radius: 4px;
   display: flex;
@@ -172,6 +177,36 @@
 
 .gamif-badge-load-fail {
     color: red;
+}
+
+.gamif-images-finished-button-wrapper {
+  background: #e6e6e6;
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.green {
+    background: #c9dfc8;
+  }
+
+  &.grey {
+    background: #c0c0c0;
+  }
+
+  &.ant-btn-icon-only {
+    width: 24px;
+    height: 24px
+  }
+}
+
+.gamif-images-finished-button {
+  &.ant-btn-icon-only.ant-btn-sm {
+    width: 16px;
+    margin-right: 4px;
+    height: 16px;
+  }
 }
 
 // Challenges
@@ -269,6 +304,7 @@
 .gamif-energizer-button-wrapper {
   border-radius: 50%;
   // width: 50px;
+  margin-right: 5px;
   min-width: 35px;
   height: 35px;
   overflow: hidden;
@@ -286,6 +322,7 @@
 .gamif-shop-button-wrapper {
   background: blue;
   border-radius: 50%;
+  margin-right: 5px;
   // width: 50px;
   min-width: 35px;
   height: 35px;
@@ -328,11 +365,19 @@
   border: none;
 }
 
+.gamif-survey-popup-top {
+  background-color: #f07c41;
+  margin-left: auto;
+  margin-right: 5px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .gamif-energizer-popup-header-right {
   margin-left: auto;
   margin-right: 5px;
   margin-top: 5px;
-
 }
 
 .gamif-energizer-popup-top-wrapper {
@@ -410,7 +455,19 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  height: 200px;
 }
+
+.energizer-return-button {
+  width: 180px;
+  height: 45px;
+  margin: 20px;
+  border-radius: 10px;
+  background: #0f526f;
+  color: white;
+  font-weight: bold;
+}
+
 
 .quiz-duel-heading {
   width: 20%;
@@ -683,6 +740,19 @@
 
 // .gamif-shop-window-items-row {
 // }
+.gamif-energizer-preview-card {
+  width: 80px;
+  height: 120px;
+  background: #f07c41;
+  color: white;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: bold;
+
+  // border: 1px solid #1d3c62;
+  // margin-bottom: 5px;
+  // margin: 2px;
+  border-radius: 5px;
+}
 
 .gamif-shop-item-card {
   width: 80px;
@@ -747,15 +817,24 @@
 // social
 .gamif-social-bar {
     background: #B5BECA;
+    display: flex;
+    max-height: 32px;
+    flex-direction: row;
     position: absolute;
     width: 100%;
     bottom: 0;
 }
 
+.gamif-social-bar-friends-menu {
+  // background: red;
+  display: flex;
+  align-items: center;
+  background: #9EBECB
+}
+
 .gamif-status-menu-trigger {
   width: 24px;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -890,6 +969,21 @@
   font-weight: bold;
   background: #1e3d59;
   border-radius: 8px;
+}
+
+.gamif-social-bar-chat-boxes-wrapper {
+  padding: 1px;
+  // background: blue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 80%;
+}
+
+.gamif-chat-bar-bubble {
+  background: #1e3d59;
+  color: white;
+  border-radius: 0 0 4px 4px;
 }
 
 .gamif-chat-box-container {
@@ -1135,19 +1229,21 @@ div.chat div.chat-content span.you
 .statistics-panel-top {
   height: 40px;
   display: flex;
-  padding: 10px 0 10px 0;
-  justify-content: center;
+  padding: 10px 1em 10px 1em;
+  justify-content: space-between;
   align-items: center;
 }
 
 .statistics-selecting-button-active {
-  margin-left: 1em;
+  // margin-left: auto;
   font-size: 32px;
   color: red;
+  // box-shadow: 2px 2px 5px 5px black
+  box-shadow: 0 0 4px 4px #fddeef
 }
 
 .statistics-selecting-button-inactive {
-  margin-left: 1em;
+  // margin-left: 1em;
   color: grey;
 }
 
@@ -1240,20 +1336,21 @@ div.chat div.chat-content span.you
 
 //quick statistics
 .cvat-annotation-header-quick-statistics-group {
-    height: 48px;
+    // height: 48px;
+    height: 100%;
+    min-width: 160px;
     // width: 160px;
     // margin-left: 10px;
     padding-left: 10px;
-    flex-direction: column;
     /*
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 48px;*/
     > div {
-      height: 50%;
+      // height: 50%;
       width: 100%;
-      justify-content: space-around;
+      justify-content: space-evenly;
       align-items: center;
   }
 }
@@ -1264,7 +1361,7 @@ div.chat div.chat-content span.you
 }
 
 .single-quick-statistic-component {
-    // display: flex;
+    display: flex;
     flex-direction: row;
     height: 100%;
     justify-content: space-between;
@@ -1279,7 +1376,11 @@ div.chat div.chat-content span.you
 
 }
 
-.quick-stats-content {
-  min-width: 30px;
-  display: flex;
+.quick-stats-icon {
+  min-width: 25px;
 }
+
+.quick-stats-text {
+  text-align: center;
+}
+
