@@ -114,16 +114,24 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                 type='card'
                 defaultActiveKey='objects'
                 className='cvat-objects-sidebar-tabs'
-                // onChange={(key) => {
-                //     if (key === 'challenges') {
-                //         switchInterval(true);
-                //         const interval = setInterval(() => {
-                //             dispatch(updateChallenges());
-                //             console.log('updating challenges');
-                //             if (!challengeIntervalActive) { clearInterval(interval); }
-                //         }, 3000);
-                //     } else { switchInterval(false); }
-                // }}
+            >
+                <Tabs.TabPane tab={<Text strong>Objects</Text>} key='objects'>
+                    {objectsList}
+                </Tabs.TabPane>
+                <Tabs.TabPane forceRender tab={<Text strong>Labels</Text>} key='labels'>
+                    <LabelsList />
+                </Tabs.TabPane>
+                {is2D ? (
+                    <Tabs.TabPane tab={<Text strong>Issues</Text>} key='issues'>
+                        <IssuesListComponent />
+                    </Tabs.TabPane>
+                ) : null}
+            </Tabs>
+
+            <Tabs
+                type='card'
+                defaultActiveKey='objects'
+                className='cvat-objects-sidebar-tabs'
                 onChange={(key) => {
                     if (key === 'challenges') {
                         dispatch(updateChallenges());
@@ -134,18 +142,6 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                     }
                 }}
             >
-                <Tabs.TabPane tab={<Text strong>Objects</Text>} key='objects'>
-                    {objectsList}
-                </Tabs.TabPane>
-                <Tabs.TabPane forceRender tab={<Text strong>Labels</Text>} key='labels'>
-                    <LabelsList />
-                </Tabs.TabPane>
-
-                {is2D ? (
-                    <Tabs.TabPane tab={<Text strong>Issues</Text>} key='issues'>
-                        <IssuesListComponent />
-                    </Tabs.TabPane>
-                ) : null}
                 <Tabs.TabPane
                     tab={<Text strong>Challenges</Text>}
                     key='challenges'
@@ -158,24 +154,7 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
             </Tabs>
 
             {!sidebarCollapsed && <AppearanceBlock />}
-            {/* <div className='objects-side-bar-half'>
 
-                <Tabs
-                    type='card'
-                    defaultActiveKey='challenges'
-                    className='cvat-objects-sidebar-tabs'
-                >
-                    <Tabs.TabPane
-                        tab={<Text strong>Challenges</Text>}
-                        key='challenges'
-                    >
-                        <ChallengeList />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
-                        <StatisticsList />
-                    </Tabs.TabPane>
-                </Tabs>
-            </div> */}
             <SocialBar />
         </Layout.Sider>
     );

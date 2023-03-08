@@ -7,7 +7,9 @@
 .cvat-objects-appearance-collapse.ant-collapse {
     width: 100%;
     border-radius: 0;
-    margin-bottom: 34px;
+    margin-bottom: 2px;
+    position: absolute;
+    bottom: 32px;
 
     > .ant-collapse-item {
         border: none;
@@ -56,6 +58,9 @@
     background: $header-color;
     box-sizing: border-box;
     border: none;
+    height: 40%;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #c3c3c3;
 
     .ant-tabs-nav {
         &::before {
@@ -64,7 +69,7 @@
 
         border: none;
         margin-bottom: 0;
-        padding-top: 25px;
+        padding-top: 10px;
 
         .ant-tabs-tab {
             background: $transparent-color;
@@ -160,7 +165,7 @@
 .cvat-objects-sidebar-states-list {
     background-color: $background-color-2;
     height: calc(100% - 50px);
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .cvat-objects-sidebar-state-item.cvat-objects-sidebar-state-active-item {
