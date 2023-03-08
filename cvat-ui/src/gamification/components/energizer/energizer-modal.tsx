@@ -8,6 +8,7 @@ import {
     Button,
     Modal,
 } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 // eslint-disable-next-line import/no-named-as-default
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
@@ -159,6 +160,23 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
         }
     };
 
+    const { confirm } = Modal;
+
+    const showConfirm = (): void => {
+        confirm({
+            title: 'Are you sure you want to cancel this energizer?',
+            icon: <ExclamationCircleFilled />,
+            content: 'Your energy will not be refunded.',
+            onOk() {
+                onClose();
+                setLeaderboardShown(false);
+                dispatch(setActiveEnergizer(EnergizerType.NONE));
+            },
+            onCancel() {
+            },
+        });
+    };
+
     return (
         <>
             <Modal
@@ -166,12 +184,11 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 // title='Energizer'
                 title={modalTitleMessage(active)}
                 visible={visible}
-                onCancel={onClose /* safety switch currently */}
+                onCancel={active !== EnergizerType.NONE ? showConfirm : onClose}
                 width={1000}
                 footer={null}
                 maskClosable={false}
                 destroyOnClose={destroyonClose}
-                closable={false}
                 zIndex={1000}
                 keyboard={false}
             >
@@ -183,7 +200,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 >
                     Show Leaderboard
                 </Button> */}
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button
                         // className='gamif-energizer-continue-button'
                         className='quiz-duel-answer-button'
@@ -197,7 +214,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                     >
                         Return
                     </Button>
-                </div>
+                </div> */}
             </Modal>
 
             <Modal

@@ -143,7 +143,12 @@ export function incrementEnergy(increment: number): ThunkAction<void, {}, {}, An
 
         dispatch(incrementEnergyAction(increment));
         dispatch(saveCurrentEnergyAsync(Math.min(newEnergy, 20)));
-        if (newEnergy === gamifconsts.ENERGIZER_COST && !active) { dispatch(switchEnergizerPopUp(true)); }
+        if (newEnergy === gamifconsts.ENERGIZER_COST && !active) {
+            dispatch(switchEnergizerPopUp(true));
+            setTimeout(() => {
+                dispatch(switchEnergizerPopUp(false));
+            }, 5000);
+        }
     };
 }
 

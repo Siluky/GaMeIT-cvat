@@ -571,6 +571,20 @@ function HeaderContainer(props: Props): JSX.Element {
                         Analytics
                     </Button>
                 )}
+            </div>
+
+            <div className='cvat-right-header'>
+                <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
+                    <Button
+                        type='text'
+                        className='gamif-debug-button'
+                        style={{ height: '24px', width: '24px', margin: '4px' }}
+                        icon={<PlusOutlined />}
+                        onClick={(): void => {
+                            incrementEnergy(1);
+                        }}
+                    />
+                </CVATTooltip>
                 <CVATTooltip overlay={`Current Energy: ${currentEnergy}`}>
                     <Popover
                         content={<EnergizerPopUp currentEnergy={currentEnergy} />}
@@ -584,7 +598,7 @@ function HeaderContainer(props: Props): JSX.Element {
                                 icon={getEnergizerIcon(currentEnergy) ?? <EnergizerIcon />}
                                 onClick={(): void => {
                                     if (currentEnergy >= gamifconsts.ENERGIZER_COST && !energizerShown) {
-                                        switchEnergizerPopUp(true);
+                                        switchEnergizerPopUp(!energizerPopUpShown);
                                     }
                                 }}
                             />
@@ -630,19 +644,7 @@ function HeaderContainer(props: Props): JSX.Element {
                         />
                     </CVATTooltip>
                 </Popover>
-                <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
-                    <Button
-                        type='text'
-                        className='gamif-debug-button'
-                        style={{ height: '24px', width: '24px', margin: '4px' }}
-                        icon={<PlusOutlined />}
-                        onClick={(): void => {
-                            incrementEnergy(1);
-                        }}
-                    />
-                </CVATTooltip>
-            </div>
-            <div className='cvat-right-header'>
+
                 <CVATTooltip overlay='Click to open repository'>
                     <Button
                         icon={<GithubOutlined />}
