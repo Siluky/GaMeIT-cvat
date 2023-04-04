@@ -34,9 +34,10 @@ export function setStatistics(statistic: Statistic[]): AnyAction {
     };
 }
 
-export function toggleSelecting(): AnyAction {
+export function toggleSelecting(hide?: boolean): AnyAction {
     return {
         type: StatisticsActionTypes.TOGGLE_SELECTING,
+        payload: hide,
     };
 }
 

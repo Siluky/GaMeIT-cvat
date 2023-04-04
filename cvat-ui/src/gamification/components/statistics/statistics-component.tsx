@@ -4,7 +4,7 @@
 import React from 'react';
 import 'gamification/gamif-styles.scss';
 import { Button } from 'antd';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { selectStatistic } from 'gamification/actions/statistics-actions';
 import CvatTooltip from 'components/common/cvat-tooltip';
 import { Statistic } from 'gamification/gamif-interfaces';
@@ -27,15 +27,8 @@ function mapStateToProps(state: CombinedState, ownProps: Props): StateToProps {
     const uData = state.gamifuserdata;
 
     const { statistic, allTime } = ownProps;
-    let val = 0;
-    // Modify the value based on the statistic id
-    switch (statistic.id) {
-        case 777:
-            break;
-        default: val = (allTime ? uData.userdata_total[mapStatisticIdtoFieldName(statistic.id)] :
-            uData.userdata_session[mapStatisticIdtoFieldName(statistic.id)]) as number;
-            break;
-    }
+    const val = (allTime ? uData.userdata_total[mapStatisticIdtoFieldName(statistic.id)] :
+        uData.userdata_session[mapStatisticIdtoFieldName(statistic.id)]) as number;
 
     return {
         statistic: {
@@ -66,17 +59,24 @@ export function StatisticComponent(props: Props): JSX.Element {
         statistic, inc, allTime,
     } = props;
     const dispatch = useDispatch();
+    const relevantId = allTime ? statistic.id : statistic.id + 100;
+    const { selecting, selectedStatistics } = useSelector((state: CombinedState) => state.statistics);
 
     return (
         <CvatTooltip
             overlay={allTime ? statistic.tooltip_total : statistic.tooltip_session}
         >
             <Button
-                className='statistic-button'
+                className={
+                    `
+                    statistic-button
+                    ${(selecting && selectedStatistics.find((s) => s === relevantId)) ? 'selected' : ''}
+                    `
+                }
                 type='default'
                 onClick={(e) => {
                     e.preventDefault();
-                    dispatch(selectStatistic(allTime ? statistic.id : statistic.id + 100));
+                    dispatch(selectStatistic(relevantId));
                     if (inc) {
                         dispatch(updateUserData(mapStatisticIdtoFieldName(statistic.id), 1));
                     }

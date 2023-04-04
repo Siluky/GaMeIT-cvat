@@ -13,7 +13,7 @@ import {
 import {
     MailFilled,
 } from '@ant-design/icons';
-import { BadgeStatus, Profile } from 'gamification/gamif-interfaces';
+import { BadgeStatus, OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleChat } from 'gamification/actions/social-actions';
 import CvatTooltip from 'components/common/cvat-tooltip';
@@ -83,6 +83,14 @@ export default function QuickProfile(props: QuickProfileProps): JSX.Element {
     const { profile } = props;
     const dispatch = useDispatch();
     const pstyle = profile.profileStyle;
+    const statusToText = (status: OnlineStatus): string => {
+        switch (status) {
+            case OnlineStatus.ONLINE: return 'Online';
+            case OnlineStatus.DO_NOT_DISTURB: return 'Do not Disturb';
+            case OnlineStatus.OFFLINE: return 'Offline';
+            default: return '';
+        }
+    };
 
     return (
         <div
@@ -100,15 +108,9 @@ export default function QuickProfile(props: QuickProfileProps): JSX.Element {
                 <div className='gamif-quick-profile status'>
                     <div className='gamif-quick-profile-status-icon' style={getstatusStyle(profile.status)}> &nbsp; </div>
                     &nbsp;
-                    <span className='gamif-quick-profile-status-text'>{profile.status}</span>
+                    <span className='gamif-quick-profile-status-text'>{statusToText(profile.status)}</span>
                 </div>
                 <div className='gamif-quick-profile-avatar-name-container'>
-                    {/* <Avatar
-                        className='gamif-quick-profile-avatar'
-                        style={{ border: pstyle.avatarBorder }}
-                        size={40}
-                        icon={avatar}
-                    /> */}
                     <span className='gamif-quick-profile-name'>{profile.username}</span>
                 </div>
                 <div className='gamif-quick-profile badges'>

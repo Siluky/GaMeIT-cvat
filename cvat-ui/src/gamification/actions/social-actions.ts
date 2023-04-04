@@ -57,7 +57,7 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
         try {
             const profilesImport = await cvat.social.friends();
 
-            profilesImport.sort((a: any, b: any) => a.online_status - b.online_status);
+            profilesImport.sort((a: any, b: any) => b.online_status - a.online_status);
 
             const profiles: Profile[] = profilesImport.map((profile: any): Profile => ({
                 username: profile.user,

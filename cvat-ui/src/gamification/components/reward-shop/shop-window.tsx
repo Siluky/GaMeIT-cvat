@@ -2,16 +2,16 @@
 //
 // SPDX-License-Identifier: MIT
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import 'gamification/gamif-styles.scss';
 import 'gamification/gamif-profile-styles.scss';
 import {
     Row, Col, Button,
 } from 'antd';
 import { connect, useDispatch } from 'react-redux';
+import CvatTooltip from 'components/common/cvat-tooltip';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
-import { purchaseItem, setOverlayMessage } from 'gamification/actions/shop-actions';
+import { purchaseItem, setShopOverlayMessage } from 'gamification/actions/shop-actions';
 import {
     setAdditionalClassNames,
     setColor, setProfileBackground, setProfileBackgroundEffects, setProfileBorder,
@@ -20,6 +20,7 @@ import {
 // import { incrementEnergy } from 'gamification/actions/energizer-actions';
 // import { addChallenge } from 'gamification/actions/challenge-actions';
 // import { SketchOutlined } from '@ant-design/icons';
+import { Popup } from 'gamification/gamifconsts';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { AnnotationCoinNoBorderIcon } from 'icons';
 import ShopItemComponent from './shop-item';
@@ -49,20 +50,6 @@ function mapStateToProps(state: CombinedState): StateToProps {
     };
 }
 
-const Popup = styled.div`
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-background: #fff;
-padding: 12px 24px;
-border-radius: 4px;
-text-align: center;
-box-shadow: 2px 7px 18px 3px #d2d2d2;
-color: black;
-z-index: 3;
-`;
-
 export function ShopWindow(props: ShopWindowProps): JSX.Element {
     const {
         items, currentBalance, selectedItemId, overlayMessage,
@@ -77,19 +64,38 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
         const relevantItem = items.find((item) => item.id === id) ?? items[5];
         if (!relevantItem.bought) return;
 
-        dispatch(setProfileBackgroundEffects(0));
-        // dispatch(setProfileBackground(0));
+        /*
+        Options:
+        setAdditionalClassNames(): For complex background effects
+        setProfileBackground(): Sets background
+        setProfileBorder(): Sets border
+        setProfileBackgroundEffects(): For complex background effects
+        */
 
         switch (id) {
             case 6: {
                 dispatch(setProfileBackground(1));
+                dispatch(setProfileBackgroundEffects(0));
+                dispatch(setProfileBorder(0));
                 dispatch(setAdditionalClassNames(0));
                 dispatch(setColor('#1e3d59'));
                 break;
             }
-            case 7: dispatch(setProfileBackground(2)); break;
-            case 8: dispatch(setProfileBackground(3)); break;
-            case 9: dispatch(setProfileBackground(4)); break;
+            case 7:
+                dispatch(setProfileBackgroundEffects(0));
+                dispatch(setProfileBackground(2));
+
+                break;
+            case 8:
+                dispatch(setProfileBackgroundEffects(0));
+                dispatch(setProfileBackground(3));
+
+                break;
+            case 9:
+                dispatch(setProfileBackgroundEffects(0));
+                dispatch(setProfileBackground(4));
+
+                break;
             case 10: {
                 dispatch(setProfileBackground(0));
                 dispatch(setAdditionalClassNames(1));
@@ -109,12 +115,11 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 break;
             case 14: {
                 dispatch(setProfileBackground(0));
-                dispatch(setAdditionalClassNames(5));
                 dispatch(setProfileBackgroundEffects(1));
+                dispatch(setAdditionalClassNames(5));
                 break;
             }
             case 15: {
-                dispatch(setProfileBackground(0));
                 dispatch(setProfileBackground(5));
                 dispatch(setProfileBackgroundEffects(2));
 
@@ -144,6 +149,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 dispatch(setAdditionalClassNames(10));
                 break;
             case 25: {
+                dispatch(setProfileBorder(0));
                 dispatch(setAdditionalClassNames(11));
                 break;
             }
@@ -169,7 +175,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                         <Popup>
                             <h2 style={{ color: 'black' }}>{overlayMessage}</h2>
                             <Button onClick={() => {
-                                dispatch(setOverlayMessage(''));
+                                dispatch(setShopOverlayMessage(''));
                                 toggleOverlay(false);
                             }}
                             >
@@ -179,8 +185,12 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                         /* </div> */
                     ) : null}
                 <div className='gamif-shop-window-header'>
+                    Reward Shop
+                </div>
+                <div className='gamif-shop-window-buttons'>
                     <Button
                         className='gamif-shop-window-button'
+                        disabled={overlayVisible}
                         onClick={() => {
                             dispatch(purchaseItem(selectedItemId));
                             dispatch(addGamifLog(`Bought item: ${selectedItemId}`));
@@ -191,6 +201,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                     </Button>
                     <Button
                         className='gamif-shop-window-button'
+                        disabled={overlayVisible}
                         onClick={() => useItem(selectedItemId)}
                     >
                         Use
@@ -201,20 +212,22 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                     >
                         Overlay
                     </Button> */}
-                    <div className='gamif-shop-balance-display'>
-                        <h3>
-                            <span>Current Balance: </span>
-                            &nbsp;
-                            {currentBalance}
-                            {/* <SketchOutlined /> */}
-                            <div style={{ width: '25px', height: '25px' }}>
-                                <AnnotationCoinNoBorderIcon />
-                            </div>
-                            {/* <Button
-                                icon={<AnnotationCoinNoBorderIcon />}
-                                type='text'
-                            /> */}
-                        </h3>
+                    <div className='gamif-shop-window-button gamif-shop-balance-display'>
+                        <CvatTooltip overlay='Current Balance'>
+                            <h3>
+                                {/* <span>Current Balance: </span> */}
+                                {/* &nbsp; */}
+                                {currentBalance}
+                                {/* <SketchOutlined /> */}
+                                <div style={{ width: '25px', height: '25px' }}>
+                                    <AnnotationCoinNoBorderIcon />
+                                </div>
+                                {/* <Button
+                                    icon={<AnnotationCoinNoBorderIcon />}
+                                    type='text'
+                                /> */}
+                            </h3>
+                        </CvatTooltip>
                     </div>
                 </div>
                 <div className='gamif-shop-window-items-wrapper'>

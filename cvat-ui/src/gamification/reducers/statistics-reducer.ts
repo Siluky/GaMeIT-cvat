@@ -31,7 +31,7 @@ export default (state = defaultState, action: AnyAction): StatisticsState => {
         case StatisticsActionTypes.TOGGLE_SELECTING: {
             return {
                 ...state,
-                selecting: !state.selecting,
+                selecting: action.payload || !state.selecting,
             };
         }
 

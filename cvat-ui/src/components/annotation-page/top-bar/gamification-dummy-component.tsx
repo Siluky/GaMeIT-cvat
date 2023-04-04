@@ -3,26 +3,64 @@
 // SPDX-License-Identifier: MIT
 
 import { getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
+import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
 import { setStatus } from 'gamification/actions/social-actions';
 import {
+    addGamifLog,
     saveUserData, setSurveyTiming, toggleSurveyPrompt, updateUserData,
 } from 'gamification/actions/user-data-actions';
 import { OnlineStatus } from 'gamification/gamif-interfaces';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useIdleTimer } from 'react-idle-timer';
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 
 export function GamificationDummy(): JSX.Element {
     const dispatch = useDispatch();
-    const intervalTimer = 5000;
+    const intervalTimer = 30000; // TODO: Fix later!
     const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
+    const [idleTime, setIdleTime] = useState(0);
+    const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
+    const [active, setActive] = useState(true);
+
+    const onIdle = (): void => {
+        dispatch(toggleEnergyGain(false));
+        console.log('User is now idle');
+        dispatch(addGamifLog('User is now idle'));
+        setIdleTime(Date.now());
+        setActive(false);
+    };
+
+    const onActive = (): void => {
+        dispatch(toggleEnergyGain(true));
+        console.log(`User with id ${userId} is now active again
+        after ${Math.ceil((Date.now() - idleTime) / 1000)} seconds.`);
+
+        dispatch(addGamifLog(`User with id ${userId} is now active again
+        after ${Math.ceil((Date.now() - idleTime) / 1000)} seconds.`));
+        setActive(true);
+    };
+
+    useIdleTimer({
+        onIdle,
+        onActive,
+        timeout: 20_000,
+        throttle: 1000,
+    });
+
+    // For "time annotated" incrementation
+    useEffect(() => {
+        const interval = setInterval(() => {
+            console.log('🚀 ~ file: gamification-dummy-component.tsx:53 ~ interval ~ active:', active);
+            if (active) {
+                dispatch(updateUserData('annotation_time', intervalTimer / 1000));
+            }
+        }, intervalTimer);
+        return () => clearInterval(interval);
+    }, [active]);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            dispatch(updateUserData('annotation_time', intervalTimer / 1000));
-        }, intervalTimer);
-
-        const interval2 = setInterval(() => {
             dispatch(saveUserData(false));
         }, 15000);
 
@@ -47,7 +85,6 @@ export function GamificationDummy(): JSX.Element {
 
         return () => {
             clearInterval(interval);
-            clearInterval(interval2);
             window.removeEventListener('beforeunload', tabclose);
         };
     }, []);

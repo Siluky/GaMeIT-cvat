@@ -11,28 +11,31 @@ import { mapStatisticIdtoFieldName, mapStatisticIdtoIcon } from 'gamification/ga
 
 interface StateToProps {
     ids: number[];
+    selecting: boolean;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
     const { statistics } = state;
     return {
         ids: statistics.selectedStatistics,
+        selecting: statistics.selecting,
     };
 }
 
 interface QuickStatisticGroupProps {
     ids: number[];
+    selecting: boolean;
 }
 
 export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Element {
     // const iconSmall = <QuestionOutlined style={{ fontSize: '25px' }} />;
-    const { ids } = props;
+    const { ids, selecting } = props;
     const stats = useSelector((state: CombinedState) => state.statistics);
     const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
 
     return (
-        <Col className='cvat-annotation-header-quick-statistics-group'>
-            <Row className='cvat-annotation-header-quick-statistics'>
+        <Col className='cvat-annotation-header-quick-statistics-wrapper'>
+            <Row className={`cvat-annotation-header-quick-statistics ${selecting ? 'selecting' : ''}`}>
                 {ids.map((id: number) => {
                     const session = id > 100;
                     const val = !session ? userdata.userdata_total[mapStatisticIdtoFieldName(id)] :
@@ -44,7 +47,7 @@ export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Eleme
                             <QuickStatistic
                                 key={id}
                                 id={relevantId}
-                                value={val}
+                                value={val as number} // careful
                                 icon={mapStatisticIdtoIcon(stat.id)}
                                 tooltip={session ? stat.tooltip_session : stat.tooltip_total ?? 'Tooltip missing'}
                             />

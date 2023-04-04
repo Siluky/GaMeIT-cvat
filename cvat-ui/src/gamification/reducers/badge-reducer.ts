@@ -13,6 +13,7 @@ const defaultState: BadgeState = {
     badgesinProfile: [],
     currentUserId: 0,
     loading: false,
+    overlayMessage: '',
     energizerBadges: {
         quizBadge: 0,
         snakeBadge: 0,
@@ -175,6 +176,13 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             return {
                 ...state,
                 energizerBadges: energizerBadgeStatus,
+            };
+        }
+
+        case BadgeActionTypes.SET_BADGE_OVERLAY_MESSAGE: {
+            return {
+                ...state,
+                overlayMessage: action.payload,
             };
         }
 

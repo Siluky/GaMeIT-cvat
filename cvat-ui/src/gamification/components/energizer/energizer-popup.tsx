@@ -12,6 +12,7 @@ import {
     switchEnergizerModal, switchEnergizerPopUp,
 } from 'gamification/actions/energizer-actions';
 import { EnergizerIcon } from 'icons';
+import { toggleSelecting } from 'gamification/actions/statistics-actions';
 // import { EnergizerType } from 'gamification/gamif-interfaces';
 
 interface EnergizerPopUpProps {
@@ -94,6 +95,7 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                             // dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
                             dispatch(switchEnergizerPopUp(false));
                             dispatch(switchEnergizerModal(true));
+                            dispatch(toggleSelecting(true)); // actually disables selecting
                         }
                     }}
                 >

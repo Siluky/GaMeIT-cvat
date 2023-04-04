@@ -93,6 +93,7 @@ export interface BadgeState {
     selectedBadgeId: number;
     badgesinProfile: number[];
     loading: boolean;
+    overlayMessage: string;
     energizerBadges: EnergizerBadges;
 }
 
@@ -144,12 +145,14 @@ export interface LeaderboardEntry {
     username: string;
     energizer: EnergizerType;
     score: number;
+    highlighted?: boolean;
 }
 
 export interface EnergizerState {
     energyLevel: number,
     active: boolean,
     popupOpen: boolean,
+    energyGainEnabled: boolean,
 
     activeEnergizer: EnergizerType,
     leaderboardEntries: LeaderboardEntry[],

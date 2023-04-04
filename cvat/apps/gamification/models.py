@@ -127,7 +127,7 @@ class UserProfile(models.Model):
     avatar = models.CharField(max_length=64, default='')
     avatar_border = models.CharField(max_length=64, default='')
     # statistics-related data
-    selectedStatistics = models.CharField(max_length=255, default='')
+    selectedStatistics = models.CharField(max_length=255, default='1')
 
     def set_selectedStatistics(self, x):
         self.selectedStatistics = json.dumps(x)
@@ -178,6 +178,7 @@ class ChallengeStatus(models.Model):
 
     goal = models.IntegerField(default=0)
     progress = models.IntegerField(default=0)
+    reward = models.IntegerField(default=0)
 
     def __str__(self):
         return (self.userId.user.get_username() + '-' + str(self.challengeId))
@@ -257,7 +258,7 @@ class GamifLog(models.Model):
     event = models.CharField(default='', max_length=1024)
 
     def __str__(self):
-        return self.userId + ': ' + str(self.id)
+        return str(self.userId) + ': ' + str(self.id)
 
 
 

@@ -4,13 +4,12 @@
 import React, { useEffect } from 'react';
 import '../../gamif-styles.scss';
 import { Popover, Button } from 'antd';
-import { CloseOutlined, InfoCircleFilled } from '@ant-design/icons';
-import { getFriendsListAsync, saveProfileDataAsync, toggleChat } from 'gamification/actions/social-actions';
+import { CloseOutlined } from '@ant-design/icons';
+import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
 import { Profile } from 'gamification/gamif-interfaces';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { connect, useDispatch } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
-import StatusMenu from './status-menu';
 import { FriendsList } from './friends-list';
 import Chat from './chat-box';
 
@@ -72,7 +71,7 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
             style={{ padding: '0', borderBottom: '0' }}
         >
             <div className='gamif-social-bar-friends-menu'>
-                <Popover
+                {/* <Popover
                     placement='left'
                     trigger='click'
                     content={<StatusMenu />}
@@ -83,7 +82,7 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                     <div className='gamif-status-menu-trigger'>
                         <InfoCircleFilled />
                     </div>
-                </Popover>
+                </Popover> */}
                 <div
                     className='gamif-friends-list-menu'
                     style={{ display: 'flex' }}
@@ -103,7 +102,7 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                             }}
                             ghost
                         >
-                            {`Online (${friends.length ?? 0})`}
+                            {`Friends (${friends.length ?? 0})`}
                         </Button>
                     </Popover>
                 </div>

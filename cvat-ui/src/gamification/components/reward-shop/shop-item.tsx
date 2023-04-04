@@ -31,7 +31,15 @@ function mapStateToProps(state: CombinedState): StateToProps {
 }
 
 const itemPrice = (item: ShopItem): JSX.Element => {
+    // Streak saver
+    if (item.id === 4) {
+        const streakSaverBought = getCVATStore().getState().gamifuserdata.userdata_session.streak_saver_active;
+        console.log('🚀 ~ file: shop-item.tsx:37 ~ itemPrice ~ streakSaverBought:', streakSaverBought);
+        if (streakSaverBought) return <>ACTIVE</>;
+    }
+
     if (item.bought) { return <>PURCHASED</>; }
+
     // Mystery items
     if (item.id === 15 || item.id === 25) { return <>???</>; }
     return (

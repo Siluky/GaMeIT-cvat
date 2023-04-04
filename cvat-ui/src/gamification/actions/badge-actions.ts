@@ -38,7 +38,17 @@ export enum BadgeActionTypes {
     UPGRADE_BADGE_TIER = 'UPGRADE_BADGE_TIER',
 
     UPDATE_ENERGIZER_BADGE = 'UPDATE_ENERGIZER_BADGE',
+
+    SET_BADGE_OVERLAY_MESSAGE = 'SET_BADGE_OVERLAY_MESSAGE',
 }
+
+export function setBadgeOverlayMesage(msg: string): AnyAction {
+    return {
+        type: BadgeActionTypes.SET_BADGE_OVERLAY_MESSAGE,
+        payload: msg,
+    };
+}
+
 export function initProfileBadges(badgeIds: number[]): AnyAction {
     return {
         type: BadgeActionTypes.INIT_PROFILE_BADGES,
@@ -178,6 +188,7 @@ export function toggleBadgeInProfile(badgeId: number): ThunkAction<void, {}, {},
         if (found) {
             dispatch(removeBadgefromProfile(badgeId));
         } else if (badgeState.badgesinProfile.length >= 3) {
+            dispatch(setBadgeOverlayMesage('You can only select 3 badges at a time.'));
             dispatch(addBadgetoProfileFailed());
         } else {
             dispatch(addBadgetoProfileSuccess(badgeId));

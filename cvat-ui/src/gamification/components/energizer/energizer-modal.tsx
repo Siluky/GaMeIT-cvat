@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'gamification/gamif-styles.scss';
 import {
     Button,
@@ -12,7 +12,7 @@ import { ExclamationCircleFilled } from '@ant-design/icons';
 // eslint-disable-next-line import/no-named-as-default
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
-import { incrementEnergy, setActiveEnergizer } from 'gamification/actions/energizer-actions';
+import { incrementEnergy, setActiveEnergizer, toggleEnergyGain } from 'gamification/actions/energizer-actions';
 import { addGamifLog, updateUserData } from 'gamification/actions/user-data-actions';
 import { EnergizerType } from 'gamification/gamif-interfaces';
 import gamifconsts from 'gamification/gamifconsts';
@@ -75,6 +75,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                     dispatch(updateUserData('quiz_played', 1));
                     dispatch(addGamifLog('Quiz started'));
                     dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
+                    dispatch(toggleEnergyGain(false));
                 }}
             >
                 Quiz
@@ -88,6 +89,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                     dispatch(updateUserData('snake_played', 1));
                     dispatch(addGamifLog('Snake started'));
                     dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
+                    dispatch(toggleEnergyGain(false));
                 }}
             >
                 Snake
@@ -101,6 +103,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                     dispatch(updateUserData('tetris_played', 1));
                     dispatch(addGamifLog('Tetris started'));
                     dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
+                    dispatch(toggleEnergyGain(false));
                 }}
             >
                 Tetris
@@ -171,11 +174,24 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 onClose();
                 setLeaderboardShown(false);
                 dispatch(setActiveEnergizer(EnergizerType.NONE));
+                dispatch(toggleEnergyGain(true));
             },
             onCancel() {
             },
         });
     };
+
+    // // TODO: Test, check how to "catch" relevant events -- or shfit focus
+    // const stopKeyInputs = useCallback((event: KeyboardEvent) => {
+    //     console.log(`got event: ${event.key}`);
+    //     event.stopPropagation();
+    //     // event.preventDefault();
+    // }, []);
+
+    // TODO: TEST
+    useEffect(() => {
+        dispatch(toggleEnergyGain(true));
+    }, []);
 
     return (
         <>
@@ -227,6 +243,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 maskClosable={false}
                 closable={false}
                 keyboard={false}
+                destroyOnClose
                 zIndex={1001}
             >
                 <Leaderboard />
@@ -240,6 +257,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                             setLeaderboardShown(false);
                             // dispatch(addLeaderboardEntry(energizer.latestEntry));
                             dispatch(setActiveEnergizer(EnergizerType.NONE));
+                            dispatch(toggleEnergyGain(true));
                         }}
                     >
                         Back to Annotation

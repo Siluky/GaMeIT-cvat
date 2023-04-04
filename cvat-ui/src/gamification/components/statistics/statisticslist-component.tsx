@@ -8,10 +8,11 @@ import {
     Row,
     Col,
     Button,
+    Popover,
     Radio,
 }
     from 'antd';
-import { SettingFilled } from '@ant-design/icons';
+import { ArrowUpOutlined, CarryOutOutlined, LoadingOutlined } from '@ant-design/icons';
 // import { TimeIcon } from 'icons';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import CvatTooltip from 'components/common/cvat-tooltip';
@@ -36,6 +37,28 @@ interface StatisticsListProps {
     selecting: boolean;
 }
 
+const selectionPopoverContent = (): JSX.Element => (
+    <>
+        <div className='selecting-overlay-arrow-up'>
+            <ArrowUpOutlined />
+        </div>
+        <div className='gamif-statistics-selecting-overlay'>
+            <h2 className='selecting-overlay-header'>
+                Selection mode active
+                <br />
+                <LoadingOutlined />
+            </h2>
+            <p className='selecting-overlay-text'>
+                Select up to
+                {' '}
+                <b>3</b>
+                {' '}
+                statistics you would like to display in the quick statistics panel above
+            </p>
+        </div>
+    </>
+);
+
 export function StatisticsList(props: StatisticsListProps): JSX.Element {
     const dispatch = useDispatch();
 
@@ -54,56 +77,56 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
         <>
             <div className='statistics-panel'>
                 <div className='statistics-panel-top'>
-                    <Radio.Group>
-                        <Radio.Button value='a' onClick={() => showAllTimeStats(true)}>All Time</Radio.Button>
-                        <Radio.Button value='b' onClick={() => showAllTimeStats(false)}>Session</Radio.Button>
+                    <Popover
+                        overlayClassName='gamif-popover'
+                        placement='left'
+                        content={selectionPopoverContent}
+                        destroyTooltipOnHide
+                        visible={selecting}
+                    >
+                        <CvatTooltip overlay='Click here to select quick statistics'>
+                            <Button
+                                className={btnClass}
+                                ghost
+                                icon={selecting ? <LoadingOutlined /> : <CarryOutOutlined />}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(toggleSelecting());
+                                }}
+                            />
+                        </CvatTooltip>
+                    </Popover>
+                    <Radio.Group defaultValue='All Time'>
+                        <Radio.Button
+                            className='statistics-timeframe-button'
+                            value='All Time'
+                            onClick={() => showAllTimeStats(true)}
+                        >
+                            All Time
+                        </Radio.Button>
+                        <Radio.Button
+                            className='statistics-timeframe-button'
+                            value='Session'
+                            onClick={() => showAllTimeStats(false)}
+                        >
+                            Session
+                        </Radio.Button>
                     </Radio.Group>
-                    <CvatTooltip overlay='Click here to select quick statistics'>
-                        <Button
-                            className={btnClass}
-                            size='large'
-                            type='ghost'
-                            icon={<SettingFilled />}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                dispatch(toggleSelecting());
-                            }}
-                        />
-                    </CvatTooltip>
                 </div>
-                <div className='statistics-panel-bottom'>
-                    <Row>
-                        {stats.statistics.map((_stat: Statistic, index: number) => (
-                            <Col span={12} key={index}>
-                                <StatisticsComponent statistic={_stat} inc={false} allTime={allTime} />
-                                {/* <CvatTooltip
-                                    overlay={allTime ? _stat.tooltip_total : _stat.tooltip_session}
-                                >
-                                    <Button
-                                        className='statistic-button'
-                                        type='default'
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            dispatch(selectStatistic(allTime ? _stat.id : _stat.id + 100));
-                                            if (inc) {
-                                                dispatch(updateUserData(mapStatisticIdtoFieldName(_stat.id), 1));
-                                            }
-                                        }}
-                                    >
-                                        <div className='statistic-button-left'>
-                                            {mapStatisticIdtoIcon(_stat.id)}
-                                        </div>
-                                        <div className='statistic-button-right'>
-                                            {allTime ? userdataAllTime[mapStatisticIdtoFieldName(_stat.id)] :
-                                                userdataSession[mapStatisticIdtoFieldName(_stat.id)]}
-                                            &nbsp;
-                                            {_stat.unit}
-                                        </div>
-                                    </Button>
-                                </CvatTooltip> */}
-                            </Col>
-                        ))}
-                    </Row>
+                <div className='statistics-panel-bottom-wrapper'>
+                    <div className={`statistics-panel-bottom-content ${stats.selecting ? 'selecting' : ''}`}>
+                        <Row>
+                            {stats.statistics.map((_stat: Statistic, index: number) => (
+                                <Col span={12} key={index}>
+                                    <StatisticsComponent
+                                        statistic={_stat}
+                                        inc={false}
+                                        allTime={allTime}
+                                    />
+                                </Col>
+                            ))}
+                        </Row>
+                    </div>
                 </div>
                 {/* <Button
                     className='gamif-debug-button'

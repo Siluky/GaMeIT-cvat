@@ -38,6 +38,29 @@ function mapStateToProps(state: CombinedState): StateToProps {
     };
 }
 
+const leaderBoardRow = (entry: LeaderboardEntry, index: number): JSX.Element => (
+    <Row
+        className={entry.highlighted ? 'energizer-leaderboard-row highlight' : 'energizer-leaderboard-row'}
+        wrap
+        key={index}
+    >
+        <Col span={2}>
+            <b>
+                {index + 1 > 10 ? '#' : index + 1}
+            </b>
+        </Col>
+        {/* <Col span={2}>
+            <AndroidFilled />
+        </Col> */}
+        <Col span={18}>
+            {entry.username}
+        </Col>
+        <Col span={4}>
+            {entry.score}
+        </Col>
+    </Row>
+);
+
 export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Element {
     const {
         activeEnergizer, leaderboardEntries,
@@ -45,13 +68,15 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
 
     const dispatch = useDispatch();
     const { latestEntry } = useSelector((state: CombinedState) => state.energizer);
-    const { username } = useSelector((state: CombinedState) => state.gamifuserdata);
 
     useEffect(() => {
-        dispatch(getLeaderboardAsync(activeEnergizer));
-    }, []);
+        dispatch(getLeaderboardAsync(activeEnergizer, 'Daily'));
+        console.log('leaderboard useEffect');
+    }, [latestEntry]);
 
-    // const [highlightedRow, setHighlight] = useState(false);
+    // useEffect(() => {
+    //     dispatch(getLeaderboardAsync(activeEnergizer, 'Daily'));
+    // }, []);
 
     return (
         <>
@@ -67,42 +92,36 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
             </div>
             <div className='energizer-leaderboard-content'>
                 <div className='energizer-leaderboard-content-header'>
-                    <Radio.Group>
-                        <Radio.Button value='a' onClick={() => dispatch(getLeaderboardAsync(activeEnergizer, 'Daily'))}>Daily</Radio.Button>
-                        <Radio.Button value='b' onClick={() => dispatch(getLeaderboardAsync(activeEnergizer, 'Weekly'))}>Weekly</Radio.Button>
-                        <Radio.Button value='c' onClick={() => dispatch(getLeaderboardAsync(activeEnergizer))}>All Time</Radio.Button>
+                    <Radio.Group
+                        defaultValue='Daily'
+                        buttonStyle='solid'
+                    >
+                        <Radio.Button
+                            className='leaderboard-timeframe-button'
+                            value='Daily'
+                            onClick={() => dispatch(getLeaderboardAsync(activeEnergizer, 'Daily'))}
+                            defaultChecked
+                        >
+                            Daily
+                        </Radio.Button>
+                        <Radio.Button
+                            className='leaderboard-timeframe-button'
+                            value='Weekly'
+                            onClick={() => dispatch(getLeaderboardAsync(activeEnergizer, 'Weekly'))}
+                        >
+                            Weekly
+                        </Radio.Button>
+                        <Radio.Button
+                            className='leaderboard-timeframe-button'
+                            value='All Time'
+                            onClick={() => dispatch(getLeaderboardAsync(activeEnergizer))}
+                        >
+                            All Time
+                        </Radio.Button>
                     </Radio.Group>
                 </div>
                 {
-                    leaderboardEntries.map((entry: LeaderboardEntry, index: number) => {
-                        const rowStyle = ((entry.username === username) &&
-                         (entry.score === latestEntry.score)) ?
-                            'energizer-leaderboard-row highlight' :
-                            'energizer-leaderboard-row';
-                        // if (rowStyle === 'energizer-leaderboard-row highlight') { setHighlight(true); }
-                        return (
-                            <Row
-                                className={rowStyle}
-                                wrap
-                                key={index}
-                            >
-                                <Col span={2}>
-                                    <b>
-                                        {index + 1}
-                                    </b>
-                                </Col>
-                                {/* <Col span={2}>
-                                    <AndroidFilled />
-                                </Col> */}
-                                <Col span={18}>
-                                    {entry.username}
-                                </Col>
-                                <Col span={4}>
-                                    {entry.score}
-                                </Col>
-                            </Row>
-                        );
-                    })
+                    leaderboardEntries.map((entry: LeaderboardEntry, index: number) => leaderBoardRow(entry, index))
                 }
             </div>
         </>

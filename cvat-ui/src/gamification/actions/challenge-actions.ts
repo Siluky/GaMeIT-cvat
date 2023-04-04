@@ -9,6 +9,7 @@ import { ThunkAction } from 'redux-thunk';
 import { availableChallenges, getChallengeValue } from 'gamification/gamif-items';
 import { Challenge } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
+import { notification } from 'antd';
 import { updateBalance } from './shop-actions';
 import { addGamifLog, updateUserData } from './user-data-actions';
 
@@ -31,50 +32,6 @@ export enum ChallengeActionTypes {
 
     REMOVE_CHALLENGE_SUCCESS = 'REMOVE_CHALLENGE_SUCCESS',
     REMOVE_CHALLENGE_FAILED = 'REMOVE_CHALLENGE_FAILED',
-}
-
-export function getChallengesSuccess(challenges: Challenge[]): AnyAction {
-    return {
-        type: ChallengeActionTypes.GET_CHALLENGES_SUCCESS,
-        payload: challenges,
-    };
-}
-
-export function getChallengesFailed(error: any): AnyAction {
-    return {
-        type: ChallengeActionTypes.GET_CHALLENGES_FAILED,
-        payload: error,
-    };
-}
-
-const formatInstruction = (challenge: Challenge): string => {
-    if (challenge.id === 2 || challenge.id === 3) {
-        return challenge.instruction.replace('GOAL', (Math.round(challenge.goal / 60)).toString());
-    } return challenge.instruction.replace('GOAL', challenge.goal.toString());
-};
-
-export function getChallengesAsync(): ThunkAction<void, {}, {}, AnyAction> {
-    return async function getChallengesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
-        let challengesImport = null;
-        try {
-            challengesImport = await cvat.challenges.get();
-            const challenges = challengesImport.map((chal: any): Challenge => {
-                const challenge = availableChallenges.find((c) => c.id === chal.challengeId) ?? availableChallenges[0];
-
-                return {
-                    ...challenge,
-                    importedProgress: chal.progress,
-                    baselineValue: getChallengeValue(chal.id),
-                    progress: 0,
-                    goal: chal.goal,
-                    instruction: formatInstruction(challenge),
-                };
-            });
-            dispatch(getChallengesSuccess(challenges));
-        } catch (error) {
-            dispatch(getChallengesFailed(error));
-        }
-    };
 }
 
 export function saveChallengesSuccess(): AnyAction {
@@ -102,6 +59,7 @@ export function saveChallenges(): ThunkAction<void, {}, {}, AnyAction> {
                 title: chal.instruction,
                 goal: chal.goal,
                 progress: chal.progress,
+                reward: chal.reward,
             }));
 
             await cvat.challenges.save(challenges);
@@ -126,42 +84,12 @@ export function addChallengeFailed(error: any): AnyAction {
     };
 }
 
-export function updateChallengeSuccess(challenges: Challenge[]): AnyAction {
-    return {
-        type: ChallengeActionTypes.UPDATE_CHALLENGES_SUCCESS,
-        payload: challenges,
-    };
-}
+const formatInstruction = (challenge: Challenge): string => {
+    if (challenge.id === 2 || challenge.id === 3) {
+        return challenge.instruction.replace('GOAL', (Math.round(challenge.goal / 60)).toString());
+    } return challenge.instruction.replace('GOAL', challenge.goal.toString());
+};
 
-export function updateChallengeFailed(error: any): AnyAction {
-    return {
-        type: ChallengeActionTypes.UPDATE_CHALLENGES_FAILED,
-        payload: error,
-    };
-}
-
-export function updateChallenges(): ThunkAction<void, {}, {}, AnyAction> {
-    return (dispatch) => {
-        const state = getCVATStore().getState();
-        const challenges = state.challenges.availableChallenges;
-        // const userDataState = state.gamifuserdata;
-
-        try {
-            const updatedChallenges = challenges.map((challenge: Challenge) => {
-                const updatedProgress = challenge.importedProgress + (
-                    getChallengeValue(challenge.id) - challenge.baselineValue);
-
-                return {
-                    ...challenge,
-                    progress: updatedProgress,
-                };
-            });
-            dispatch(updateChallengeSuccess(updatedChallenges));
-        } catch (error) {
-            dispatch(updateChallengeFailed(error));
-        }
-    };
-}
 export function addChallenge(): ThunkAction<void, {}, {}, AnyAction> {
     return (dispatch) => {
         try {
@@ -207,6 +135,83 @@ export function addChallenge(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
+export function getChallengesSuccess(challenges: Challenge[]): AnyAction {
+    return {
+        type: ChallengeActionTypes.GET_CHALLENGES_SUCCESS,
+        payload: challenges,
+    };
+}
+
+export function getChallengesFailed(error: any): AnyAction {
+    return {
+        type: ChallengeActionTypes.GET_CHALLENGES_FAILED,
+        payload: error,
+    };
+}
+
+export function getChallengesAsync(newDay?: boolean): ThunkAction<void, {}, {}, AnyAction> {
+    return async function getChallengesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        let challengesImport = null;
+        try {
+            challengesImport = await cvat.challenges.get();
+            const challenges = challengesImport.map((chal: any): Challenge => {
+                const challenge = availableChallenges.find((c) => c.id === chal.challengeId) ?? availableChallenges[0];
+
+                return {
+                    ...challenge,
+                    importedProgress: chal.progress,
+                    baselineValue: getChallengeValue(chal.id),
+                    progress: 0,
+                    goal: chal.goal,
+                    reward: chal.reward,
+                    instruction: formatInstruction(challenge),
+                };
+            });
+            dispatch(getChallengesSuccess(challenges));
+            if (challenges.length < 3 && newDay) { dispatch(addChallenge()); }
+        } catch (error) {
+            dispatch(getChallengesFailed(error));
+        }
+    };
+}
+
+export function updateChallengeSuccess(challenges: Challenge[]): AnyAction {
+    return {
+        type: ChallengeActionTypes.UPDATE_CHALLENGES_SUCCESS,
+        payload: challenges,
+    };
+}
+
+export function updateChallengeFailed(error: any): AnyAction {
+    return {
+        type: ChallengeActionTypes.UPDATE_CHALLENGES_FAILED,
+        payload: error,
+    };
+}
+
+export function updateChallenges(): ThunkAction<void, {}, {}, AnyAction> {
+    return (dispatch) => {
+        const state = getCVATStore().getState();
+        const challenges = state.challenges.availableChallenges;
+        // const userDataState = state.gamifuserdata;
+
+        try {
+            const updatedChallenges = challenges.map((challenge: Challenge) => {
+                const updatedProgress = challenge.importedProgress + (
+                    getChallengeValue(challenge.id) - challenge.baselineValue);
+
+                return {
+                    ...challenge,
+                    progress: updatedProgress,
+                };
+            });
+            dispatch(updateChallengeSuccess(updatedChallenges));
+        } catch (error) {
+            dispatch(updateChallengeFailed(error));
+        }
+    };
+}
+
 // DEBUGGING ONLY
 export function updateChallengeProgress(id: number, increment: number): AnyAction {
     return {
@@ -238,6 +243,12 @@ export function completeChallenge(challenge: Challenge): ThunkAction<void, {}, {
             dispatch(updateBalance(challenge.reward));
             dispatch(updateUserData('annotation_coins_obtained', challenge.reward));
             dispatch(removeChallengeSuccess(challenge.id));
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            notification.open({
+                message: 'Challenge Completed!',
+                description: `You obtained ${challenge.reward} coins for completing the challenge:
+                "${challenge.instruction}"!`,
+            });
         } catch (error) {
             dispatch(removeChallengeFailed(error));
         }

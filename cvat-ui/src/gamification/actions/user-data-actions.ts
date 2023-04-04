@@ -6,6 +6,7 @@ import { getCVATStore } from 'cvat-store';
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
+import { notification } from 'antd';
 import { UserData } from '../gamif-interfaces';
 import { addQuickStatistic } from './statistics-actions';
 // eslint-disable-next-line import/no-cycle
@@ -13,7 +14,7 @@ import { initShop, updateBalance } from './shop-actions';
 // eslint-disable-next-line import/no-cycle
 import { initProfileBadges, loadBadgesAsync } from './badge-actions';
 // eslint-disable-next-line import/no-cycle
-import { addChallenge, getChallengesAsync } from './challenge-actions';
+import { getChallengesAsync } from './challenge-actions';
 
 const cvat = getCore();
 
@@ -44,9 +45,10 @@ export function setSurveyTiming(timing: number): AnyAction {
     };
 }
 
-function addLogSuccess(): AnyAction {
+function addLogSuccess(event: string): AnyAction {
     return {
         type: UserDataActionTypes.ADD_LOG_SUCCESS,
+        payload: event,
     };
 }
 
@@ -63,7 +65,7 @@ export function addGamifLog(event: string): ThunkAction<void, {}, {}, AnyAction>
     return async (dispatch) => {
         try {
             await cvat.gamiflogs.save(userId, event);
-            dispatch(addLogSuccess());
+            dispatch(addLogSuccess(event));
         } catch (error) {
             dispatch(addLogFailed(error));
         }
@@ -222,11 +224,15 @@ export function saveUserData(backup: boolean): ThunkAction<void, {}, {}, AnyActi
     };
 }
 
-export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
+export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, AnyAction> {
     return async function loadUserDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let userDataImport = null;
         try {
             userDataImport = await cvat.gamifuserdata.get();
+
+            // Guard against division by 0
+            const zeroImagesAnnotated = userDataImport.images_annotated_total === 0;
+
             const userDataAllTime: UserData = {
                 last_login: userDataImport.last_login_ms * 1000,
                 images_annotated: userDataImport.images_annotated_total,
@@ -234,7 +240,9 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 images_annotated_night: userDataImport.images_annotated_night,
                 annotation_time: userDataImport.annotation_time_total,
                 // eslint-disable-next-line max-len
-                annotation_time_avg: Math.floor(userDataImport.annotation_time_total / userDataImport.images_annotated_total) ?? 0,
+                annotation_time_avg: zeroImagesAnnotated ? 0 : Math.ceil(
+                    userDataImport.annotation_time_total / userDataImport.images_annotated_total,
+                ),
                 annotation_streak_current: userDataImport.annotation_streak_current,
                 annotation_streak_max: userDataImport.annotation_streak_max,
                 streak_saver_active: userDataImport.annotation_streak_saver,
@@ -264,9 +272,11 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
             // Selected Badges / Statistics + Bought Items are stored as a string with the ids
             // separated by commas, e.g., "1,2,3" --> split them and parse to int
 
-            const selectedStatsImport = userDataImport.selectedStatistics.split(',');
-            const selectedStatIds = selectedStatsImport.map((id: string) => parseInt(id, 10));
-            dispatch(addQuickStatistic(selectedStatIds));
+            if (!test) {
+                const selectedStatsImport = userDataImport.selectedStatistics.split(',');
+                const selectedStatIds = selectedStatsImport.map((id: string) => parseInt(id, 10));
+                dispatch(addQuickStatistic(selectedStatIds));
+            }
 
             dispatch(updateBalance(userDataAllTime.currentBalance));
 
@@ -282,24 +292,39 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
 
             const lastLogin = userDataAllTime.last_login;
             const currentTime = Date.now();
-            const timeSinceLogin = currentTime - lastLogin;
-            if (timeSinceLogin > 24 * 60 * 60 * 1000) {
-                if (userDataAllTime.streak_saver_active) {
-                    userDataAllTime.streak_saver_active = false;
-                } else {
-                    userDataAllTime.annotation_streak_current = 0;
-                }
-            }
-            dispatch(getChallengesAsync());
 
-            const newDay = new Date(lastLogin).getDay() - new Date(currentTime).getDay();
-            if (newDay !== 0) {
-                dispatch(addChallenge());
+            const newDay = test ? true : (new Date(lastLogin).getDay() - new Date(currentTime).getDay()) !== 0;
+            if (newDay) {
+                console.log('New day has started');
+
+                const timeSinceLogin = currentTime - lastLogin;
+                let message = '';
+                let description = '';
+                if ((timeSinceLogin > 24 * 60 * 60 * 1000) || test) {
+                    if (userDataAllTime.streak_saver_active) {
+                        userDataAllTime.streak_saver_active = false;
+                        message = 'Streak Saved.';
+                        description = 'Your Streak Saver has protected you from losing your annotation streak';
+                    } else {
+                        userDataAllTime.annotation_streak_current = 0;
+                        message = 'Streak Lost.';
+                        description = 'You have lost your current annotation streak due to being inactive too long';
+                    }
+                    // eslint-disable-next-line security/detect-non-literal-fs-filename
+                    notification.open({
+                        message,
+                        description,
+                    });
+                }
+
                 userDataAllTime.annotation_streak_current++;
+
                 userDataAllTime.annotation_streak_max = Math.max(
                     userDataAllTime.annotation_streak_max, userDataAllTime.annotation_streak_current,
                 );
             }
+
+            dispatch(getChallengesAsync(newDay));
 
             const userDataSession: UserData = {
                 last_login: currentTime,
@@ -308,8 +333,8 @@ export function initializeUserData(): ThunkAction<void, {}, {}, AnyAction> {
                 images_annotated_night: 0,
                 annotation_time: 0,
                 annotation_time_avg: 0,
-                annotation_streak_current: userDataAllTime.annotation_streak_current,
-                annotation_streak_max: 0,
+                annotation_streak_current: 0,
+                annotation_streak_max: userDataAllTime.annotation_streak_current,
                 streak_saver_active: userDataAllTime.streak_saver_active,
                 badges_obtained: 0,
                 challenges_completed: 0,

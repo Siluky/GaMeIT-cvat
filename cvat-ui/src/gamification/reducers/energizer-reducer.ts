@@ -19,6 +19,7 @@ const defaultState: EnergizerState = {
         energizer: EnergizerType.NONE,
         score: 0,
     },
+    energyGainEnabled: true,
     questions: [],
 };
 
@@ -28,6 +29,13 @@ export default (state = defaultState, action: AnyAction): EnergizerState => {
             return {
                 ...state,
                 active: action.payload,
+            };
+        }
+
+        case EnergizerActionTypes.TOGGLE_ENERGY_GAIN: {
+            return {
+                ...state,
+                energyGainEnabled: action.payload,
             };
         }
 

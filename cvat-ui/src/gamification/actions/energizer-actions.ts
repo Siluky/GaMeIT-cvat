@@ -36,6 +36,14 @@ export enum EnergizerActionTypes {
     ADD_LEADERBOARD_ENTRY_SUCCESS = 'ADD_LEADERBOARD_ENTRY_SUCCESS',
     ADD_LEADERBOARD_ENTRY_FAILED = 'ADD_LEADERBOARD_ENTRY_FAILED',
 
+    TOGGLE_ENERGY_GAIN = 'TOGGLE_ENERGY_GAIN',
+}
+
+export function toggleEnergyGain(gainActive: boolean): AnyAction {
+    return {
+        type: EnergizerActionTypes.TOGGLE_ENERGY_GAIN,
+        payload: gainActive,
+    };
 }
 
 function getCurrentEnergySuccess(energy: number): AnyAction {
@@ -187,13 +195,24 @@ export function getLeaderboardAsync(energizerName: EnergizerType, time?: string)
         let entries = null;
         try {
             entriesImport = await cvat.energizer.leaderboard(energizerName, time);
+            const { latestEntry } = getCVATStore().getState().energizer;
 
             entries = entriesImport.map((_entry: any): LeaderboardEntry => ({
                 userId: 0,
                 username: _entry.userProfile,
                 energizer: energizerName,
                 score: _entry.score,
+                highlighted: ((_entry.userProfile === latestEntry.username) && (_entry.score === latestEntry.score)),
             }));
+
+            // if no entry is highlighted, add the latest entry, so user can see his last score.
+            if (!entries.find((e: LeaderboardEntry) => e.highlighted)) {
+                entries.push({
+                    ...latestEntry,
+                    highlighted: true,
+                });
+            }
+
             dispatch(getLeaderboardDataSuccess(entries));
         } catch (error) {
             dispatch(getLeaderboardDataFailed(error));
@@ -227,7 +246,7 @@ export function addLeaderboardEntry(entry: LeaderboardEntry): ThunkAction<void, 
         try {
             await cvat.energizer.addScore(entry.userId, entry.energizer, entry.score);
             dispatch(addLeaderboardEntrySuccess());
-            dispatch(getLeaderboardAsync(entry.energizer));
+            // dispatch(getLeaderboardAsync(entry.energizer));
             dispatch(setLatestEntry(entry));
         } catch (error) {
             dispatch(addLeaderboardEntryFailed(error));

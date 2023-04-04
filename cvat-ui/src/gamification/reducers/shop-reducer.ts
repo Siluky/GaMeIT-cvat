@@ -91,7 +91,7 @@ export default (state = defaultState, action: AnyAction): ShopState => {
             };
         }
 
-        case ShopActionTypes.SET_OVERLAY_MESSAGE: {
+        case ShopActionTypes.SET_SHOP_OVERLAY_MESSAGE: {
             return {
                 ...state,
                 overlayMessage: action.payload,

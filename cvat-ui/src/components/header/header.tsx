@@ -219,6 +219,7 @@ function HeaderContainer(props: Props): JSX.Element {
     const history = useHistory();
     const dispatch = useDispatch();
     const udata = useSelector((state: CombinedState) => state.gamifuserdata);
+    const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
     const { userId, surveyTiming } = udata;
 
     useEffect(() => {
@@ -574,77 +575,82 @@ function HeaderContainer(props: Props): JSX.Element {
             </div>
 
             <div className='cvat-right-header'>
-                <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
-                    <Button
-                        type='text'
-                        className='gamif-debug-button'
-                        style={{ height: '24px', width: '24px', margin: '4px' }}
-                        icon={<PlusOutlined />}
-                        onClick={(): void => {
-                            incrementEnergy(1);
-                        }}
-                    />
-                </CVATTooltip>
-                <CVATTooltip overlay={`Current Energy: ${currentEnergy}`}>
-                    <Popover
-                        content={<EnergizerPopUp currentEnergy={currentEnergy} />}
-                        trigger='click'
-                        visible={energizerPopUpShown}
-                    >
-                        <div className='gamif-energizer-button-wrapper'>
-                            <Button
-                                type='text'
-                                className='gamif-energizer-button'
-                                icon={getEnergizerIcon(currentEnergy) ?? <EnergizerIcon />}
-                                onClick={(): void => {
-                                    if (currentEnergy >= gamifconsts.ENERGIZER_COST && !energizerShown) {
-                                        switchEnergizerPopUp(!energizerPopUpShown);
-                                    }
-                                }}
-                            />
-                            <div
-                                // eslint-disable-next-line max-len
-                                style={{ height: `${Math.max((100 - (currentEnergy / gamifconsts.ENERGIZER_COST) * 100), 0)}%` }}
-                                className='gamif-energizer-button-overlay'
-                            >
-                                &nbsp;
-                            </div>
-                        </div>
-                    </Popover>
-                </CVATTooltip>
-                <Popover
-                    content={<ShopWindow />}
-                    overlayClassName='gamif-popover'
-                    mouseLeaveDelay={100}
-                    trigger='click'
-                    destroyTooltipOnHide
-                    onVisibleChange={(visible: boolean) => { if (!visible) { dispatch(saveProfileDataAsync()); } }}
-                >
-                    <div className='gamif-shop-button-wrapper'>
+                <div className='cvat-right-header-gamif-group'>
+                    <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
                         <Button
-                            type='default'
-                            className='gamif-shop-button'
-                            icon={<ShopIcon />}
-                            onClick={() => dispatch(addGamifLog('Opened Shop.'))}
-                        />
-                    </div>
-                </Popover>
-                <Popover
-                    content={gamifSurveyPrompt(userId, surveyTiming)}
-                    trigger='click'
-                    mouseLeaveDelay={2}
-                    visible={surveyPromptVisible}
-                >
-                    <CVATTooltip overlay='Possible Gamification Survey Prompt'>
-                        <Button
-                            className='gamif-debug-button'
                             type='text'
-                            icon={<FormOutlined />}
-                            onClick={() => dispatch(toggleSurveyPrompt(!surveyPromptVisible))}
+                            className='gamif-debug-button'
+                            style={{ height: '24px', width: '24px', margin: '4px' }}
+                            icon={<PlusOutlined />}
+                            onClick={(): void => {
+                                incrementEnergy(1);
+                            }}
                         />
                     </CVATTooltip>
-                </Popover>
-
+                    <CVATTooltip overlay={`Current Energy: ${currentEnergy}`}>
+                        <Popover
+                            content={<EnergizerPopUp currentEnergy={currentEnergy} />}
+                            trigger='click'
+                            visible={energizerPopUpShown}
+                        >
+                            <div className='gamif-energizer-button-wrapper'>
+                                <Button
+                                    type='text'
+                                    className={`gamif-energizer-button ${energyGainEnabled ? '' : 'inactive'}`}
+                                    icon={getEnergizerIcon(currentEnergy) ?? <EnergizerIcon />}
+                                    onClick={(): void => {
+                                        if (currentEnergy >= gamifconsts.ENERGIZER_COST && !energizerShown) {
+                                            switchEnergizerPopUp(!energizerPopUpShown);
+                                        }
+                                    }}
+                                />
+                                <div
+                                    // eslint-disable-next-line max-len
+                                    style={{ height: `${Math.max((100 - (currentEnergy / gamifconsts.ENERGIZER_COST) * 100), 0)}%` }}
+                                    className='gamif-energizer-button-overlay'
+                                >
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </Popover>
+                    </CVATTooltip>
+                    <CVATTooltip overlay='Click here to open the reward shop.'>
+                        <Popover
+                            content={<ShopWindow />}
+                            overlayClassName='gamif-popover'
+                            mouseLeaveDelay={100}
+                            trigger='click'
+                            destroyTooltipOnHide
+                            onVisibleChange={(visible: boolean) => {
+                                if (!visible) { dispatch(saveProfileDataAsync()); }
+                            }}
+                        >
+                            <div className='gamif-shop-button-wrapper'>
+                                <Button
+                                    type='default'
+                                    className='gamif-shop-button'
+                                    icon={<ShopIcon />}
+                                    onClick={() => dispatch(addGamifLog('Opened Shop.'))}
+                                />
+                            </div>
+                        </Popover>
+                    </CVATTooltip>
+                    <Popover
+                        content={gamifSurveyPrompt(userId, surveyTiming)}
+                        trigger='click'
+                        mouseLeaveDelay={2}
+                        visible={surveyPromptVisible}
+                    >
+                        <CVATTooltip overlay='Possible Gamification Survey Prompt'>
+                            <Button
+                                className='gamif-debug-button'
+                                type='text'
+                                icon={<FormOutlined />}
+                                onClick={() => dispatch(toggleSurveyPrompt(!surveyPromptVisible))}
+                            />
+                        </CVATTooltip>
+                    </Popover>
+                </div>
                 <CVATTooltip overlay='Click to open repository'>
                     <Button
                         icon={<GithubOutlined />}

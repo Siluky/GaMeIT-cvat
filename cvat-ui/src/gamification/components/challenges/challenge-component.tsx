@@ -9,9 +9,11 @@ import { Button, Progress } from 'antd';
 import { AnnotationCoinNoBorderIcon } from 'icons';
 
 import { blue, geekblue } from '@ant-design/colors';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { completeChallenge } from 'gamification/actions/challenge-actions';
 import { updateUserData } from 'gamification/actions/user-data-actions';
+import { CombinedState } from 'reducers/interfaces';
+import { getChallengeValue } from 'gamification/gamif-items';
 
 interface Props {
     id: number;
@@ -19,31 +21,31 @@ interface Props {
     initProgress: number;
 }
 
-export function ChallengePane(props: Props): JSX.Element {
+interface StateToProps {
+    challenge: Challenge;
+}
+
+function mapStateToProps(state: CombinedState, ownProps: Props): StateToProps {
+    const { challenge } = ownProps;
+    const updatedProgress = challenge.importedProgress + (
+        getChallengeValue(challenge.id) - challenge.baselineValue);
+    return {
+        challenge: {
+            ...challenge,
+            progress: updatedProgress,
+        },
+    };
+}
+
+function ChallengePane(props: Props): JSX.Element {
     const { challenge } = props;
     const dispatch = useDispatch();
-    // const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
-    // const [startVal, setStart] = useState(0);
-
-    // check for challenge completion
     useEffect(() => {
         if (challenge.progress >= challenge.goal) {
             dispatch(completeChallenge(challenge));
             dispatch(updateUserData('challenges_completed', 1));
         }
     }, [challenge.progress]);
-
-    // useEffect(() => {
-    //     // Snapshot state!
-    //     const udata = getCVATStore().getState().gamifuserdata;
-    //     setStart(udata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]);
-    // }, []);
-
-    // useEffect(() => {
-    //     // eslint-disable-next-line max-len
-    //     const diff = userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)] as number - startVal;
-    //     challenge.progress = challenge.initProgress + diff;
-    // }, [userdata.userdata_session[mapChallengeIdtoFieldName(challenge.id)]]);
 
     return (
         <div className='gamif-challenge-pane-wrapper'>
@@ -84,4 +86,4 @@ export function ChallengePane(props: Props): JSX.Element {
 
 ChallengePane.initProgress = 0;
 
-// export default connect(mapStateToProps)(ChallengePane);
+export default connect(mapStateToProps)(ChallengePane);

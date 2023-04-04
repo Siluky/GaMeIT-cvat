@@ -1134,7 +1134,7 @@ export function mapStatisticIdtoFieldName(id: number): keyof UserData {
         case 1: return 'images_annotated';
         case 2: return 'tags_set';
         case 3: return 'annotation_time_avg';
-        case 4: return 'annotation_streak_current';
+        case 4: return 'annotation_streak_max';
         case 5: return 'annotation_time';
         case 6: return 'energy_gained';
         case 7: return 'tetris_played';
@@ -1220,7 +1220,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 6,
-        title: 'Default Background',
+        title: 'Clear Profile Background',
         price: 0,
         repeatable: false,
         bought: true,
@@ -1396,7 +1396,7 @@ export const items: ShopItem[] = [
     },
     {
         id: 16,
-        title: 'No Border',
+        title: 'Clear Border',
         price: 0,
         repeatable: false,
         bought: true,

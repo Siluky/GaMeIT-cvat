@@ -65,7 +65,7 @@ class SaveBadgeStatusSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = models.ChallengeStatus
+        model = models.BadgeStatus
         # fields = '__all__'
         fields = ('badgeId','userId','tier','receivedOn',)
 
@@ -89,7 +89,7 @@ class SaveChallengesSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ChallengeStatus
         # fields = '__all__'
-        fields = ('challengeId','goal','progress','title','userId',)
+        fields = ('challengeId','goal','progress','title','userId','reward')
 
 class ShopItemSerializer(serializers.ModelSerializer):
     class Meta:

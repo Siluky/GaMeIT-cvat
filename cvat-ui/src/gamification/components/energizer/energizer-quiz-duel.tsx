@@ -78,7 +78,6 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
     const [readyToContinue, setContinue] = useState(false);
     const [currentAnswer, setCurrentAnswer] = useState(Answer.NONE);
 
-    // const questions = generateQuestions();
     const dummyQuestion: QuizDuelQuestion = {
         question: 'What is 2x2',
         answerA: '1',
@@ -94,16 +93,19 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
     const [end, setEnd] = useState(false);
     const [questionPoints, setPoints] = useState(startTime);
+    const [timerValue, freezeTimer] = useState(0);
+    const [buttonText, setButtonText] = useState('Give Answer');
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // const questionsImport = await cvat.energizer.quizDuelQuestions();
         const questionsImport = getQuizDuelQuestions(5);
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
         setQuestions(questionsImport);
         setCurrentQuestion(questions[0]);
         setLoading(false);
-        // setPoints(startTime);
 
         const intervalQuiz = setInterval(() => {
             setPoints((currentPoints) => Math.max(0, currentPoints - 1));
@@ -154,10 +156,9 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
                             </div>
                             <div className='quiz-duel-timer-wrapper'>
                                 <span className='quiz-duel-timer'>
-                                    Points remaining:
-                                    {'\n'}
+                                    <span>Points:</span>
                                     &nbsp;
-                                    {questionPoints}
+                                    {!readyToContinue ? questionPoints : timerValue}
                                 </span>
                             </div>
                             <div>
@@ -184,8 +185,8 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
                 )}
             <Button
                 className='gamif-energizer-continue-button'
-                type='text'
-                disabled={loading}
+                // type='primary'
+                disabled={currentAnswer === Answer.NONE}
                 onClick={(): void => {
                     // first button click: Check Answer + show correct answer + update Status Bar
                     if (currentAnswer !== Answer.NONE && !readyToContinue) {
@@ -196,6 +197,8 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
                         updateStatusBar(progress - 1, answerCorrect);
                         styleAnswerButtons(mapAnswertoIndex(currentAnswer) - 1, currentQuestion.correctAnswer - 1);
                         setContinue(true);
+                        freezeTimer(questionPoints);
+                        setButtonText('Continue to Next Question');
                     }
 
                     // if on last question and answer is checked --> show Leaderboard instead of
@@ -224,10 +227,11 @@ export default function QuizDuel(props: QuizDuelProps): JSX.Element {
                         setAnswerButtonStyle(initialButtonState);
                         setCurrentAnswer(Answer.NONE);
                         setPoints(startTime);
+                        setButtonText('Give Answer');
                     }
                 }}
             >
-                Continue
+                {buttonText}
             </Button>
         </div>
     );

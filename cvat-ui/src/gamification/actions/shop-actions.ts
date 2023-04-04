@@ -31,7 +31,7 @@ export enum ShopActionTypes {
     PURCHASE_ITEM_SUCCESS = 'PURCHASE_ITEM_SUCCESS',
     PURCHASE_ITEM_FAILED = 'PURCHASE_ITEM_FAILED',
 
-    SET_OVERLAY_MESSAGE = 'SET_OVERLAY_MESSAGE',
+    SET_SHOP_OVERLAY_MESSAGE = 'SET_SHOP_OVERLAY_MESSAGE',
 
     UPGRADE_MONEY_BADGE_TIER = 'UPGRADE_MONEY_BADGE_TIER',
 }
@@ -109,9 +109,9 @@ export function useItemFailed(itemId: number): AnyAction {
     };
 }
 
-export function setOverlayMessage(msg: string): AnyAction {
+export function setShopOverlayMessage(msg: string): AnyAction {
     return {
-        type: ShopActionTypes.SET_OVERLAY_MESSAGE,
+        type: ShopActionTypes.SET_SHOP_OVERLAY_MESSAGE,
         payload: msg,
     };
 }
@@ -169,11 +169,14 @@ export function useRepeatableItem(itemId: number): ThunkAction<void, {}, {}, Any
                 break;
             }
             case 3: dispatch(addChallenge()); break;
-            case 4: dispatch(updateUserData('streak_saver_active', 1)); break;
+            case 4:
+                dispatch(updateUserData('streak_saver_active', 1));
+                dispatch(purchaseItemSuccess(4));
+                break;
             case 5: dispatch(upgradeBadgeTier(12)); break;
             default: break;
         }
-        dispatch(setOverlayMessage(overlayMessage));
+        dispatch(setShopOverlayMessage(overlayMessage));
     };
 }
 
@@ -183,23 +186,37 @@ export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyActio
     } = getCVATStore().getState();
     const item = shop.availableItems.find((_item: ShopItem) => _item.id === itemId);
     return (dispatch) => {
-        if (shop.currentBalance < item.price || item.bought) {
+        // if user has a streak saver active, make him unable to buy another one
+        if (item.id === 4 && gamifuserdata.userdata_session.streak_saver_active) {
+            dispatch(setShopOverlayMessage('You already have a streak saver active.'));
+            return;
+        }
+
+        // mystery items
+        if (item.id === 15 || item.id === 25) {
+            dispatch(setShopOverlayMessage('You cannot buy this. Find this item in the mystery gift.'));
             dispatch(purchaseItemFailed());
-            // dispatch(setOverlayMessage('Insufficient Money.'));
+            return;
+        }
+
+        if (item.bought) {
+            dispatch(setShopOverlayMessage('You already bought this item.'));
+            dispatch(purchaseItemFailed());
+            return;
+        }
+
+        if (shop.currentBalance < item.price) {
+            dispatch(purchaseItemFailed());
+            dispatch(setShopOverlayMessage('You do not have enough annotation coins to buy this.'));
         } else {
             // if at maximum energy, make user unable to buy charge pack
             if (item.id === 1 && energizer.energyLevel >= 20) {
-                dispatch(setOverlayMessage('You already are at maximum energy.'));
+                dispatch(setShopOverlayMessage('You already are at maximum energy.'));
                 return;
             }
             // if no challenge slots are free, make user unable to buy challenges
             if (item.id === 3 && challenges.availableChallenges.length >= 3) {
-                dispatch(setOverlayMessage('You already have 3 challenges.'));
-                return;
-            }
-            // if user has a streak saver active, make him unable to buy another one
-            if (item.id === 4 && gamifuserdata.userdata_session.streak_saver_active) {
-                dispatch(setOverlayMessage('You already have a streak saver active.'));
+                dispatch(setShopOverlayMessage('You already have 3 challenges.'));
                 return;
             }
 
@@ -208,8 +225,12 @@ export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyActio
             if (item.repeatable) {
                 dispatch(useRepeatableItem(itemId));
             }
-            // handle Money Badge differently -- allow buying exactly 3 times.
-            if (item.id === 5) {
+
+            // handle Steak Saver / Money Badge differently
+            if (item.id === 4) {
+                dispatch(updateUserData('streak_saver_active', 1));
+                dispatch(purchaseItemSuccess(4));
+            } else if (item.id === 5) {
                 dispatch(updateUserData('money_badge_tier', 1));
                 if (gamifuserdata.userdata_total.money_badge_tier === 3) {
                     dispatch(purchaseItemSuccess(5));

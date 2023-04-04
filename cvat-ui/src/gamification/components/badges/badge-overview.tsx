@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 import 'gamification/gamif-styles.scss';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Row,
     Col,
@@ -16,6 +16,7 @@ import {
     CheckSquareOutlined, CloseSquareOutlined,
 } from '@ant-design/icons';
 import { getBadgeIcon } from 'gamification/gamif-items';
+import { Popup } from 'gamification/gamifconsts';
 import { Badge, BadgeTier } from '../../gamif-interfaces';
 import {
     setCurrentBadge,
@@ -24,6 +25,7 @@ import {
     toggleBadgeInProfile,
     // upgradeBadgeTier,
     saveSelectedBadges,
+    setBadgeOverlayMesage,
 } from '../../actions/badge-actions';
 
 interface BadgeOverviewProps {
@@ -31,6 +33,7 @@ interface BadgeOverviewProps {
     currentUserId: number;
     currentBadgeId: number;
     currentBadge?: Badge;
+    overlayMessage: string;
     loadBadges: () => void;
     setCurrentBadge: (badgeId: number) => void;
     incrementBadge: (userId: number, badge: Badge, increment: number) => void;
@@ -40,6 +43,7 @@ interface StateToProps {
     currentUserId: number;
     currentBadgeId: number;
     availableBadges: Badge[];
+    overlayMessage: string;
 }
 
 interface DispatchToProps {
@@ -55,6 +59,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         currentUserId: badges.currentUserId,
         currentBadgeId: badges.selectedBadgeId,
         availableBadges: badges.availableBadges,
+        overlayMessage: badges.overlayMessage,
     };
 }
 
@@ -94,7 +99,7 @@ function showSelectedBadge(badge: Badge): JSX.Element {
     const profileText = !isBadgeSelected ? 'Add to Profile' : 'Remove from profile';
 
     return (
-        <>
+        <div className='gamif-badge-detail-view'>
             <div
                 className='gamif-badge-icon'
                 style={{ opacity: badge.tier === BadgeTier.NOT_OBTAINED ? 0.5 : 1 }}
@@ -120,38 +125,23 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                                     dispatch(saveSelectedBadges(badges.badgesinProfile));
                                 }}
                             >
-                                <Button
-                                    className='gamif-badges-profile-button'
-                                    icon={
-                                        isBadgeSelected ? <CheckSquareOutlined /> : <CloseSquareOutlined />
-                                    }
-                                    // onClick={() => {
-                                    //     dispatch(toggleBadgeInProfile(badge.id));
-                                    //     dispatch(saveSelectedBadges(badges.badgesinProfile));
-                                    // }}
-                                    size='small'
-                                />
-                                {profileText}
-                                {/* <Button
-                                    className='gamif-debug-button'
-                                    icon={<UpOutlined />}
-                                    onClick={() => dispatch(upgradeBadgeTier(badge.id))}
-                                    size='small'
-                                >
-                                    Upgrade
-                                </Button> */}
+                                <div className='gamif-badges-profile-button'>
+                                    {!isBadgeSelected ? <CheckSquareOutlined /> : <CloseSquareOutlined />}
+                                    &nbsp;
+                                    {profileText}
+                                </div>
                             </Button>
                         </div>
                     </>
                 )}
             </div>
-        </>
+        </div>
     );
 }
 
 export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
     const {
-        currentBadgeId, availableBadges, loadBadges,
+        currentBadgeId, availableBadges, overlayMessage, loadBadges,
     } = props;
     const badges = useSelector((state: CombinedState) => state.badges);
     const defaultBadge: Badge = {
@@ -168,14 +158,34 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
     // Select a badge by id, or if none is available, go for a default
     const currentBadge = availableBadges.find((badge) => badge.id === currentBadgeId) || defaultBadge;
     const dispatch = useDispatch();
+    const [overlayVisible, toggleOverlay] = useState(false);
 
     // Load in badges from database on open of profile.
     useEffect(() => {
         loadBadges();
     }, []);
 
+    useEffect(() => {
+        if (overlayMessage !== '') { toggleOverlay(true); }
+    }, [overlayMessage]);
+
     return (
         <div className='gamif-badge-overview-container'>
+            {overlayVisible ?
+                (
+                    // <div className='gamif-shop-overlay'>
+                    <Popup>
+                        <h2 style={{ color: 'black' }}>{overlayMessage}</h2>
+                        <Button onClick={() => {
+                            dispatch(setBadgeOverlayMesage(''));
+                            toggleOverlay(false);
+                        }}
+                        >
+                            Close
+                        </Button>
+                    </Popup>
+                    /* </div> */
+                ) : null}
             <div className='gamif-badge-overview-header'> Badge Overview </div>
             <div className='gamif-badge-overview-content'>
                 <Row>
@@ -206,7 +216,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                     })}
                 </Row>
             </div>
-            <div className='gamif-badge-detail-view'>
+            <div className='gamif-badge-detail-view-wrapper'>
                 {showSelectedBadge(currentBadge)}
             </div>
         </div>
