@@ -121,9 +121,10 @@ export interface ChallengeState {
 }
 
 export enum EnergizerType {
-    TETRIS = 'TETRIS',
-    SNAKE = 'SNAKE',
-    QUIZ = 'QUIZ',
+    TETRIS = 'Tetris',
+    SNAKE = 'Snake',
+    QUIZ = 'Quiz',
+    RANDOM = 'Random',
     NONE = 'NONE',
 }
 

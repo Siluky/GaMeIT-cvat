@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import {
     switchEnergizerModal, switchEnergizerPopUp,
 } from 'gamification/actions/energizer-actions';
-import { EnergizerIcon } from 'icons';
+import { EnergizerIcon20 } from 'icons';
 import { toggleSelecting } from 'gamification/actions/statistics-actions';
 // import { EnergizerType } from 'gamification/gamif-interfaces';
 
@@ -81,7 +81,8 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
 
             <div className='gamif-energizer-popup-top-wrapper'>
                 <div className='gamif-energizer-popup-top-content'>
-                    <EnergizerIcon />
+                    {/* <EnergizerIcon /> */}
+                    <EnergizerIcon20 />
                 </div>
             </div>
             <div className='gamif-energizer-popup-bottom'>
@@ -95,7 +96,7 @@ export default function EnergizerPopUp(props: EnergizerPopUpProps): JSX.Element 
                             // dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
                             dispatch(switchEnergizerPopUp(false));
                             dispatch(switchEnergizerModal(true));
-                            dispatch(toggleSelecting(true)); // actually disables selecting
+                            dispatch(toggleSelecting(false));
                         }
                     }}
                 >

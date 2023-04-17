@@ -55,7 +55,7 @@ interface State {
 }
 
 const initialState: State = {
-    speed: 250,
+    speed: 200,
     direction: 'right',
     size: 15,
     position: [
@@ -108,6 +108,14 @@ class Snake extends React.Component<EnergizerProps, State> {
         // const a: React.RefObject<HTMLInputElement> = this.refs.canvas;
         // this.context = a.getContext('2d');
         this.init();
+    }
+
+    componentDidUpdate(prevProps: Readonly<EnergizerProps>, prevState: Readonly<State>): void {
+        if (prevState.speed !== this.state.speed) {
+            clearInterval(this.gameLoopInterval);
+            console.log(`new speed: ${this.state.speed}`);
+            this.gameLoopInterval = setInterval(this.gameLoop, this.state.speed);
+        }
     }
 
     componentWillUnmount(): void {
@@ -328,7 +336,7 @@ class Snake extends React.Component<EnergizerProps, State> {
         if (_.isEqual(newPosition, this.state.apple)) {
             this.setState({
                 ...this.state,
-                speed: (this.state.speed * 1.2), // TODO: TEST
+                speed: (this.state.speed * 0.95), // TODO: Balance around a bit
                 apple: this.generateApplePosition(),
                 position: [newPosition, ...this.state.position],
             });

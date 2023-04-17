@@ -32,9 +32,8 @@ import {
     EforEffortGold,
     EforEffortGrey,
     EnergizedBronze, EnergizedGold, EnergizedGrey, EnergizedSilver,
+    EnergizerIcon,
     EnergizerIcon1,
-    EnergizerIcon10,
-    EnergizerIcon11,
     EnergizerIcon2,
     EnergizerIcon3,
     EnergizerIcon4,
@@ -43,6 +42,8 @@ import {
     EnergizerIcon7,
     EnergizerIcon8,
     EnergizerIcon9,
+    EnergizerIcon10,
+    EnergizerIcon20,
     EnergyCollectorBronze, EnergyCollectorGold, EnergyCollectorGrey, EnergyCollectorSilver,
     EnergyGainedIcon,
     FunHaterGold,
@@ -63,7 +64,7 @@ import {
     SerialAnnotatorBronze, SerialAnnotatorGold, SerialAnnotatorGrey, SerialAnnotatorSilver,
     SnakeIcon,
     StreakSaverIcon,
-    TaggerBronze, TaggerGold, TaggerGrey, TaggerSilver,
+    PolygonProBronze, PolygonProGold, PolygonProGrey, PolygonProSilver,
     TagsSetIcon,
     TetrisGold,
     TetrisGrey,
@@ -108,7 +109,7 @@ import {
 //     },
 //     {
 //         id: 3,
-//         title: 'Tagger',
+//         title: 'PolygonPro',
 //         instruction: 'Set GOAL Tags',
 //         progress: 0,
 //         goal_bronze: 500,
@@ -362,14 +363,14 @@ export const badges: Badge[] = [
     },
     {
         id: 3,
-        title: 'Tagger',
-        instruction: 'Set GOAL Tags',
+        title: 'Polygon Pro',
+        instruction: 'Create GOAL Polygons',
         progress: 0,
         goal_bronze: 500,
         goal_silver: 1000,
         goal: 2000,
         tier: BadgeTier.NOT_OBTAINED,
-        goalunit: 'Tags',
+        goalunit: 'Polygons',
         receivedOn: null,
         visible: true,
     },
@@ -616,7 +617,7 @@ export const badges: Badge[] = [
 //     },
 //     {
 //         id: 3,
-//         title: 'Tagger',
+//         title: 'PolygonPro',
 //         instruction: 'Set tags',
 //         progress: 0,
 //         goal_bronze: 5,
@@ -883,10 +884,10 @@ export function getBadgeIcon(id: number, tier: BadgeTier): React.ReactNode {
         case '2-1': return <AnnotationMachineBronze />;
         case '2-2': return <AnnotationMachineSilver />;
         case '2-3': return <AnnotationMachineGold />;
-        case '3-0': return <TaggerGrey />;
-        case '3-1': return <TaggerBronze />;
-        case '3-2': return <TaggerSilver />;
-        case '3-3': return <TaggerGold />;
+        case '3-0': return <PolygonProGrey />;
+        case '3-1': return <PolygonProBronze />;
+        case '3-2': return <PolygonProSilver />;
+        case '3-3': return <PolygonProGold />;
         case '4-0': return <TimeFliesGrey />;
         case '4-1': return <TimeFliesBronze />;
         case '4-2': return <TimeFliesSilver />;
@@ -1039,9 +1040,9 @@ export const stats: Statistic[] = [
     {
         id: 2,
         value: 0,
-        unit: 'Tags',
-        tooltip_total: 'Tags set in total',
-        tooltip_session: 'Tags set this session',
+        unit: 'Polygons',
+        tooltip_total: 'Polygons drawn in total',
+        tooltip_session: 'Polygons drawn this session',
     },
     {
         id: 3,
@@ -1918,7 +1919,7 @@ export const getProfileBackgroundElements = (id: number): JSX.Element => {
 
 export const getEnergizerIcon = (energy: number): React.ReactNode => {
     switch (energy) {
-        case 0: return <EnergizerIcon1 />;
+        case 0: return <EnergizerIcon />;
         case 1: return <EnergizerIcon1 />;
         case 2: return <EnergizerIcon2 />;
         case 3: return <EnergizerIcon3 />;
@@ -1929,7 +1930,7 @@ export const getEnergizerIcon = (energy: number): React.ReactNode => {
         case 8: return <EnergizerIcon8 />;
         case 9: return <EnergizerIcon9 />;
         case 10: return <EnergizerIcon10 />;
-        case 20: return <EnergizerIcon11 />;
+        case 20: return <EnergizerIcon20 />;
         default: return <EnergizerIcon10 />;
     }
 };

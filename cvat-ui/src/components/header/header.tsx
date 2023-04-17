@@ -22,7 +22,6 @@ import Icon, {
     TeamOutlined,
     PlusOutlined,
     RadarChartOutlined,
-    FormOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -40,7 +39,9 @@ import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
 import gamifconsts from 'gamification/gamifconsts';
 
-import { CVATLogo, EnergizerIcon, ShopIcon } from 'icons';
+import {
+    CVATLogo, EnergizerIcon, ShopIcon1, SurveyIcon,
+} from 'icons';
 import ChangePasswordDialog from 'components/change-password-modal/change-password-modal';
 import CVATTooltip from 'components/common/cvat-tooltip';
 import { switchSettingsDialog as switchSettingsDialogAction } from 'actions/settings-actions';
@@ -593,7 +594,7 @@ function HeaderContainer(props: Props): JSX.Element {
                             trigger='click'
                             visible={energizerPopUpShown}
                         >
-                            <div className='gamif-energizer-button-wrapper'>
+                            <div className='gamif-header-button-wrapper'>
                                 <Button
                                     type='text'
                                     className={`gamif-energizer-button ${energyGainEnabled ? '' : 'inactive'}`}
@@ -625,11 +626,11 @@ function HeaderContainer(props: Props): JSX.Element {
                                 if (!visible) { dispatch(saveProfileDataAsync()); }
                             }}
                         >
-                            <div className='gamif-shop-button-wrapper'>
+                            <div className='gamif-header-button-wrapper'>
                                 <Button
-                                    type='default'
+                                    type='text'
                                     className='gamif-shop-button'
-                                    icon={<ShopIcon />}
+                                    icon={<ShopIcon1 />}
                                     onClick={() => dispatch(addGamifLog('Opened Shop.'))}
                                 />
                             </div>
@@ -642,12 +643,14 @@ function HeaderContainer(props: Props): JSX.Element {
                         visible={surveyPromptVisible}
                     >
                         <CVATTooltip overlay='Possible Gamification Survey Prompt'>
-                            <Button
-                                className='gamif-debug-button'
-                                type='text'
-                                icon={<FormOutlined />}
-                                onClick={() => dispatch(toggleSurveyPrompt(!surveyPromptVisible))}
-                            />
+                            <div className='gamif-header-button-wrapper'>
+                                <Button
+                                    className='gamif-shop-button'
+                                    type='text'
+                                    icon={<SurveyIcon />}
+                                    onClick={() => dispatch(toggleSurveyPrompt(!surveyPromptVisible))}
+                                />
+                            </div>
                         </CVATTooltip>
                     </Popover>
                 </div>

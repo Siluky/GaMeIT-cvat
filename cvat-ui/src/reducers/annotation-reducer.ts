@@ -110,7 +110,7 @@ const defaultState: AnnotationState = {
     },
     colors: [],
     sidebarCollapsed: false,
-    appearanceCollapsed: false,
+    appearanceCollapsed: true, // gamif modified
     filtersPanelVisible: false,
     predictor: {
         enabled: false,

@@ -12,14 +12,13 @@ import { ExclamationCircleFilled } from '@ant-design/icons';
 // eslint-disable-next-line import/no-named-as-default
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
-import { incrementEnergy, setActiveEnergizer, toggleEnergyGain } from 'gamification/actions/energizer-actions';
-import { addGamifLog, updateUserData } from 'gamification/actions/user-data-actions';
+import { setActiveEnergizer, toggleEnergyGain } from 'gamification/actions/energizer-actions';
 import { EnergizerType } from 'gamification/gamif-interfaces';
-import gamifconsts from 'gamification/gamifconsts';
 import Snake from './energizer-snake';
 import QuizDuel from './energizer-quiz-duel';
 import TetrisApp from './tetris/src/TetrisApp';
 import Leaderboard from './energizer-leaderboard';
+import { EnergizerCard } from './energizer-card';
 
 // import { useDispatch, useSelector } from 'react-redux';
 // import { CombinedState } from 'reducers/interfaces';
@@ -36,15 +35,12 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     const energizer = useSelector((state: CombinedState) => state.energizer);
     const dispatch = useDispatch();
     const active = energizer.activeEnergizer;
-    const [index, setIndex] = useState(1);
-
     const modalContent = (activeEnergizer: EnergizerType): JSX.Element => {
         // setIndex(index + 1);
         switch (activeEnergizer) {
             case EnergizerType.QUIZ:
                 return (
                     <QuizDuel
-                        key={index}
                         startTime={100}
                         showLeaderboard={(show: boolean) => setLeaderboardShown(show)}
                     />
@@ -55,7 +51,6 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 return <TetrisApp showLeaderboard={(show: boolean) => setLeaderboardShown(show)} />;
             default: return (
                 <QuizDuel
-                    key={index}
                     startTime={100}
                     showLeaderboard={(show: boolean) => setLeaderboardShown(show)}
                 />
@@ -64,85 +59,18 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     };
 
     const infoScreen = (): JSX.Element => (
-        <div className='gamif-energizer-info-screen'>
-            <Button
-                // className='gamif-shop-item-card'
-                className='gamif-energizer-preview-card'
-                type='text'
-                onClick={() => {
-                    setIndex(index + 1);
-                    dispatch(setActiveEnergizer(EnergizerType.QUIZ));
-                    dispatch(updateUserData('quiz_played', 1));
-                    dispatch(addGamifLog('Quiz started'));
-                    dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
-                    dispatch(toggleEnergyGain(false));
-                }}
-            >
-                Quiz
-            </Button>
-            <Button
-                className='gamif-energizer-preview-card'
-                type='text'
-                onClick={() => {
-                    setIndex(index + 1);
-                    dispatch(setActiveEnergizer(EnergizerType.SNAKE));
-                    dispatch(updateUserData('snake_played', 1));
-                    dispatch(addGamifLog('Snake started'));
-                    dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
-                    dispatch(toggleEnergyGain(false));
-                }}
-            >
-                Snake
-            </Button>
-            <Button
-                className='gamif-energizer-preview-card'
-                type='text'
-                onClick={() => {
-                    setIndex(index + 1);
-                    dispatch(setActiveEnergizer(EnergizerType.TETRIS));
-                    dispatch(updateUserData('tetris_played', 1));
-                    dispatch(addGamifLog('Tetris started'));
-                    dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
-                    dispatch(toggleEnergyGain(false));
-                }}
-            >
-                Tetris
-            </Button>
-            <Button
-                className='gamif-energizer-preview-card'
-                style={{ background: 'black' }}
-                type='text'
-                onClick={() => {
-                    setIndex(index + 1);
-
-                    function getRandomInt(min: number, max: number): number {
-                        return Math.floor(Math.random() * (max - min + 1) + min);
-                    }
-
-                    const chosenEnergizer = getRandomInt(1, 3);
-                    switch (chosenEnergizer) {
-                        case 1: {
-                            dispatch(setActiveEnergizer(EnergizerType.QUIZ));
-                            dispatch(updateUserData('quiz_played', 1));
-                            break;
-                        }
-                        case 2: {
-                            dispatch(setActiveEnergizer(EnergizerType.SNAKE));
-                            dispatch(updateUserData('snake_played', 1));
-                            break;
-                        }
-                        case 3: {
-                            dispatch(setActiveEnergizer(EnergizerType.TETRIS));
-                            dispatch(updateUserData('tetris_played', 1));
-                            break;
-                        }
-                        default: break;
-                    }
-                    dispatch(incrementEnergy(-gamifconsts.ENERGIZER_COST));
-                }}
-            >
-                Random
-            </Button>
+        <div>
+            <div className='gamif-energizer-info-screen-top'>
+                <EnergizerCard energizer={EnergizerType.QUIZ} position={1} />
+                <EnergizerCard energizer={EnergizerType.TETRIS} position={2} />
+                <EnergizerCard energizer={EnergizerType.SNAKE} position={3} />
+                <EnergizerCard energizer={EnergizerType.RANDOM} position={4} />
+            </div>
+            <div className='gamif-energizer-info-screen-bottom'>
+                <span className='gamif-energizer-info-screen-text'>
+                    Pick the Energizer you would like to play!
+                </span>
+            </div>
         </div>
     );
 

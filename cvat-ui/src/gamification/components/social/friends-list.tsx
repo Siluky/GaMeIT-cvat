@@ -92,8 +92,8 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                         &nbsp;
                     </div>
                 </Select.Option>
-                <Select.Option value='DnD'>
-                    DnD
+                <Select.Option value='Do not Disturb'>
+                    Do not Disturb
                     &nbsp;
                     <div
                         className='gamif-quick-profile-status-icon'

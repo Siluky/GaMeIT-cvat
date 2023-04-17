@@ -4,7 +4,7 @@
 
 import { getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
 import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
-import { setStatus } from 'gamification/actions/social-actions';
+import { saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     saveUserData, setSurveyTiming, toggleSurveyPrompt, updateUserData,
@@ -68,13 +68,14 @@ export function GamificationDummy(): JSX.Element {
 
         const tabclose = (e: BeforeUnloadEvent): string | undefined => {
             if (userdata.surveyTiming !== 2) {
+                e.preventDefault();
                 dispatch(setStatus(OnlineStatus.OFFLINE));
-                // dispatch(saveProfileDataAsync());
+                dispatch(saveProfileDataAsync());
+
                 dispatch(saveUserData(true));
                 dispatch(saveChallenges());
                 dispatch(setSurveyTiming(2));
                 dispatch(toggleSurveyPrompt(true));
-                e.preventDefault();
                 const confirmationMessage = 'Before you leave, it would be great if you could do a quick survey using the link in the survey popup.';
                 e.returnValue = confirmationMessage;
                 return confirmationMessage;

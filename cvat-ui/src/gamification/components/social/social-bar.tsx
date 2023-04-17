@@ -1,10 +1,10 @@
 // Copyright (C) 2022 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../gamif-styles.scss';
 import { Popover, Button } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
 import { Profile } from 'gamification/gamif-interfaces';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
@@ -26,7 +26,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
 }
 
 interface SocialBarProps {
-    friends: Profile[];
+    friends: Profile[],
 }
 
 const chatBar = (friend: Profile): JSX.Element => {
@@ -47,7 +47,7 @@ const chatBar = (friend: Profile): JSX.Element => {
                 {friend.username}
             </Popover>
             <Button
-                icon={<CloseOutlined />}
+                icon={<CloseOutlined style={{ color: '#e6e6e6' }} />}
                 onClick={() => dispatch(toggleChat(friend.userId, false))}
                 type='text'
                 size='small'
@@ -56,13 +56,16 @@ const chatBar = (friend: Profile): JSX.Element => {
     );
 };
 
-export function SocialBar(props: SocialBarProps): JSX.Element {
+function SocialBar(props: SocialBarProps): JSX.Element {
     const dispatch = useDispatch();
     const { friends } = props;
 
     useEffect(() => {
         dispatch(getFriendsListAsync());
     }, []);
+
+    const activeChats = friends.filter((profile: Profile) => profile.chatActive);
+    const [activeRange, setActiveRange] = useState(0);
 
     return (
         <div
@@ -102,26 +105,37 @@ export function SocialBar(props: SocialBarProps): JSX.Element {
                             }}
                             ghost
                         >
-                            {`Friends (${friends.length ?? 0})`}
+                            {/* {`Friends (${activeChats.length ?? 0})`} */}
+                            {`Friends (${activeRange})`}
+                            {/* Friends */}
                         </Button>
                     </Popover>
                 </div>
             </div>
-            {/* {social.chats.map((chat: ChatRoom) => {
-                const user = social.chats.find((e) => e.otherUserId === chat.otherUserId);
-                if (user) {
-                    return chatBar(user);
-                }
-                return <></>;
-            })} */}
             <div className='gamif-social-bar-chat-boxes-wrapper'>
-                {friends.map((user: Profile) => {
+                <Button
+                    className='gamif-social-bar-chat-arrow'
+                    type='text'
+                    icon={<LeftOutlined />}
+                    onClick={() => setActiveRange(Math.min(activeRange - 1, 0))}
+                />
+                {/* {activeChats.map((p: Profile) => chatBar(p))} */}
+                {activeChats[activeRange] ? chatBar(activeChats[activeRange]) : <></>}
+                {activeChats[activeRange + 1] ? chatBar(activeChats[activeRange + 1]) : <></>}
+                {/*
+                {activeChats.map((user: Profile) => {
                     if (user.chatActive) { return chatBar(user); }
                     return null;
-                })}
+                })} */}
+                <Button
+                    className='gamif-social-bar-chat-arrow'
+                    type='text'
+                    icon={<RightOutlined />}
+                    onClick={() => setActiveRange(Math.max(activeRange + 1, activeChats.length - 1))}
+                />
             </div>
         </div>
     );
 }
 
-export default connect(mapStateToProps, null)(SocialBar);
+export default connect(mapStateToProps)(SocialBar);

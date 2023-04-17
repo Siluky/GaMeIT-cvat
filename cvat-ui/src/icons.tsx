@@ -65,19 +65,24 @@ import SVGMoneyHoarderBadge from './assets/money-hoarder-badge.svg';
 import SVGImageIcon from './assets/images-icon.svg';
 import SVGTimeIcon from './assets/time-icon.svg';
 import SVGImageFinished from './assets/image-finished-icon.svg';
+import SVGSurvey from './assets/survey-icon.svg';
 
-import SVGEnergizerIcon from './assets/energizer-button-icon.svg';
-import SVGEnergizerIcon1 from './assets/gamification/energizer/Energizer-1.svg';
-import SVGEnergizerIcon2 from './assets/gamification/energizer/Energizer-2.svg';
-import SVGEnergizerIcon3 from './assets/gamification/energizer/Energizer-3.svg';
-import SVGEnergizerIcon4 from './assets/gamification/energizer/Energizer-4.svg';
-import SVGEnergizerIcon5 from './assets/gamification/energizer/Energizer-5.svg';
-import SVGEnergizerIcon6 from './assets/gamification/energizer/Energizer-6.svg';
-import SVGEnergizerIcon7 from './assets/gamification/energizer/Energizer-7.svg';
-import SVGEnergizerIcon8 from './assets/gamification/energizer/Energizer-8.svg';
-import SVGEnergizerIcon9 from './assets/gamification/energizer/Energizer-9.svg';
-import SVGEnergizerIcon10 from './assets/gamification/energizer/Energizer-10.svg';
-import SVGEnergizerIcon11 from './assets/gamification/energizer/Energizer-11.svg';
+import SVGEnergizerIcon from './assets/gamification/energizer/Energizer_00.svg';
+import SVGEnergizerIcon1 from './assets/gamification/energizer/Energizer_01.svg';
+import SVGEnergizerIcon2 from './assets/gamification/energizer/Energizer_02.svg';
+import SVGEnergizerIcon3 from './assets/gamification/energizer/Energizer_03.svg';
+import SVGEnergizerIcon4 from './assets/gamification/energizer/Energizer_04.svg';
+import SVGEnergizerIcon5 from './assets/gamification/energizer/Energizer_05.svg';
+import SVGEnergizerIcon6 from './assets/gamification/energizer/Energizer_06.svg';
+import SVGEnergizerIcon7 from './assets/gamification/energizer/Energizer_07.svg';
+import SVGEnergizerIcon8 from './assets/gamification/energizer/Energizer_08.svg';
+import SVGEnergizerIcon9 from './assets/gamification/energizer/Energizer_09.svg';
+import SVGEnergizerIcon10 from './assets/gamification/energizer/Energizer_10.svg';
+import SVGEnergizerIcon20 from './assets/gamification/energizer/Energizer_20.svg';
+
+import SVGTetrisIcon from './assets/gamification/energizer/tetris-icon.svg';
+import SVGQuizIcon from './assets/gamification/energizer/quiz-icon.svg';
+import SVGSnakeIcon from './assets/gamification/energizer/snake-icon.svg';
 
 // Badges
 import SVGBadgeGold from './assets/gamification/badges/badge-gold.svg';
@@ -93,10 +98,10 @@ import SVGBadgeAnnotationMachineGrey from './assets/gamification/badges/GreyV-2.
 import SVGBadgeAnnotationMachineBronze from './assets/gamification/badges/BronzeV-2.svg';
 import SVGBadgeAnnotationMachineSilver from './assets/gamification/badges/SilverV-2.svg';
 import SVGBadgeAnnotationMachineGold from './assets/gamification/badges/GoldV-2.svg';
-import SVGBadgeTaggerGrey from './assets/gamification/badges/GreyV-3.svg';
-import SVGBadgeTaggerBronze from './assets/gamification/badges/BronzeV-3.svg';
-import SVGBadgeTaggerSilver from './assets/gamification/badges/SilverV-3.svg';
-import SVGBadgeTaggerGold from './assets/gamification/badges/GoldV-3.svg';
+import SVGBadgePolygonProGrey from './assets/gamification/badges/GreyV-3.svg';
+import SVGBadgePolygonProBronze from './assets/gamification/badges/BronzeV-3.svg';
+import SVGBadgePolygonProSilver from './assets/gamification/badges/SilverV-3.svg';
+import SVGBadgePolygonProGold from './assets/gamification/badges/GoldV-3.svg';
 import SVGBadgeTimeFliesGrey from './assets/gamification/badges/GreyV-4.svg';
 import SVGBadgeTimeFliesBronze from './assets/gamification/badges/BronzeV-4.svg';
 import SVGBadgeTimeFliesSilver from './assets/gamification/badges/SilverV-4.svg';
@@ -175,7 +180,8 @@ import SVGStatBadges from './assets/gamification/statistics/S-14.svg';
 import SVGAddChallenge from './assets/gamification/shop/add-challenge-icon.svg';
 import SVGMysteryGift from './assets/gamification/shop/mystery-gift-icon.svg';
 import SVGStreakSaver from './assets/gamification/shop/streak-saver-icon.svg';
-import SVGShopButton from './assets/gamification/shop/shop-icon.svg';
+import SVGShopButton1 from './assets/gamification/shop/shop-icon-1.svg';
+import SVGShopButton2 from './assets/gamification/shop/shop-icon-2.svg';
 
 export const CVATLogo = React.memo((): JSX.Element => <SVGCVATLogo />);
 export const EmptyTasksIcon = React.memo((): JSX.Element => <SVGEmptyTasksIcon />);
@@ -238,8 +244,13 @@ export const EnergizerIcon7 = React.memo((): JSX.Element => <SVGEnergizerIcon7 /
 export const EnergizerIcon8 = React.memo((): JSX.Element => <SVGEnergizerIcon8 />);
 export const EnergizerIcon9 = React.memo((): JSX.Element => <SVGEnergizerIcon9 />);
 export const EnergizerIcon10 = React.memo((): JSX.Element => <SVGEnergizerIcon10 />);
-export const EnergizerIcon11 = React.memo((): JSX.Element => <SVGEnergizerIcon11 />);
+export const EnergizerIcon20 = React.memo((): JSX.Element => <SVGEnergizerIcon20 />);
 export const ImageFinishedIcon = React.memo((): JSX.Element => <SVGImageFinished />);
+export const SurveyIcon = React.memo((): JSX.Element => <SVGSurvey />);
+
+export const TetrisIconPlain = React.memo((): JSX.Element => <SVGTetrisIcon />);
+export const QuizIconPlain = React.memo((): JSX.Element => <SVGQuizIcon />);
+export const SnakeIconPlain = React.memo((): JSX.Element => <SVGSnakeIcon />);
 
 // Badges
 export const BadgeIcon = React.memo((): JSX.Element => <SVGBadge />);
@@ -258,10 +269,10 @@ export const AnnotationMachineGrey = React.memo((): JSX.Element => <SVGBadgeAnno
 export const AnnotationMachineBronze = React.memo((): JSX.Element => <SVGBadgeAnnotationMachineBronze />);
 export const AnnotationMachineSilver = React.memo((): JSX.Element => <SVGBadgeAnnotationMachineSilver />);
 export const AnnotationMachineGold = React.memo((): JSX.Element => <SVGBadgeAnnotationMachineGold />);
-export const TaggerGrey = React.memo((): JSX.Element => <SVGBadgeTaggerGrey />);
-export const TaggerBronze = React.memo((): JSX.Element => <SVGBadgeTaggerBronze />);
-export const TaggerSilver = React.memo((): JSX.Element => <SVGBadgeTaggerSilver />);
-export const TaggerGold = React.memo((): JSX.Element => <SVGBadgeTaggerGold />);
+export const PolygonProGrey = React.memo((): JSX.Element => <SVGBadgePolygonProGrey />);
+export const PolygonProBronze = React.memo((): JSX.Element => <SVGBadgePolygonProBronze />);
+export const PolygonProSilver = React.memo((): JSX.Element => <SVGBadgePolygonProSilver />);
+export const PolygonProGold = React.memo((): JSX.Element => <SVGBadgePolygonProGold />);
 export const TimeFliesGrey = React.memo((): JSX.Element => <SVGBadgeTimeFliesGrey />);
 export const TimeFliesBronze = React.memo((): JSX.Element => <SVGBadgeTimeFliesBronze />);
 export const TimeFliesSilver = React.memo((): JSX.Element => <SVGBadgeTimeFliesSilver />);
@@ -349,4 +360,5 @@ export const TimeIcon = React.memo((): JSX.Element => <SVGTimeIcon />);
 export const AddChallengeIcon = React.memo((): JSX.Element => <SVGAddChallenge />);
 export const MysteryGiftIcon = React.memo((): JSX.Element => <SVGMysteryGift />);
 export const StreakSaverIcon = React.memo((): JSX.Element => <SVGStreakSaver />);
-export const ShopIcon = React.memo((): JSX.Element => <SVGShopButton />);
+export const ShopIcon1 = React.memo((): JSX.Element => <SVGShopButton1 />);
+export const ShopIcon2 = React.memo((): JSX.Element => <SVGShopButton2 />);

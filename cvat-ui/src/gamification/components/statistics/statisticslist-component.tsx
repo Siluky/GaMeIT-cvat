@@ -45,8 +45,6 @@ const selectionPopoverContent = (): JSX.Element => (
         <div className='gamif-statistics-selecting-overlay'>
             <h2 className='selecting-overlay-header'>
                 Selection mode active
-                <br />
-                <LoadingOutlined />
             </h2>
             <p className='selecting-overlay-text'>
                 Select up to
@@ -91,7 +89,7 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                                 icon={selecting ? <LoadingOutlined /> : <CarryOutOutlined />}
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    dispatch(toggleSelecting());
+                                    dispatch(toggleSelecting(!selecting));
                                 }}
                             />
                         </CvatTooltip>

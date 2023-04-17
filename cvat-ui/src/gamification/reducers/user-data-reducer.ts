@@ -90,6 +90,13 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                 case 'annotation_time': {
                     sessionData.annotation_time += action.payload.increment;
                     totalData.annotation_time += action.payload.increment;
+                    sessionData.annotation_time_avg = sessionData.images_annotated !== 0 ? (Math.round(
+                        (sessionData.annotation_time / sessionData.images_annotated) * 10,
+                    ) / 10) : 0;
+                    // eslint-disable-next-line max-len
+                    totalData.annotation_time_avg = totalData.images_annotated !== 0 ? (Math.round(
+                        (totalData.annotation_time / totalData.images_annotated) * 10,
+                    ) / 10) : 0;
                     break;
                 }
                 case 'annotation_streak_current': {

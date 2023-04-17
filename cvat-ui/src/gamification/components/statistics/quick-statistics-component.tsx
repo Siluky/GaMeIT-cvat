@@ -16,13 +16,17 @@ interface QuickStatisticProps {
 const formatValue = (id: number, value: number): string => {
     if (id === 5 || id === 3) {
         if (value > 3600) {
-            return `${Math.floor((value / 3600))}:${Math.floor((Math.floor(value % 3600)) / 60)}`;
-            // return `${Math.floor(.value / 3600)}:${.value % 60} min`;
+            const seconds = Math.floor((Math.floor(value % 3600)) / 60);
+            const secondsString = seconds < 10 ? `0${seconds}` : `${seconds}`;
+            return `${Math.floor((value / 3600))}:${secondsString}`;
+            // return `${Math.floor(value / 3600)}:${value % 60} min`;
         }
 
         if (value > 60) {
-            return `${Math.floor((value / 60))}:${Math.floor(value % 60)}`;
-            // return `${Math.floor(.value / 60)}:${.value % 60} min`;
+            const seconds = Math.floor(value % 60);
+            const secondsString = seconds < 10 ? `0${seconds}` : `${seconds}`;
+            return `${Math.floor((value / 60))}:${secondsString}`;
+            // return `${Math.floor(value / 60)}:${value % 60} min`;
         }
     }
 

@@ -192,15 +192,15 @@ export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyActio
             return;
         }
 
-        // mystery items
-        if (item.id === 15 || item.id === 25) {
-            dispatch(setShopOverlayMessage('You cannot buy this. Find this item in the mystery gift.'));
+        if (item.bought) {
+            dispatch(setShopOverlayMessage('You have already obtained this item.'));
             dispatch(purchaseItemFailed());
             return;
         }
 
-        if (item.bought) {
-            dispatch(setShopOverlayMessage('You already bought this item.'));
+        // mystery items
+        if (item.id === 15 || item.id === 25) {
+            dispatch(setShopOverlayMessage('You cannot buy this. Find this item in the mystery gift.'));
             dispatch(purchaseItemFailed());
             return;
         }
