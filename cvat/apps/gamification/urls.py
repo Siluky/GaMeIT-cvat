@@ -31,6 +31,7 @@ router.register('questions', views.QuizDuelQuestionsViewSet)
 router.register('friends', views.FriendslistViewSet)
 router.register('chat', views.ChatViewSet)
 router.register('gamiflogs', views.GamifLogsViewSet)
+router.register('image-status', views.ImageStatusViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

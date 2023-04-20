@@ -223,9 +223,9 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
         }
 
         case UserDataActionTypes.SET_FINISHED_STATUS: {
-            const url = window.location.href;
+            // const url = window.location.href;
             const { logs } = state.imagesFinished;
-            const relevantLog = logs.find((log) => log.url === url);
+            const relevantLog = logs.find((log) => log.id === action.payload.jobId);
             if (relevantLog) {
                 const logIndex = logs.indexOf(relevantLog);
                 logs.splice(logIndex, 1);
@@ -256,7 +256,7 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                 finished: action.payload.status,
             };
             const newLog: UrlLog = {
-                url,
+                id: action.payload.jobId,
                 statuses: [
                     status,
                 ],
@@ -279,10 +279,43 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
             };
         }
 
+        case UserDataActionTypes.GET_IMAGE_STATUS_SUCCESS: {
+            const modifiedLog = JSON.parse(action.payload.imageIds);
+            console.log('🚀 ~ file: user-data-reducer.ts:288 ~ log:', modifiedLog);
+            const existingLogs = state.imagesFinished.logs;
+            console.log('🚀 ~ file: user-data-reducer.ts:286 ~ existingLogs:', existingLogs);
+            const relevantLog = existingLogs.find((log: UrlLog) => log.id === modifiedLog.id);
+            let relevantLogIndex = 0;
+            if (!relevantLog) {
+                console.log('didnt find a log, creating');
+                return {
+                    ...state,
+                    imagesFinished: { logs: state.imagesFinished.logs.concat(modifiedLog) },
+                };
+            }
+
+            relevantLogIndex = existingLogs.indexOf(relevantLog);
+            existingLogs[relevantLogIndex] = modifiedLog;
+            console.log('🚀 ~ file: user-data-reducer.ts:292 ~ existingLogs:', existingLogs);
+
+            return {
+                ...state,
+                imagesFinished: { logs: existingLogs },
+            };
+        }
+
+        case UserDataActionTypes.SAVE_IMAGE_STATUSES_SUCCESS: {
+            return {
+                ...state,
+            };
+        }
+
         case UserDataActionTypes.SAVE_USER_DATA_FAILED: return state;
-        case UserDataActionTypes.SAVE_USER_DATA_SUCCESS: return state; // just to know API call worked, no state changes
+        case UserDataActionTypes.SAVE_USER_DATA_SUCCESS: return state;
         case UserDataActionTypes.GET_USER_DATA_FAILED: return state;
         case UserDataActionTypes.UPDATE_USER_DATA_FIELD_FAILED: return state;
+        case UserDataActionTypes.GET_IMAGE_STATUS_FAILED: return state;
+        case UserDataActionTypes.SAVE_IMAGE_STATUSES_FAILED: return state;
         default: return state;
     }
 };

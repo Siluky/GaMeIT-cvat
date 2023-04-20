@@ -1787,6 +1787,33 @@
                 return response.data.results;
             }
 
+            async function getImageStatus(jobId) {
+                const { backendAPI } = config;
+                let response = null;
+                response = await Axios.get(`${backendAPI}/image-status?jobId=${jobId}`);
+                console.log('🚀 ~ file: server-proxy.js:1795 ~ ServerProxy ~ getImageStatus ~ response:', response);
+                return response.data.results[0];
+            }
+
+            async function saveImageStatus(userId, jobId, data) {
+                console.log('🚀 ~ file: server-proxy.js:1798 ~ ServerProxy ~ saveImageStatuses ~ data:', data);
+                const { backendAPI } = config;
+                let response = null;
+                try {
+                    response = await Axios.put(`${backendAPI}/image-status/${userId}-${jobId}`, data,
+                        {
+                            proxy: config.proxy,
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                } catch (errorData) {
+                    throw generateError(errorData);
+                }
+
+                return response.data.results;
+            }
+
             // badges
             async function getBadges() {
                 const { backendAPI } = config;
@@ -2281,6 +2308,8 @@
                         value: Object.freeze({
                             get: getGamifUserData,
                             save: saveGamifUserData,
+                            saveImageStatus,
+                            getImageStatus,
                         }),
                         writable: false,
                     },

@@ -867,6 +867,16 @@ function build() {
                 const result = await PluginRegistry.apiWrapper(cvat.gamifuserdata.save, data);
                 return result;
             },
+
+            async getImageStatus(jobId) {
+                const result = await PluginRegistry.apiWrapper(cvat.gamifuserdata.getImageStatus, jobId);
+                return result;
+            },
+
+            async saveImageStatus(userId, jobId, data) {
+                const result = await PluginRegistry.apiWrapper(cvat.gamifuserdata.saveImageStatus, userId, jobId, data);
+                return result;
+            },
         },
 
         /**

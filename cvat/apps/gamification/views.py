@@ -9,8 +9,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django.http import Http404
-from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, GamifLog, Question, ShopItem, Statistic, UserProfile
-from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer, GamifLogSerializer, ProfileDataSerializer, QuestionSerializer, SaveChallengesSerializer, ShopItemSerializer, StatisticSerializer, UserDataSerializer, UserProfileSerializer
+from .models import Badge, BadgeStatus, Challenge, ChallengeStatus, ChatMessage, ChatRoom, EnergizerData, GamifLog, ImageStatus, Question, ShopItem, Statistic, UserProfile
+from .serializers import BadgeSerializer, BadgeStatusSerializer, ChallengeSerializer, ChallengeStatusSerializer, ChatSerializer, EnergizerDataSerializer, EnergySerializer, GamifLogSerializer, ImageStatusSerializer, ProfileDataSerializer, QuestionSerializer, SaveImageStatusSerializer, SaveChallengesSerializer, ShopItemSerializer, StatisticSerializer, UserDataSerializer, UserProfileSerializer
 
 # def currentUserProfile(self):
 #     currentUser = self.request.user
@@ -246,3 +246,44 @@ class QuizDuelQuestionsViewSet(viewsets.ModelViewSet):
 class GamifLogsViewSet(viewsets.ModelViewSet):
     queryset = GamifLog.objects.all()
     serializer_class = GamifLogSerializer
+
+class ImageStatusViewSet(viewsets.ModelViewSet):
+    queryset = ImageStatus.objects.all()
+    serializer_class = ImageStatusSerializer
+
+    def get_queryset(self):
+        queryset = ImageStatus.objects.all()
+        currentUser = self.request.user
+        currentUserProfile = UserProfile.objects.get(user = currentUser)
+        queryset = ImageStatus.objects.filter(userId = currentUserProfile.id)
+
+        relevantJobId = self.request.query_params.get('jobId')
+        if relevantJobId:
+            queryset = queryset.filter(jobId = relevantJobId)
+
+        return queryset
+
+    @action(detail=False, methods=['GET','PUT'], serializer_class=SaveImageStatusSerializer)
+    def save(self, request):
+        serializer = SaveImageStatusSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            print('SaveImageStatusSerializer is valid')
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
+        except Http404:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True) # will throw ValidationError
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except ValidationError:  # typically serializer is not valid
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

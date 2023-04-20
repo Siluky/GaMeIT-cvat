@@ -185,7 +185,6 @@ class ChallengeStatus(models.Model):
 
     def save(self, *args, **kwargs):
         self.id = str(self.userId.id) + '-' + str(self.challengeId)
-        print('Saving Challenge Status')
         super().save(**kwargs)
 
 class ChatRoom(models.Model):
@@ -259,6 +258,21 @@ class GamifLog(models.Model):
 
     def __str__(self):
         return str(self.userId) + ': ' + str(self.id)
+
+class ImageStatus(models.Model):
+    id = models.CharField(default='0-0', primary_key=True, max_length=16)
+    userId = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
+    jobId = models.CharField(max_length=64, default='')
+    imageIds = models.JSONField(null=True)
+
+    def __str__(self):
+        return str(self.userId) + '-' + self.jobId
+
+    def save(self, *args, **kwargs):
+        self.id = str(self.userId.id) + '-' + str(self.jobId)
+        super().save(**kwargs)
+
+
 
 
 

@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col } from 'antd/lib/grid';
 import Icon from '@ant-design/icons';
 import Select from 'antd/lib/select';
@@ -21,7 +21,9 @@ import {
 import {
     CombinedState, DimensionType, Workspace, PredictorState,
 } from 'reducers/interfaces';
-import { addGamifLog, setFinishedStatus, updateUserData } from 'gamification/actions/user-data-actions';
+import {
+    addGamifLog, getImageStatusAsync, saveImageStatusesAsync, setFinishedStatus, updateUserData,
+} from 'gamification/actions/user-data-actions';
 import QuickStats from './quick-statistics';
 
 interface Props {
@@ -43,10 +45,11 @@ interface StateToProps {
 
 function mapStateToProps(state: CombinedState): StateToProps {
     const frameNumber = state.annotation.player.frame.number;
-    const url = window.location.href;
+    const jobId = state.annotation.job.requestedId;
+    // const url = window.location.href;
 
     const { logs } = state.gamifuserdata.imagesFinished;
-    const log = logs.find((l) => l.url === url);
+    const log = logs.find((l) => l.id === jobId);
     const status = log?.statuses.find((stat) => stat.id === frameNumber);
 
     return {
@@ -145,10 +148,27 @@ function RightGroup(props: Props): JSX.Element {
 
     const filters = useSelector((state: CombinedState) => state.annotation.annotations.filters);
     const frameNumber = useSelector((state: CombinedState) => state.annotation.player.frame.number);
+    const jobId = useSelector((state: CombinedState) => state.annotation.job.requestedId) ?? 0;
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getImageStatusAsync());
+    }, [jobId]);
 
     return (
         <Col className='cvat-annotation-header-right-group'>
+            <Button
+                className='gamif-debug-button'
+                onClick={() => dispatch(saveImageStatusesAsync())}
+            >
+                Save
+            </Button>
+            <Button
+                className='gamif-debug-button'
+                onClick={() => dispatch(getImageStatusAsync())}
+            >
+                Get
+            </Button>
 
             <Button
                 className={`gamif-images-finished-button-wrapper ${imageFinished ? 'green' : 'grey'}`}
@@ -157,7 +177,8 @@ function RightGroup(props: Props): JSX.Element {
                     // setImageFinished(!imageFinished);
                     dispatch(updateUserData('images_annotated',
                         (imageFinished ? -1 : 1)));
-                    dispatch(setFinishedStatus(frameNumber, !imageFinished));
+                    dispatch(setFinishedStatus(jobId, frameNumber, !imageFinished));
+                    dispatch(saveImageStatusesAsync());
                     if (imageFinished) {
                         dispatch(addGamifLog('Image Finished'));
                     }

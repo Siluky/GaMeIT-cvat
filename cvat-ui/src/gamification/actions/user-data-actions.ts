@@ -7,7 +7,7 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { notification } from 'antd';
-import { UserData } from '../gamif-interfaces';
+import { UrlLog, UserData } from '../gamif-interfaces';
 import { addQuickStatistic } from './statistics-actions';
 // eslint-disable-next-line import/no-cycle
 import { initShop, updateBalance } from './shop-actions';
@@ -34,6 +34,11 @@ export enum UserDataActionTypes {
 
     TOGGLE_SURVEY_PROMPT = 'TOGGLE_SURVEY_PROMPT',
     SET_FINISHED_STATUS = 'SET_FINISHED_STATUS',
+
+    SAVE_IMAGE_STATUSES_SUCCESS = 'SAVE_IMAGE_STATUSES_SUCCESS',
+    SAVE_IMAGE_STATUSES_FAILED = 'SAVE_IMAGE_STATUSES_FAILED',
+    GET_IMAGE_STATUS_SUCCESS = 'GET_IMAGE_STATUSES_SUCCESS',
+    GET_IMAGE_STATUS_FAILED = 'GET_IMAGE_STATUSES_FAILED',
 
     SET_SURVEY_TIMING = 'SET_SURVEY_TIMING',
 }
@@ -368,9 +373,74 @@ export function toggleSurveyPrompt(show: boolean): AnyAction {
     };
 }
 
-export function setFinishedStatus(imageId: number, status: boolean): AnyAction {
+export function setFinishedStatus(jobId: number, imageId: number, status: boolean): AnyAction {
     return {
         type: UserDataActionTypes.SET_FINISHED_STATUS,
-        payload: { imageId, status },
+        payload: { jobId, imageId, status },
+    };
+}
+
+function saveImageStatusesSuccess(): AnyAction {
+    return {
+        type: UserDataActionTypes.SAVE_IMAGE_STATUSES_SUCCESS,
+    };
+}
+function saveImageStatusesFailed(error: any): AnyAction {
+    return {
+        type: UserDataActionTypes.SAVE_IMAGE_STATUSES_FAILED,
+        payload: error,
+    };
+}
+
+export function saveImageStatusesAsync(): ThunkAction<void, {}, {}, AnyAction> {
+    const { imagesFinished, userId } = getCVATStore().getState().gamifuserdata;
+    const jobId = getCVATStore().getState().annotation.job.requestedId;
+    // const url = window.location.href;
+
+    const relevantLog = imagesFinished.logs.find((log: UrlLog) => log.id === jobId);
+    console.log('🚀 ~ file: user-data-actions.ts:400 ~ saveImageStatusesAsync ~ relevantLog:', relevantLog);
+
+    const data = {
+        userId,
+        jobId,
+        imageIds: JSON.stringify(relevantLog),
+    };
+
+    return async (dispatch) => {
+        try {
+            await cvat.gamifuserdata.saveImageStatus(userId, jobId, data);
+            dispatch(saveImageStatusesSuccess());
+        } catch (error) {
+            dispatch(saveImageStatusesFailed(error));
+        }
+    };
+}
+
+function getImageStatusSuccess(data: any): AnyAction {
+    return {
+        type: UserDataActionTypes.GET_IMAGE_STATUS_SUCCESS,
+        payload: data,
+    };
+}
+function getImageStatusFailed(error: any): AnyAction {
+    return {
+        type: UserDataActionTypes.GET_IMAGE_STATUS_FAILED,
+        payload: error,
+    };
+}
+
+export function getImageStatusAsync(): ThunkAction<void, {}, {}, AnyAction> {
+    // const url = window.location.href;
+    const jobId = getCVATStore().getState().annotation.job.requestedId;
+    let data = null;
+
+    return async (dispatch) => {
+        try {
+            data = await cvat.gamifuserdata.getImageStatus(jobId);
+            console.log('🚀 ~ file: user-data-actions.ts:430 ~ return ~ data:', data);
+            dispatch(getImageStatusSuccess(data));
+        } catch (error) {
+            dispatch(getImageStatusFailed(error));
+        }
     };
 }

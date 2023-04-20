@@ -44,7 +44,7 @@ export interface ImageStatus {
 }
 
 export interface UrlLog {
-    url: string,
+    id: number,
     statuses: ImageStatus[],
 }
 

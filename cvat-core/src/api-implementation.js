@@ -333,6 +333,16 @@ const config = require('./config');
             return userdata;
         };
 
+        cvat.gamifuserdata.getImageStatus.implementation = async (jobId) => {
+            const status = await serverProxy.gamifuserdata.getImageStatus(jobId);
+            return status;
+        };
+
+        cvat.gamifuserdata.saveImageStatus.implementation = async (userId, jobId, data) => {
+            const result = await serverProxy.gamifuserdata.saveImageStatus(userId, jobId, data);
+            return result;
+        };
+
         // badges
 
         cvat.badges.get.implementation = async () => {

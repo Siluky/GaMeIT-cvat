@@ -135,3 +135,13 @@ class GamifLogSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.GamifLog
         fields= '__all__'
+
+class ImageStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=models.ImageStatus
+        fields= '__all__'
+
+class SaveImageStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=models.ImageStatus
+        fields= ('userId', 'jobId', 'imageIds')
