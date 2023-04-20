@@ -157,7 +157,7 @@ function RightGroup(props: Props): JSX.Element {
 
     return (
         <Col className='cvat-annotation-header-right-group'>
-            <Button
+            {/* <Button
                 className='gamif-debug-button'
                 onClick={() => dispatch(saveImageStatusesAsync())}
             >
@@ -168,11 +168,10 @@ function RightGroup(props: Props): JSX.Element {
                 onClick={() => dispatch(getImageStatusAsync())}
             >
                 Get
-            </Button>
-
+            </Button> */}
             <Button
                 className={`gamif-images-finished-button-wrapper ${imageFinished ? 'green' : 'grey'}`}
-                style={{ height: '40px', width: '40px', margin: 'auto' }}
+                style={{ height: '40px', width: '40px', margin: 'auto 4px' }}
                 onClick={() => {
                     // setImageFinished(!imageFinished);
                     dispatch(updateUserData('images_annotated',

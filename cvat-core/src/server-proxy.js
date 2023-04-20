@@ -1791,12 +1791,12 @@
                 const { backendAPI } = config;
                 let response = null;
                 response = await Axios.get(`${backendAPI}/image-status?jobId=${jobId}`);
-                console.log('🚀 ~ file: server-proxy.js:1795 ~ ServerProxy ~ getImageStatus ~ response:', response);
+                // console.log('🚀 ~ file: server-proxy.js:1795 ~ ServerProxy ~ getImageStatus ~ response:', response);
                 return response.data.results[0];
             }
 
             async function saveImageStatus(userId, jobId, data) {
-                console.log('🚀 ~ file: server-proxy.js:1798 ~ ServerProxy ~ saveImageStatuses ~ data:', data);
+                // console.log('🚀 ~ file: server-proxy.js:1798 ~ ServerProxy ~ saveImageStatuses ~ data:', data);
                 const { backendAPI } = config;
                 let response = null;
                 try {
@@ -1979,7 +1979,7 @@
                     energizer: energizerName,
                     score: userScore,
                 });
-                console.log('🚀 ~ file: server-proxy.js:1955 ~ ServerProxy ~ addLeaderboardEntry ~ data', data);
+                // console.log('🚀 ~ file: server-proxy.js:1955 ~ ServerProxy ~ addLeaderboardEntry ~ data', data);
                 try {
                     response = await Axios.post(`${backendAPI}/energizer-data`, data, {
                         proxy: config.proxy,

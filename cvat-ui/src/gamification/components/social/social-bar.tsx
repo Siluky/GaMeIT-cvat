@@ -128,8 +128,7 @@ function SocialBar(props: SocialBarProps): JSX.Element {
                             {/* {`Friends (${activeChats.length ?? 0})`} */}
                             {/* {`Friends (${activeRange})`} */}
                             {/* Friends */}
-                            &nbsp;
-                            {`(${friends.filter((p: Profile) => p.status !== OnlineStatus.OFFLINE).length})`}
+                            {`(${friends.filter((p: Profile) => p.status !== OnlineStatus.OFFLINE).length - 1})`}
                         </Button>
                     </Popover>
                 </div>

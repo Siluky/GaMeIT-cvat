@@ -300,7 +300,7 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
 
             const newDay = test ? true : (new Date(lastLogin).getDay() - new Date(currentTime).getDay()) !== 0;
             if (newDay) {
-                console.log('New day has started');
+                // console.log('New day has started');
 
                 const timeSinceLogin = currentTime - lastLogin;
                 let message = '';
@@ -398,7 +398,7 @@ export function saveImageStatusesAsync(): ThunkAction<void, {}, {}, AnyAction> {
     // const url = window.location.href;
 
     const relevantLog = imagesFinished.logs.find((log: UrlLog) => log.id === jobId);
-    console.log('🚀 ~ file: user-data-actions.ts:400 ~ saveImageStatusesAsync ~ relevantLog:', relevantLog);
+    // console.log('🚀 ~ file: user-data-actions.ts:400 ~ saveImageStatusesAsync ~ relevantLog:', relevantLog);
 
     const data = {
         userId,
@@ -437,7 +437,7 @@ export function getImageStatusAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async (dispatch) => {
         try {
             data = await cvat.gamifuserdata.getImageStatus(jobId);
-            console.log('🚀 ~ file: user-data-actions.ts:430 ~ return ~ data:', data);
+            // console.log('🚀 ~ file: user-data-actions.ts:430 ~ return ~ data:', data);
             dispatch(getImageStatusSuccess(data));
         } catch (error) {
             dispatch(getImageStatusFailed(error));

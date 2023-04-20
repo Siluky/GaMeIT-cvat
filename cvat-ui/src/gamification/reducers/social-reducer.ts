@@ -45,7 +45,9 @@ export default (state = defaultState, action: AnyAction): SocialState => {
                     chatActive: relevantProfile?.chatActive ? relevantProfile?.chatActive : false,
                 };
             });
-            console.log('🚀 ~ file: social-reducer.ts:48 ~ friendListEntrieswithChatInfo ~ friendListEntrieswithChatInfo:', friendListEntrieswithChatInfo);
+            // console.log('🚀 ~ file
+            // : social-reducer.ts:48 ~ friendListEntrieswithChatInfo ~
+            // friendListEntrieswithChatInfo:', friendListEntrieswithChatInfo);
 
             return {
                 ...state,

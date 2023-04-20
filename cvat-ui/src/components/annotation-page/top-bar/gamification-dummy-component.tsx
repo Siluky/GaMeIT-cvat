@@ -29,7 +29,7 @@ export function GamificationDummy(): JSX.Element {
 
     const onIdle = (): void => {
         dispatch(toggleEnergyGain(false));
-        console.log('User is now idle');
+        // console.log('User is now idle');
         dispatch(addGamifLog('User is now idle'));
         setIdleTime(Date.now());
         setActive(false);
@@ -37,8 +37,8 @@ export function GamificationDummy(): JSX.Element {
 
     const onActive = (): void => {
         dispatch(toggleEnergyGain(true));
-        console.log(`User with id ${userId} is now active again
-        after ${Math.ceil((Date.now() - idleTime) / 1000)} seconds.`);
+        // console.log(`User with id ${userId} is now active again
+        // after ${Math.ceil((Date.now() - idleTime) / 1000)} seconds.`);
 
         dispatch(addGamifLog(`User with id ${userId} is now active again
         after ${Math.ceil((Date.now() - idleTime) / 1000)} seconds.`));
@@ -60,7 +60,7 @@ export function GamificationDummy(): JSX.Element {
     // For "time annotated" incrementation
     useEffect(() => {
         const interval = setInterval(() => {
-            console.log('🚀 ~ file: gamification-dummy-component.tsx:53 ~ interval ~ active:', active);
+            // console.log('🚀 ~ file: gamification-dummy-component.tsx:53 ~ interval ~ active:', active);
             if (active) {
                 dispatch(updateUserData('annotation_time', intervalTimer / 1000));
             }

@@ -9,6 +9,7 @@
 import React from 'react';
 import './styles.css';
 import styled from 'styled-components';
+// import Mousetrap from 'mousetrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 import { EnergizerType, LeaderboardEntry } from 'gamification/gamif-interfaces';
@@ -124,22 +125,35 @@ interface TetrisProps {
 //   font-size: 24px;
 // `;
 
+// const stopEvents = (e: Mousetrap.ExtendedKeyboardEvent): void => {
+//     console.log(`Stopped event: ${e.key}`);
+//     e.stopPropagation();
+// };
+
 const TetrisApp = (props: TetrisProps): JSX.Element => {
     const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
     const dispatch = useDispatch();
 
-    // const handleKeyDown = (event: KeyboardEvent): void => {
-    //     console.log(`got event in window: ${event.key}`);
-    //     event.stopPropagation();
-    // };
-
     // useEffect(() => {
-    //     window.addEventListener('keydown', handleKeyDown);
-    //     return () => window.removeEventListener('keydown', handleKeyDown);
+    //     // const element = document.querySelector('#tetris-container');
+    //     // console.log('🚀 ~ file: TetrisApp.tsx:139 ~ useEffect ~ element:', element);
+    //     // const mousetrap = new Mousetrap(element ?? undefined);
+    //     // if (element) {
+    //     //     mousetrap.bind('d', (e) => {
+    //     //         e.stopPropagation();
+    //     //         console.log(`Stopped event: ${e.key}`);
+    //     //     });
+    //     //     mousetrap.bind('f', stopEvents);
+    //     // }
+    //     Mousetrap.bind('f', stopEvents);
+
+    //     return () => {
+    //         Mousetrap.unbind('f');
+    //     };
     // }, []);
 
     return (
-        <Container>
+        <Container id='tetris-container'>
             <Tetris>
                 {({
                     Gameboard,
@@ -153,16 +167,8 @@ const TetrisApp = (props: TetrisProps): JSX.Element => {
                     Timer,
                     time,
                 }) => (
-                    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
                     <div
                         className='tetris-container'
-                        // TODO: NOT WORKING
-                        // onKeyDown={(e) => {
-                        //     e.stopPropagation();
-                        //     e.preventDefault();
-                        //     console.log(`got event in div: ${e.key}`);
-                        // }}
-                        // // ref={}
                     >
                         <div style={{ opacity: state === 'PLAYING' ? 1 : 0.5 }}>
                             <div>

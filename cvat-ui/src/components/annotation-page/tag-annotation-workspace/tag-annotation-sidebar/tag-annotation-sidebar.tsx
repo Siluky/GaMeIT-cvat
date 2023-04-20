@@ -230,7 +230,7 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
         <>
             <GlobalHotKeys keyMap={subKeyMap} handlers={handlers} />
             <Layout.Sider {...siderProps}>
-                <Tabs type='card' defaultActiveKey='objects' className='cvat-objects-sidebar-tabs'>
+                <Tabs type='card' defaultActiveKey='annotation' className='cvat-objects-sidebar-tabs'>
                     <Tabs.TabPane tab={<Text strong>Annotation</Text>} key='annotation'>
                         {/* eslint-disable-next-line */}
                         <span
@@ -308,12 +308,6 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
                                 </Text>
                             </Col>
                         </Row>
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab={<Text strong>Challenges</Text>} key='challenges'>
-                        <ChallengeList />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
-                        <StatisticsList />
                     </Tabs.TabPane>
                 </Tabs>
 

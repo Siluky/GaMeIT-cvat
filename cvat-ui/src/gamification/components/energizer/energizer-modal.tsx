@@ -118,9 +118,9 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     // }, [])
 
     const focusInput = (): void => {
-        console.log('focus input called');
+        // console.log('focus input called');
         if (inputRef.current) {
-            console.log('Focusing input on modal (maybe)');
+            // console.log('Focusing input on modal (maybe)');
             inputRef.current.focus();
         }
     };
@@ -163,9 +163,9 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                     onKeyDown={handleKeyDown}
                 />
                 {active === EnergizerType.NONE ? infoScreen() : modalContent(energizer.activeEnergizer)}
-                <Button onClick={() => focusInput()}>
+                {/* <Button onClick={() => focusInput()}>
                     Focus input
-                </Button>
+                </Button> */}
                 {/* <Button
                     className='gamif-energizer-continue-button'
                     type='text'
