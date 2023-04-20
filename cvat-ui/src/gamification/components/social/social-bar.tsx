@@ -4,9 +4,11 @@
 import React, { useEffect, useState } from 'react';
 import '../../gamif-styles.scss';
 import { Popover, Button } from 'antd';
-import { CloseOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import {
+    CloseOutlined, LeftOutlined, RightOutlined, UserOutlined,
+} from '@ant-design/icons';
 import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
-import { Profile } from 'gamification/gamif-interfaces';
+import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { connect, useDispatch } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
@@ -29,8 +31,15 @@ interface SocialBarProps {
     friends: Profile[],
 }
 
-const chatBar = (friend: Profile): JSX.Element => {
+const chatBar = (friend?: Profile): JSX.Element => {
     const dispatch = useDispatch();
+
+    if (!friend) {
+        return (
+            <div className='gamif-chat-bar-bubble placeholder'> &nbsp; </div>
+        );
+    }
+
     return (
         <div
             key={friend.userId}
@@ -44,11 +53,15 @@ const chatBar = (friend: Profile): JSX.Element => {
                 defaultVisible
                 overlayClassName='gamif-popover'
             >
-                {friend.username}
+                <span className='gamif-chat-bar-bubble-text'>
+                    {friend.username}
+                </span>
             </Popover>
             <Button
                 icon={<CloseOutlined style={{ color: '#e6e6e6' }} />}
-                onClick={() => dispatch(toggleChat(friend.userId, false))}
+                onClick={() => {
+                    dispatch(toggleChat(friend.userId, false));
+                }}
                 type='text'
                 size='small'
             />
@@ -66,6 +79,12 @@ function SocialBar(props: SocialBarProps): JSX.Element {
 
     const activeChats = friends.filter((profile: Profile) => profile.chatActive);
     const [activeRange, setActiveRange] = useState(0);
+
+    useEffect(() => {
+        if (activeChats.length <= 2) {
+            setActiveRange(0);
+        }
+    }, [activeChats]);
 
     return (
         <div
@@ -103,36 +122,39 @@ function SocialBar(props: SocialBarProps): JSX.Element {
                                 dispatch(getFriendsListAsync());
                                 dispatch(addGamifLog('Opened Friends List'));
                             }}
+                            icon={<UserOutlined />}
                             ghost
                         >
                             {/* {`Friends (${activeChats.length ?? 0})`} */}
-                            {`Friends (${activeRange})`}
+                            {/* {`Friends (${activeRange})`} */}
                             {/* Friends */}
+                            &nbsp;
+                            {`(${friends.filter((p: Profile) => p.status !== OnlineStatus.OFFLINE).length})`}
                         </Button>
                     </Popover>
                 </div>
             </div>
             <div className='gamif-social-bar-chat-boxes-wrapper'>
-                <Button
-                    className='gamif-social-bar-chat-arrow'
-                    type='text'
-                    icon={<LeftOutlined />}
-                    onClick={() => setActiveRange(Math.min(activeRange - 1, 0))}
-                />
-                {/* {activeChats.map((p: Profile) => chatBar(p))} */}
-                {activeChats[activeRange] ? chatBar(activeChats[activeRange]) : <></>}
-                {activeChats[activeRange + 1] ? chatBar(activeChats[activeRange + 1]) : <></>}
-                {/*
-                {activeChats.map((user: Profile) => {
-                    if (user.chatActive) { return chatBar(user); }
-                    return null;
-                })} */}
-                <Button
-                    className='gamif-social-bar-chat-arrow'
-                    type='text'
-                    icon={<RightOutlined />}
-                    onClick={() => setActiveRange(Math.max(activeRange + 1, activeChats.length - 1))}
-                />
+                {activeChats.length > 2 && (
+                    <Button
+                        className='gamif-social-bar-chat-arrow'
+                        type='text'
+                        icon={<LeftOutlined />}
+                        disabled={activeRange === 0}
+                        onClick={() => setActiveRange(Math.max(activeRange - 1, 0))}
+                    />
+                )}
+                {activeChats[activeRange] ? chatBar(activeChats[activeRange]) : chatBar()}
+                {activeChats[activeRange + 1] ? chatBar(activeChats[activeRange + 1]) : chatBar()}
+                {activeChats.length > 2 && (
+                    <Button
+                        className='gamif-social-bar-chat-arrow'
+                        type='text'
+                        icon={<RightOutlined />}
+                        disabled={activeRange === activeChats.length - 2}
+                        onClick={() => setActiveRange(Math.min(activeRange + 1, activeChats.length - 2))}
+                    />
+                )}
             </div>
         </div>
     );

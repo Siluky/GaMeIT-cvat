@@ -85,7 +85,7 @@ export function StatisticsList(props: StatisticsListProps): JSX.Element {
                         <CvatTooltip overlay='Click here to select quick statistics'>
                             <Button
                                 className={btnClass}
-                                ghost
+                                // ghost
                                 icon={selecting ? <LoadingOutlined /> : <CarryOutOutlined />}
                                 onClick={(e) => {
                                     e.preventDefault();

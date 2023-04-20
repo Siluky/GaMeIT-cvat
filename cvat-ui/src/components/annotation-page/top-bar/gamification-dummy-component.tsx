@@ -10,6 +10,7 @@ import {
     saveUserData, setSurveyTiming, toggleSurveyPrompt, updateUserData,
 } from 'gamification/actions/user-data-actions';
 import { OnlineStatus } from 'gamification/gamif-interfaces';
+// import gamifconsts from 'gamification/gamifconsts';
 import React, { useEffect, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,9 +20,12 @@ export function GamificationDummy(): JSX.Element {
     const dispatch = useDispatch();
     const intervalTimer = 30000; // TODO: Fix later!
     const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
-    const [idleTime, setIdleTime] = useState(0);
     const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
+    // const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
+    const [idleTime, setIdleTime] = useState(0);
     const [active, setActive] = useState(true);
+
+    // const [energizerTimer, setEnergizerTimer] = useState(0);
 
     const onIdle = (): void => {
         dispatch(toggleEnergyGain(false));
@@ -48,6 +52,11 @@ export function GamificationDummy(): JSX.Element {
         throttle: 1000,
     });
 
+    // useEffect(() => {
+    //     dispatch(initializeUserData());
+    //     dispatch(getCurrentEnergyAsync());
+    // }, []);
+
     // For "time annotated" incrementation
     useEffect(() => {
         const interval = setInterval(() => {
@@ -58,6 +67,24 @@ export function GamificationDummy(): JSX.Element {
         }, intervalTimer);
         return () => clearInterval(interval);
     }, [active]);
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         if (active && energyGainEnabled) {
+    //             setEnergizerTimer((prev) => prev + 1);
+    //             console.log('🚀 ~ file: gam
+    // ification-dummy-component.tsx:78 ~ interval ~ energizerTimer:', energizerTimer);
+    //             if (energizerTimer >= gamifconsts.ENERGY_RATE) {
+    //                 dispatch(updateBadges(false));
+    //                 incrementEnergy(gamifconsts.ENERGY_INCREMENT);
+    //                 setEnergizerTimer(0);
+    //             }
+    //         }
+    //     }, 1000);
+    //     return () => {
+    //         clearInterval(interval);
+    //     };
+    // }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {

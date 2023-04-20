@@ -6,6 +6,7 @@ import {
     ActionCreator, AnyAction, Dispatch, Store,
 } from 'redux';
 import { ThunkAction } from 'utils/redux';
+import { ThunkAction as _ThunkAction } from 'redux-thunk';
 import isAbleToChangeFrame from 'utils/is-able-to-change-frame';
 import { RectDrawingMethod, CuboidDrawingMethod, Canvas } from 'cvat-canvas-wrapper';
 import getCore from 'cvat-core-wrapper';
@@ -26,6 +27,7 @@ import {
     Task,
     Workspace,
 } from 'reducers/interfaces';
+import { updateUserData } from 'gamification/actions/user-data-actions';
 import { updateJobAsync } from './tasks-actions';
 import { switchToolsBlockerState } from './settings-actions';
 
@@ -1170,10 +1172,13 @@ export function rememberObject(createParams: {
     };
 }
 
-export function shapeDrawn(): AnyAction {
-    return {
-        type: AnnotationActionTypes.SHAPE_DRAWN,
-        payload: {},
+export function shapeDrawn(): _ThunkAction<void, {}, {}, AnyAction> {
+    return (dispatch) => {
+        dispatch(updateUserData('polygons_drawn', 1));
+        dispatch({
+            type: AnnotationActionTypes.SHAPE_DRAWN,
+            payload: {},
+        });
     };
 }
 

@@ -66,18 +66,27 @@ export function ChatBox(props: ChatBoxProps): JSX.Element {
         const interval = setInterval(() => {
             // console.log(`fetching chat history for ${userId}`);
             dispatch(getChatHistoryAsync(userId));
-            scrolltoTop();
+            // scrolltoTop();
         }, 5000);
         return () => {
             clearInterval(interval);
         };
     }, []);
 
+    useEffect(() => {
+        const elem = document.getElementById(`chat-${userId}`);
+        if (elem) {
+            if (elem?.scrollTop + elem?.clientHeight >= elem.scrollHeight) {
+                elem.scrollTop = elem.scrollHeight;
+            }
+        }
+    }, [messages]);
+
     return (
         <>
             <div className='gamif-chat-box-container'>
                 <div id={`chat-${userId}`} className='gamif-chat-box-messages-container'>
-                    {messages.map((m, index) => chatMessage(m, index))}
+                    {messages.map((m, index) => chatMessage(m, index)).reverse()}
                 </div>
                 {/* <Button
                     type='text'

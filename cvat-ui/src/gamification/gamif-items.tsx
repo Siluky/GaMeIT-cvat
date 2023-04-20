@@ -958,7 +958,7 @@ export function getBadgeValue(id: number): number {
     switch (id) {
         case 1: return udata.userdata_total.images_annotated;
         case 2: return udata.userdata_session.images_annotated;
-        case 3: return udata.userdata_total.tags_set;
+        case 3: return udata.userdata_total.polygons_drawn;
         case 4: return udata.userdata_total.annotation_time;
         case 5: return udata.userdata_total.annotation_streak_max;
         case 6: return udata.userdata_total.energizers_completed;
@@ -989,7 +989,7 @@ export function mapBadgeIdtoField(id: number): keyof UserData {
     switch (id) {
         case 1: return 'images_annotated';
         case 2: return 'images_annotated'; // TODO: SESSION!
-        case 3: return 'tags_set';
+        case 3: return 'polygons_drawn';
         case 4: return 'annotation_time';
         case 5: return 'annotation_streak_max';
         case 6: return 'energizers_completed';
@@ -1133,7 +1133,7 @@ export const stats: Statistic[] = [
 export function mapStatisticIdtoFieldName(id: number): keyof UserData {
     switch (id) {
         case 1: return 'images_annotated';
-        case 2: return 'tags_set';
+        case 2: return 'polygons_drawn';
         case 3: return 'annotation_time_avg';
         case 4: return 'annotation_streak_max';
         case 5: return 'annotation_time';

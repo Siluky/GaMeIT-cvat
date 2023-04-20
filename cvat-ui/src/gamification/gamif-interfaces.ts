@@ -5,10 +5,10 @@
 export interface UserData {
     last_login: number, // https://stackoverflow.com/questions/4744299/how-to-get-datetime-in-javascript
     images_annotated: number,
-    tags_set: number,
+    polygons_drawn: number,
     images_annotated_night: number,
 
-    annotation_time: number, // TODO: in seconds?!
+    annotation_time: number,
     annotation_time_avg: number,
     annotation_streak_current: number,
     annotation_streak_max: number,
@@ -121,10 +121,10 @@ export interface ChallengeState {
 }
 
 export enum EnergizerType {
-    TETRIS = 'Tetris',
-    SNAKE = 'Snake',
-    QUIZ = 'Quiz',
-    RANDOM = 'Random',
+    TETRIS = 'TETRIS',
+    SNAKE = 'SNAKE',
+    QUIZ = 'QUIZ',
+    RANDOM = 'RANDOM',
     NONE = 'NONE',
 }
 

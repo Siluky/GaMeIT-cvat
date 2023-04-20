@@ -50,6 +50,7 @@ export function QuickStatisticsPanel(props: QuickStatisticGroupProps): JSX.Eleme
                                 value={val as number} // careful
                                 icon={mapStatisticIdtoIcon(stat.id)}
                                 tooltip={session ? stat.tooltip_session : stat.tooltip_total ?? 'Tooltip missing'}
+                                session={session}
                             />
                         );
                     }

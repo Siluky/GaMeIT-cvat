@@ -186,7 +186,7 @@ class ChatViewSet(viewsets.ModelViewSet):
                 print(_user2)
                 ChatRoom.objects.create(user1=_user1, user2=_user2, id=chatRoomId)
             queryset = ChatMessage.objects.filter(room = targetChatRoom)
-        return queryset.order_by('timestamp')
+        return queryset.order_by('-timestamp')
 
     # def create(self, request, *args, **kwargs):
     #     try:

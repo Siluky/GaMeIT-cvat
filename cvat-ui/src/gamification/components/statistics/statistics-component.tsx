@@ -86,7 +86,7 @@ export function StatisticComponent(props: Props): JSX.Element {
                     }
                 }}
             >
-                <div className='statistic-button-left'>
+                <div className={`statistic-button-left ${!allTime ? 'session' : ''}`}>
                     {mapStatisticIdtoIcon(statistic.id)}
                 </div>
                 <div className='statistic-button-right'>

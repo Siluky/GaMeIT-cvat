@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { Row, Col } from 'antd/lib/grid';
@@ -24,14 +24,16 @@ import { Canvas } from 'cvat-canvas-wrapper';
 import { Canvas3d } from 'cvat-canvas3d-wrapper';
 import { CombinedState, ObjectType } from 'reducers/interfaces';
 import { adjustContextImagePosition } from 'components/annotation-page/standard-workspace/context-image/context-image';
+import { updateChallenges } from 'gamification/actions/challenge-actions';
+import { addGamifLog } from 'gamification/actions/user-data-actions';
+import ChallengeList from 'gamification/components/challenges/challengelist-component';
+import StatisticsList from 'gamification/components/statistics/statisticslist-component';
 import LabelSelector from 'components/label-selector/label-selector';
 import getCore from 'cvat-core-wrapper';
 import isAbleToChangeFrame from 'utils/is-able-to-change-frame';
 import GlobalHotKeys, { KeyMap } from 'utils/mousetrap-react';
 import { Tabs } from 'antd';
 import SocialBar from 'gamification/components/social/social-bar';
-import ChallengeList from 'gamification/components/challenges/challengelist-component';
-import StatisticsList from 'gamification/components/statistics/statisticslist-component';
 import ShortcutsSelect from './shortcuts-select';
 
 const cvat = getCore();
@@ -120,6 +122,7 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
     const [frameTags, setFrameTags] = useState([] as any[]);
     const [selectedLabelID, setSelectedLabelID] = useState<number>(defaultLabelID);
     const [skipFrame, setSkipFrame] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (document.activeElement instanceof HTMLElement) {
@@ -314,7 +317,32 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
                     </Tabs.TabPane>
                 </Tabs>
 
-                <SocialBar friends={[]} />
+                <Tabs
+                    type='card'
+                    defaultActiveKey='objects'
+                    className='cvat-objects-sidebar-tabs'
+                    onChange={(key) => {
+                        if (key === 'challenges') {
+                            dispatch(updateChallenges());
+                            dispatch(addGamifLog('Checked Challenge Tab'));
+                        }
+                        if (key === 'statistics') {
+                            dispatch(addGamifLog('Checked Statistics Tab'));
+                        }
+                    }}
+                >
+                    <Tabs.TabPane
+                        tab={<Text strong>Challenges</Text>}
+                        key='challenges'
+                    >
+                        <ChallengeList />
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
+                        <StatisticsList />
+                    </Tabs.TabPane>
+                </Tabs>
+
+                <SocialBar />
             </Layout.Sider>
         </>
     );

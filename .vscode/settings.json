@@ -93,6 +93,10 @@
         {
             "filePath": "cvat/apps/gamification/views.py",
             "group": "Default"
+        },
+        {
+            "filePath": "cvat-ui/src/utils/mousetrap-react.tsx",
+            "group": "Default"
         }
     ],
     "favorites.sortOrder": "ASC"

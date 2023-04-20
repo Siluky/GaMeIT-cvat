@@ -128,6 +128,16 @@ const TetrisApp = (props: TetrisProps): JSX.Element => {
     const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
     const dispatch = useDispatch();
 
+    // const handleKeyDown = (event: KeyboardEvent): void => {
+    //     console.log(`got event in window: ${event.key}`);
+    //     event.stopPropagation();
+    // };
+
+    // useEffect(() => {
+    //     window.addEventListener('keydown', handleKeyDown);
+    //     return () => window.removeEventListener('keydown', handleKeyDown);
+    // }, []);
+
     return (
         <Container>
             <Tetris>
@@ -143,7 +153,17 @@ const TetrisApp = (props: TetrisProps): JSX.Element => {
                     Timer,
                     time,
                 }) => (
-                    <div className='tetris-container'>
+                    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+                    <div
+                        className='tetris-container'
+                        // TODO: NOT WORKING
+                        // onKeyDown={(e) => {
+                        //     e.stopPropagation();
+                        //     e.preventDefault();
+                        //     console.log(`got event in div: ${e.key}`);
+                        // }}
+                        // // ref={}
+                    >
                         <div style={{ opacity: state === 'PLAYING' ? 1 : 0.5 }}>
                             <div>
                                 <Score>

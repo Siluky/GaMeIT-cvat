@@ -11,6 +11,7 @@ interface QuickStatisticProps {
     value: number;
     icon: any;
     tooltip: string;
+    session: boolean;
 }
 
 const formatValue = (id: number, value: number): string => {
@@ -35,11 +36,11 @@ const formatValue = (id: number, value: number): string => {
 
 export default function QuickStatistic(props: QuickStatisticProps): JSX.Element {
     const {
-        id, icon, value, tooltip,
+        id, icon, value, tooltip, session,
     } = props;
     return (
         <CvatTooltip overlay={tooltip}>
-            <div className='single-quick-statistic-component'>
+            <div className={`single-quick-statistic-component ${session ? 'session' : ''}`}>
                 <div className='quick-stats-icon'>
                     {icon}
                 </div>

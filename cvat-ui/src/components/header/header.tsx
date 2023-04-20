@@ -239,34 +239,33 @@ function HeaderContainer(props: Props): JSX.Element {
         const SURVEY_URL = `https://www.soscisurvey.de/cvat_eval/?act=LApuaEG7vUrRZaKfJnl85KB0&r=${uId}-${timing}`;
         return (
             <>
-                <div className='gamif-survey-popup-top'>
-                    <Button
-                        onClick={(): void => { dispatch(toggleSurveyPrompt(false)); }}
-                    >
-                        <PlusOutlined rotate={45} />
-                    </Button>
+                <div className='gamif-survey-popup'>
+                    <div className='gamif-energizer-popup-bottom'>
+                        {/* <Button
+                            onClick={(): void => { dispatch(toggleSurveyPrompt(false)); }}
+                            ghost
+                        >
+                            <PlusOutlined rotate={45} />
+                        </Button> */}
+                        <h2>
+                            Click the below button to be redirected
+                            to a short survey for evaluating this system.
+                        </h2>
+                        <Button
+                            className='gamif-energizer-popup-start-energizer-button'
+                            type='link'
+                            href={SURVEY_URL}
+                            onClick={(event: React.MouseEvent): void => {
+                                event.preventDefault();
+                                // false alarm
+                                // eslint-disable-next-line security/detect-non-literal-fs-filename
+                                window.open(SURVEY_URL, '_blank');
+                            }}
+                        >
+                            Go to Survey
+                        </Button>
+                    </div>
                 </div>
-                <div className='gamif-energizer-popup-bottom'>
-                    <h2>
-                        Please help us to evaluate this system by
-                        <br />
-                        participating in a short survey
-                    </h2>
-                    <Button
-                        className='gamif-energizer-popup-start-energizer-button'
-                        type='link'
-                        href={SURVEY_URL}
-                        onClick={(event: React.MouseEvent): void => {
-                            event.preventDefault();
-                            // false alarm
-                            // eslint-disable-next-line security/detect-non-literal-fs-filename
-                            window.open(SURVEY_URL, '_blank');
-                        }}
-                    >
-                        Go to Survey
-                    </Button>
-                </div>
-
             </>
         );
     };

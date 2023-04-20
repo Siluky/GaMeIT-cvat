@@ -186,7 +186,7 @@ export function saveUserData(backup: boolean): ThunkAction<void, {}, {}, AnyActi
         user: userDataState.userId,
         last_login_ms: Math.floor(sessionData.last_login / 1000), // in sec to avoid overflow
         images_annotated_total: totalData.images_annotated,
-        tags_set_total: totalData.tags_set,
+        tags_set_total: totalData.polygons_drawn,
         images_annotated_night: totalData.images_annotated_night,
         annotation_time_total: totalData.annotation_time,
         annotation_streak_current: sessionData.annotation_streak_current,
@@ -236,7 +236,7 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
             const userDataAllTime: UserData = {
                 last_login: userDataImport.last_login_ms * 1000,
                 images_annotated: userDataImport.images_annotated_total,
-                tags_set: userDataImport.tags_set_total,
+                polygons_drawn: userDataImport.tags_set_total,
                 images_annotated_night: userDataImport.images_annotated_night,
                 annotation_time: userDataImport.annotation_time_total,
                 // eslint-disable-next-line max-len
@@ -329,7 +329,7 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
             const userDataSession: UserData = {
                 last_login: currentTime,
                 images_annotated: 0,
-                tags_set: 0,
+                polygons_drawn: 0,
                 images_annotated_night: 0,
                 annotation_time: 0,
                 annotation_time_avg: 0,

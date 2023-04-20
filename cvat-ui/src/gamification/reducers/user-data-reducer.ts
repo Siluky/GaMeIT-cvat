@@ -11,7 +11,7 @@ import {
 const userdataInit: UserData = {
     last_login: Date.now(),
     images_annotated: 0,
-    tags_set: 0,
+    polygons_drawn: 0,
     images_annotated_night: 0,
     annotation_time: 0,
     annotation_time_avg: 0,
@@ -75,11 +75,9 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
                     ) / 10) : 0;
                     break;
                 }
-                case 'tags_set': {
-                    sessionData.tags_set += action.payload.increment;
-                    totalData.tags_set += action.payload.increment;
-                    // sessionData.images_annotated = Math.floor(sessionData.tags_set / 2);
-                    // totalData.images_annotated = Math.floor(totalData.tags_set / 2);
+                case 'polygons_drawn': {
+                    sessionData.polygons_drawn += action.payload.increment;
+                    totalData.polygons_drawn += action.payload.increment;
                     break;
                 }
                 case 'images_annotated_night': {

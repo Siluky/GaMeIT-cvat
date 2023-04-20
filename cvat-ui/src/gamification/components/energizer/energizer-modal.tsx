@@ -35,6 +35,7 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     const energizer = useSelector((state: CombinedState) => state.energizer);
     const dispatch = useDispatch();
     const active = energizer.activeEnergizer;
+    const inputRef = React.useRef<HTMLInputElement>(null);
     const modalContent = (activeEnergizer: EnergizerType): JSX.Element => {
         // setIndex(index + 1);
         switch (activeEnergizer) {
@@ -114,11 +115,23 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
     //     console.log(`got event: ${event.key}`);
     //     event.stopPropagation();
     //     // event.preventDefault();
-    // }, []);
+    // }, [])
 
-    // TODO: TEST
+    const focusInput = (): void => {
+        console.log('focus input called');
+        if (inputRef.current) {
+            console.log('Focusing input on modal (maybe)');
+            inputRef.current.focus();
+        }
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
+        event.preventDefault();
+    };
+
     useEffect(() => {
         dispatch(toggleEnergyGain(true));
+        focusInput();
     }, []);
 
     return (
@@ -136,7 +149,23 @@ function EnergizerModal(props: EnergizerModalProps): JSX.Element {
                 zIndex={1000}
                 keyboard={false}
             >
+                <input
+                    style={{
+                        position: 'absolute',
+                        width: 0,
+                        height: 0,
+                        outline: '0 !important',
+                        border: 'none',
+                        zIndex: -999,
+                    }}
+                    ref={inputRef}
+                    type='text'
+                    onKeyDown={handleKeyDown}
+                />
                 {active === EnergizerType.NONE ? infoScreen() : modalContent(energizer.activeEnergizer)}
+                <Button onClick={() => focusInput()}>
+                    Focus input
+                </Button>
                 {/* <Button
                     className='gamif-energizer-continue-button'
                     type='text'

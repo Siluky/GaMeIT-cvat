@@ -37,9 +37,19 @@ export default (state = defaultState, action: AnyAction): SocialState => {
             };
         }
         case SocialActionTypes.GET_FRIENDS_LIST_SUCCESS: {
+            const friendListEntrieswithChatInfo = action.payload.map((profileImport: Profile) => {
+                // eslint-disable-next-line max-len
+                const relevantProfile = state.friendListEntries.find((_profile: Profile) => profileImport.userId === _profile.userId);
+                return {
+                    ...profileImport,
+                    chatActive: relevantProfile?.chatActive ? relevantProfile?.chatActive : false,
+                };
+            });
+            console.log('🚀 ~ file: social-reducer.ts:48 ~ friendListEntrieswithChatInfo ~ friendListEntrieswithChatInfo:', friendListEntrieswithChatInfo);
+
             return {
                 ...state,
-                friendListEntries: action.payload,
+                friendListEntries: friendListEntrieswithChatInfo,
             };
         }
 
