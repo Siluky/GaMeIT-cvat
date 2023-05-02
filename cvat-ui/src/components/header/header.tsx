@@ -21,7 +21,7 @@ import Icon, {
     UserOutlined,
     TeamOutlined,
     PlusOutlined,
-    RadarChartOutlined,
+    // RadarChartOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -32,15 +32,10 @@ import Modal from 'antd/lib/modal';
 import Text from 'antd/lib/typography/Text';
 import Select from 'antd/lib/select';
 
-import BadgeOverview from 'gamification/components/badges/badge-overview';
-import ShopWindow from 'gamification/components/reward-shop/shop-window';
-
 import getCore from 'cvat-core-wrapper';
 import consts from 'consts';
-import gamifconsts from 'gamification/gamifconsts';
-
 import {
-    CVATLogo, EnergizerIcon, ShopIcon1, SurveyIcon,
+    CVATLogo, SurveyIcon,
 } from 'icons';
 import ChangePasswordDialog from 'components/change-password-modal/change-password-modal';
 import CVATTooltip from 'components/common/cvat-tooltip';
@@ -54,12 +49,7 @@ import {
     saveCurrentEnergyAsync,
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
-import { saveProfileDataAsync } from 'gamification/actions/social-actions';
-import { addGamifLog, initializeUserData, toggleSurveyPrompt } from 'gamification/actions/user-data-actions';
-import { updateBadges } from 'gamification/actions/badge-actions';
-import EnergizerModal from 'gamification/components/energizer/energizer-modal';
-import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
-import { getEnergizerIcon } from 'gamification/gamif-items';
+import { initializeUserData, toggleSurveyPrompt } from 'gamification/actions/user-data-actions';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -197,9 +187,9 @@ function HeaderContainer(props: Props): JSX.Element {
         onLogout,
         switchSettingsDialog,
         switchChangePasswordDialog,
-        switchEnergizerModal,
-        switchEnergizerPopUp,
-        incrementEnergy,
+        // switchEnergizerModal,
+        // switchEnergizerPopUp,
+        // incrementEnergy,
         getCurrentEnergy,
         renderChangePasswordItem,
         isAnalyticsPluginActive,
@@ -207,9 +197,9 @@ function HeaderContainer(props: Props): JSX.Element {
         organizationsFetching,
         currentOrganization,
         organizationsList,
-        currentEnergy,
-        energizerShown,
-        energizerPopUpShown,
+        // currentEnergy,
+        // energizerShown,
+        // energizerPopUpShown,
         surveyPromptVisible,
     } = props;
 
@@ -220,19 +210,19 @@ function HeaderContainer(props: Props): JSX.Element {
     const history = useHistory();
     const dispatch = useDispatch();
     const udata = useSelector((state: CombinedState) => state.gamifuserdata);
-    const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
+    // const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
     const { userId, surveyTiming } = udata;
 
     useEffect(() => {
         getCurrentEnergy();
         dispatch(initializeUserData());
-        const interval = setInterval(() => {
-            incrementEnergy(gamifconsts.ENERGY_INCREMENT);
-            dispatch(updateBadges(false));
-        }, gamifconsts.ENERGY_RATE);
-        return () => {
-            clearInterval(interval);
-        };
+        // const interval = setInterval(() => {
+        //     incrementEnergy(gamifconsts.ENERGY_INCREMENT);
+        //     dispatch(updateBadges(false));
+        // }, gamifconsts.ENERGY_RATE);
+        // return () => {
+        //     clearInterval(interval);
+        // };
     }, []);
 
     const gamifSurveyPrompt = (uId: number, timing: number): JSX.Element => {
@@ -348,7 +338,7 @@ function HeaderContainer(props: Props): JSX.Element {
 
     const userMenu = (
         <Menu className='cvat-header-menu'>
-            <Popover
+            {/* <Popover
                 placement='leftTop'
                 overlayClassName='gamif-popover'
                 trigger='click'
@@ -366,7 +356,7 @@ function HeaderContainer(props: Props): JSX.Element {
                 >
                     Badges
                 </Menu.Item>
-            </Popover>
+            </Popover> */}
             {user.isStaff && (
                 <Menu.Item
                     icon={<ControlOutlined />}
@@ -576,7 +566,7 @@ function HeaderContainer(props: Props): JSX.Element {
 
             <div className='cvat-right-header'>
                 <div className='cvat-right-header-gamif-group'>
-                    <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
+                    {/* <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
                         <Button
                             type='text'
                             className='gamif-debug-button'
@@ -606,15 +596,16 @@ function HeaderContainer(props: Props): JSX.Element {
                                 />
                                 <div
                                     // eslint-disable-next-line max-len
-                                    style={{ height: `${Math.max((100 - (currentEnergy / gamifconsts.ENERGIZER_COST) * 100), 0)}%` }}
+                                    style={{ height: `${Math.max((100 -
+                                        (currentEnergy / gamifconsts.ENERGIZER_COST) * 100), 0)}%` }}
                                     className='gamif-energizer-button-overlay'
                                 >
                                     &nbsp;
                                 </div>
                             </div>
                         </Popover>
-                    </CVATTooltip>
-                    <CVATTooltip overlay='Click here to open the reward shop.'>
+                    </CVATTooltip> */}
+                    {/* <CVATTooltip overlay='Click here to open the reward shop.'>
                         <Popover
                             content={<ShopWindow />}
                             overlayClassName='gamif-popover'
@@ -634,7 +625,7 @@ function HeaderContainer(props: Props): JSX.Element {
                                 />
                             </div>
                         </Popover>
-                    </CVATTooltip>
+                    </CVATTooltip> */}
                     <Popover
                         content={gamifSurveyPrompt(userId, surveyTiming)}
                         trigger='click'
@@ -706,11 +697,11 @@ function HeaderContainer(props: Props): JSX.Element {
             </div>
             <SettingsModal visible={settingsDialogShown} onClose={() => switchSettingsDialog(false)} />
             {renderChangePasswordItem && <ChangePasswordDialog onClose={() => switchChangePasswordDialog(false)} />}
-            <EnergizerModal
+            {/* <EnergizerModal
                 visible={energizerShown}
                 destroyonClose
                 onClose={() => switchEnergizerModal(false)}
-            />
+            /> */}
         </Layout.Header>
     );
 }

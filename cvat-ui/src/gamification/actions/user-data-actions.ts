@@ -6,7 +6,6 @@ import { getCVATStore } from 'cvat-store';
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
-import { notification } from 'antd';
 import { UrlLog, UserData } from '../gamif-interfaces';
 import { addQuickStatistic } from './statistics-actions';
 // eslint-disable-next-line import/no-cycle
@@ -302,25 +301,25 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
             if (newDay) {
                 // console.log('New day has started');
 
-                const timeSinceLogin = currentTime - lastLogin;
-                let message = '';
-                let description = '';
-                if ((timeSinceLogin > 24 * 60 * 60 * 1000) || test) {
-                    if (userDataAllTime.streak_saver_active) {
-                        userDataAllTime.streak_saver_active = false;
-                        message = 'Streak Saved.';
-                        description = 'Your Streak Saver has protected you from losing your annotation streak';
-                    } else {
-                        userDataAllTime.annotation_streak_current = 0;
-                        message = 'Streak Lost.';
-                        description = 'You have lost your current annotation streak due to being inactive too long';
-                    }
-                    // eslint-disable-next-line security/detect-non-literal-fs-filename
-                    notification.open({
-                        message,
-                        description,
-                    });
-                }
+                // const timeSinceLogin = currentTime - lastLogin;
+                // let message = '';
+                // let description = '';
+                // if ((timeSinceLogin > 24 * 60 * 60 * 1000) || test) {
+                //     if (userDataAllTime.streak_saver_active) {
+                //         userDataAllTime.streak_saver_active = false;
+                //         message = 'Streak Saved.';
+                //         description = 'Your Streak Saver has protected you from losing your annotation streak';
+                //     } else {
+                //         userDataAllTime.annotation_streak_current = 0;
+                //         message = 'Streak Lost.';
+                //         description = 'You have lost your current annotation streak due to being inactive too long';
+                //     }
+                //     // eslint-disable-next-line security/detect-non-literal-fs-filename
+                //     notification.open({
+                //         message,
+                //         description,
+                //     });
+                // }
 
                 userDataAllTime.annotation_streak_current++;
 

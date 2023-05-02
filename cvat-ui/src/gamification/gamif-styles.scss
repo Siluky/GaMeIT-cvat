@@ -16,7 +16,7 @@
   border-right: 1px solid #c3c3c3;
   border-left: 1px solid #c3c3c3;
   display: flex;
-  padding-right: 8px;
+  // padding-right: 8px;
   margin-right: 8px;
   height: 40px;
   justify-content: center;
@@ -198,6 +198,11 @@
 
 .gamif-badge-load-fail {
     color: red;
+}
+
+.gamif-images-finished-button {
+  border-right: 1px solid #c3c3c3;
+  margin-right: 4px;
 }
 
 .gamif-images-finished-button-wrapper {

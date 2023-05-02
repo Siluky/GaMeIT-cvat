@@ -24,7 +24,6 @@ import {
 import {
     addGamifLog, getImageStatusAsync, saveImageStatusesAsync, setFinishedStatus, updateUserData,
 } from 'gamification/actions/user-data-actions';
-import QuickStats from './quick-statistics';
 
 interface Props {
     workspace: Workspace;
@@ -169,25 +168,26 @@ function RightGroup(props: Props): JSX.Element {
             >
                 Get
             </Button> */}
-            <Button
-                className={`gamif-images-finished-button-wrapper ${imageFinished ? 'green' : 'grey'}`}
-                style={{ height: '40px', width: '40px', margin: 'auto 4px' }}
-                onClick={() => {
-                    // setImageFinished(!imageFinished);
-                    dispatch(updateUserData('images_annotated',
-                        (imageFinished ? -1 : 1)));
-                    dispatch(setFinishedStatus(jobId, frameNumber, !imageFinished));
-                    dispatch(saveImageStatusesAsync());
-                    if (imageFinished) {
-                        dispatch(addGamifLog('Image Finished'));
-                    }
-                }}
-                // icon={!imageFinished ? <CheckSquareOutlined /> : <CloseSquareOutlined />}
-                icon={<ImageFinishedIcon />}
-            />
-            <div>
-                <QuickStats />
+            <div className='gamif-images-finished-button'>
+                <Button
+                    className={`gamif-images-finished-button-wrapper ${imageFinished ? 'green' : 'grey'}`}
+                    style={{ height: '40px', width: '40px', margin: 'auto 4px' }}
+                    onClick={() => {
+                        // setImageFinished(!imageFinished);
+                        dispatch(updateUserData('images_annotated', (imageFinished ? -1 : 1)));
+                        dispatch(setFinishedStatus(jobId, frameNumber, !imageFinished));
+                        dispatch(saveImageStatusesAsync());
+                        if (imageFinished) {
+                            dispatch(addGamifLog('Image Finished'));
+                        }
+                    }}
+                    // icon={!imageFinished ? <CheckSquareOutlined /> : <CloseSquareOutlined />}
+                    icon={<ImageFinishedIcon />}
+                />
             </div>
+            {/* <div>
+                <QuickStats />
+            </div> */}
             {isTrainingActive && (
                 <Button
                     type='link'

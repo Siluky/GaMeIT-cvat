@@ -5,7 +5,7 @@
 import './styles.scss';
 import React, { Dispatch, TransitionEvent } from 'react';
 import { AnyAction } from 'redux';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import Text from 'antd/lib/typography/Text';
 import Tabs from 'antd/lib/tabs';
@@ -19,11 +19,6 @@ import { adjustContextImagePosition } from 'components/annotation-page/standard-
 import { collapseSidebar as collapseSidebarAction } from 'actions/annotation-actions';
 import AppearanceBlock from 'components/annotation-page/appearance-block';
 import IssuesListComponent from 'components/annotation-page/standard-workspace/objects-side-bar/issues-list';
-import ChallengeList from 'gamification/components/challenges/challengelist-component';
-import StatisticsList from 'gamification/components/statistics/statisticslist-component';
-import SocialBar from 'gamification/components/social/social-bar';
-import { updateChallenges } from 'gamification/actions/challenge-actions';
-import { addGamifLog } from 'gamification/actions/user-data-actions';
 
 interface OwnProps {
     objectsList: JSX.Element;
@@ -67,7 +62,7 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
     const {
         sidebarCollapsed, canvasInstance, collapseSidebar, objectsList, jobInstance,
     } = props;
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     // const [challengeIntervalActive, switchInterval] = useState(false);
 
     const collapse = (): void => {
@@ -128,7 +123,7 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                 ) : null}
             </Tabs>
 
-            <Tabs
+            {/* <Tabs
                 type='card'
                 defaultActiveKey='objects'
                 className='cvat-objects-sidebar-tabs'
@@ -151,11 +146,11 @@ function ObjectsSideBar(props: StateToProps & DispatchToProps & OwnProps): JSX.E
                 <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
                     <StatisticsList />
                 </Tabs.TabPane>
-            </Tabs>
+            </Tabs> */}
 
             {!sidebarCollapsed && <AppearanceBlock />}
 
-            <SocialBar />
+            {/* <SocialBar /> */}
         </Layout.Sider>
     );
 }
