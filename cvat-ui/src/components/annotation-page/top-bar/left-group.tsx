@@ -16,6 +16,10 @@ import {
 } from 'icons';
 import { ActiveControl, ToolsBlockerState } from 'reducers/interfaces';
 import CVATTooltip from 'components/common/cvat-tooltip';
+import { useDispatch } from 'react-redux';
+import { saveProfileDataAsync } from 'gamification/actions/social-actions';
+import { saveUserData } from 'gamification/actions/user-data-actions';
+import { saveChallenges } from 'gamification/actions/challenge-actions';
 
 interface Props {
     saving: boolean;
@@ -69,6 +73,8 @@ function LeftGroup(props: Props): JSX.Element {
 
     const shouldEnableToolsBlockerOnClick = [ActiveControl.OPENCV_TOOLS].includes(activeControl);
 
+    const dispatch = useDispatch();
+
     return (
         <>
             <Modal title='Saving changes on the server' visible={saving} footer={[]} closable={false}>
@@ -87,7 +93,14 @@ function LeftGroup(props: Props): JSX.Element {
                 </Dropdown>
                 <CVATTooltip overlay={`Save current changes ${saveShortcut}`}>
                     <Button
-                        onClick={saving ? undefined : onSaveAnnotation}
+                        onClick={() => {
+                            if (!saving) {
+                                onSaveAnnotation();
+                                dispatch(saveProfileDataAsync());
+                                dispatch(saveUserData(true));
+                                dispatch(saveChallenges());
+                            }
+                        }}
                         type='link'
                         className={saving ? 'cvat-annotation-disabled-header-button' : 'cvat-annotation-header-button'}
                     >

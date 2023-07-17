@@ -39,7 +39,7 @@ const defaultState: UserDataState = {
     userdata_session: userdataInit,
     userdata_total: userdataInit,
     userId: 0,
-    surveyTiming: 0,
+    surveyTiming: 4,
     username: 'test',
     surveyPromptVisible: false,
     imagesFinished: { logs: [] },
@@ -281,9 +281,9 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
 
         case UserDataActionTypes.GET_IMAGE_STATUS_SUCCESS: {
             const modifiedLog = JSON.parse(action.payload.imageIds);
-            console.log('🚀 ~ file: user-data-reducer.ts:288 ~ log:', modifiedLog);
+            // console.log('🚀 ~ file: user-data-reducer.ts:288 ~ log:', modifiedLog);
             const existingLogs = state.imagesFinished.logs;
-            console.log('🚀 ~ file: user-data-reducer.ts:286 ~ existingLogs:', existingLogs);
+            // console.log('🚀 ~ file: user-data-reducer.ts:286 ~ existingLogs:', existingLogs);
             const relevantLog = existingLogs.find((log: UrlLog) => log.id === modifiedLog.id);
             let relevantLogIndex = 0;
             if (!relevantLog) {

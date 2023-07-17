@@ -18,7 +18,7 @@ import copy from 'copy-to-clipboard';
 import { JobStage } from 'reducers/interfaces';
 import CVATTooltip from 'components/common/cvat-tooltip';
 import { useDispatch } from 'react-redux';
-import { setSurveyTiming, toggleSurveyPrompt } from 'gamification/actions/user-data-actions';
+import { toggleSurveyPrompt } from 'gamification/actions/user-data-actions';
 import UserSelector, { User } from './user-selector';
 
 interface Props {
@@ -176,7 +176,7 @@ function JobListComponent(props: Props & RouteComponentProps): JSX.Element {
                                 onJobUpdate(jobInstance);
                                 if (newValue === JobStage.ACCEPTANCE) {
                                     dispatch(toggleSurveyPrompt(true));
-                                    dispatch(setSurveyTiming(1));
+                                    // dispatch(setSurveyTiming(1));
                                 }
                             }}
                         >

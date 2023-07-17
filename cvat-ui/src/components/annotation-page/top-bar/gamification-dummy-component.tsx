@@ -7,7 +7,7 @@ import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
 import { saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
-    saveUserData, setSurveyTiming, toggleSurveyPrompt, updateUserData,
+    saveUserData, toggleSurveyPrompt, updateUserData,
 } from 'gamification/actions/user-data-actions';
 import { OnlineStatus } from 'gamification/gamif-interfaces';
 // import gamifconsts from 'gamification/gamifconsts';
@@ -30,7 +30,7 @@ export function GamificationDummy(): JSX.Element {
     const onIdle = (): void => {
         dispatch(toggleEnergyGain(false));
         // console.log('User is now idle');
-        dispatch(addGamifLog('User is now idle'));
+        dispatch(addGamifLog(`User ${userId} is now idle`));
         setIdleTime(Date.now());
         setActive(false);
     };
@@ -40,15 +40,15 @@ export function GamificationDummy(): JSX.Element {
         // console.log(`User with id ${userId} is now active again
         // after ${Math.ceil((Date.now() - idleTime) / 1000)} seconds.`);
 
-        dispatch(addGamifLog(`User with id ${userId} is now active again
-        after ${Math.ceil((Date.now() - idleTime) / 1000)} seconds.`));
+        // eslint-disable-next-line max-len
+        dispatch(addGamifLog(`User with id ${userId} is now active again after ${Math.ceil((Date.now() - idleTime) / 1000)} seconds.`));
         setActive(true);
     };
 
     useIdleTimer({
         onIdle,
         onActive,
-        timeout: 20_000,
+        timeout: 60_000,
         throttle: 1000,
     });
 
@@ -98,10 +98,9 @@ export function GamificationDummy(): JSX.Element {
                 e.preventDefault();
                 dispatch(setStatus(OnlineStatus.OFFLINE));
                 dispatch(saveProfileDataAsync());
-
                 dispatch(saveUserData(true));
                 dispatch(saveChallenges());
-                dispatch(setSurveyTiming(2));
+                // dispatch(setSurveyTiming(2));
                 dispatch(toggleSurveyPrompt(true));
                 const confirmationMessage = 'Before you leave, it would be great if you could do a quick survey using the link in the survey popup.';
                 e.returnValue = confirmationMessage;
@@ -109,7 +108,7 @@ export function GamificationDummy(): JSX.Element {
             } return undefined;
         };
 
-        window.addEventListener('beforeunload', tabclose);
+        // window.addEventListener('beforeunload', tabclose);
 
         return () => {
             clearInterval(interval);

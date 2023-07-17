@@ -226,7 +226,7 @@ function HeaderContainer(props: Props): JSX.Element {
     }, []);
 
     const gamifSurveyPrompt = (uId: number, timing: number): JSX.Element => {
-        const SURVEY_URL = `https://www.soscisurvey.de/cvat_eval/?act=SenrPcnqaSDDmONMFEefpjXN&r=${uId}-${timing}`;
+        const SURVEY_URL = `https://www.soscisurvey.de/cvat_eval/?r=${uId}-${timing}`;
         return (
             <>
                 <div className='gamif-survey-popup'>
