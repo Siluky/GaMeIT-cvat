@@ -178,7 +178,7 @@ function RightGroup(props: Props): JSX.Element {
                         dispatch(setFinishedStatus(jobId, frameNumber, !imageFinished));
                         dispatch(saveImageStatusesAsync());
                         if (imageFinished) {
-                            dispatch(addGamifLog('Image Finished'));
+                            dispatch(addGamifLog(`Image Finished: ${jobId}-${frameNumber}`));
                         }
                     }}
                     // icon={!imageFinished ? <CheckSquareOutlined /> : <CloseSquareOutlined />}

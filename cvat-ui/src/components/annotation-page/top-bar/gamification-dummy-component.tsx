@@ -92,6 +92,7 @@ export function GamificationDummy(): JSX.Element {
         }, 15000);
 
         dispatch(getChallengesAsync());
+        dispatch(addGamifLog(`User ${userId} started session.`));
 
         const tabclose = (e: BeforeUnloadEvent): string | undefined => {
             if (userdata.surveyTiming !== 2) {
