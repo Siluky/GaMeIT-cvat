@@ -26,6 +26,10 @@ export enum UserDataActionTypes {
     SAVE_USER_DATA_SUCCESS = 'SAVE_USER_DATA_SUCCESS',
     SAVE_USER_DATA_FAILED = 'SAVE_USER_DATA_FAILED',
 
+    RESET_USER_DATA_SUCCESS = 'RESET_USER_DATA_SUCCESS',
+    RESET_USER_DATA_FAILED = 'RESET_USER_DATA_FAILED',
+    RESET_USERDATA_STATE = 'SET_USERDATA_STATE',
+
     ADD_LOG_SUCCESS = 'ADD_LOG_SUCCESS',
     ADD_LOG_FAILED = 'ADD_LOG_FAILED',
 
@@ -151,6 +155,12 @@ function saveUserDataFailed(error: any): AnyAction {
     };
 }
 
+export function setUserData(): AnyAction {
+    return {
+        type: UserDataActionTypes.RESET_USERDATA_STATE,
+    };
+}
+
 export function saveUserData(backup: boolean): ThunkAction<void, {}, {}, AnyAction> {
     const state = getCVATStore().getState();
     const userDataState = state.gamifuserdata;
@@ -222,7 +232,9 @@ export function saveUserData(backup: boolean): ThunkAction<void, {}, {}, AnyActi
         try {
             await cvat.gamifuserdata.save(userDataPrepared);
             dispatch(saveUserDataSuccess());
-            if (backup) { dispatch(addGamifLog(JSON.stringify(userDataPrepared))); }
+            if (backup) {
+                dispatch(addGamifLog(JSON.stringify(userDataPrepared)));
+            }
         } catch (error) {
             dispatch(saveUserDataFailed(error));
         }
