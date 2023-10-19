@@ -228,6 +228,7 @@ function saveBadgeStatusFailed(error: any): AnyAction {
 export function saveBadgeStatus(uId: number, badgeId: number, tier: BadgeTier): ThunkAction<void, {}, {}, AnyAction> {
     return async (dispatch) => {
         try {
+            // FIXME:
             await cvat.badges.save(uId, badgeId, encodeBadgeTier(tier));
             dispatch(saveBadgeStatusSuccess());
         } catch (error: any) {
