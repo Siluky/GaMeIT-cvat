@@ -186,6 +186,36 @@ export default (state = defaultState, action: AnyAction): BadgeState => {
             };
         }
 
+        case BadgeActionTypes.RESET_BADGES: {
+            const updatedBadges = state.availableBadges.map((badge) => ({
+                ...badge,
+                progress: 0,
+                visible: false,
+                tier: BadgeTier.NOT_OBTAINED,
+                receivedOn: null,
+            }));
+            return {
+                ...state,
+                availableBadges: updatedBadges,
+                selectedBadgeId: 0,
+                badgesinProfile: [],
+                loading: false,
+                overlayMessage: '',
+                energizerBadges: {
+                    quizBadge: 0,
+                    snakeBadge: 0,
+                    tetrisBadge: 0,
+                },
+            };
+        }
+
+        case BadgeActionTypes.RESET_BADGES_ERROR: {
+            return state;
+        }
+        case BadgeActionTypes.RESET_BADGES_SUCCESS: {
+            return state;
+        }
+
         default: {
             return state;
         }

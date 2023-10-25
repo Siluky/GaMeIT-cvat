@@ -310,8 +310,21 @@ export default (state = defaultState, action: AnyAction): UserDataState => {
             };
         }
 
+        case UserDataActionTypes.RESET_USERDATA_STATE: {
+            return {
+                ...state,
+                userdata_session: userdataInit,
+                userdata_total: userdataInit,
+                surveyTiming: 0,
+                surveyPromptVisible: false,
+                imagesFinished: { logs: [] },
+            };
+        }
+
         case UserDataActionTypes.SAVE_USER_DATA_FAILED: return state;
         case UserDataActionTypes.SAVE_USER_DATA_SUCCESS: return state;
+        case UserDataActionTypes.RESET_USER_DATA_FAILED: return state;
+        case UserDataActionTypes.RESET_USER_DATA_SUCCESS: return state;
         case UserDataActionTypes.GET_USER_DATA_FAILED: return state;
         case UserDataActionTypes.UPDATE_USER_DATA_FIELD_FAILED: return state;
         case UserDataActionTypes.GET_IMAGE_STATUS_FAILED: return state;

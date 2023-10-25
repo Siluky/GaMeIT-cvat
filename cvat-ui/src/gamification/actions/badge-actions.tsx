@@ -2,12 +2,17 @@
 //
 // SPDX-License-Identifier: MIT
 
+import React from 'react';
+
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import { notification } from 'antd';
+import Popover from 'antd/lib/popover';
 import getCore from 'cvat-core-wrapper';
 import { getCVATStore } from 'cvat-store';
 import { ThunkAction } from 'redux-thunk';
 import { decodeBadgeTier, encodeBadgeTier } from 'gamification/gamif-items';
+import { Provider } from 'react-redux';
+import BadgeOverview from 'gamification/components/badges/badge-overview';
 import { Badge, BadgeTier, EnergizerType } from '../gamif-interfaces';
 // eslint-disable-next-line import/no-cycle
 import { addGamifLog, updateUserData } from './user-data-actions';
@@ -40,6 +45,10 @@ export enum BadgeActionTypes {
     UPDATE_ENERGIZER_BADGE = 'UPDATE_ENERGIZER_BADGE',
 
     SET_BADGE_OVERLAY_MESSAGE = 'SET_BADGE_OVERLAY_MESSAGE',
+
+    RESET_BADGES = 'RESET_BADGES',
+    RESET_BADGES_ERROR = 'RESET_BADGES_ERROR',
+    RESET_BADGES_SUCCESS = 'RESET_BADGES_SUCCESS',
 }
 
 export function setBadgeOverlayMesage(msg: string): AnyAction {
@@ -219,7 +228,8 @@ function saveBadgeStatusFailed(error: any): AnyAction {
 export function saveBadgeStatus(uId: number, badgeId: number, tier: BadgeTier): ThunkAction<void, {}, {}, AnyAction> {
     return async (dispatch) => {
         try {
-            await cvat.badges.saveBadgeStatus(uId, badgeId, encodeBadgeTier(tier));
+            // FIXME:
+            await cvat.badges.save(uId, badgeId, encodeBadgeTier(tier));
             dispatch(saveBadgeStatusSuccess());
         } catch (error: any) {
             dispatch(saveBadgeStatusFailed(error));
@@ -273,8 +283,39 @@ function updateBadgesFailed(error: any): AnyAction {
     };
 }
 
+function resetBadgesSuccess(): AnyAction {
+    return {
+        type: BadgeActionTypes.RESET_BADGES_SUCCESS,
+    };
+}
+
+function resetBadgesError(error : any): AnyAction {
+    return {
+        type: BadgeActionTypes.RESET_BADGES_ERROR,
+        payload: error,
+    };
+}
+
+export function resetBadges(): ThunkAction<void, {}, {}, AnyAction> {
+    return async (dispatch) => {
+        const state = getCVATStore().getState();
+        const badges = state.badges.availableBadges;
+        const uId = state.gamifuserdata.userId;
+        try {
+            badges.forEach((badge: { id: number; }) => {
+                dispatch(saveBadgeStatus(uId, badge.id, BadgeTier.NOT_OBTAINED));
+            });
+            dispatch(resetBadgesSuccess);
+        } catch (error) {
+            dispatch(resetBadgesError(error));
+        }
+    };
+}
+
 export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction> {
     return async (dispatch) => {
+        // eslint-disable-next-line no-debugger
+        // debugger;
         const state = getCVATStore().getState();
         const badges = state.badges.availableBadges;
         const userDataState = state.gamifuserdata;
@@ -299,7 +340,33 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                     // eslint-disable-next-line security/detect-non-literal-fs-filename
                     notification.open({
                         message: 'Badge Obtained!',
-                        description: `Congratulations! You obtained the ${badge.title} Badge (${updatedTier})!`,
+                        // description: `Congratulations! You obtained the ${badge.title} Badge (${updatedTier})!`,
+                        description: (
+                            <div>
+                                <p>
+                                    Congratulations! You obtained the&nbsp;
+                                    {badge.title}
+                                    Badge&nbsp;
+                                    {updatedTier}
+                                    !
+                                </p>
+                                <Popover
+                                    placement='leftTop'
+                                    overlayClassName='gamif-popover'
+                                    trigger='click'
+                                    content={<Provider store={getCVATStore()}><BadgeOverview /></Provider>}
+                                    mouseLeaveDelay={10}
+                                    destroyTooltipOnHide
+                                    onVisibleChange={(visible) => {
+                                        if (visible) {
+                                            dispatch(setCurrentBadge(badge.id));
+                                        }
+                                    }}
+                                >
+                                    <p>Click here to see the new Badge!</p>
+                                </Popover>
+                            </div>
+                        ),
                     });
                     // load badges again so received date is properly displayed
                     dispatch(loadBadgesAsync());
@@ -310,6 +377,7 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                 const updatedVisible = updatedTier === BadgeTier.NOT_OBTAINED ? badge.visible : true;
                 const updatedBadge = {
                     ...badge, tier: updatedTier, progress: updatedProgress, visible: updatedVisible,
+                    // ...badge, tier: 0, progress: 0, visible: false, receivedOn: null,
                 };
                 return updatedBadge;
             });
