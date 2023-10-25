@@ -865,7 +865,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 999;
-  // opacity: 0.5;
+  opacity: 0.5;
   box-shadow: 0 0 20px 20px $very-bright-grey;
   display:flex;
   flex-direction: column;
@@ -886,7 +886,16 @@
     justify-content: center
 }
 
-.gamif-shop-window-buttons {
+
+.gamif-shop-window-footer-buttons {
+  margin: 4px 0 4px 0;
+  padding: 0 0 2px 0;
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #1e3d59;
+}
+
+.gamif-shop-window-header-buttons {
   margin: 4px 0 4px 0;
   padding: 0 0 2px 0;
   display: flex;
@@ -934,7 +943,7 @@
   padding: 5px;
   overflow-y: scroll;
   // height: 85%;
-  height: 76%;
+  height: 68%;
 }
 
 // .gamif-shop-window-items-row {

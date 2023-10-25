@@ -13,6 +13,7 @@ import { ThunkAction } from 'redux-thunk';
 import { decodeBadgeTier, encodeBadgeTier } from 'gamification/gamif-items';
 import { Provider } from 'react-redux';
 import BadgeOverview from 'gamification/components/badges/badge-overview';
+
 import { Badge, BadgeTier, EnergizerType } from '../gamif-interfaces';
 // eslint-disable-next-line import/no-cycle
 import { addGamifLog, updateUserData } from './user-data-actions';
@@ -283,6 +284,8 @@ function updateBadgesFailed(error: any): AnyAction {
     };
 }
 
+export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction> {
+    return async (dispatch) => {
 function resetBadgesSuccess(): AnyAction {
     return {
         type: BadgeActionTypes.RESET_BADGES_SUCCESS,
@@ -377,7 +380,6 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                 const updatedVisible = updatedTier === BadgeTier.NOT_OBTAINED ? badge.visible : true;
                 const updatedBadge = {
                     ...badge, tier: updatedTier, progress: updatedProgress, visible: updatedVisible,
-                    // ...badge, tier: 0, progress: 0, visible: false, receivedOn: null,
                 };
                 return updatedBadge;
             });

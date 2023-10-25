@@ -11,17 +11,17 @@ import { connect, useDispatch } from 'react-redux';
 import CvatTooltip from 'components/common/cvat-tooltip';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
-import { purchaseItem, updateBalance, setShopOverlayMessage } from 'gamification/actions/shop-actions';
+import { updateBalance, setShopOverlayMessage, purchaseItem } from 'gamification/actions/shop-actions';
 import {
     setAdditionalClassNames,
     setColor, setProfileBackground, setProfileBackgroundEffects, setProfileBorder,
 } from 'gamification/actions/social-actions';
+import { addGamifLog } from 'gamification/actions/user-data-actions';
 // import { upgradeBadgeTier } from 'gamification/actions/badge-actions';
 // import { incrementEnergy } from 'gamification/actions/energizer-actions';
 // import { addChallenge } from 'gamification/actions/challenge-actions';
 // import { SketchOutlined } from '@ant-design/icons';
 import { Popup } from 'gamification/gamifconsts';
-import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { AnnotationCoinNoBorderIcon } from 'icons';
 import { PlusOutlined } from '@ant-design/icons';
 import ShopItemComponent from './shop-item';
@@ -167,6 +167,14 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
         toggleOverlay(false);
     }, []);
 
+    const findItemName = (): string => {
+        if (selectedItemId === 0) {
+            return 'Select an item to buy.';
+        }
+        const shopItem = items.find((item) => item.id === selectedItemId) ?? items[0];
+        return `Buying: ${shopItem?.title}`;
+    };
+
     return (
         <>
             <div className='gamif-shop-window'>
@@ -188,18 +196,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 <div className='gamif-shop-window-header'>
                     Reward Shop
                 </div>
-                <div className='gamif-shop-window-buttons'>
-                    <Button
-                        className='gamif-shop-window-button'
-                        disabled={overlayVisible}
-                        onClick={() => {
-                            dispatch(purchaseItem(selectedItemId));
-                            dispatch(addGamifLog(`Bought item: ${selectedItemId}`));
-                            // toggleModal(true);
-                        }}
-                    >
-                        Buy
-                    </Button>
+                <div className='gamif-shop-window-header-buttons'>
                     <Button
                         className='gamif-shop-window-button'
                         disabled={overlayVisible}
@@ -250,6 +247,19 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                             </Col>
                         ))}
                     </Row>
+                </div>
+                <div className='gamif-shop-window-footer-buttons'>
+                    <Button
+                        className='gamif-shop-window-button'
+                        disabled={overlayVisible}
+                        onClick={() => {
+                            dispatch(purchaseItem(selectedItemId));
+                            dispatch(addGamifLog(`Bought item: ${selectedItemId}`));
+                            // toggleModal(true);
+                        }}
+                    >
+                        {findItemName()}
+                    </Button>
                 </div>
             </div>
             {/* <Modal visible={modalShown}>
