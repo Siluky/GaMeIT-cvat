@@ -22,6 +22,7 @@ import Icon, {
     TeamOutlined,
     PlusOutlined,
     RadarChartOutlined,
+    UndoOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -55,10 +56,17 @@ import {
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
 import { saveProfileDataAsync } from 'gamification/actions/social-actions';
-import { addGamifLog, initializeUserData, toggleSurveyPrompt } from 'gamification/actions/user-data-actions';
-import { updateBadges } from 'gamification/actions/badge-actions';
+import {
+    addGamifLog,
+    initializeUserData,
+    saveUserData,
+    setUserData,
+    toggleSurveyPrompt,
+} from 'gamification/actions/user-data-actions';
+import { resetBadges, updateBadges } from 'gamification/actions/badge-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
+import { resetShop } from 'gamification/actions/shop-actions';
 import { getEnergizerIcon } from 'gamification/gamif-items';
 import SettingsModal from './settings-modal/settings-modal';
 
@@ -576,6 +584,20 @@ function HeaderContainer(props: Props): JSX.Element {
 
             <div className='cvat-right-header'>
                 <div className='cvat-right-header-gamif-group'>
+                    <CVATTooltip overlay='DEBUG: Press to reset Gamification-related Stats.'>
+                        <Button
+                            type='text'
+                            className='gamif-debug-button'
+                            style={{ height: '24px', width: '24px', margin: '4px' }}
+                            icon={<UndoOutlined />}
+                            onClick={(): void => {
+                                dispatch(resetShop());
+                                dispatch(resetBadges());
+                                dispatch(setUserData());
+                                dispatch(saveUserData(false));
+                            }}
+                        />
+                    </CVATTooltip>
                     <CVATTooltip overlay='DEBUG: Press to increment Energy by one.'>
                         <Button
                             type='text'

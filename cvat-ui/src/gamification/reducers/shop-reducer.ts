@@ -98,6 +98,16 @@ export default (state = defaultState, action: AnyAction): ShopState => {
             };
         }
 
+        case ShopActionTypes.RESET_SHOP_ITEMS: {
+            const updatedItems = state.availableItems.map(
+                (_item: ShopItem) => ({ ..._item, bought: false }),
+            );
+
+            return {
+                ...state,
+                availableItems: updatedItems,
+            };
+        }
         // case ShopActionTypes.UPGRADE_MONEY_BADGE_TIER: {
         //     let newTier = BadgeTier.NOT_OBTAINED;
         //     switch (state.moneyBadgeTier) {

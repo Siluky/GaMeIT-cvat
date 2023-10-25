@@ -34,6 +34,14 @@ export enum ShopActionTypes {
     SET_SHOP_OVERLAY_MESSAGE = 'SET_SHOP_OVERLAY_MESSAGE',
 
     UPGRADE_MONEY_BADGE_TIER = 'UPGRADE_MONEY_BADGE_TIER',
+
+    RESET_SHOP_ITEMS = 'RESET_SHOP_ITEMS',
+}
+
+export function resetShop(): AnyAction {
+    return {
+        type: ShopActionTypes.RESET_SHOP_ITEMS,
+    };
 }
 
 export function getShopDataFailed(error: any): AnyAction {

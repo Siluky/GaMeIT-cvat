@@ -18,7 +18,9 @@ import { MenuInfo } from 'rc-menu/lib/interface';
 import CVATTooltip from 'components/common/cvat-tooltip';
 import LoadSubmenu from 'components/actions-menu/load-submenu';
 import getCore from 'cvat-core-wrapper';
-import { JobStage } from 'reducers/interfaces';
+import { CombinedState, JobStage } from 'reducers/interfaces';
+import Button from 'antd/lib/button';
+import { useSelector } from 'react-redux';
 
 const core = getCore();
 
@@ -46,6 +48,9 @@ export enum Actions {
 }
 
 function AnnotationMenuComponent(props: Props & RouteComponentProps): JSX.Element {
+    const udata = useSelector((state: CombinedState) => state.gamifuserdata);
+    const { userId } = udata;
+    const SURVEY_URL = `https://www.soscisurvey.de/cvat_eval/?act=SenrPcnqaSDDmONMFEefpjXN&r=${userId}-4`;
     const {
         loaders,
         loadActivity,
@@ -161,7 +166,25 @@ function AnnotationMenuComponent(props: Props & RouteComponentProps): JSX.Elemen
         } else if (params.key === Actions.FINISH_JOB) {
             Modal.confirm({
                 title: 'The job stage is going to be switched',
-                content: 'Stage will be changed to "acceptance". Would you like to continue?',
+                content: (
+                    <div>
+                        <p>Stage will be changed to &quot;acceptance&quot;. Would you like to continue?</p>
+                        <p><b>Please remember to fill out the survey if this is your last job for this day.</b></p>
+                        <Button
+                            className='gamif-energizer-popup-start-energizer-button'
+                            type='link'
+                            href={SURVEY_URL}
+                            onClick={(event: React.MouseEvent): void => {
+                                event.preventDefault();
+                                // false alarm
+                                // eslint-disable-next-line security/detect-non-literal-fs-filename
+                                window.open(SURVEY_URL, '_blank');
+                            }}
+                        >
+                            Go to Survey
+                        </Button>
+                    </div>
+                ),
                 okText: 'Continue',
                 cancelText: 'Cancel',
                 className: 'cvat-modal-content-finish-job',
