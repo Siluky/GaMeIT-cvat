@@ -23,7 +23,7 @@ const profile: Profile = {
 };
 
 const defaultState: SocialState = {
-    status: OnlineStatus.ONLINE,
+    status: OnlineStatus.OFFLINE,
     friendListEntries: [],
     ownProfile: profile,
     chats: [],

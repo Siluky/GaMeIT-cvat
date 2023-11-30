@@ -17,18 +17,23 @@ import Chat from './chat-box';
 
 interface StateToProps {
     friends: Profile[],
+    friendsOnline: number;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
     const { social } = state;
+    const { userId } = state.gamifuserdata;
 
     return {
         friends: social.friendListEntries,
+        // eslint-disable-next-line max-len
+        friendsOnline: social.friendListEntries.filter((p: Profile) => ((p.status !== OnlineStatus.OFFLINE) && (p.userId !== userId))).length,
     };
 }
 
 interface SocialBarProps {
     friends: Profile[],
+    friendsOnline: number;
 }
 
 const chatBar = (friend?: Profile): JSX.Element => {
@@ -71,7 +76,7 @@ const chatBar = (friend?: Profile): JSX.Element => {
 
 function SocialBar(props: SocialBarProps): JSX.Element {
     const dispatch = useDispatch();
-    const { friends } = props;
+    const { friends, friendsOnline } = props;
 
     useEffect(() => {
         dispatch(getFriendsListAsync());
@@ -128,7 +133,7 @@ function SocialBar(props: SocialBarProps): JSX.Element {
                             {/* {`Friends (${activeChats.length ?? 0})`} */}
                             {/* {`Friends (${activeRange})`} */}
                             {/* Friends */}
-                            {`(${friends.filter((p: Profile) => p.status !== OnlineStatus.OFFLINE).length - 1})`}
+                            {friendsOnline}
                         </Button>
                     </Popover>
                 </div>

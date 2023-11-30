@@ -4,7 +4,7 @@
 
 import { getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
 import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
-import { saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
+import { getFriendsListAsync, saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     saveUserData, setSurveyTiming, toggleSurveyPrompt, updateUserData,
@@ -89,6 +89,8 @@ export function GamificationDummy(): JSX.Element {
     useEffect(() => {
         const interval = setInterval(() => {
             dispatch(saveUserData(false));
+            // Get friends list to update "friends online"-counter
+            dispatch(getFriendsListAsync());
         }, 15000);
 
         dispatch(getChallengesAsync());
