@@ -2,14 +2,17 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { getCVATStore } from 'cvat-store';
 import { getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
 import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
-import { getFriendsListAsync, saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
+import {
+    getChatHistoryAsync, getFriendsListAsync, saveProfileDataAsync, setStatus,
+} from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     saveUserData, setSurveyTiming, toggleSurveyPrompt, updateUserData,
 } from 'gamification/actions/user-data-actions';
-import { OnlineStatus } from 'gamification/gamif-interfaces';
+import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 // import gamifconsts from 'gamification/gamifconsts';
 import React, { useEffect, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
@@ -67,6 +70,21 @@ export function GamificationDummy(): JSX.Element {
         }, intervalTimer);
         return () => clearInterval(interval);
     }, [active]);
+
+    // Load all chats, so hasUnreadMessages can be accessed and set without having to open a chat first.
+    /// FIXME:  Called on interval, because other async function to get friendList must run first. Refactor needed.
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const friends = getCVATStore().getState().social.friendListEntries;
+            if (active) {
+                console.log(friends.length);
+                friends.forEach((friend: Profile) => {
+                    dispatch(getChatHistoryAsync(friend.userId));
+                });
+            }
+        }, 8000);
+        return () => clearInterval(interval);
+    }, []);
 
     // useEffect(() => {
     //     const interval = setInterval(() => {

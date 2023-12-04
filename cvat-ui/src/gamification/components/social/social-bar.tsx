@@ -7,7 +7,7 @@ import { Popover, Button } from 'antd';
 import {
     CloseOutlined, LeftOutlined, RightOutlined, UserOutlined,
 } from '@ant-design/icons';
-import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
+import { getChatHistoryAsync, getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
 import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { connect, useDispatch } from 'react-redux';
@@ -79,7 +79,12 @@ function SocialBar(props: SocialBarProps): JSX.Element {
     const { friends, friendsOnline } = props;
 
     useEffect(() => {
+        console.log('Whaddup');
         dispatch(getFriendsListAsync());
+        friends.forEach((friend) => {
+            console.log('Hello');
+            dispatch(getChatHistoryAsync(friend.userId));
+        });
     }, []);
 
     const activeChats = friends.filter((profile: Profile) => profile.chatActive);
