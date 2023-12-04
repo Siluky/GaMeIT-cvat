@@ -221,6 +221,7 @@ export interface Message {
 export interface ChatRoom {
     otherUserId: number,
     messages: Message[],
+    hasUnreadMessages: boolean,
 }
 
 export interface SocialState {

@@ -142,6 +142,8 @@ export default (state = defaultState, action: AnyAction): SocialState => {
                     chats: state.chats.concat({
                         otherUserId: action.payload.id,
                         messages: action.payload.messages ?? [],
+                        // FIXME: is "false" correct here?
+                        hasUnreadMessages: false,
                     }),
                 };
             }
@@ -181,6 +183,23 @@ export default (state = defaultState, action: AnyAction): SocialState => {
             return {
                 ...state,
                 chats,
+            };
+        }
+
+        case SocialActionTypes.SET_HAS_UNREAD_MESSAGES: {
+            const { room, hasUnread } = action.payload;
+            const { chats } = state;
+
+            const updatedChats = chats.map((chat) => {
+                if (chat.otherUserId === room.otherUserId) {
+                    return { ...chat, hasUnreadMessages: hasUnread };
+                }
+                return chat;
+            });
+
+            return {
+                ...state,
+                chats: updatedChats,
             };
         }
 

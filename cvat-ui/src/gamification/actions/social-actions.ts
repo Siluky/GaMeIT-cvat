@@ -6,7 +6,7 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import {
-    BadgeStatus, Message, OnlineStatus, Profile,
+    BadgeStatus, ChatRoom, Message, OnlineStatus, Profile,
 } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
 import { decodeBadgeTier, decodeStatus, encodeStatus } from 'gamification/gamif-items';
@@ -36,6 +36,15 @@ export enum SocialActionTypes {
 
     GET_CHAT_HISTORY_SUCCESS = 'GET_CHAT_HISTORY_SUCCESS', // TODO:
     GET_CHAT_HISTORY_FAILED = 'GET_CHAT_HISTORY_FAILED', // TODO:
+
+    SET_HAS_UNREAD_MESSAGES = 'SET_HAS_UNREAD_MESSAGES',
+}
+
+export function setHasUnreadMessages(room: ChatRoom, hasUnread: boolean): AnyAction {
+    return {
+        type: SocialActionTypes.SET_HAS_UNREAD_MESSAGES,
+        payload: { room, hasUnread },
+    };
 }
 
 function getFriendsListSuccess(profiles: Profile[]): AnyAction {
