@@ -142,7 +142,6 @@ export default (state = defaultState, action: AnyAction): SocialState => {
                     chats: state.chats.concat({
                         otherUserId: action.payload.id,
                         messages: action.payload.messages ?? [],
-                        // FIXME: is "false" correct here?
                         hasUnreadMessages: false,
                     }),
                 };
