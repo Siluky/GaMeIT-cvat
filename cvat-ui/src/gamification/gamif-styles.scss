@@ -1264,6 +1264,10 @@
     &.placeholder {
       background: #B5BECA;
     }
+
+    &.unreadMessage {
+      background: red;
+    }
 }
 
 .gamif-chat-bar-bubble-text {

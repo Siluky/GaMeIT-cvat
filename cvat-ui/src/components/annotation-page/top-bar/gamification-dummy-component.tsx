@@ -6,13 +6,13 @@ import { getCVATStore } from 'cvat-store';
 import { getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
 import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
 import {
-    getChatHistoryAsync, getFriendsListAsync, saveProfileDataAsync, setStatus,
+    getChatHistoryAsync, getFriendsListAsync, saveProfileDataAsync, setStatus, toggleChat,
 } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     saveUserData, setSurveyTiming, toggleSurveyPrompt, updateUserData,
 } from 'gamification/actions/user-data-actions';
-import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
+import { ChatRoom, OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 // import gamifconsts from 'gamification/gamifconsts';
 import React, { useEffect, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
@@ -80,6 +80,28 @@ export function GamificationDummy(): JSX.Element {
                 console.log(friends.length);
                 friends.forEach((friend: Profile) => {
                     dispatch(getChatHistoryAsync(friend.userId));
+                });
+            }
+        }, 8000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // Checks if there are any unread messages
+    // FIXME: chat-window shouldn't pop up when toggling the chat, just the quick access on the bottom.
+    // OLD; JUST FOR SHOWING FIRST IDEA
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const chatsList = getCVATStore().getState().social.chats;
+            if (active) {
+                chatsList.forEach((chat: ChatRoom) => {
+                    console.log(`Checking for unread messages with ${chat.otherUserId}`);
+                    if (chat.hasUnreadMessages === true) {
+                        dispatch(toggleChat(chat.otherUserId, true));
+                        const elem = document.getElementById(`gamif-chat-bar-bubble-${chat.otherUserId}`);
+                        if (elem != null) {
+                            elem.style.background = 'red';
+                        }
+                    }
                 });
             }
         }, 8000);

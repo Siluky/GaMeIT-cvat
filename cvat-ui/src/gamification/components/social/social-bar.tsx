@@ -47,6 +47,7 @@ const chatBar = (friend?: Profile): JSX.Element => {
 
     return (
         <div
+            id={`gamif-chat-bar-bubble-${friend.userId}`}
             key={friend.userId}
             className='gamif-chat-bar-bubble'
         >
@@ -79,7 +80,6 @@ function SocialBar(props: SocialBarProps): JSX.Element {
     const { friends, friendsOnline } = props;
 
     useEffect(() => {
-        console.log('Whaddup');
         dispatch(getFriendsListAsync());
         friends.forEach((friend) => {
             console.log('Hello');
