@@ -210,6 +210,7 @@ export interface Profile {
     selectedBadgeStatuses: BadgeStatus[],
     profileStyle: ProfileStyle,
     chatActive: boolean,
+    sentAMessage: boolean,
 }
 
 export interface Message {
@@ -221,7 +222,6 @@ export interface Message {
 export interface ChatRoom {
     otherUserId: number,
     messages: Message[],
-    hasUnreadMessages: boolean,
 }
 
 export interface SocialState {

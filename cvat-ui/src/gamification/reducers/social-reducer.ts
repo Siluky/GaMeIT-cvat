@@ -20,6 +20,7 @@ const profile: Profile = {
         backgroundElements: 0,
     },
     chatActive: false,
+    sentAMessage: false,
 };
 
 const defaultState: SocialState = {
@@ -142,7 +143,6 @@ export default (state = defaultState, action: AnyAction): SocialState => {
                     chats: state.chats.concat({
                         otherUserId: action.payload.id,
                         messages: action.payload.messages ?? [],
-                        hasUnreadMessages: false,
                     }),
                 };
             }

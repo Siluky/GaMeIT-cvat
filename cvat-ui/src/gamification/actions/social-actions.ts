@@ -86,6 +86,7 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
                     color: 0, // TODO:
                 },
                 chatActive: false,
+                sentAMessage: profile.sentAMessage,
             }));
 
             dispatch(getFriendsListSuccess(profiles));
