@@ -6,7 +6,7 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import {
-    BadgeStatus, ChatRoom, Message, OnlineStatus, Profile,
+    BadgeStatus, Message, OnlineStatus, Profile,
 } from 'gamification/gamif-interfaces';
 import { getCVATStore } from 'cvat-store';
 import { decodeBadgeTier, decodeStatus, encodeStatus } from 'gamification/gamif-items';
@@ -37,13 +37,13 @@ export enum SocialActionTypes {
     GET_CHAT_HISTORY_SUCCESS = 'GET_CHAT_HISTORY_SUCCESS', // TODO:
     GET_CHAT_HISTORY_FAILED = 'GET_CHAT_HISTORY_FAILED', // TODO:
 
-    SET_HAS_UNREAD_MESSAGES = 'SET_HAS_UNREAD_MESSAGES',
+    SET_HAS_SENT_MESSAGE = 'SET_HAS_SENT_MESSAGE',
 }
 
-export function setHasUnreadMessages(room: ChatRoom, hasUnread: boolean): AnyAction {
+export function setHasSentMessage(friend: Profile, hasSentMessage: boolean): AnyAction {
     return {
-        type: SocialActionTypes.SET_HAS_UNREAD_MESSAGES,
-        payload: { room, hasUnread },
+        type: SocialActionTypes.SET_HAS_SENT_MESSAGE,
+        payload: { friend, hasSentMessage },
     };
 }
 
@@ -68,6 +68,10 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
 
             profilesImport.sort((a: any, b: any) => b.online_status - a.online_status);
 
+            profilesImport.forEach((friend: Profile) => {
+                console.log(friend.sentAMessage);
+            });
+
             const profiles: Profile[] = profilesImport.map((profile: any): Profile => ({
                 username: profile.user,
                 userId: profile.id,
@@ -85,8 +89,10 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
                     backgroundElements: profile.profile_background_elements,
                     color: 0, // TODO:
                 },
+                // eslint-disable-next-line max-len
+                // FIXME: updates from backend correctly (server must set variable in backend so it gets pulled correctly)
+                sentAMessage: false,
                 chatActive: false,
-                sentAMessage: profile.sentAMessage,
             }));
 
             dispatch(getFriendsListSuccess(profiles));

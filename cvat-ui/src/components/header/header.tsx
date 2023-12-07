@@ -55,7 +55,7 @@ import {
     saveCurrentEnergyAsync,
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
-import { saveProfileDataAsync, setHasUnreadMessages } from 'gamification/actions/social-actions';
+import { saveProfileDataAsync, setHasSentMessage } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     initializeUserData,
@@ -229,7 +229,7 @@ function HeaderContainer(props: Props): JSX.Element {
     const dispatch = useDispatch();
     const udata = useSelector((state: CombinedState) => state.gamifuserdata);
     const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
-    const { chats } = useSelector((state: CombinedState) => state.social);
+    const { friendListEntries } = useSelector((state: CombinedState) => state.social);
     const { userId, surveyTiming } = udata;
 
     useEffect(() => {
@@ -606,9 +606,8 @@ function HeaderContainer(props: Props): JSX.Element {
                             style={{ height: '24px', width: '24px', margin: '4px' }}
                             icon={<TeamOutlined />}
                             onClick={(): void => {
-                                // FIXME: set hasUnread true for every chat, not static
-                                chats.forEach((chat) => {
-                                    dispatch(setHasUnreadMessages(chat, true));
+                                friendListEntries.forEach((friend) => {
+                                    dispatch(setHasSentMessage(friend, true));
                                 });
                             }}
                         />

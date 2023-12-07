@@ -7,6 +7,7 @@ import { Popover, Button } from 'antd';
 import {
     CloseOutlined, LeftOutlined, RightOutlined, UserOutlined,
 } from '@ant-design/icons';
+import { getCVATStore } from 'cvat-store';
 import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
 import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
@@ -38,6 +39,7 @@ interface SocialBarProps {
 
 const chatBar = (friend?: Profile): JSX.Element => {
     const dispatch = useDispatch();
+    const { status } = getCVATStore().getState().social;
 
     if (!friend) {
         return (
@@ -47,9 +49,9 @@ const chatBar = (friend?: Profile): JSX.Element => {
 
     return (
         <div
-            id={`gamif-chat-bar-bubble-${friend.userId}`}
+            id='gamif-chat-bar-bubble'
             key={friend.userId}
-            className='gamif-chat-bar-bubble'
+            className={(friend.sentAMessage && status === OnlineStatus.ONLINE) ? 'gamif-chat-bar-bubble unreadMessage' : 'gamif-chat-bar-bubble'}
         >
             <Popover
                 placement='top'

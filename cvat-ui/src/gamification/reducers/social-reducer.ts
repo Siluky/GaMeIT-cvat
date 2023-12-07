@@ -9,7 +9,7 @@ import { SocialState, OnlineStatus, Profile } from '../gamif-interfaces';
 const profile: Profile = {
     username: 'My Username',
     userId: 0,
-    status: OnlineStatus.ONLINE,
+    status: OnlineStatus.OFFLINE,
     selectedBadges: [],
     selectedBadgeStatuses: [],
     profileStyle: {
@@ -24,7 +24,7 @@ const profile: Profile = {
 };
 
 const defaultState: SocialState = {
-    status: OnlineStatus.ONLINE,
+    status: OnlineStatus.OFFLINE,
     friendListEntries: [],
     ownProfile: profile,
     chats: [],
@@ -185,20 +185,21 @@ export default (state = defaultState, action: AnyAction): SocialState => {
             };
         }
 
-        case SocialActionTypes.SET_HAS_UNREAD_MESSAGES: {
-            const { room, hasUnread } = action.payload;
-            const { chats } = state;
+        case SocialActionTypes.SET_HAS_SENT_MESSAGE: {
+            const { friend, hasSentMessage } = action.payload;
+            const { friendListEntries } = state;
 
-            const updatedChats = chats.map((chat) => {
-                if (chat.otherUserId === room.otherUserId) {
-                    return { ...chat, hasUnreadMessages: hasUnread };
+            const updatedFriends = friendListEntries.map((elem) => {
+                if (elem.userId === friend.userId) {
+                    console.log('Hihi');
+                    return { ...elem, sentAMessage: hasSentMessage };
                 }
-                return chat;
+                return elem;
             });
 
             return {
                 ...state,
-                chats: updatedChats,
+                friendListEntries: updatedFriends,
             };
         }
 
