@@ -8,7 +8,7 @@ import {
     CloseOutlined, LeftOutlined, RightOutlined, UserOutlined,
 } from '@ant-design/icons';
 import { getCVATStore } from 'cvat-store';
-import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
+import { getFriendsListAsync, toggleChatVisibility, toggleChatWindow } from 'gamification/actions/social-actions';
 import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { connect, useDispatch } from 'react-redux';
@@ -54,8 +54,7 @@ const chatBar = (friend?: Profile): JSX.Element => {
             // FIXME: make this into a method
             className={(friend.sentAMessage && status === OnlineStatus.ONLINE) ? 'gamif-chat-bar-bubble unreadMessage' : 'gamif-chat-bar-bubble'}
             onClick={() => {
-                /// FIXME: make this via method call?
-                friend.chatVisible = !friend.chatVisible;
+                dispatch(toggleChatVisibility(friend.userId, !friend.chatActive));
             }}
             // FIXME: Prevent Button from changing colors when hovering/clicking
             // + problem with clicking near edge and moving out
@@ -76,7 +75,7 @@ const chatBar = (friend?: Profile): JSX.Element => {
             <Button
                 icon={<CloseOutlined style={{ color: '#e6e6e6' }} />}
                 onClick={() => {
-                    dispatch(toggleChat(friend.userId, false));
+                    dispatch(toggleChatWindow(friend.userId, false));
                 }}
                 type='text'
                 size='small'

@@ -18,6 +18,7 @@ export enum SocialActionTypes {
     GET_FRIENDS_LIST_FAILED = 'GET_FRIENDS_LIST_FAILED',
 
     TOGGLE_CHAT_WINDOW = 'TOGGLE_CHAT_WINDOW',
+    TOGGLE_CHAT_VISIBILITY = 'TOGGLE_CHAT_VISIBILITY',
 
     SET_STATUS = 'SET_STATUS',
     SET_ADDITIONAL_CLASSNAMES = 'SET_ADDITIONAL_CLASSNAMES',
@@ -98,10 +99,18 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
-export function toggleChat(userId: number, show: boolean): AnyAction {
+export function toggleChatWindow(userId: number, show: boolean): AnyAction {
     return {
         type: SocialActionTypes.TOGGLE_CHAT_WINDOW,
         payload: { userId, show },
+    };
+}
+
+// FIXME: Make function-names more clear. toggleChatWindow and toggleChatVisibility?
+export function toggleChatVisibility(userId: number, visible: boolean): AnyAction {
+    return {
+        type: SocialActionTypes.TOGGLE_CHAT_VISIBILITY,
+        payload: { userId, visible },
     };
 }
 
