@@ -42,6 +42,8 @@ export enum SocialActionTypes {
     // Currently not used, instead "setHasSentMessage" gets called.
     // GET_NEW_MESSAGES_SUCCESS = 'GET_NEW_MESSAGES_SUCCESS',
     GET_NEW_MESSAGES_FAILED = 'GET_NEW_MESSAGES_FAILED',
+
+    UPDATE_VISUALS = 'UPDATE_VISUALS',
 }
 
 function getFriendsListSuccess(profiles: Profile[]): AnyAction {
@@ -65,10 +67,6 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
 
             profilesImport.sort((a: any, b: any) => b.online_status - a.online_status);
 
-            profilesImport.forEach((friend: Profile) => {
-                console.log(friend.sentAMessage);
-            });
-
             const profiles: Profile[] = profilesImport.map((profile: any): Profile => ({
                 username: profile.user,
                 userId: profile.id,
@@ -90,6 +88,7 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
                 // FIXME: updates from backend correctly (server must set variable in backend so it gets pulled correctly)
                 sentAMessage: false,
                 chatActive: false,
+                chatVisible: false,
             }));
 
             dispatch(getFriendsListSuccess(profiles));

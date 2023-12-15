@@ -48,17 +48,25 @@ const chatBar = (friend?: Profile): JSX.Element => {
     }
 
     return (
-        <div
+        <Button
             id='gamif-chat-bar-bubble'
             key={friend.userId}
+            // FIXME: make this into a method
             className={(friend.sentAMessage && status === OnlineStatus.ONLINE) ? 'gamif-chat-bar-bubble unreadMessage' : 'gamif-chat-bar-bubble'}
+            onClick={() => {
+                /// FIXME: make this via method call?
+                friend.chatVisible = !friend.chatVisible;
+            }}
+            // FIXME: Prevent Button from changing colors when hovering/clicking
+            // + problem with clicking near edge and moving out
         >
             <Popover
                 placement='top'
                 trigger='click'
                 content={<Chat userId={friend.userId} messages={[]} />}
                 mouseLeaveDelay={10}
-                defaultVisible
+                // defaultVisible
+                defaultVisible={false}
                 overlayClassName='gamif-popover'
             >
                 <span className='gamif-chat-bar-bubble-text'>
@@ -73,7 +81,7 @@ const chatBar = (friend?: Profile): JSX.Element => {
                 type='text'
                 size='small'
             />
-        </div>
+        </Button>
     );
 };
 

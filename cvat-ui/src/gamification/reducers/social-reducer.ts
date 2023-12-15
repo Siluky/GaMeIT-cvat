@@ -20,6 +20,7 @@ const profile: Profile = {
         backgroundElements: 0,
     },
     chatActive: false,
+    chatVisible: false,
     sentAMessage: false,
 };
 
@@ -191,7 +192,7 @@ export default (state = defaultState, action: AnyAction): SocialState => {
 
             const updatedFriends = friendListEntries.map((elem) => {
                 if (elem.userId === friend.userId) {
-                    return { ...elem, sentAMessage: hasSentMessage };
+                    return { ...elem, sentAMessage: hasSentMessage, chatVisible: true };
                 }
                 return elem;
             });

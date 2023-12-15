@@ -210,6 +210,7 @@ export interface Profile {
     selectedBadgeStatuses: BadgeStatus[],
     profileStyle: ProfileStyle,
     chatActive: boolean,
+    chatVisible: boolean,
     sentAMessage: boolean,
 }
 
