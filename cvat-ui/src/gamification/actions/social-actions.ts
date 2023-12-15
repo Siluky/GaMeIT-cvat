@@ -38,13 +38,10 @@ export enum SocialActionTypes {
     GET_CHAT_HISTORY_FAILED = 'GET_CHAT_HISTORY_FAILED', // TODO:
 
     SET_HAS_SENT_MESSAGE = 'SET_HAS_SENT_MESSAGE',
-}
 
-export function setHasSentMessage(friend: Profile, hasSentMessage: boolean): AnyAction {
-    return {
-        type: SocialActionTypes.SET_HAS_SENT_MESSAGE,
-        payload: { friend, hasSentMessage },
-    };
+    // Currently not used, instead "setHasSentMessage" gets called.
+    // GET_NEW_MESSAGES_SUCCESS = 'GET_NEW_MESSAGES_SUCCESS',
+    GET_NEW_MESSAGES_FAILED = 'GET_NEW_MESSAGES_FAILED',
 }
 
 function getFriendsListSuccess(profiles: Profile[]): AnyAction {
@@ -263,6 +260,33 @@ export function sendMessageAsync(user2Id: number, content: string): ThunkAction<
             dispatch(sendMessageSuccess(user2Id, msg));
         } catch (error) {
             dispatch(sendMessageFailed(error));
+        }
+    };
+}
+
+export function setHasSentMessage(friend: Profile, hasSentMessage: boolean): AnyAction {
+    return {
+        type: SocialActionTypes.SET_HAS_SENT_MESSAGE,
+        payload: { friend, hasSentMessage },
+    };
+}
+
+function getNewMessagesFailed(error: any): AnyAction {
+    return {
+        type: SocialActionTypes.GET_NEW_MESSAGES_FAILED,
+        payload: { error },
+    };
+}
+
+export function getNewMessagesAsync(): ThunkAction<void, {}, {}, AnyAction> {
+    return async function getNewMessagesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        try {
+            // FIXME: Fetch... + "getNewMessagesSuccess" not used currently, refactor here?
+            // ...
+            // Foreach in profiles...
+            // dispatch(setHasSentMessage(profile, true));
+        } catch (error) {
+            dispatch(getNewMessagesFailed(error));
         }
     };
 }

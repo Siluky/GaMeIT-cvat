@@ -191,7 +191,6 @@ export default (state = defaultState, action: AnyAction): SocialState => {
 
             const updatedFriends = friendListEntries.map((elem) => {
                 if (elem.userId === friend.userId) {
-                    console.log('Hihi');
                     return { ...elem, sentAMessage: hasSentMessage };
                 }
                 return elem;
@@ -200,6 +199,12 @@ export default (state = defaultState, action: AnyAction): SocialState => {
             return {
                 ...state,
                 friendListEntries: updatedFriends,
+            };
+        }
+
+        case SocialActionTypes.GET_NEW_MESSAGES_FAILED: {
+            return {
+                ...state,
             };
         }
 
