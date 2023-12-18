@@ -44,7 +44,9 @@ export default (state = defaultState, action: AnyAction): SocialState => {
                 const relevantProfile = state.friendListEntries.find((_profile: Profile) => profileImport.userId === _profile.userId);
                 return {
                     ...profileImport,
-                    chatActive: relevantProfile?.chatActive ? relevantProfile?.chatActive : false,
+                    chatActive: relevantProfile?.chatActive,
+                    chatVisible: relevantProfile?.chatVisible,
+                    sentAMessage: relevantProfile?.sentAMessage,
                 };
             });
             // console.log('🚀 ~ file
@@ -192,7 +194,29 @@ export default (state = defaultState, action: AnyAction): SocialState => {
 
             const updatedFriends = friendListEntries.map((elem) => {
                 if (elem.userId === friend.userId) {
-                    return { ...elem, sentAMessage: hasSentMessage, chatVisible: true };
+                    return { ...elem, sentAMessage: hasSentMessage };
+                }
+                return elem;
+            });
+
+            return {
+                ...state,
+                friendListEntries: updatedFriends,
+            };
+        }
+
+        case SocialActionTypes.TOGGLE_CHAT_VISIBILITY: {
+            const { userId, visible } = action.payload;
+            const { friendListEntries } = state;
+
+            const updatedFriends = friendListEntries.map((elem) => {
+                if (elem.userId === userId) {
+                    // FIXME: bit ugly and inconsistent. When chat gets toggled, sentMessage gets set too.
+                    return {
+                        ...elem,
+                        chatVisible: visible,
+                        sentAMessage: (visible && elem.sentAMessage) ? false : elem.sentAMessage,
+                    };
                 }
                 return elem;
             });

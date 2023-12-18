@@ -107,6 +107,7 @@ export function toggleChatWindow(userId: number, show: boolean): AnyAction {
 }
 
 // FIXME: Make function-names more clear. toggleChatWindow and toggleChatVisibility?
+// FIXME: !!!!Manipulating state that is not mentioned here. The "hasSentMessage" variable gets changed!!!!
 export function toggleChatVisibility(userId: number, visible: boolean): AnyAction {
     return {
         type: SocialActionTypes.TOGGLE_CHAT_VISIBILITY,

@@ -55,7 +55,7 @@ import {
     saveCurrentEnergyAsync,
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
-import { saveProfileDataAsync, setHasSentMessage } from 'gamification/actions/social-actions';
+import { saveProfileDataAsync, setHasSentMessage, toggleChatWindow } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     initializeUserData,
@@ -607,6 +607,7 @@ function HeaderContainer(props: Props): JSX.Element {
                             icon={<TeamOutlined />}
                             onClick={(): void => {
                                 friendListEntries.forEach((friend) => {
+                                    dispatch(toggleChatWindow(2, true));
                                     dispatch(setHasSentMessage(friend, true));
                                 });
                             }}

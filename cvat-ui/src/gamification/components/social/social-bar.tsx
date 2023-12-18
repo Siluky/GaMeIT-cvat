@@ -8,7 +8,7 @@ import {
     CloseOutlined, LeftOutlined, RightOutlined, UserOutlined,
 } from '@ant-design/icons';
 import { getCVATStore } from 'cvat-store';
-import { getFriendsListAsync, toggleChatWindow } from 'gamification/actions/social-actions';
+import { getFriendsListAsync, toggleChatVisibility, toggleChatWindow } from 'gamification/actions/social-actions';
 import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { connect, useDispatch } from 'react-redux';
@@ -47,37 +47,40 @@ const chatBar = (friend?: Profile): JSX.Element => {
         );
     }
 
+    // FIXME: Disabled eslint (div is not accessible via keyboard, no role assigned to div)
     return (
-        <Button
-            id='gamif-chat-bar-bubble'
-            key={friend.userId}
-            // FIXME: make this into a method
-            className={(friend.sentAMessage && status === OnlineStatus.ONLINE) ? 'gamif-chat-bar-bubble unreadMessage' : 'gamif-chat-bar-bubble'}
-            // FIXME: Prevent Button from changing colors when hovering/clicking
-            // + problem with clicking near edge and moving out
+        <Popover
+            placement='top'
+            trigger='click'
+            content={<Chat userId={friend.userId} messages={[]} />}
+            mouseLeaveDelay={10}
+            defaultVisible={false}
+            visible={friend.chatVisible}
+            overlayClassName='gamif-popover'
         >
-            <Popover
-                placement='top'
-                trigger='click'
-                content={<Chat userId={friend.userId} messages={[]} />}
-                mouseLeaveDelay={10}
-                // defaultVisible
-                defaultVisible={false}
-                overlayClassName='gamif-popover'
+            {/* eslint-disable-next-line max-len */}
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+            <div
+                id='gamif-chat-bar-bubble'
+                key={friend.userId}
+                className={(friend.sentAMessage && status === OnlineStatus.ONLINE) ? 'gamif-chat-bar-bubble unreadMessage' : 'gamif-chat-bar-bubble'}
+                onClick={() => {
+                    dispatch(toggleChatVisibility(friend.userId, !friend.chatVisible));
+                }}
             >
                 <span className='gamif-chat-bar-bubble-text'>
                     {friend.username}
                 </span>
-            </Popover>
-            <Button
-                icon={<CloseOutlined style={{ color: '#e6e6e6' }} />}
-                onClick={() => {
-                    dispatch(toggleChatWindow(friend.userId, false));
-                }}
-                type='text'
-                size='small'
-            />
-        </Button>
+                <Button
+                    icon={<CloseOutlined style={{ color: '#e6e6e6' }} />}
+                    onClick={() => {
+                        dispatch(toggleChatWindow(friend.userId, false));
+                    }}
+                    type='text'
+                    size='small'
+                />
+            </div>
+        </Popover>
     );
 };
 
