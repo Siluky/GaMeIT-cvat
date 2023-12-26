@@ -291,8 +291,13 @@
 
   }
 
-  .gamif-challenge-pane-progress {
+  .gamif-challenge-progress-container {
+    display: flex;
     width: 200px;
+  }
+
+  .gamif-challenge-pane-progress {
+    width: 100%;
   }
 
   .gamif-challenge-pane-top-right {
