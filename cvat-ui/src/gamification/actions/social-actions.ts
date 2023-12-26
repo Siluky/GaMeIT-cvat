@@ -43,8 +43,6 @@ export enum SocialActionTypes {
     // Currently not used, instead "setHasSentMessage" gets called.
     // GET_NEW_MESSAGES_SUCCESS = 'GET_NEW_MESSAGES_SUCCESS',
     GET_NEW_MESSAGES_FAILED = 'GET_NEW_MESSAGES_FAILED',
-
-    UPDATE_VISUALS = 'UPDATE_VISUALS',
 }
 
 function getFriendsListSuccess(profiles: Profile[]): AnyAction {
