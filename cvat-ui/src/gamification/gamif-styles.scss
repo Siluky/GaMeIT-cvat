@@ -1023,13 +1023,35 @@
 }
 
 // social
+
+.gamif-friends-list-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+.gamif-friends-list-content::-webkit-scrollbar-track {
+  background: #b5beca;
+  height: 20%;
+}
+
+/* Handle */
+.gamif-friends-list-content::-webkit-scrollbar-thumb {
+  background: $darkest-blue;
+}
+
+/* Handle on hover */
+.gamif-friends-list-content-webkit-scrollbar-thumb:hover {
+  background: #9fbecc;
+  border-radius: 5px;
+}
+
 .gamif-social-bar {
     background: #B5BECA;
     display: flex;
-    max-height: 32px;
-    flex-direction: row;
-    width: 100%;
-}
+      max-height: 32px;
+      flex-direction: row;
+      width: 100%;
+    }
 
 .gamif-social-bar-friends-menu {
   // background: red;
@@ -1104,6 +1126,7 @@
     width: 300px;
     background: #E4E3E9;
     justify-content: center;
+    overflow-y: scroll;
 
     .ant-list-header {
       padding-top: 8px;
