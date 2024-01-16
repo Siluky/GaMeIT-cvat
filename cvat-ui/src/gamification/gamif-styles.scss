@@ -237,7 +237,29 @@
   width: 300px;
   background: #607185;
   border-radius: 0px 5px 5px 5px;
-  overflow: hidden
+  height: 80%;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #b5beca;
+      height: 20%;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: $darkest-blue;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9fbecc;
+      border-radius: 5px;
+    }
 }
 
 .gamif-challenge-list-header {
