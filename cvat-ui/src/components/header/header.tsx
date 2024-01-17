@@ -23,6 +23,7 @@ import Icon, {
     PlusOutlined,
     RadarChartOutlined,
     UndoOutlined,
+    UpSquareOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -68,6 +69,7 @@ import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
 import { resetShop } from 'gamification/actions/shop-actions';
 import { getEnergizerIcon } from 'gamification/gamif-items';
+import { addChallenge } from 'gamification/actions/challenge-actions';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -585,6 +587,17 @@ function HeaderContainer(props: Props): JSX.Element {
 
             <div className='cvat-right-header'>
                 <div className='cvat-right-header-gamif-group'>
+                    <CVATTooltip overlay='DEBUG: Press to add an "Annotate X Minutes" Challenge to your profile.'>
+                        <Button
+                            type='text'
+                            className='gamif-debug-button'
+                            style={{ height: '24px', width: '24px', margin: '4px' }}
+                            icon={<UpSquareOutlined />}
+                            onClick={(): void => {
+                                dispatch(addChallenge(3));
+                            }}
+                        />
+                    </CVATTooltip>
                     <CVATTooltip overlay='DEBUG: Press to reset Gamification-related Stats.'>
                         <Button
                             type='text'
