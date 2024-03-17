@@ -4,7 +4,7 @@
 
 import { getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
 import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
-import { saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
+import { getFriendsListAsync, saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     saveUserData, setSurveyTiming, toggleSurveyPrompt, updateUserData,
@@ -63,6 +63,7 @@ export function GamificationDummy(): JSX.Element {
             // console.log('🚀 ~ file: gamification-dummy-component.tsx:53 ~ interval ~ active:', active);
             if (active) {
                 dispatch(updateUserData('annotation_time', intervalTimer / 1000));
+                dispatch(getFriendsListAsync());
             }
         }, intervalTimer);
         return () => clearInterval(interval);

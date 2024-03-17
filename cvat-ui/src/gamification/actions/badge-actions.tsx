@@ -5,14 +5,11 @@
 import React from 'react';
 
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
-import { notification } from 'antd';
-import Popover from 'antd/lib/popover';
+import { Button, notification } from 'antd';
 import getCore from 'cvat-core-wrapper';
 import { getCVATStore } from 'cvat-store';
 import { ThunkAction } from 'redux-thunk';
 import { decodeBadgeTier, encodeBadgeTier } from 'gamification/gamif-items';
-import { Provider } from 'react-redux';
-import BadgeOverview from 'gamification/components/badges/badge-overview';
 
 import { Badge, BadgeTier, EnergizerType } from '../gamif-interfaces';
 // eslint-disable-next-line import/no-cycle
@@ -46,10 +43,18 @@ export enum BadgeActionTypes {
     UPDATE_ENERGIZER_BADGE = 'UPDATE_ENERGIZER_BADGE',
 
     SET_BADGE_OVERLAY_MESSAGE = 'SET_BADGE_OVERLAY_MESSAGE',
+    TOGGLE_OVERVIEW = 'TOGGLE_OVERVIEW',
 
     RESET_BADGES = 'RESET_BADGES',
     RESET_BADGES_ERROR = 'RESET_BADGES_ERROR',
     RESET_BADGES_SUCCESS = 'RESET_BADGES_SUCCESS',
+}
+
+export function toggleOverview(visible: boolean): AnyAction {
+    return {
+        type: BadgeActionTypes.TOGGLE_OVERVIEW,
+        payload: visible,
+    };
 }
 
 export function setBadgeOverlayMesage(msg: string): AnyAction {
@@ -284,8 +289,6 @@ function updateBadgesFailed(error: any): AnyAction {
     };
 }
 
-export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction> {
-    return async (dispatch) => {
 function resetBadgesSuccess(): AnyAction {
     return {
         type: BadgeActionTypes.RESET_BADGES_SUCCESS,
@@ -353,21 +356,14 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                                     {updatedTier}
                                     !
                                 </p>
-                                <Popover
-                                    placement='leftTop'
-                                    overlayClassName='gamif-popover'
-                                    trigger='click'
-                                    content={<Provider store={getCVATStore()}><BadgeOverview /></Provider>}
-                                    mouseLeaveDelay={10}
-                                    destroyTooltipOnHide
-                                    onVisibleChange={(visible) => {
-                                        if (visible) {
-                                            dispatch(setCurrentBadge(badge.id));
-                                        }
+                                <Button
+                                    onClick={() => {
+                                        dispatch(toggleOverview(true));
+                                        dispatch(setCurrentBadge(badge.id));
                                     }}
                                 >
-                                    <p>Click here to see the new Badge!</p>
-                                </Popover>
+                                    Click here to see the new Badge!
+                                </Button>
                             </div>
                         ),
                     });

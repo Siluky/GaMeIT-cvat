@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 const MAXIMUM_ENERGY = 20;
 const ENERGIZER_COST = 10;
-const ENERGY_RATE = 60000; // in milliseconds
+const ENERGY_RATE = 120000; // in milliseconds
 const ENERGY_INCREMENT = 1;
 
 const QUIZ_DUEL_ROUNDS = 5;

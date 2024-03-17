@@ -14,6 +14,7 @@ const defaultState: BadgeState = {
     currentUserId: 0,
     loading: false,
     overlayMessage: '',
+    isBadgeOverviewVisible: false,
     energizerBadges: {
         quizBadge: 0,
         snakeBadge: 0,
@@ -23,6 +24,13 @@ const defaultState: BadgeState = {
 
 export default (state = defaultState, action: AnyAction): BadgeState => {
     switch (action.type) {
+        case BadgeActionTypes.TOGGLE_OVERVIEW: {
+            return {
+                ...state,
+                isBadgeOverviewVisible: action.payload,
+            };
+        }
+
         case BadgeActionTypes.SET_CURRENT_BADGE: {
             return {
                 ...state,

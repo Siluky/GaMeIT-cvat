@@ -170,19 +170,22 @@ function AnnotationMenuComponent(props: Props & RouteComponentProps): JSX.Elemen
                     <div>
                         <p>Stage will be changed to &quot;acceptance&quot;. Would you like to continue?</p>
                         <p><b>Please remember to fill out the survey if this is your last job for this day.</b></p>
-                        <Button
-                            className='gamif-energizer-popup-start-energizer-button'
-                            type='link'
-                            href={SURVEY_URL}
-                            onClick={(event: React.MouseEvent): void => {
-                                event.preventDefault();
-                                // false alarm
-                                // eslint-disable-next-line security/detect-non-literal-fs-filename
-                                window.open(SURVEY_URL, '_blank');
-                            }}
-                        >
-                            Go to Survey
-                        </Button>
+                        <div className='gamif-survey-button-notif'>
+                            <Button
+                                className='gamif-energizer-popup-start-energizer-button'
+                                style={{ marginBottom: '0' }}
+                                type='link'
+                                href={SURVEY_URL}
+                                onClick={(event: React.MouseEvent): void => {
+                                    event.preventDefault();
+                                    // false alarm
+                                    // eslint-disable-next-line security/detect-non-literal-fs-filename
+                                    window.open(SURVEY_URL, '_blank');
+                                }}
+                            >
+                                Go to Survey
+                            </Button>
+                        </div>
                     </div>
                 ),
                 okText: 'Continue',

@@ -93,6 +93,7 @@ export interface BadgeState {
     selectedBadgeId: number;
     badgesinProfile: number[];
     loading: boolean;
+    isBadgeOverviewVisible: boolean;
     overlayMessage: string;
     energizerBadges: EnergizerBadges;
 }
@@ -228,7 +229,6 @@ export interface SocialState {
     friendListEntries: Profile[],
     ownProfile: Profile,
     chats: ChatRoom[],
-
 }
 
 export interface Statistic {

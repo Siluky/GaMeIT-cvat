@@ -110,6 +110,8 @@ interface StateToProps {
     energizerPopUpShown: boolean;
     currentEnergy: number;
     surveyPromptVisible: boolean;
+    // badge stuff
+    badgeOverviewVisible: boolean;
 }
 
 interface DispatchToProps {
@@ -139,6 +141,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         organizations: { fetching: organizationsFetching, current: currentOrganization, list: organizationsList },
         energizer: { energyLevel: currentEnergy, active: energizerShown, popupOpen: energizerPopUpShown },
         gamifuserdata: { surveyPromptVisible },
+        badges: { isBadgeOverviewVisible: badgeOverviewVisible },
     } = state;
 
     return {
@@ -176,6 +179,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         energizerShown,
         energizerPopUpShown,
         surveyPromptVisible,
+        badgeOverviewVisible,
     };
 }
 
@@ -219,6 +223,7 @@ function HeaderContainer(props: Props): JSX.Element {
         energizerShown,
         energizerPopUpShown,
         surveyPromptVisible,
+        badgeOverviewVisible,
     } = props;
 
     const {
@@ -358,6 +363,7 @@ function HeaderContainer(props: Props): JSX.Element {
         <Menu className='cvat-header-menu'>
             <Popover
                 placement='leftTop'
+                visible={badgeOverviewVisible}
                 overlayClassName='gamif-popover'
                 trigger='click'
                 content={<BadgeOverview />}
