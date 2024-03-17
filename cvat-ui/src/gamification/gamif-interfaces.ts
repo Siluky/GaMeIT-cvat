@@ -209,7 +209,11 @@ export interface Profile {
     selectedBadges: number[],
     selectedBadgeStatuses: BadgeStatus[],
     profileStyle: ProfileStyle,
+    // Whether or not the quickchat-box appears in the lower right corner.
     chatActive: boolean,
+    // Whether or not the chat itself pops up/is visible.
+    chatVisible: boolean,
+    sentAMessage: boolean,
 }
 
 export interface Message {

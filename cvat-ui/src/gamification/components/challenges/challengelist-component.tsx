@@ -5,7 +5,7 @@
 import 'gamification/gamif-styles.scss';
 import React from 'react';
 import { Button, Row } from 'antd';
-import { Challenge } from 'gamification/gamif-interfaces';
+import { Challenge, ChallengeType } from 'gamification/gamif-interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 // import { initializeUserData } from 'gamification/actions/user-data-actions';
@@ -34,6 +34,40 @@ export default function ChallengeList(): JSX.Element {
     return (
         <>
             <div className='gamif-challenge-list'>
+                <div>
+                    {/* FIXME: async import. Below is just a placeholder */}
+                    {/*                     {availableChallenges
+                        .filter((_challenge: Challenge) => _challenge.challengeType === ChallengeType.WEEKLY)
+                        .map((_challenge: Challenge, index: number) => (
+                            <Row key={index}>
+                                <ChallengePane
+                                    id={index}
+                                    key={index}
+                                    challenge={_challenge}
+                                    initProgress={_challenge.progress}
+                                />
+                            </Row>
+                        ))} */}
+                    <Row key={0}>
+                        <ChallengePane
+                            id={0}
+                            key={0}
+                            challenge={{
+                                id: 10,
+                                instruction: 'WEEKLY DEBUG Goal',
+                                importedProgress: 0,
+                                baselineValue: 0,
+                                progress: 0,
+                                goal: 20,
+                                goal_variance: 10,
+                                reward: 60,
+                                reward_variance: 30,
+                                challengeType: ChallengeType.WEEKLY,
+                            }}
+                            initProgress={0}
+                        />
+                    </Row>
+                </div>
                 <div>
                     {availableChallenges.map((_challenge: Challenge, index: number) => (
                         <Row key={index}>

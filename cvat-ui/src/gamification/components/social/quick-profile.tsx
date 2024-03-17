@@ -15,7 +15,7 @@ import {
 } from '@ant-design/icons';
 import { BadgeStatus, OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleChat } from 'gamification/actions/social-actions';
+import { toggleChatVisibility, toggleChatWindow } from 'gamification/actions/social-actions';
 import CvatTooltip from 'components/common/cvat-tooltip';
 import { CombinedState } from 'reducers/interfaces';
 import {
@@ -120,7 +120,10 @@ export default function QuickProfile(props: QuickProfileProps): JSX.Element {
                 </div>
                 <Button
                     className='gamif-quick-profile message-button'
-                    onClick={() => dispatch(toggleChat(profile.userId, true))}
+                    onClick={() => {
+                        dispatch(toggleChatWindow(profile.userId, true));
+                        dispatch(toggleChatVisibility(profile.userId, true));
+                    }}
                 >
                     Message
                     <MailFilled />

@@ -9,7 +9,7 @@ import { SocialState, OnlineStatus, Profile } from '../gamif-interfaces';
 const profile: Profile = {
     username: 'My Username',
     userId: 0,
-    status: OnlineStatus.ONLINE,
+    status: OnlineStatus.OFFLINE,
     selectedBadges: [],
     selectedBadgeStatuses: [],
     profileStyle: {
@@ -20,10 +20,12 @@ const profile: Profile = {
         backgroundElements: 0,
     },
     chatActive: false,
+    chatVisible: false,
+    sentAMessage: false,
 };
 
 const defaultState: SocialState = {
-    status: OnlineStatus.ONLINE,
+    status: OnlineStatus.OFFLINE,
     friendListEntries: [],
     ownProfile: profile,
     chats: [],
@@ -39,10 +41,12 @@ export default (state = defaultState, action: AnyAction): SocialState => {
         case SocialActionTypes.GET_FRIENDS_LIST_SUCCESS: {
             const friendListEntrieswithChatInfo = action.payload.map((profileImport: Profile) => {
                 // eslint-disable-next-line max-len
-                const relevantProfile = state.friendListEntries.find((_profile: Profile) => profileImport.userId === _profile.userId);
+                const relevantProfile = state.friendListEntries.find((_profile: Profile) => profileImport.userId === _profile.userId) ?? profile;
                 return {
                     ...profileImport,
-                    chatActive: relevantProfile?.chatActive ? relevantProfile?.chatActive : false,
+                    chatActive: relevantProfile.chatActive,
+                    chatVisible: relevantProfile.chatVisible,
+                    sentAMessage: relevantProfile.sentAMessage,
                 };
             });
             // console.log('🚀 ~ file
@@ -181,6 +185,51 @@ export default (state = defaultState, action: AnyAction): SocialState => {
             return {
                 ...state,
                 chats,
+            };
+        }
+
+        case SocialActionTypes.SET_HAS_SENT_MESSAGE: {
+            const { friend, hasSentMessage } = action.payload;
+            const { friendListEntries } = state;
+
+            const updatedFriends = friendListEntries.map((elem) => {
+                if (elem.userId === friend.userId) {
+                    return { ...elem, sentAMessage: hasSentMessage };
+                }
+                return elem;
+            });
+
+            return {
+                ...state,
+                friendListEntries: updatedFriends,
+            };
+        }
+
+        case SocialActionTypes.TOGGLE_CHAT_VISIBILITY: {
+            const { userId, visible } = action.payload;
+            const { friendListEntries } = state;
+
+            const updatedFriends = friendListEntries.map((elem) => {
+                if (elem.userId === userId) {
+                    // FIXME: bit ugly and inconsistent. When chat gets toggled, sentMessage gets set too.
+                    return {
+                        ...elem,
+                        chatVisible: visible,
+                        sentAMessage: (visible && elem.sentAMessage) ? false : elem.sentAMessage,
+                    };
+                }
+                return elem;
+            });
+
+            return {
+                ...state,
+                friendListEntries: updatedFriends,
+            };
+        }
+
+        case SocialActionTypes.GET_NEW_MESSAGES_FAILED: {
+            return {
+                ...state,
             };
         }
 

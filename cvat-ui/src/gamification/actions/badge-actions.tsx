@@ -284,8 +284,6 @@ function updateBadgesFailed(error: any): AnyAction {
     };
 }
 
-export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction> {
-    return async (dispatch) => {
 function resetBadgesSuccess(): AnyAction {
     return {
         type: BadgeActionTypes.RESET_BADGES_SUCCESS,

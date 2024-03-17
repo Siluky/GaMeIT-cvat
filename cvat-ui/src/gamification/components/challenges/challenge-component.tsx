@@ -52,14 +52,17 @@ function ChallengePane(props: Props): JSX.Element {
             <div className='gamif-challenge-pane-top'>
                 <div className='gamif-challenge-pane-top-left'>
                     {challenge.instruction}
-                    <Progress
-                        className='gamif-challenge-pane-progress'
-                        percent={Math.floor((challenge.progress / challenge.goal) * 100)}
-                        strokeWidth={8}
-                        steps={Math.min(challenge.goal, 10)}
-                        trailColor={geekblue[1]}
-                        strokeColor={blue[4]}
-                    />
+                    <div className='gamif-challenge-progress-container'>
+                        <Progress
+                            className='gamif-challenge-pane-progress'
+                            percent={Math.floor((challenge.progress / challenge.goal) * 100)}
+                            strokeWidth={8}
+                            // steps={Math.min(challenge.goal, 10)}
+                            size='small'
+                            trailColor={geekblue[1]}
+                            strokeColor={blue[4]}
+                        />
+                    </div>
                 </div>
                 <div className='gamif-challenge-pane-top-right'>
                     <Button
