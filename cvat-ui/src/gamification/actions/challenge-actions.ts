@@ -90,25 +90,14 @@ const formatInstruction = (challenge: Challenge): string => {
     } return challenge.instruction.replace('GOAL', challenge.goal.toString());
 };
 
-export function addChallenge(): ThunkAction<void, {}, {}, AnyAction> {
+export function addChallenge(challengeID?: number): ThunkAction<void, {}, {}, AnyAction> {
     return (dispatch) => {
         try {
-            const state = getCVATStore().getState();
-            const challenges = state.challenges.availableChallenges;
-
-            if (challenges.length >= 3) {
-                dispatch(addChallengeFailed('You already have 3 challenges'));
-            } else {
-                // Brute force pick a new, not already existing challenge
-                const existingIds = challenges.map((chal: Challenge) => chal.id);
-                let idExists = true;
-                let newId = 0;
-                while (idExists) {
-                    newId = Math.floor(Math.random() * (availableChallenges.length + 1));
-                    idExists = existingIds.includes(newId);
-                }
-
-                const newChallenge = availableChallenges.find((chal) => chal.id === newId) ?? availableChallenges[0];
+            if (challengeID) {
+                console.log('Given a specific challenge ID.');
+                // challenge ID is given, activating this challenge
+                // eslint-disable-next-line max-len
+                const newChallenge = availableChallenges.find((chal) => chal.id === challengeID) ?? availableChallenges[0];
 
                 // randomize goal and reward by same factor
                 const randomFactor = Math.random();
@@ -128,6 +117,44 @@ export function addChallenge(): ThunkAction<void, {}, {}, AnyAction> {
                     { ...newChal, instruction: formatInstruction(newChal) },
                 ));
                 dispatch(saveChallenges());
+            } else {
+                const state = getCVATStore().getState();
+                const challenges = state.challenges.availableChallenges;
+
+                if (challenges.length >= 3) {
+                    dispatch(addChallengeFailed('You already have 3 challenges'));
+                } else {
+                    // Brute force pick a new, not already existing challenge
+                    const existingIds = challenges.map((chal: Challenge) => chal.id);
+                    let idExists = true;
+                    let newId = 0;
+                    while (idExists) {
+                        newId = Math.floor(Math.random() * (availableChallenges.length + 1));
+                        idExists = existingIds.includes(newId);
+                    }
+
+                    // eslint-disable-next-line max-len
+                    const newChallenge = availableChallenges.find((chal) => chal.id === newId) ?? availableChallenges[0];
+
+                    // randomize goal and reward by same factor
+                    const randomFactor = Math.random();
+                    // eslint-disable-next-line max-len
+                    const goalAdjusted = Math.max(1, Math.floor((newChallenge.goal + (randomFactor * newChallenge.goal_variance)) / 5) * 5);
+                    // eslint-disable-next-line max-len
+                    const rewardAdjusted = Math.round((newChallenge.reward + (randomFactor * newChallenge.reward_variance)) / 5) * 5;
+
+                    const newChal: Challenge = {
+                        ...newChallenge,
+                        goal: goalAdjusted,
+                        reward: rewardAdjusted,
+                        baselineValue: getChallengeValue(newChallenge.id),
+                        progress: 0,
+                    };
+                    dispatch(addChallengeSuccess(
+                        { ...newChal, instruction: formatInstruction(newChal) },
+                    ));
+                    dispatch(saveChallenges());
+                }
             }
         } catch (error) {
             dispatch(addChallengeFailed(error));

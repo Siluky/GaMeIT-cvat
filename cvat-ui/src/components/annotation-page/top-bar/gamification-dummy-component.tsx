@@ -90,6 +90,8 @@ export function GamificationDummy(): JSX.Element {
     useEffect(() => {
         const interval = setInterval(() => {
             dispatch(saveUserData(false));
+            // Get friends list to update "friends online"-counter
+            dispatch(getFriendsListAsync());
         }, 15000);
 
         dispatch(getChallengesAsync());

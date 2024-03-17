@@ -23,6 +23,7 @@ import Icon, {
     PlusOutlined,
     RadarChartOutlined,
     UndoOutlined,
+    UpSquareOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -55,7 +56,7 @@ import {
     saveCurrentEnergyAsync,
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
-import { saveProfileDataAsync } from 'gamification/actions/social-actions';
+import { saveProfileDataAsync, setHasSentMessage, toggleChatWindow } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     initializeUserData,
@@ -68,6 +69,7 @@ import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
 import { resetShop } from 'gamification/actions/shop-actions';
 import { getEnergizerIcon } from 'gamification/gamif-items';
+import { addChallenge } from 'gamification/actions/challenge-actions';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -234,6 +236,7 @@ function HeaderContainer(props: Props): JSX.Element {
     const dispatch = useDispatch();
     const udata = useSelector((state: CombinedState) => state.gamifuserdata);
     const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
+    const { friendListEntries } = useSelector((state: CombinedState) => state.social);
     const { userId, surveyTiming } = udata;
 
     useEffect(() => {
@@ -590,6 +593,17 @@ function HeaderContainer(props: Props): JSX.Element {
 
             <div className='cvat-right-header'>
                 <div className='cvat-right-header-gamif-group'>
+                    <CVATTooltip overlay='DEBUG: Press to add an "Annotate X Minutes" Challenge to your profile.'>
+                        <Button
+                            type='text'
+                            className='gamif-debug-button'
+                            style={{ height: '24px', width: '24px', margin: '4px' }}
+                            icon={<UpSquareOutlined />}
+                            onClick={(): void => {
+                                dispatch(addChallenge(3));
+                            }}
+                        />
+                    </CVATTooltip>
                     <CVATTooltip overlay='DEBUG: Press to reset Gamification-related Stats.'>
                         <Button
                             type='text'
@@ -601,6 +615,20 @@ function HeaderContainer(props: Props): JSX.Element {
                                 dispatch(resetBadges());
                                 dispatch(setUserData());
                                 dispatch(saveUserData(false));
+                            }}
+                        />
+                    </CVATTooltip>
+                    <CVATTooltip overlay='DEBUG: Press to set hasUnreadMessages=true in every chatroom for this user.'>
+                        <Button
+                            type='text'
+                            className='gamif-debug-button'
+                            style={{ height: '24px', width: '24px', margin: '4px' }}
+                            icon={<TeamOutlined />}
+                            onClick={(): void => {
+                                friendListEntries.forEach((friend) => {
+                                    dispatch(toggleChatWindow(2, true));
+                                    dispatch(setHasSentMessage(friend, true));
+                                });
                             }}
                         />
                     </CVATTooltip>

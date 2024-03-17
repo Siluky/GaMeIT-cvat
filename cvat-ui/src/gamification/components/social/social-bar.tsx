@@ -7,7 +7,8 @@ import { Popover, Button } from 'antd';
 import {
     CloseOutlined, LeftOutlined, RightOutlined, UserOutlined,
 } from '@ant-design/icons';
-import { getFriendsListAsync, toggleChat } from 'gamification/actions/social-actions';
+import { getCVATStore } from 'cvat-store';
+import { getFriendsListAsync, toggleChatVisibility, toggleChatWindow } from 'gamification/actions/social-actions';
 import { OnlineStatus, Profile } from 'gamification/gamif-interfaces';
 import { addGamifLog } from 'gamification/actions/user-data-actions';
 import { connect, useDispatch } from 'react-redux';
@@ -17,22 +18,28 @@ import Chat from './chat-box';
 
 interface StateToProps {
     friends: Profile[],
+    friendsOnline: number;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
     const { social } = state;
+    const { userId } = state.gamifuserdata;
 
     return {
         friends: social.friendListEntries,
+        // eslint-disable-next-line max-len
+        friendsOnline: social.friendListEntries.filter((p: Profile) => ((p.status !== OnlineStatus.OFFLINE) && (p.userId !== userId))).length,
     };
 }
 
 interface SocialBarProps {
     friends: Profile[],
+    friendsOnline: number;
 }
 
 const chatBar = (friend?: Profile): JSX.Element => {
     const dispatch = useDispatch();
+    const { status } = getCVATStore().getState().social;
 
     if (!friend) {
         return (
@@ -40,38 +47,46 @@ const chatBar = (friend?: Profile): JSX.Element => {
         );
     }
 
+    // FIXME: Disabled eslint (div is not accessible via keyboard, no role assigned to div)
     return (
-        <div
-            key={friend.userId}
-            className='gamif-chat-bar-bubble'
+        <Popover
+            placement='top'
+            trigger='click'
+            content={<Chat userId={friend.userId} messages={[]} />}
+            mouseLeaveDelay={10}
+            defaultVisible={false}
+            visible={friend.chatVisible}
+            overlayClassName='gamif-popover'
         >
-            <Popover
-                placement='top'
-                trigger='click'
-                content={<Chat userId={friend.userId} messages={[]} />}
-                mouseLeaveDelay={10}
-                defaultVisible
-                overlayClassName='gamif-popover'
+            {/* eslint-disable-next-line max-len */}
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+            <div
+                id='gamif-chat-bar-bubble'
+                key={friend.userId}
+                className={(friend.sentAMessage && status === OnlineStatus.ONLINE) ? 'gamif-chat-bar-bubble unreadMessage' : 'gamif-chat-bar-bubble'}
+                onClick={() => {
+                    dispatch(toggleChatVisibility(friend.userId, !friend.chatVisible));
+                }}
             >
                 <span className='gamif-chat-bar-bubble-text'>
                     {friend.username}
                 </span>
-            </Popover>
-            <Button
-                icon={<CloseOutlined style={{ color: '#e6e6e6' }} />}
-                onClick={() => {
-                    dispatch(toggleChat(friend.userId, false));
-                }}
-                type='text'
-                size='small'
-            />
-        </div>
+                <Button
+                    icon={<CloseOutlined style={{ color: '#e6e6e6' }} />}
+                    onClick={() => {
+                        dispatch(toggleChatWindow(friend.userId, false));
+                    }}
+                    type='text'
+                    size='small'
+                />
+            </div>
+        </Popover>
     );
 };
 
 function SocialBar(props: SocialBarProps): JSX.Element {
     const dispatch = useDispatch();
-    const { friends } = props;
+    const { friends, friendsOnline } = props;
 
     useEffect(() => {
         dispatch(getFriendsListAsync());
@@ -128,7 +143,7 @@ function SocialBar(props: SocialBarProps): JSX.Element {
                             {/* {`Friends (${activeChats.length ?? 0})`} */}
                             {/* {`Friends (${activeRange})`} */}
                             {/* Friends */}
-                            {`(${friends.filter((p: Profile) => p.status !== OnlineStatus.OFFLINE).length - 1})`}
+                            {friendsOnline}
                         </Button>
                     </Popover>
                 </div>

@@ -18,6 +18,7 @@ export enum SocialActionTypes {
     GET_FRIENDS_LIST_FAILED = 'GET_FRIENDS_LIST_FAILED',
 
     TOGGLE_CHAT_WINDOW = 'TOGGLE_CHAT_WINDOW',
+    TOGGLE_CHAT_VISIBILITY = 'TOGGLE_CHAT_VISIBILITY',
 
     SET_STATUS = 'SET_STATUS',
     SET_ADDITIONAL_CLASSNAMES = 'SET_ADDITIONAL_CLASSNAMES',
@@ -36,6 +37,12 @@ export enum SocialActionTypes {
 
     GET_CHAT_HISTORY_SUCCESS = 'GET_CHAT_HISTORY_SUCCESS', // TODO:
     GET_CHAT_HISTORY_FAILED = 'GET_CHAT_HISTORY_FAILED', // TODO:
+
+    SET_HAS_SENT_MESSAGE = 'SET_HAS_SENT_MESSAGE',
+
+    // Currently not used, instead "setHasSentMessage" gets called.
+    // GET_NEW_MESSAGES_SUCCESS = 'GET_NEW_MESSAGES_SUCCESS',
+    GET_NEW_MESSAGES_FAILED = 'GET_NEW_MESSAGES_FAILED',
 }
 
 function getFriendsListSuccess(profiles: Profile[]): AnyAction {
@@ -76,7 +83,11 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
                     backgroundElements: profile.profile_background_elements,
                     color: 0, // TODO:
                 },
+                // eslint-disable-next-line max-len
+                // FIXME: updates from backend correctly (server must set variable in backend so it gets pulled correctly)
+                sentAMessage: false,
                 chatActive: false,
+                chatVisible: false,
             }));
 
             dispatch(getFriendsListSuccess(profiles));
@@ -86,10 +97,19 @@ export function getFriendsListAsync(): ThunkAction<void, {}, {}, AnyAction> {
     };
 }
 
-export function toggleChat(userId: number, show: boolean): AnyAction {
+export function toggleChatWindow(userId: number, show: boolean): AnyAction {
     return {
         type: SocialActionTypes.TOGGLE_CHAT_WINDOW,
         payload: { userId, show },
+    };
+}
+
+// FIXME: Make function-names more clear. toggleChatWindow and toggleChatVisibility?
+// FIXME: !!!!Manipulating state that is not mentioned here. The "hasSentMessage" variable gets changed!!!!
+export function toggleChatVisibility(userId: number, visible: boolean): AnyAction {
+    return {
+        type: SocialActionTypes.TOGGLE_CHAT_VISIBILITY,
+        payload: { userId, visible },
     };
 }
 
@@ -247,6 +267,33 @@ export function sendMessageAsync(user2Id: number, content: string): ThunkAction<
             dispatch(sendMessageSuccess(user2Id, msg));
         } catch (error) {
             dispatch(sendMessageFailed(error));
+        }
+    };
+}
+
+export function setHasSentMessage(friend: Profile, hasSentMessage: boolean): AnyAction {
+    return {
+        type: SocialActionTypes.SET_HAS_SENT_MESSAGE,
+        payload: { friend, hasSentMessage },
+    };
+}
+
+function getNewMessagesFailed(error: any): AnyAction {
+    return {
+        type: SocialActionTypes.GET_NEW_MESSAGES_FAILED,
+        payload: { error },
+    };
+}
+
+export function getNewMessagesAsync(): ThunkAction<void, {}, {}, AnyAction> {
+    return async function getNewMessagesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+        try {
+            // FIXME: Fetch... + "getNewMessagesSuccess" not used currently, refactor here?
+            // ...
+            // Foreach in profiles...
+            // dispatch(setHasSentMessage(profile, true));
+        } catch (error) {
+            dispatch(getNewMessagesFailed(error));
         }
     };
 }
