@@ -16,7 +16,7 @@ import {
     setAdditionalClassNames,
     setColor, setProfileBackground, setProfileBackgroundEffects, setProfileBorder,
 } from 'gamification/actions/social-actions';
-import { addGamifLog } from 'gamification/actions/user-data-actions';
+// import { addGamifLog } from 'gamification/actions/user-data-actions';
 // import { upgradeBadgeTier } from 'gamification/actions/badge-actions';
 // import { incrementEnergy } from 'gamification/actions/energizer-actions';
 // import { addChallenge } from 'gamification/actions/challenge-actions';
@@ -172,7 +172,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             return 'Select an item to buy.';
         }
         const shopItem = items.find((item) => item.id === selectedItemId) ?? items[0];
-        return `Buying: ${shopItem?.title}`;
+        return `Buy: ${shopItem?.title}`;
     };
 
     return (
@@ -250,22 +250,25 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 </div>
                 <div className='gamif-shop-window-footer-buttons'>
                     <Button
+                        style={{ marginLeft: '0' }}
                         className='gamif-shop-window-button'
                         disabled={overlayVisible}
                         onClick={() => {
+                            // const shopItem = items.find((item) => item.id === selectedItemId);
+                            // if (shopItem?.bought) {
+                            //     useItem(selectedItemId);
+                            //     dispatch(addGamifLog(`Used item: ${shopItem.title}`));
+                            // } else {
+                            //     dispatch(purchaseItem(selectedItemId));
+                            //     dispatch(addGamifLog(`Bought item: ${selectedItemId}`));
+                            // }
                             dispatch(purchaseItem(selectedItemId));
-                            dispatch(addGamifLog(`Bought item: ${selectedItemId}`));
-                            // toggleModal(true);
                         }}
                     >
                         {findItemName()}
                     </Button>
                 </div>
             </div>
-            {/* <Modal visible={modalShown}>
-                You got Item XY!
-                <Button onClick={() => toggleModal(false)}> Exit</Button>
-            </Modal> */}
         </>
     );
 }

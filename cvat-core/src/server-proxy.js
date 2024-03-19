@@ -1885,6 +1885,7 @@
             }
 
             async function saveChallenges(challenges) {
+                console.log('🚀 ~ ServerProxy ~ saveChallenges ~ challenges:', challenges);
                 const { backendAPI } = config;
                 let response = null;
                 try {

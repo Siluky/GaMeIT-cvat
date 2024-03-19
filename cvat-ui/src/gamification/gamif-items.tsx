@@ -1775,19 +1775,19 @@ export const availableChallenges: Challenge[] = [
         reward_variance: 30,
         challengeType: ChallengeType.DAILY,
     },
-    // FIXME: Placeholder not in use yet.
-    {
-        id: 10,
-        instruction: 'WEEKLY DEBUG Goal',
-        importedProgress: 0,
-        baselineValue: 0,
-        progress: 0,
-        goal: 20,
-        goal_variance: 10,
-        reward: 60,
-        reward_variance: 30,
-        challengeType: ChallengeType.WEEKLY,
-    },
+    // // FIXME: Placeholder not in use yet.
+    // {
+    //     id: 10,
+    //     instruction: 'WEEKLY DEBUG Goal',
+    //     importedProgress: 0,
+    //     baselineValue: 0,
+    //     progress: 0,
+    //     goal: 20,
+    //     goal_variance: 10,
+    //     reward: 60,
+    //     reward_variance: 30,
+    //     challengeType: ChallengeType.WEEKLY,
+    // },
 ];
 
 export function getChallengeValue(id: number): number {

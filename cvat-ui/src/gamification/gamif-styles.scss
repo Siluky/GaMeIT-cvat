@@ -237,8 +237,8 @@
   width: 300px;
   background: #607185;
   border-radius: 0px 5px 5px 5px;
-  height: 80%;
-  overflow-y: scroll;
+  // height: 80%;
+  // overflow-y: scroll;
 
   ::-webkit-scrollbar {
       width: 8px;
@@ -931,6 +931,7 @@
   display: flex;
   flex-direction: row;
   border-top: 1px solid #1e3d59;
+  justify-content: center;
 }
 
 .gamif-shop-window-header-buttons {

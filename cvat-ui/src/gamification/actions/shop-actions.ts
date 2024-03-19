@@ -201,7 +201,7 @@ export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyActio
         }
 
         if (item.bought) {
-            dispatch(setShopOverlayMessage('You have already obtained this item.'));
+            dispatch(setShopOverlayMessage('You have already purchased this item.'));
             dispatch(purchaseItemFailed());
             return;
         }
@@ -232,6 +232,9 @@ export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyActio
             dispatch(updateUserData('items_bought', 1));
             if (item.repeatable) {
                 dispatch(useRepeatableItem(itemId));
+            } else {
+                dispatch(setShopOverlayMessage(`Successfully bought ${item.title}.
+                Click the Use button to apply it!`));
             }
 
             // handle Steak Saver / Money Badge differently

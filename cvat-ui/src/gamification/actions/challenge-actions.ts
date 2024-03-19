@@ -52,6 +52,7 @@ export function saveChallenges(): ThunkAction<void, {}, {}, AnyAction> {
         const state = getCVATStore().getState();
         const id = state.gamifuserdata.userId;
         const currentChallenges = state.challenges.availableChallenges;
+        console.log('🚀 ~ saveChallengeThunk ~ currentChallenges:', currentChallenges);
         try {
             const challenges = currentChallenges.map((chal: Challenge) => ({
                 userId: id,
@@ -84,10 +85,11 @@ export function addChallengeFailed(error: any): AnyAction {
     };
 }
 
-const formatInstruction = (challenge: Challenge): string => {
+const formatInstruction = (challenge: Challenge, actualGoal?: number): string => {
+    const relevantGoal = actualGoal || challenge.goal;
     if (challenge.id === 2 || challenge.id === 3) {
-        return challenge.instruction.replace('GOAL', (Math.round(challenge.goal / 60)).toString());
-    } return challenge.instruction.replace('GOAL', challenge.goal.toString());
+        return challenge.instruction.replace('GOAL', (Math.round(relevantGoal / 60)).toString());
+    } return challenge.instruction.replace('GOAL', relevantGoal.toString());
 };
 
 export function addChallenge(challengeID?: number): ThunkAction<void, {}, {}, AnyAction> {
@@ -191,7 +193,7 @@ export function getChallengesAsync(newDay?: boolean): ThunkAction<void, {}, {}, 
                     progress: 0,
                     goal: chal.goal,
                     reward: chal.reward,
-                    instruction: formatInstruction(challenge),
+                    instruction: formatInstruction(challenge, chal.goal),
                 };
             });
             dispatch(getChallengesSuccess(challenges));
@@ -233,6 +235,7 @@ export function updateChallenges(): ThunkAction<void, {}, {}, AnyAction> {
                 };
             });
             dispatch(updateChallengeSuccess(updatedChallenges));
+            dispatch(saveChallenges());
         } catch (error) {
             dispatch(updateChallengeFailed(error));
         }
@@ -262,7 +265,7 @@ export function removeChallengeFailed(error: any): AnyAction {
 }
 
 export function completeChallenge(challenge: Challenge): ThunkAction<void, {}, {}, AnyAction> {
-    return async function addChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
+    return async function completeChallengeThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         const { userId } = getCVATStore().getState().gamifuserdata;
         try {
             await cvat.challenges.remove(userId, challenge.id);

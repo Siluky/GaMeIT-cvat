@@ -111,7 +111,7 @@ function showSelectedBadge(badge: Badge): JSX.Element {
                 <p className='gamif-badges-instruction'>{formattedInstruction}</p>
                 <Progress percent={Math.floor((badge.progress / goal) * 100)} />
                 {/* {badge.tier !== BadgeTier.GOLD && progress} */}
-                <span>{progress}</span>
+                <span>{badge.tier === BadgeTier.GOLD ? '' : progress}</span>
                 {badge.tier !== BadgeTier.NOT_OBTAINED && (
                     <>
                         <div>

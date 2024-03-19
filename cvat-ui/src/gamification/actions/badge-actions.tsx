@@ -343,6 +343,7 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                     dispatch(addGamifLog(`Upgrading tier of badge ${badge.title} to ${updatedTier}`));
                     dispatch(updateUserData('badges_obtained', 1));
                     cvat.badges.save(userDataState.userId, badge.id, encodeBadgeTier(updatedTier));
+                    dispatch(setCurrentBadge(badge.id));
                     // eslint-disable-next-line security/detect-non-literal-fs-filename
                     notification.open({
                         message: 'Badge Obtained!',
@@ -352,9 +353,14 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                                 <p>
                                     Congratulations! You obtained the&nbsp;
                                     {badge.title}
-                                    Badge&nbsp;
+                                    &nbsp;
+                                    Badge
+                                    &nbsp;
                                     {updatedTier}
                                     !
+                                </p>
+                                <p>
+                                    Check the Badge Profile to see it.
                                 </p>
                                 <Button
                                     onClick={() => {

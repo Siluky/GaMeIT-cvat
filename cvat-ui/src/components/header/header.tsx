@@ -64,7 +64,7 @@ import {
     setUserData,
     toggleSurveyPrompt,
 } from 'gamification/actions/user-data-actions';
-import { resetBadges, updateBadges } from 'gamification/actions/badge-actions';
+import { resetBadges, toggleOverview, updateBadges } from 'gamification/actions/badge-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
 import { resetShop } from 'gamification/actions/shop-actions';
@@ -113,7 +113,7 @@ interface StateToProps {
     currentEnergy: number;
     surveyPromptVisible: boolean;
     // badge stuff
-    badgeOverviewVisible: boolean;
+    // badgeOverviewVisible: boolean;
 }
 
 interface DispatchToProps {
@@ -143,7 +143,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         organizations: { fetching: organizationsFetching, current: currentOrganization, list: organizationsList },
         energizer: { energyLevel: currentEnergy, active: energizerShown, popupOpen: energizerPopUpShown },
         gamifuserdata: { surveyPromptVisible },
-        badges: { isBadgeOverviewVisible: badgeOverviewVisible },
+        // badges: { isBadgeOverviewVisible: badgeOverviewVisible },
     } = state;
 
     return {
@@ -181,7 +181,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
         energizerShown,
         energizerPopUpShown,
         surveyPromptVisible,
-        badgeOverviewVisible,
+        // badgeOverviewVisible,
     };
 }
 
@@ -225,7 +225,7 @@ function HeaderContainer(props: Props): JSX.Element {
         energizerShown,
         energizerPopUpShown,
         surveyPromptVisible,
-        badgeOverviewVisible,
+        // badgeOverviewVisible,
     } = props;
 
     const {
@@ -366,7 +366,7 @@ function HeaderContainer(props: Props): JSX.Element {
         <Menu className='cvat-header-menu'>
             <Popover
                 placement='leftTop'
-                visible={badgeOverviewVisible}
+                // visible={badgeOverviewVisible}
                 overlayClassName='gamif-popover'
                 trigger='click'
                 content={<BadgeOverview />}
@@ -377,6 +377,7 @@ function HeaderContainer(props: Props): JSX.Element {
                     icon={<RadarChartOutlined />}
                     key='badge_profile'
                     onClick={() => {
+                        dispatch(toggleOverview(true));
                         dispatch(updateBadges(false));
                         dispatch(addGamifLog('Checked Badge Overview'));
                     }}

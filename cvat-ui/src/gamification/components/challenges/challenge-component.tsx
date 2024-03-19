@@ -10,7 +10,7 @@ import { AnnotationCoinNoBorderIcon } from 'icons';
 
 import { blue, geekblue } from '@ant-design/colors';
 import { connect, useDispatch } from 'react-redux';
-import { completeChallenge } from 'gamification/actions/challenge-actions';
+import { completeChallenge, updateChallenges } from 'gamification/actions/challenge-actions';
 import { updateUserData } from 'gamification/actions/user-data-actions';
 import { CombinedState } from 'reducers/interfaces';
 import { getChallengeValue } from 'gamification/gamif-items';
@@ -27,6 +27,7 @@ interface StateToProps {
 
 function mapStateToProps(state: CombinedState, ownProps: Props): StateToProps {
     const { challenge } = ownProps;
+
     const updatedProgress = challenge.importedProgress + (
         getChallengeValue(challenge.id) - challenge.baselineValue);
     return {
@@ -45,6 +46,7 @@ function ChallengePane(props: Props): JSX.Element {
             dispatch(completeChallenge(challenge));
             dispatch(updateUserData('challenges_completed', 1));
         }
+        dispatch(updateChallenges());
     }, [challenge.progress]);
 
     return (

@@ -62,6 +62,7 @@ export function GamificationDummy(): JSX.Element {
         const interval = setInterval(() => {
             // console.log('🚀 ~ file: gamification-dummy-component.tsx:53 ~ interval ~ active:', active);
             if (active) {
+                console.log('Saving');
                 dispatch(updateUserData('annotation_time', intervalTimer / 1000));
                 dispatch(getFriendsListAsync());
             }
