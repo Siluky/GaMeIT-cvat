@@ -233,7 +233,7 @@ const TetrisApp = (props: TetrisProps): JSX.Element => {
                                         score: points,
                                     };
                                     dispatch(addLeaderboardEntry(entry));
-                                    if (points >= 3000) {
+                                    if (points >= 2000) {
                                         dispatch(updateEnergizerBadge(EnergizerType.TETRIS));
                                     }
                                     showLeaderboard(true);

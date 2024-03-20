@@ -578,7 +578,7 @@ export const badges: Badge[] = [
     {
         id: 106,
         title: 'Tetris Titan',
-        instruction: 'Achieve a score of 3000 in Tetris',
+        instruction: 'Achieve a score of 2000 in Tetris',
         progress: 0,
         goal: 1,
         tier: BadgeTier.NOT_OBTAINED,

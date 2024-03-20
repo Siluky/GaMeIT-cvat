@@ -235,7 +235,7 @@ export function updateChallenges(): ThunkAction<void, {}, {}, AnyAction> {
                 };
             });
             dispatch(updateChallengeSuccess(updatedChallenges));
-            dispatch(saveChallenges());
+            // dispatch(saveChallenges());
         } catch (error) {
             dispatch(updateChallengeFailed(error));
         }
