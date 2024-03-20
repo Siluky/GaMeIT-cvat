@@ -126,6 +126,11 @@
     box-shadow: 0 0 4px 4px #fddeef;
     background: #fddeef;
   }
+
+  &.selected {
+    box-shadow: 0 0 4px 4px #fddeef;
+    background: red;
+  }
 }
 
 .gamif-badge-overview-individual-badge:hover {
@@ -186,6 +191,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 2px;
 }
 
 .gamif-badges-profile-button {
@@ -940,6 +946,7 @@
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid #1e3d59;
+  justify-content: space-evenly
 }
 
 .gamif-shop-window-button {
@@ -949,6 +956,12 @@
   border-radius: 8px;
   margin-left: 5%;
   margin-bottom: 2px;
+
+  &.footer{
+    margin-left: 0;
+    width: 50%;
+  }
+
   }
 
 .gamif-shop-balance-display {

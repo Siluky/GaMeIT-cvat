@@ -114,6 +114,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 dispatch(setProfileBackground(0));
                 dispatch(setAdditionalClassNames(4));
                 break;
+            // Star shower background
             case 14: {
                 dispatch(setProfileBackground(0));
                 dispatch(setProfileBackgroundEffects(1));
@@ -132,10 +133,12 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
             case 19: dispatch(setProfileBorder(3)); break;
             case 20:
                 dispatch(setProfileBorder(0));
+                dispatch(setProfileBackgroundEffects(0));
                 dispatch(setAdditionalClassNames(6));
                 break;
             case 21:
                 dispatch(setProfileBorder(0));
+                dispatch(setProfileBackgroundEffects(0));
                 dispatch(setAdditionalClassNames(7));
                 break;
             case 22: {
@@ -147,10 +150,12 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 break;
             }
             case 24:
+                dispatch(setProfileBackgroundEffects(0));
                 dispatch(setAdditionalClassNames(10));
                 break;
             case 25: {
                 dispatch(setProfileBorder(0));
+                dispatch(setProfileBackgroundEffects(0));
                 dispatch(setAdditionalClassNames(11));
                 break;
             }
@@ -251,7 +256,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                 <div className='gamif-shop-window-footer-buttons'>
                     <Button
                         style={{ marginLeft: '0' }}
-                        className='gamif-shop-window-button'
+                        className='gamif-shop-window-button footer'
                         disabled={overlayVisible}
                         onClick={() => {
                             // const shopItem = items.find((item) => item.id === selectedItemId);

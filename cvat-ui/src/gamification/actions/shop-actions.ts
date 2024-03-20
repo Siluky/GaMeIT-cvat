@@ -245,6 +245,8 @@ export function purchaseItem(itemId: number): ThunkAction<void, {}, {}, AnyActio
                 dispatch(updateUserData('money_badge_tier', 1));
                 if (gamifuserdata.userdata_total.money_badge_tier === 3) {
                     dispatch(purchaseItemSuccess(5));
+                    dispatch(setShopOverlayMessage(`Successfully upgraded the money badge.
+                    Check the badge profile to see it!`));
                 }
             } else {
                 dispatch(purchaseItemSuccess(itemId));

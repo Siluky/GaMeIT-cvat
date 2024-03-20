@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { updateBadges } from 'gamification/actions/badge-actions';
 import { getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
 import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
 import { getFriendsListAsync, saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
@@ -65,6 +66,7 @@ export function GamificationDummy(): JSX.Element {
                 console.log('Saving');
                 dispatch(updateUserData('annotation_time', intervalTimer / 1000));
                 dispatch(getFriendsListAsync());
+                dispatch(updateBadges(false));
             }
         }, intervalTimer);
         return () => clearInterval(interval);

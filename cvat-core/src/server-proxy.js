@@ -1914,9 +1914,11 @@
             async function removeChallenge(userId, challengeId) {
                 const { backendAPI } = config;
                 try {
+                    console.log(`removing challenge ${userId}-${challengeId}`);
                     await Axios.delete(`${backendAPI}/challenge-status/${userId}-${challengeId}`, {
                         proxy: config.proxy,
                     });
+                    console.log(`removed challenge ${userId}-${challengeId}`);
                 } catch (errorData) {
                     throw generateError(errorData);
                 }

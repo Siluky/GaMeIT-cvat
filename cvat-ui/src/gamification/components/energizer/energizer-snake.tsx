@@ -439,7 +439,7 @@ class Snake extends React.Component<EnergizerProps, State> {
                                         score: snakeScore,
                                     };
                                     addEntry(entry);
-                                    if (snakeScore >= 20) {
+                                    if (snakeScore >= 30) {
                                         updateSnakeBadge();
                                     }
                                     showLeaderboard(true);

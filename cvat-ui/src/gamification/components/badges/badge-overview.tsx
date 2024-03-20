@@ -80,7 +80,7 @@ function showSelectedBadge(badge: Badge): JSX.Element {
         return badge.goal;
     };
     const goal = relevantGoal();
-    let progress = `Progress: ${Math.min(badge.progress, goal)} / ${goal} ${badge.goalunit}`;
+    let progress = `Progress to next tier: ${Math.min(badge.progress, goal)} / ${goal} ${badge.goalunit}`;
     // const receivedOn = `Achieved on ${badge.receivedOn}`;
     const receivedOn = `Achieved on ${badge.receivedOn}`;
     const dispatch = useDispatch();
@@ -194,6 +194,8 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                             const isBadgeSelected = badges.badgesinProfile.includes(badge.id);
                             const classes = isBadgeSelected ? 'selected' : '';
 
+                            const isCurrentBadge = currentBadge.id === badge.id ? 'current' : '';
+
                             return (
                                 <Col
                                     span={4}
@@ -202,7 +204,7 @@ export function BadgeOverview(props: BadgeOverviewProps): JSX.Element {
                                 >
                                     <Button
                                         key={index}
-                                        className={`gamif-badge-overview-individual-badge ${classes}`}
+                                        className={`gamif-badge-overview-individual-badge ${isCurrentBadge} ${classes}`}
                                         type='text'
                                         icon={getBadgeIcon(badge.id, badge.tier)}
                                         onClick={(): void => {

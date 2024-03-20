@@ -5,7 +5,7 @@
 import React from 'react';
 
 import { ActionCreator, AnyAction, Dispatch } from 'redux';
-import { Button, notification } from 'antd';
+import { notification } from 'antd';
 import getCore from 'cvat-core-wrapper';
 import { getCVATStore } from 'cvat-store';
 import { ThunkAction } from 'redux-thunk';
@@ -351,25 +351,26 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                         description: (
                             <div>
                                 <p>
-                                    Congratulations! You obtained the&nbsp;
+                                    Congratulations! You obtained the Badge: &nbsp;
+                                    <br />
                                     {badge.title}
                                     &nbsp;
-                                    Badge
-                                    &nbsp;
+                                    &#40;
                                     {updatedTier}
+                                    &#41;
                                     !
                                 </p>
                                 <p>
                                     Check the Badge Profile to see it.
                                 </p>
-                                <Button
+                                {/* <Button
                                     onClick={() => {
                                         dispatch(toggleOverview(true));
                                         dispatch(setCurrentBadge(badge.id));
                                     }}
                                 >
                                     Click here to see the new Badge!
-                                </Button>
+                                </Button> */}
                             </div>
                         ),
                     });
