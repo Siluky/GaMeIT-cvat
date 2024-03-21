@@ -19,7 +19,7 @@ import { CombinedState } from 'reducers/interfaces';
 
 export function GamificationDummy(): JSX.Element {
     const dispatch = useDispatch();
-    const intervalTimer = 30000; // TODO: Fix later!
+    const intervalTimer = 10000; // TODO: Fix later!
     const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
     const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
     // const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
@@ -67,6 +67,7 @@ export function GamificationDummy(): JSX.Element {
                 dispatch(updateUserData('annotation_time', intervalTimer / 1000));
                 dispatch(getFriendsListAsync());
                 dispatch(updateBadges(false));
+                dispatch(saveChallenges());
             }
         }, intervalTimer);
         return () => clearInterval(interval);
@@ -115,7 +116,7 @@ export function GamificationDummy(): JSX.Element {
             } return undefined;
         };
 
-        window.addEventListener('beforeunload', tabclose);
+        // window.addEventListener('beforeunload', tabclose);
 
         return () => {
             clearInterval(interval);

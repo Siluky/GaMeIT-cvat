@@ -126,6 +126,7 @@ function SocialBar(props: SocialBarProps): JSX.Element {
                     key='friends_list'
                 >
                     <Popover
+                        zIndex={100}
                         placement='top'
                         trigger='click'
                         content={<FriendsList profiles={friends} />}

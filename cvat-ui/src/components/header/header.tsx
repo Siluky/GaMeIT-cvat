@@ -366,6 +366,7 @@ function HeaderContainer(props: Props): JSX.Element {
         <Menu className='cvat-header-menu'>
             <Popover
                 placement='leftTop'
+                zIndex={10}
                 // visible={badgeOverviewVisible}
                 overlayClassName='gamif-popover'
                 trigger='click'
@@ -649,6 +650,7 @@ function HeaderContainer(props: Props): JSX.Element {
                             content={<EnergizerPopUp currentEnergy={currentEnergy} />}
                             trigger='click'
                             visible={energizerPopUpShown}
+                            zIndex={2}
                         >
                             <div className='gamif-header-button-wrapper'>
                                 <Button
@@ -681,6 +683,7 @@ function HeaderContainer(props: Props): JSX.Element {
                             onVisibleChange={(visible: boolean) => {
                                 if (!visible) { dispatch(saveProfileDataAsync()); }
                             }}
+                            zIndex={9}
                         >
                             <div className='gamif-header-button-wrapper'>
                                 <Button

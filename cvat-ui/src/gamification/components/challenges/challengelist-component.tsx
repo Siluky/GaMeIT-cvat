@@ -10,7 +10,7 @@ import { connect, useDispatch } from 'react-redux';
 import { CombinedState } from 'reducers/interfaces';
 // import { initializeUserData } from 'gamification/actions/user-data-actions';
 import {
-    addChallenge, getChallengesAsync,
+    addChallenge,
 } from 'gamification/actions/challenge-actions';
 // import { UndoOutlined } from '@ant-design/icons';
 // import { AnnotationCoinIcon } from 'icons';
@@ -53,7 +53,6 @@ export function ChallengeList(props: ChallengeListProps): JSX.Element {
             {/* <Button className='gamif-debug-button'
             onClick={() => dispatch(getChallengesAsync())}> Get Challenges </Button> */}
             <Button className='gamif-debug-button' onClick={() => dispatch(addChallenge())}> Add Challenge </Button>
-            <Button className='gamif-debug-button' onClick={() => dispatch(getChallengesAsync(true))}> Add New Day </Button>
             {/* <Button className='gamif-de
             bug-button' onClick={() => dispatch(getChallengesAsync(true))}> New Day Chal </Button> */}
             {/* <Button className='gamif-de

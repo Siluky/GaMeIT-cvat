@@ -128,8 +128,8 @@
   }
 
   &.current {
-    box-shadow: 0 0 4px 4px #fddeef;
-    background: red;
+    // box-shadow: 0 0 4px 4px #fddeef;
+    outline: 1px solid #1e3d59;
   }
 }
 

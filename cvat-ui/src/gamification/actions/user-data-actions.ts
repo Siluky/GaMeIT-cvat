@@ -14,7 +14,7 @@ import { initShop, updateBalance } from './shop-actions';
 // eslint-disable-next-line import/no-cycle
 import { initProfileBadges, loadBadgesAsync } from './badge-actions';
 // eslint-disable-next-line import/no-cycle
-import { getChallengesAsync } from './challenge-actions';
+import { addChallenge, getChallengesAsync } from './challenge-actions';
 
 const cvat = getCore();
 
@@ -307,9 +307,10 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
             dispatch(initProfileBadges(badgeIdsPrepared));
             dispatch(loadBadgesAsync());
 
+            dispatch(getChallengesAsync());
+
             const lastLogin = userDataAllTime.last_login;
             const currentTime = Date.now();
-
             const newDay = test ? true : (new Date(lastLogin).getDay() - new Date(currentTime).getDay()) !== 0;
             if (newDay) {
                 // console.log('New day has started');
@@ -332,6 +333,9 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
                         message,
                         description,
                     });
+
+                    setTimeout(() => dispatch(addChallenge()),
+                        5000);
                 }
 
                 userDataAllTime.annotation_streak_current++;
@@ -340,8 +344,6 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
                     userDataAllTime.annotation_streak_max, userDataAllTime.annotation_streak_current,
                 );
             }
-
-            dispatch(getChallengesAsync(newDay));
 
             const userDataSession: UserData = {
                 last_login: currentTime,

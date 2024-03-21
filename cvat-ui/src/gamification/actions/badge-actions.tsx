@@ -71,6 +71,13 @@ export function initProfileBadges(badgeIds: number[]): AnyAction {
     };
 }
 
+export function updateEnergizerBadge(energizer: EnergizerType): AnyAction {
+    return {
+        type: BadgeActionTypes.UPDATE_ENERGIZER_BADGE,
+        payload: energizer,
+    };
+}
+
 /** Dispatched when loading of badges failed */
 function loadBadgesFailed(error: any): AnyAction {
     const action = {
@@ -102,6 +109,14 @@ export function loadBadgesAsync(): ThunkAction<void, {}, {}, AnyAction> {
             const badgeswithtiers = availableBadges.map((badge: Badge) => {
                 const entry = badgeStatusImport.find((el: any) => el.badgeId === badge.id);
                 if (entry) {
+                    if (entry.badgeId === 104) {
+                        dispatch(updateEnergizerBadge(EnergizerType.QUIZ));
+                    } else if (entry.badgeId === 105) {
+                        dispatch(updateEnergizerBadge(EnergizerType.SNAKE));
+                    } else if (entry.badgeId === 106) {
+                        dispatch(updateEnergizerBadge(EnergizerType.TETRIS));
+                    }
+
                     return {
                         ...badge,
                         tier: decodeBadgeTier(entry.tier),
@@ -109,6 +124,7 @@ export function loadBadgesAsync(): ThunkAction<void, {}, {}, AnyAction> {
                         receivedOn: entry.receivedOn ?? null,
                     };
                 }
+
                 return badge;
             });
             const order = Object.values(BadgeTier);
@@ -351,10 +367,11 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
                         description: (
                             <div>
                                 <p>
-                                    Congratulations! You obtained the Badge: &nbsp;
+                                    Congratulations! You obtained the
                                     <br />
                                     {badge.title}
-                                    &nbsp;
+                                    {' '}
+                                    Badge
                                     &#40;
                                     {updatedTier}
                                     &#41;
@@ -394,12 +411,5 @@ export function updateBadges(init: boolean): ThunkAction<void, {}, {}, AnyAction
         } catch (error) {
             dispatch(updateBadgesFailed(error));
         }
-    };
-}
-
-export function updateEnergizerBadge(energizer: EnergizerType): AnyAction {
-    return {
-        type: BadgeActionTypes.UPDATE_ENERGIZER_BADGE,
-        payload: energizer,
     };
 }

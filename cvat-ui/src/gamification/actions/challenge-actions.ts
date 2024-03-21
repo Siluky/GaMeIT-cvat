@@ -64,7 +64,7 @@ export function saveChallenges(): ThunkAction<void, {}, {}, AnyAction> {
             }));
 
             await cvat.challenges.save(challenges);
-            dispatch(saveChallengesSuccess);
+            dispatch(saveChallengesSuccess());
         } catch (error) {
             dispatch(saveChallengesFailed(error));
         }
@@ -178,7 +178,7 @@ export function getChallengesFailed(error: any): AnyAction {
     };
 }
 
-export function getChallengesAsync(newDay?: boolean): ThunkAction<void, {}, {}, AnyAction> {
+export function getChallengesAsync(): ThunkAction<void, {}, {}, AnyAction> {
     return async function getChallengesThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let challengesImport = null;
         try {
@@ -197,7 +197,7 @@ export function getChallengesAsync(newDay?: boolean): ThunkAction<void, {}, {}, 
                 };
             });
             dispatch(getChallengesSuccess(challenges));
-            if (challenges.length < 3 && newDay) { dispatch(addChallenge()); }
+            // if (challenges.length < 3 && newDay) { dispatch(addChallenge()); }
         } catch (error) {
             dispatch(getChallengesFailed(error));
         }
