@@ -52,7 +52,7 @@ export function saveChallenges(): ThunkAction<void, {}, {}, AnyAction> {
         const state = getCVATStore().getState();
         const id = state.gamifuserdata.userId;
         const currentChallenges = state.challenges.availableChallenges;
-        console.log('🚀 ~ saveChallengeThunk ~ currentChallenges:', currentChallenges);
+        // console.log('🚀 ~ saveChallengeThunk ~ currentChallenges:', currentChallenges);
         try {
             const challenges = currentChallenges.map((chal: Challenge) => ({
                 userId: id,
@@ -96,7 +96,7 @@ export function addChallenge(challengeID?: number): ThunkAction<void, {}, {}, An
     return (dispatch) => {
         try {
             if (challengeID) {
-                console.log('Given a specific challenge ID.');
+                // console.log('Given a specific challenge ID.');
                 // challenge ID is given, activating this challenge
                 // eslint-disable-next-line max-len
                 const newChallenge = availableChallenges.find((chal) => chal.id === challengeID) ?? availableChallenges[0];

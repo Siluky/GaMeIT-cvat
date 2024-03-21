@@ -71,7 +71,7 @@ export function EnergizerLeaderboard(props: EnergizerLeaderboardProps): JSX.Elem
 
     useEffect(() => {
         dispatch(getLeaderboardAsync(activeEnergizer, 'Daily'));
-        console.log('leaderboard useEffect');
+        // console.log('leaderboard useEffect');
     }, [latestEntry]);
 
     // useEffect(() => {

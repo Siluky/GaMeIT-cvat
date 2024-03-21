@@ -7,7 +7,7 @@ import { ActionCreator, AnyAction, Dispatch } from 'redux';
 import getCore from 'cvat-core-wrapper';
 import { ThunkAction } from 'redux-thunk';
 import { notification } from 'antd';
-import { UrlLog, UserData } from '../gamif-interfaces';
+import { OnlineStatus, UrlLog, UserData } from '../gamif-interfaces';
 import { addQuickStatistic } from './statistics-actions';
 // eslint-disable-next-line import/no-cycle
 import { initShop, updateBalance } from './shop-actions';
@@ -15,6 +15,7 @@ import { initShop, updateBalance } from './shop-actions';
 import { initProfileBadges, loadBadgesAsync } from './badge-actions';
 // eslint-disable-next-line import/no-cycle
 import { addChallenge, getChallengesAsync } from './challenge-actions';
+import { saveProfileDataAsync, setStatus } from './social-actions';
 
 const cvat = getCore();
 
@@ -308,6 +309,10 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
             dispatch(loadBadgesAsync());
 
             dispatch(getChallengesAsync());
+
+            // console.log('test');
+            dispatch(setStatus(OnlineStatus.ONLINE));
+            setTimeout(() => dispatch(saveProfileDataAsync()), 5000);
 
             const lastLogin = userDataAllTime.last_login;
             const currentTime = Date.now();

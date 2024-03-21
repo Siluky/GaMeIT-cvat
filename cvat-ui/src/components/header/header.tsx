@@ -22,8 +22,8 @@ import Icon, {
     TeamOutlined,
     PlusOutlined,
     RadarChartOutlined,
-    UndoOutlined,
-    UpSquareOutlined,
+    // UndoOutlined,
+    // UpSquareOutlined,
 } from '@ant-design/icons';
 import Layout from 'antd/lib/layout';
 import Button from 'antd/lib/button';
@@ -56,20 +56,20 @@ import {
     saveCurrentEnergyAsync,
     getCurrentEnergyAsync,
 } from 'gamification/actions/energizer-actions';
-import { saveProfileDataAsync, setHasSentMessage, toggleChatWindow } from 'gamification/actions/social-actions';
+import { saveProfileDataAsync } from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     initializeUserData,
-    saveUserData,
-    setUserData,
+    // saveUserData,
+    // setUserData,
     toggleSurveyPrompt,
 } from 'gamification/actions/user-data-actions';
-import { resetBadges, toggleOverview, updateBadges } from 'gamification/actions/badge-actions';
+import { toggleOverview, updateBadges } from 'gamification/actions/badge-actions';
 import EnergizerModal from 'gamification/components/energizer/energizer-modal';
 import EnergizerPopUp from 'gamification/components/energizer/energizer-popup';
-import { resetShop } from 'gamification/actions/shop-actions';
+// import { resetShop } from 'gamification/actions/shop-actions';
 import { getEnergizerIcon } from 'gamification/gamif-items';
-import { addChallenge } from 'gamification/actions/challenge-actions';
+// import { addChallenge } from 'gamification/actions/challenge-actions';
 import SettingsModal from './settings-modal/settings-modal';
 
 const core = getCore();
@@ -236,7 +236,7 @@ function HeaderContainer(props: Props): JSX.Element {
     const dispatch = useDispatch();
     const udata = useSelector((state: CombinedState) => state.gamifuserdata);
     const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
-    const { friendListEntries } = useSelector((state: CombinedState) => state.social);
+    // const { friendListEntries } = useSelector((state: CombinedState) => state.social);
     const { userId, surveyTiming } = udata;
 
     useEffect(() => {
@@ -595,7 +595,7 @@ function HeaderContainer(props: Props): JSX.Element {
 
             <div className='cvat-right-header'>
                 <div className='cvat-right-header-gamif-group'>
-                    <CVATTooltip overlay='DEBUG: Press to add an "Annotate X Minutes" Challenge to your profile.'>
+                    {/* <CVATTooltip overlay='DEBUG: Press to add an "Annotate X Minutes" Challenge to your profile.'>
                         <Button
                             type='text'
                             className='gamif-debug-button'
@@ -644,7 +644,7 @@ function HeaderContainer(props: Props): JSX.Element {
                                 incrementEnergy(1);
                             }}
                         />
-                    </CVATTooltip>
+                    </CVATTooltip> */}
                     <CVATTooltip overlay={`Current Energy: ${currentEnergy}`}>
                         <Popover
                             content={<EnergizerPopUp currentEnergy={currentEnergy} />}

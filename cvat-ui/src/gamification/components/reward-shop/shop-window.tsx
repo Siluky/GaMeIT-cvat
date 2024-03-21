@@ -11,7 +11,7 @@ import { connect, useDispatch } from 'react-redux';
 import CvatTooltip from 'components/common/cvat-tooltip';
 import { ShopItem } from 'gamification/gamif-interfaces';
 import { CombinedState } from 'reducers/interfaces';
-import { updateBalance, setShopOverlayMessage, purchaseItem } from 'gamification/actions/shop-actions';
+import { setShopOverlayMessage, purchaseItem } from 'gamification/actions/shop-actions';
 import {
     setAdditionalClassNames,
     setColor, setProfileBackground, setProfileBackgroundEffects, setProfileBorder,
@@ -23,7 +23,7 @@ import {
 // import { SketchOutlined } from '@ant-design/icons';
 import { Popup } from 'gamification/gamifconsts';
 import { AnnotationCoinNoBorderIcon } from 'icons';
-import { PlusOutlined } from '@ant-design/icons';
+// import { PlusOutlined } from '@ant-design/icons';
 import ShopItemComponent from './shop-item';
 
 interface ShopWindowProps {
@@ -232,7 +232,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                             </h3>
                         </CvatTooltip>
                     </div>
-                    <CvatTooltip overlay='DEBUG: Press to add 1000 annotation coins.'>
+                    {/* <CvatTooltip overlay='DEBUG: Press to add 1000 annotation coins.'>
                         <Button
                             type='text'
                             className='gamif-debug-button'
@@ -242,7 +242,7 @@ export function ShopWindow(props: ShopWindowProps): JSX.Element {
                                 dispatch(updateBalance(1000));
                             }}
                         />
-                    </CvatTooltip>
+                    </CvatTooltip> */}
                 </div>
                 <div className='gamif-shop-window-items-wrapper'>
                     <Row className='gamif-shop-window-items-row'>

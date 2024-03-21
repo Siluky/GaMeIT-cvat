@@ -9,7 +9,7 @@ import { SocialState, OnlineStatus, Profile } from '../gamif-interfaces';
 const profile: Profile = {
     username: 'My Username',
     userId: 0,
-    status: OnlineStatus.OFFLINE,
+    status: OnlineStatus.ONLINE,
     selectedBadges: [],
     selectedBadgeStatuses: [],
     profileStyle: {
@@ -25,7 +25,7 @@ const profile: Profile = {
 };
 
 const defaultState: SocialState = {
-    status: OnlineStatus.OFFLINE,
+    status: OnlineStatus.ONLINE,
     friendListEntries: [],
     ownProfile: profile,
     chats: [],

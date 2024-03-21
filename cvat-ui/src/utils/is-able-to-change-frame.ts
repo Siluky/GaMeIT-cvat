@@ -14,8 +14,8 @@ export default function isAbleToChangeFrame(): boolean {
     const { activeEnergizer } = state.energizer; // To check energizer state
 
     // Debug Code
-    console.log(`State of the activeEnergizer: ${activeEnergizer}`);
-    console.log(`EnergizerType== None? : ${activeEnergizer === EnergizerType.NONE}`);
+    // console.log(`State of the activeEnergizer: ${activeEnergizer}`);
+    // console.log(`EnergizerType== None? : ${activeEnergizer === EnergizerType.NONE}`);
 
     return !!instance && instance.isAbleToChangeFrame() &&
         !state.annotation.player.navigationBlocked &&

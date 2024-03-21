@@ -79,7 +79,7 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                     dispatch(setStatus(valuetoStatus(value)));
                     dispatch(saveProfileDataAsync());
                 }}
-                defaultValue='Offline'
+                defaultValue='Online'
                 showArrow={false}
             >
                 <Select.Option value='Online'>

@@ -1885,7 +1885,7 @@
             }
 
             async function saveChallenges(challenges) {
-                console.log('🚀 ~ ServerProxy ~ saveChallenges ~ challenges:', challenges);
+                // console.log('🚀 ~ ServerProxy ~ saveChallenges ~ challenges:', challenges);
                 const { backendAPI } = config;
                 let response = null;
                 try {
@@ -1914,11 +1914,11 @@
             async function removeChallenge(userId, challengeId) {
                 const { backendAPI } = config;
                 try {
-                    console.log(`removing challenge ${userId}-${challengeId}`);
+                    // console.log(`removing challenge ${userId}-${challengeId}`);
                     await Axios.delete(`${backendAPI}/challenge-status/${userId}-${challengeId}`, {
                         proxy: config.proxy,
                     });
-                    console.log(`removed challenge ${userId}-${challengeId}`);
+                    // console.log(`removed challenge ${userId}-${challengeId}`);
                 } catch (errorData) {
                     throw generateError(errorData);
                 }
