@@ -309,33 +309,31 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
                             </Col>
                         </Row>
                     </Tabs.TabPane>
-                </Tabs>
-
-                <Tabs
-                    type='card'
-                    defaultActiveKey='objects'
-                    className='cvat-objects-sidebar-tabs'
-                    onChange={(key) => {
-                        if (key === 'challenges') {
-                            dispatch(updateChallenges());
-                            dispatch(addGamifLog('Checked Challenge Tab'));
-                        }
-                        if (key === 'statistics') {
-                            dispatch(addGamifLog('Checked Statistics Tab'));
-                        }
-                    }}
-                >
-                    <Tabs.TabPane
-                        tab={<Text strong>Challenges</Text>}
-                        key='challenges'
+                    <Tabs
+                        type='card'
+                        defaultActiveKey='objects'
+                        className='cvat-objects-sidebar-tabs'
+                        onChange={(key) => {
+                            if (key === 'challenges') {
+                                dispatch(updateChallenges());
+                                dispatch(addGamifLog('Checked Challenge Tab'));
+                            }
+                            if (key === 'statistics') {
+                                dispatch(addGamifLog('Checked Statistics Tab'));
+                            }
+                        }}
                     >
-                        <ChallengeList />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
-                        <StatisticsList />
-                    </Tabs.TabPane>
+                        <Tabs.TabPane
+                            tab={<Text strong>Challenges</Text>}
+                            key='challenges'
+                        >
+                            <ChallengeList />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab={<Text strong>Statistics</Text>} key='statistics'>
+                            <StatisticsList />
+                        </Tabs.TabPane>
+                    </Tabs>
                 </Tabs>
-
                 <SocialBar />
             </Layout.Sider>
         </>

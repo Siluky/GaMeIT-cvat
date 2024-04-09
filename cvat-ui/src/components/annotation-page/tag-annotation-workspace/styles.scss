@@ -39,6 +39,7 @@
 
 .cvat-tag-annotation-label-selects {
     padding-top: 10px;
+    overflow-y: scroll;
 
     .ant-select {
         width: 230px;
