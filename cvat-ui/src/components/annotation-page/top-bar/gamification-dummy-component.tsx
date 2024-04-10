@@ -23,11 +23,8 @@ export function GamificationDummy(): JSX.Element {
     // const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
     const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
     // const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
-    const { status } = useSelector((state: CombinedState) => state.social);
     const [idleTime, setIdleTime] = useState(0);
     const [active, setActive] = useState(true);
-    const [currentStatus, setCurrentStatus] = useState(OnlineStatus.ONLINE);
-
     // const [energizerTimer, setEnergizerTimer] = useState(0);
 
     const onIdle = (): void => {
@@ -102,7 +99,7 @@ export function GamificationDummy(): JSX.Element {
 
         dispatch(getChallengesAsync());
 
-        const visibilitychange = (): void => {
+        /*         const visibilitychange = (): void => {
             if (document.visibilityState === 'hidden') {
                 setCurrentStatus(status);
                 dispatch(setStatus(OnlineStatus.OFFLINE));
@@ -116,15 +113,101 @@ export function GamificationDummy(): JSX.Element {
                 dispatch(saveProfileDataAsync());
                 console.log('visible');
             }
-        };
+        }; */
 
-        document.addEventListener('visibilitychange', visibilitychange);
+        let isVisible = true; // internal flag, defaults to true
+
+        function onVisible(): void {
+            // prevent double execution
+            if (isVisible) {
+                return;
+            }
+
+            // change flag value
+            isVisible = true;
+            dispatch(setStatus(OnlineStatus.ONLINE));
+            dispatch(saveProfileDataAsync());
+            console.log('visible');
+        }
+
+        function onHidden(): void {
+            // prevent double execution
+            if (!isVisible) {
+                return;
+            }
+
+            // change flag value
+            isVisible = false;
+            // setCurrentStatus(status);
+            dispatch(setStatus(OnlineStatus.AWAY));
+            dispatch(saveProfileDataAsync());
+            dispatch(saveUserData(true));
+            dispatch(saveChallenges());
+            console.log('hidden');
+            dispatch(addGamifLog('Window hidden / Session end'));
+        }
+
+        function handleVisibilityChange(forcedFlag: boolean | Event): void {
+            // forcedFlag is a boolean when this event handler is triggered by a
+            // focus or blur event, otherwise it's an Event object
+            if (typeof forcedFlag === 'boolean') {
+                if (forcedFlag) {
+                    return onVisible();
+                }
+
+                return onHidden();
+            }
+
+            if ((forcedFlag as any)['webkit Hidden']) {
+                return onHidden();
+            }
+
+            return onVisible();
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange, false);
+
+        // extra event listeners for better behaviour
+        document.addEventListener('focus', () => {
+            handleVisibilityChange(true);
+        }, false);
+
+        document.addEventListener('blur', () => {
+            handleVisibilityChange(false);
+        }, false);
+
+        window.addEventListener('focus', () => {
+            handleVisibilityChange(true);
+        }, false);
+
+        window.addEventListener('blur', () => {
+            handleVisibilityChange(false);
+        }, false);
+
+        // document.addEventListener('visibilitychange', visibilitychange);
 
         return () => {
             clearInterval(interval);
-            window.removeEventListener('visibilitychange', visibilitychange);
+            // window.removeEventListener('visibilitychange', visibilitychange);
+            window.removeEventListener('focus', handleVisibilityChange);
+            window.removeEventListener('blur', handleVisibilityChange);
         };
     }, []);
+
+    const beforeUnloadHandler = (event: any): void => {
+        // Recommended
+        event.preventDefault();
+
+        dispatch(setStatus(OnlineStatus.OFFLINE));
+        dispatch(saveProfileDataAsync());
+        dispatch(saveUserData(true));
+        dispatch(saveChallenges());
+        dispatch(addGamifLog('SESSION ENDED'));
+        // Included for legacy support, e.g. Chrome/Edge < 119
+        event.returnValue = true;
+    };
+
+    window.addEventListener('beforeunload', beforeUnloadHandler);
 
     return <></>;
 }

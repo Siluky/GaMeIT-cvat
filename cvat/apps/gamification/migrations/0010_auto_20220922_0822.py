@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='userprofile',
             name='online_status',
-            field=models.CharField(choices=[('Online', 'ONLINE'), ('Do not Disturb', 'DO_NOT_DISTURB'), ('Offline', 'OFFLINE')], default=cvat.apps.gamification.models.OnlineStatusChoice['ONLINE'], max_length=32),
+            field=models.CharField(choices=[('Online', 'ONLINE'), ('Away', 'AWAY'), ('Do not Disturb', 'DO_NOT_DISTURB'), ('Offline', 'OFFLINE')], default=cvat.apps.gamification.models.OnlineStatusChoice['ONLINE'], max_length=32),
         ),
         migrations.AddField(
             model_name='userprofile',

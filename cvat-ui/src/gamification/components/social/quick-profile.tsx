@@ -86,6 +86,7 @@ export default function QuickProfile(props: QuickProfileProps): JSX.Element {
     const statusToText = (status: OnlineStatus): string => {
         switch (status) {
             case OnlineStatus.ONLINE: return 'Online';
+            case OnlineStatus.AWAY: return 'Away';
             case OnlineStatus.DO_NOT_DISTURB: return 'Do not Disturb';
             case OnlineStatus.OFFLINE: return 'Offline';
             default: return '';

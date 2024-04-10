@@ -1811,8 +1811,9 @@ export function getChallengeValue(id: number): number {
 export const encodeStatus = (status: OnlineStatus): number => {
     switch (status) {
         case OnlineStatus.OFFLINE: return 1;
-        case OnlineStatus.DO_NOT_DISTURB: return 2;
-        case OnlineStatus.ONLINE: return 3;
+        case OnlineStatus.AWAY: return 2;
+        case OnlineStatus.DO_NOT_DISTURB: return 3;
+        case OnlineStatus.ONLINE: return 4;
         default: return 1;
     }
 };
@@ -1820,8 +1821,9 @@ export const encodeStatus = (status: OnlineStatus): number => {
 export const decodeStatus = (status: number): OnlineStatus => {
     switch (status) {
         case 1: return OnlineStatus.OFFLINE;
-        case 2: return OnlineStatus.DO_NOT_DISTURB;
-        case 3: return OnlineStatus.ONLINE;
+        case 2: return OnlineStatus.AWAY;
+        case 3: return OnlineStatus.DO_NOT_DISTURB;
+        case 4: return OnlineStatus.ONLINE;
         default: return OnlineStatus.OFFLINE;
     }
 };
@@ -1830,6 +1832,7 @@ export const getstatusStyle = (status: OnlineStatus): any => {
     switch (status) {
         case OnlineStatus.ONLINE: return { background: 'green' };
         case OnlineStatus.DO_NOT_DISTURB: return { background: 'red' };
+        case OnlineStatus.AWAY: return { background: 'yellow' };
         case OnlineStatus.OFFLINE: return { background: 'grey' };
         default: return { background: 'grey' };
     }
