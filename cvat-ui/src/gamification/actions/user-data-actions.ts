@@ -316,21 +316,11 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
 
             const lastLogin = userDataAllTime.last_login;
             const currentTime = Date.now();
-            // Made into const for debugging purpose
-            const lastLoginDate = new Date(lastLogin);
-            const currentTimeDate = new Date(currentTime);
-
-            // eslint-disable-next-line max-len
-            const newDay = test ? true : ((lastLoginDate.getDate() !== currentTimeDate.getDate()) || (lastLoginDate.getMonth() !== currentTimeDate.getMonth()));
-            // Debug
-            // eslint-disable-next-line max-len
-            console.log(`Last logged in: ${lastLoginDate}  | Timestamp_fromCloud: ${lastLogin}`);
-            // eslint-disable-next-line max-len
-            console.log(`Current Login: ${currentTimeDate}`);
-            console.log(`Is it a new Day: ${newDay}`);
-
+            const newDay = test ? true : (new Date(lastLogin).getDay() - new Date(currentTime).getDay()) !== 0;
             if (newDay) {
-                console.log('New day has started');
+                setTimeout(() => dispatch(addChallenge()),
+                    5000);
+                // console.log('New day has started');
 
                 const timeSinceLogin = currentTime - lastLogin;
                 let message = '';
@@ -350,9 +340,6 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
                         message,
                         description,
                     });
-
-                    setTimeout(() => dispatch(addChallenge()),
-                        5000);
                 }
 
                 userDataAllTime.annotation_streak_current++;
