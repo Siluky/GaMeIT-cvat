@@ -246,6 +246,7 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
     return async function loadUserDataThunk(dispatch: ActionCreator<Dispatch>): Promise<void> {
         let userDataImport = null;
         try {
+            dispatch(addGamifLog('Session started'));
             userDataImport = await cvat.gamifuserdata.get();
 
             // Guard against division by 0
