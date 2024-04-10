@@ -22,10 +22,12 @@ export function GamificationDummy(): JSX.Element {
     const intervalTimer = 10000; // TODO: Fix later!
     // const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
     const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
+    const { status } = useSelector((state: CombinedState) => state.social);
     // const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
     const [idleTime, setIdleTime] = useState(0);
     const [active, setActive] = useState(true);
     // const [energizerTimer, setEnergizerTimer] = useState(0);
+    const [currentStatus, setCurrentStatus] = useState(OnlineStatus.ONLINE);
 
     const onIdle = (): void => {
         dispatch(toggleEnergyGain(false));
@@ -125,7 +127,7 @@ export function GamificationDummy(): JSX.Element {
 
             // change flag value
             isVisible = true;
-            dispatch(setStatus(OnlineStatus.ONLINE));
+            dispatch(setStatus(currentStatus));
             dispatch(saveProfileDataAsync());
             console.log('visible');
         }
@@ -138,7 +140,8 @@ export function GamificationDummy(): JSX.Element {
 
             // change flag value
             isVisible = false;
-            // setCurrentStatus(status);
+            setCurrentStatus(status);
+            console.log(`State before leaving window: ${status}`);
             dispatch(setStatus(OnlineStatus.AWAY));
             dispatch(saveProfileDataAsync());
             dispatch(saveUserData(true));
@@ -150,31 +153,13 @@ export function GamificationDummy(): JSX.Element {
         function handleVisibilityChange(forcedFlag: boolean | Event): void {
             // forcedFlag is a boolean when this event handler is triggered by a
             // focus or blur event, otherwise it's an Event object
-            if (typeof forcedFlag === 'boolean') {
-                if (forcedFlag) {
-                    return onVisible();
-                }
-
-                return onHidden();
+            if (forcedFlag) {
+                return onVisible();
             }
-
-            if ((forcedFlag as any)['webkit Hidden']) {
-                return onHidden();
-            }
-
-            return onVisible();
+            return onHidden();
         }
 
         document.addEventListener('visibilitychange', handleVisibilityChange, false);
-
-        // extra event listeners for better behaviour
-        document.addEventListener('focus', () => {
-            handleVisibilityChange(true);
-        }, false);
-
-        document.addEventListener('blur', () => {
-            handleVisibilityChange(false);
-        }, false);
 
         window.addEventListener('focus', () => {
             handleVisibilityChange(true);
@@ -194,7 +179,7 @@ export function GamificationDummy(): JSX.Element {
         };
     }, []);
 
-    const beforeUnloadHandler = (event: any): void => {
+    /* const beforeUnloadHandler = (event: any): void => {
         // Recommended
         event.preventDefault();
 
@@ -207,7 +192,7 @@ export function GamificationDummy(): JSX.Element {
         event.returnValue = true;
     };
 
-    window.addEventListener('beforeunload', beforeUnloadHandler);
+    window.addEventListener('beforeunload', beforeUnloadHandler); */
 
     return <></>;
 }
