@@ -320,12 +320,15 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
             const lastLoginDate = new Date(lastLogin);
             const currentTimeDate = new Date(currentTime);
 
-            const newDay = test ? true : (lastLoginDate.getDay() - currentTimeDate.getDay()) !== 0;
+            // eslint-disable-next-line max-len
+            const newDay = test ? true : ((lastLoginDate.getDate() !== currentTimeDate.getDate()) || (lastLoginDate.getMonth() !== currentTimeDate.getMonth()));
             // Debug
             // eslint-disable-next-line max-len
             console.log(`Last logged in: ${lastLoginDate}  | Timestamp_fromCloud: ${lastLogin}`);
             // eslint-disable-next-line max-len
             console.log(`Current Login: ${currentTimeDate}`);
+
+            console.log(`Is it a new Day: ${newDay}`);
             if (newDay) {
                 console.log('New day has started');
 
