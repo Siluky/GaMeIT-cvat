@@ -327,8 +327,8 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
             console.log(`Last logged in: ${lastLoginDate}  | Timestamp_fromCloud: ${lastLogin}`);
             // eslint-disable-next-line max-len
             console.log(`Current Login: ${currentTimeDate}`);
-
             console.log(`Is it a new Day: ${newDay}`);
+
             if (newDay) {
                 console.log('New day has started');
 
