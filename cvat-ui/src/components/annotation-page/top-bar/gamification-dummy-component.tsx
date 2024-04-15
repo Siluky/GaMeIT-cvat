@@ -117,6 +117,12 @@ export function GamificationDummy(): JSX.Element {
             }
         }; */
 
+        function saveAllUserData(): void {
+            dispatch(saveProfileDataAsync());
+            dispatch(saveUserData(true));
+            dispatch(saveChallenges());
+        }
+
         let isVisible = true; // internal flag, defaults to true
 
         function onVisible(): void {
@@ -129,7 +135,9 @@ export function GamificationDummy(): JSX.Element {
             isVisible = true;
             dispatch(setStatus(currentStatus));
             dispatch(saveProfileDataAsync());
+            // Debug
             console.log('visible');
+            dispatch(addGamifLog('Window visible'));
         }
 
         function onHidden(): void {
@@ -143,11 +151,10 @@ export function GamificationDummy(): JSX.Element {
             setCurrentStatus(status);
             console.log(`State before leaving window: ${status}`);
             dispatch(setStatus(OnlineStatus.AWAY));
-            dispatch(saveProfileDataAsync());
-            dispatch(saveUserData(true));
-            dispatch(saveChallenges());
+            saveAllUserData();
+            // Debug
             console.log('hidden');
-            dispatch(addGamifLog('Window hidden / Session end'));
+            dispatch(addGamifLog('Window hidden'));
         }
 
         function handleVisibilityChange(forcedFlag: boolean | Event): void {
@@ -159,6 +166,17 @@ export function GamificationDummy(): JSX.Element {
             return onHidden();
         }
 
+        function handleUnload(): void {
+            dispatch(addGamifLog('Benutzer verlässt die Seite'));
+            dispatch(setStatus(OnlineStatus.OFFLINE));
+            dispatch(addGamifLog('Nutzerstatus auf Offline gesetzt'));
+            saveAllUserData();
+        }
+
+        window.addEventListener('unload', handleUnload);
+        document.addEventListener('unload', handleUnload);
+
+        // Code for tracking if user is inside the window or tabbed out
         document.addEventListener('visibilitychange', handleVisibilityChange, false);
 
         window.addEventListener('focus', () => {
@@ -169,6 +187,14 @@ export function GamificationDummy(): JSX.Element {
             handleVisibilityChange(false);
         }, false);
 
+        document.addEventListener('focus', () => {
+            handleVisibilityChange(true);
+        }, false);
+
+        document.addEventListener('blur', () => {
+            handleVisibilityChange(false);
+        }, false);
+
         // document.addEventListener('visibilitychange', visibilitychange);
 
         return () => {
@@ -176,6 +202,11 @@ export function GamificationDummy(): JSX.Element {
             // window.removeEventListener('visibilitychange', visibilitychange);
             window.removeEventListener('focus', handleVisibilityChange);
             window.removeEventListener('blur', handleVisibilityChange);
+            document.removeEventListener('focus', handleVisibilityChange);
+            document.removeEventListener('blur', handleVisibilityChange);
+
+            window.removeEventListener('unload', handleUnload);
+            document.removeEventListener('unload', handleUnload);
         };
     }, []);
 
