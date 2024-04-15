@@ -173,8 +173,8 @@ export function GamificationDummy(): JSX.Element {
             saveAllUserData();
         }
 
-        window.addEventListener('unload', handleUnload);
-        document.addEventListener('unload', handleUnload);
+        window.addEventListener('pagehide', handleUnload);
+        document.addEventListener('pagehide', handleUnload);
 
         // Code for tracking if user is inside the window or tabbed out
         document.addEventListener('visibilitychange', handleVisibilityChange, false);
