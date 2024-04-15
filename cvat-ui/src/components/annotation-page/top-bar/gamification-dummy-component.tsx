@@ -148,6 +148,7 @@ export function GamificationDummy(): JSX.Element {
 
             // change flag value
             isVisible = false;
+            // TODO: Status is get from a "Stale State". EventListener is problem; need to find workaround.
             setCurrentStatus(status);
             console.log(`State before leaving window: ${status}`);
             dispatch(setStatus(OnlineStatus.AWAY));
@@ -166,15 +167,16 @@ export function GamificationDummy(): JSX.Element {
             return onHidden();
         }
 
-        function handleUnload(): void {
+        function handlePageHide(): void {
             dispatch(addGamifLog('Benutzer verlässt die Seite'));
             dispatch(setStatus(OnlineStatus.OFFLINE));
+            // TODO: Check if works correctly
             dispatch(addGamifLog('Nutzerstatus auf Offline gesetzt'));
             saveAllUserData();
         }
 
-        window.addEventListener('pagehide', handleUnload);
-        document.addEventListener('pagehide', handleUnload);
+        window.addEventListener('pagehide', handlePageHide);
+        document.addEventListener('pagehide', handlePageHide);
 
         // Code for tracking if user is inside the window or tabbed out
         document.addEventListener('visibilitychange', handleVisibilityChange, false);
@@ -205,8 +207,8 @@ export function GamificationDummy(): JSX.Element {
             document.removeEventListener('focus', handleVisibilityChange);
             document.removeEventListener('blur', handleVisibilityChange);
 
-            window.removeEventListener('unload', handleUnload);
-            document.removeEventListener('unload', handleUnload);
+            window.removeEventListener('pagehide', handlePageHide);
+            document.removeEventListener('pagehide', handlePageHide);
         };
     }, []);
 
