@@ -183,6 +183,7 @@ export interface ShopState {
 
 export enum OnlineStatus {
     ONLINE = 'ONLINE',
+    AWAY = 'AWAY',
     DO_NOT_DISTURB = 'DO_NOT_DISTURB',
     OFFLINE = 'OFFLINE',
 }

@@ -32,6 +32,7 @@ function mapStateToProps(state: CombinedState): StateToProps {
 const formatStatus = (status: OnlineStatus): string => {
     switch (status) {
         case OnlineStatus.ONLINE: return 'Online';
+        case OnlineStatus.AWAY: return 'Away';
         case OnlineStatus.DO_NOT_DISTURB: return 'Do not Disturb';
         case OnlineStatus.OFFLINE: return 'Offline';
         default: return '';
@@ -41,6 +42,7 @@ const formatStatus = (status: OnlineStatus): string => {
 const valuetoStatus = (value: string): OnlineStatus => {
     switch (value) {
         case 'Online': return OnlineStatus.ONLINE;
+        case 'Away': return OnlineStatus.AWAY;
         case 'Do not Disturb': return OnlineStatus.DO_NOT_DISTURB;
         case 'Offline': return OnlineStatus.OFFLINE;
         default: return OnlineStatus.ONLINE;
@@ -53,6 +55,7 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
     // const social = useSelector((state: CombinedState) => state.social);
     // const badges = useSelector((state: CombinedState) => state.badges);
     const { userId, username } = useSelector((state: CombinedState) => state.gamifuserdata);
+    const social = useSelector((state: CombinedState) => state.social);
     const [activeProfile, setActiveProfile] = useState(0);
 
     const listHeader = (): JSX.Element => (
@@ -81,6 +84,7 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                 }}
                 defaultValue='Online'
                 showArrow={false}
+                value={formatStatus(social.status)}
             >
                 <Select.Option value='Online'>
                     Online
@@ -88,6 +92,16 @@ export function FriendsList(props: FriendsListProps): JSX.Element {
                     <div
                         className='gamif-quick-profile-status-icon'
                         style={{ background: 'green' }}
+                    >
+                        &nbsp;
+                    </div>
+                </Select.Option>
+                <Select.Option value='Away'>
+                    Away
+                    &nbsp;
+                    <div
+                        className='gamif-quick-profile-status-icon'
+                        style={{ background: 'yellow' }}
                     >
                         &nbsp;
                     </div>

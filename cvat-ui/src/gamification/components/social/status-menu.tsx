@@ -12,42 +12,41 @@ import { CombinedState } from 'reducers/interfaces';
 const valuetoStatus = (value: number): OnlineStatus => {
     switch (value) {
         case 1: return OnlineStatus.ONLINE;
-        case 2: return OnlineStatus.DO_NOT_DISTURB;
-        case 3: return OnlineStatus.OFFLINE;
+        case 2: return OnlineStatus.AWAY;
+        case 3: return OnlineStatus.DO_NOT_DISTURB;
+        case 4: return OnlineStatus.OFFLINE;
         default: return OnlineStatus.ONLINE;
     }
 };
 
+// DEPRECATED: using friends-list.tsx instead
 export default function StatusMenu(): JSX.Element {
     const dispatch = useDispatch();
     const social = useSelector((state: CombinedState) => state.social);
+
+    // Function to handle status change
+    const handleStatusChange = (event: any): void => {
+        dispatch(setStatus(valuetoStatus(event.target.value)));
+    };
 
     return (
         <Radio.Group
             className='gamif-status-menu'
             buttonStyle='solid'
-            onChange={(event) => dispatch(setStatus(valuetoStatus(event.target.value)))}
+            onChange={handleStatusChange}
+            value={social.status} // Set the value of Radio.Group to the current status
         >
             <Space direction='vertical'>
-                <Radio
-                    className='gamif-status-menu-row'
-                    value={1}
-                    checked={social.status === OnlineStatus.ONLINE}
-                >
+                <Radio className='gamif-status-menu-row' value={1}>
                     Online
                 </Radio>
-                <Radio
-                    className='gamif-status-menu-row'
-                    value={2}
-                    checked={social.status === OnlineStatus.DO_NOT_DISTURB}
-                >
+                <Radio className='gamif-status-menu-row' value={2}>
+                    Away
+                </Radio>
+                <Radio className='gamif-status-menu-row' value={3}>
                     Do not Disturb
                 </Radio>
-                <Radio
-                    className='gamif-status-menu-row'
-                    value={3}
-                    checked={social.status === OnlineStatus.OFFLINE}
-                >
+                <Radio className='gamif-status-menu-row' value={4}>
                     Offline
                 </Radio>
             </Space>

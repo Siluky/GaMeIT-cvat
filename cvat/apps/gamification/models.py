@@ -60,6 +60,7 @@ class Statistic(models.Model):
 
 class OnlineStatusChoice(str, Enum):
     ONLINE = 'Online'
+    AWAY = 'Away'
     DO_NOT_DISTURB = 'Do not Disturb'
     OFFLINE = 'Offline'
 
