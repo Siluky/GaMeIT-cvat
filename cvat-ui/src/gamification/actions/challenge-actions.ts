@@ -152,6 +152,14 @@ export function addChallenge(challengeID?: number): ThunkAction<void, {}, {}, An
                         baselineValue: getChallengeValue(newChallenge.id),
                         progress: 0,
                     };
+
+                    const message = 'New Challenge added!';
+                    const description = 'You received a new challenge for the daily login.';
+                    // eslint-disable-next-line security/detect-non-literal-fs-filename
+                    notification.open({
+                        message,
+                        description,
+                    });
                     dispatch(addChallengeSuccess(
                         { ...newChal, instruction: formatInstruction(newChal) },
                     ));
