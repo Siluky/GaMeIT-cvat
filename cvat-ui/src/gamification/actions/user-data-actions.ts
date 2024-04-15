@@ -316,17 +316,25 @@ export function initializeUserData(test?: boolean): ThunkAction<void, {}, {}, An
             setTimeout(() => dispatch(saveProfileDataAsync()), 5000);
 
             const lastLogin = userDataAllTime.last_login;
+            const lastLoginDate = new Date(lastLogin);
             const currentTime = Date.now();
-            const newDay = test ? true : (new Date(lastLogin).getDay() - new Date(currentTime).getDay()) !== 0;
+            const currentTimeDate = new Date(currentTime);
+
+            const newDay = test ? true : (
+                (lastLoginDate.getDate() !== currentTimeDate.getDate()) ||
+                (lastLoginDate.getMonth() !== currentTimeDate.getMonth()));
+
+            // New day since last login => User gets additional challenge if they have < 3 challenges.
             if (newDay) {
                 setTimeout(() => dispatch(addChallenge()),
                     5000);
                 // console.log('New day has started');
 
+                // Last login is >24h; check for streak saver.
                 const timeSinceLogin = currentTime - lastLogin;
-                let message = '';
-                let description = '';
                 if ((timeSinceLogin > 24 * 60 * 60 * 1000) || test) {
+                    let message = '';
+                    let description = '';
                     if (userDataAllTime.streak_saver_active) {
                         userDataAllTime.streak_saver_active = false;
                         message = 'Streak Saved.';
