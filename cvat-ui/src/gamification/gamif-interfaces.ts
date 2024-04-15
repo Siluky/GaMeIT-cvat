@@ -231,6 +231,7 @@ export interface ChatRoom {
 
 export interface SocialState {
     status: OnlineStatus,
+    rememberedStatus: OnlineStatus,
     friendListEntries: Profile[],
     ownProfile: Profile,
     chats: ChatRoom[],

@@ -21,6 +21,8 @@ export enum SocialActionTypes {
     TOGGLE_CHAT_VISIBILITY = 'TOGGLE_CHAT_VISIBILITY',
 
     SET_STATUS = 'SET_STATUS',
+    REMEMBER_STATUS = 'REMEMBER_STATUS',
+    LOAD_STATUS = 'LOAD_STATUS',
     SET_ADDITIONAL_CLASSNAMES = 'SET_ADDITIONAL_CLASSNAMES',
     SET_PROFILE_BACKGROUND = 'SET_PROFILE_BACKGROUND',
     SET_COLOR = 'SET_COLOR',
@@ -43,6 +45,18 @@ export enum SocialActionTypes {
     // Currently not used, instead "setHasSentMessage" gets called.
     // GET_NEW_MESSAGES_SUCCESS = 'GET_NEW_MESSAGES_SUCCESS',
     GET_NEW_MESSAGES_FAILED = 'GET_NEW_MESSAGES_FAILED',
+}
+
+export function rememberStatus(): AnyAction {
+    return {
+        type: SocialActionTypes.REMEMBER_STATUS,
+    };
+}
+
+export function loadStatus(): AnyAction {
+    return {
+        type: SocialActionTypes.LOAD_STATUS,
+    };
 }
 
 function getFriendsListSuccess(profiles: Profile[]): AnyAction {

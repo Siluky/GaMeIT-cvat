@@ -5,7 +5,9 @@
 import { updateBadges } from 'gamification/actions/badge-actions';
 import { getChallengesAsync, saveChallenges } from 'gamification/actions/challenge-actions';
 import { toggleEnergyGain } from 'gamification/actions/energizer-actions';
-import { getFriendsListAsync, saveProfileDataAsync, setStatus } from 'gamification/actions/social-actions';
+import {
+    getFriendsListAsync, loadStatus, rememberStatus, saveProfileDataAsync, setStatus,
+} from 'gamification/actions/social-actions';
 import {
     addGamifLog,
     saveUserData, updateUserData,
@@ -22,12 +24,10 @@ export function GamificationDummy(): JSX.Element {
     const intervalTimer = 10000; // TODO: Fix later!
     // const userdata = useSelector((state: CombinedState) => state.gamifuserdata);
     const { userId } = useSelector((state: CombinedState) => state.gamifuserdata);
-    const { status } = useSelector((state: CombinedState) => state.social);
     // const { energyGainEnabled } = useSelector((state: CombinedState) => state.energizer);
     const [idleTime, setIdleTime] = useState(0);
     const [active, setActive] = useState(true);
     // const [energizerTimer, setEnergizerTimer] = useState(0);
-    const [currentStatus, setCurrentStatus] = useState(OnlineStatus.ONLINE);
 
     const onIdle = (): void => {
         dispatch(toggleEnergyGain(false));
@@ -133,7 +133,8 @@ export function GamificationDummy(): JSX.Element {
 
             // change flag value
             isVisible = true;
-            dispatch(setStatus(currentStatus));
+            // dispatch(setStatus(currentStatus));
+            dispatch(loadStatus());
             dispatch(saveProfileDataAsync());
             // Debug
             console.log('visible');
@@ -149,8 +150,9 @@ export function GamificationDummy(): JSX.Element {
             // change flag value
             isVisible = false;
             // TODO: Status is get from a "Stale State". EventListener is problem; need to find workaround.
-            setCurrentStatus(status);
-            console.log(`State before leaving window: ${status}`);
+            // setCurrentStatus(currentStatus);
+            // console.log(`State before leaving window: ${status}`);
+            dispatch(rememberStatus());
             dispatch(setStatus(OnlineStatus.AWAY));
             saveAllUserData();
             // Debug
@@ -171,7 +173,7 @@ export function GamificationDummy(): JSX.Element {
             dispatch(addGamifLog('Benutzer verlässt die Seite'));
             dispatch(setStatus(OnlineStatus.OFFLINE));
             // TODO: Check if works correctly
-            dispatch(addGamifLog('Nutzerstatus auf Offline gesetzt'));
+            // dispatch(addGamifLog('Nutzerstatus auf Offline gesetzt'));
             saveAllUserData();
         }
 

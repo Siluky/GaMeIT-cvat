@@ -230,8 +230,21 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
         <>
             <GlobalHotKeys keyMap={subKeyMap} handlers={handlers} />
             <Layout.Sider {...siderProps}>
-                <Tabs type='card' defaultActiveKey='annotation' className='cvat-objects-sidebar-tabs'>
-                    <Tabs.TabPane tab={<Text strong>Annotation</Text>} key='annotation'>
+                <Tabs
+                    type='card'
+                    defaultActiveKey='tags'
+                    className='cvat-objects-sidebar-tabs'
+                    onChange={(key) => {
+                        if (key === 'challenges') {
+                            dispatch(updateChallenges());
+                            dispatch(addGamifLog('Checked Challenge Tab'));
+                        }
+                        if (key === 'statistics') {
+                            dispatch(addGamifLog('Checked Statistics Tab'));
+                        }
+                    }}
+                >
+                    <Tabs.TabPane tab={<Text strong>Tags</Text>} key='tags'>
                         {/* eslint-disable-next-line */}
                         <span
                             className={`cvat-objects-sidebar-sider
@@ -309,22 +322,6 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
                             </Col>
                         </Row>
                     </Tabs.TabPane>
-                </Tabs>
-
-                <Tabs
-                    type='card'
-                    defaultActiveKey='objects'
-                    className='cvat-objects-sidebar-tabs'
-                    onChange={(key) => {
-                        if (key === 'challenges') {
-                            dispatch(updateChallenges());
-                            dispatch(addGamifLog('Checked Challenge Tab'));
-                        }
-                        if (key === 'statistics') {
-                            dispatch(addGamifLog('Checked Statistics Tab'));
-                        }
-                    }}
-                >
                     <Tabs.TabPane
                         tab={<Text strong>Challenges</Text>}
                         key='challenges'
@@ -335,8 +332,10 @@ function TagAnnotationSidebar(props: StateToProps & DispatchToProps): JSX.Elemen
                         <StatisticsList />
                     </Tabs.TabPane>
                 </Tabs>
+                <div style={{ position: 'absolute', bottom: '0' }}>
+                    <SocialBar />
+                </div>
 
-                <SocialBar />
             </Layout.Sider>
         </>
     );

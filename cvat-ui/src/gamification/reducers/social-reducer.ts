@@ -26,6 +26,7 @@ const profile: Profile = {
 
 const defaultState: SocialState = {
     status: OnlineStatus.ONLINE,
+    rememberedStatus: OnlineStatus.ONLINE,
     friendListEntries: [],
     ownProfile: profile,
     chats: [],
@@ -38,6 +39,20 @@ export default (state = defaultState, action: AnyAction): SocialState => {
                 ...state,
             };
         }
+
+        case SocialActionTypes.REMEMBER_STATUS: {
+            return {
+                ...state,
+                rememberedStatus: state.status,
+            };
+        }
+        case SocialActionTypes.LOAD_STATUS: {
+            return {
+                ...state,
+                status: state.rememberedStatus,
+            };
+        }
+
         case SocialActionTypes.GET_FRIENDS_LIST_SUCCESS: {
             const friendListEntrieswithChatInfo = action.payload.map((profileImport: Profile) => {
                 // eslint-disable-next-line max-len
